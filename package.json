@@ -1,0 +1,30 @@
+{
+  "name": "grasshopper-ui",
+  "description": "Grasshopper UI",
+  "version": "0.0.1",
+  "author": {
+    "name": "Fronteer LTD"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fronteerio/grasshopper-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fronteerio/grasshopper-ui/issues"
+  },
+  "licenses": [
+    {
+      "type": "AGPLv3",
+      "url": "http://opensource.org/licenses/AGPL-3.0"
+    }
+  ],
+  "dependencies": {
+    "lodash": "latest"
+  },
+  "devDependencies": {
+    "grunt": "latest"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}
