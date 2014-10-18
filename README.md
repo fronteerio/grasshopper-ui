@@ -38,11 +38,11 @@ mkdir /usr/local/etc/apache2/2.4/sites-enabled
 # Generate the apache configuration files
 grunt configApache
 
-# Place the generate apache files in the correct places
+# Place the generated apache files in the correct places
 cp target/apache/httpd.conf /usr/local/etc/apache2/2.4/httpd.conf
 cp -R target/apache/app_*.conf /usr/local/etc/apache2/2.4/sites-enabled/
 
-# Retart apache
+# Restart apache
 sudo /usr/local/bin/apachectl restart
 ```
 
