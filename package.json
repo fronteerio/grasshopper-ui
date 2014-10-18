@@ -22,7 +22,8 @@
     "lodash": "latest"
   },
   "devDependencies": {
-    "grunt": "latest"
+    "grunt": "latest",
+    "grunt-cli": "latest"
   },
   "engines": {
     "node": ">=0.10"
