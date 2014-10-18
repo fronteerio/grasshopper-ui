@@ -26,6 +26,9 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 # Add a homebrew tap
 brew tap homebrew/apache
 
+# Install zlib
+brew install zlib
+
 # Install apache 2.4
 brew install httpd24
 
