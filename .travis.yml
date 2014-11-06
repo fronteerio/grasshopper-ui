@@ -1,0 +1,106 @@
+language: node_js
+node_js:
+  - "0.10.33"
+
+branches:
+  only:
+    - master
+
+addons:
+  postgresql: "9.3"
+
+before_install:
+
+  # Add a local loopback interface for IP 127.0.0.2
+  - sudo ip addr add 127.0.0.2 dev lo
+
+  # Create virtual hosts
+  - sudo sed -i "2i127.0.0.2  2014.cam.timetable.grasshopper.com" /etc/hosts
+  - sudo sed -i "2i127.0.0.2  2013.cam.timetable.grasshopper.com" /etc/hosts
+  - sudo sed -i "2i127.0.0.1  admin.grasshopper.com" /etc/hosts
+  - sudo cat /etc/hosts
+
+  # Prepare the machine
+  - sudo apt-get update
+  - sudo apt-get install build-essential
+  - cd /usr/local/lib
+
+  # Get Apache HTTP-server 2.4
+  - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz
+  - sudo tar xvfz httpd-2.4.10.tar.gz
+  - cd httpd-2.4.10/srclib/
+
+  # Download depencendies
+  - sudo wget http://lib.gblearn.com/apache/apr/apr-1.5.1.tar.gz
+  - sudo wget http://lib.gblearn.com/apache/apr/apr-util-1.5.3.tar.gz
+  - sudo wget http://lib.gblearn.com/apache/pcre/pcre-8.34.tar.gz
+
+  # Install and configure APR
+  - echo 'Installing APR'
+  - sudo tar xvfz ./apr-1.5.1.tar.gz
+  - cd apr-1.5.1
+  - sudo ./configure
+  - sudo make
+  - sudo make install
+  - cd ../
+
+  # Install and configure APR util
+  - echo 'Installing APR util'
+  - sudo tar xvfz ./apr-util-1.5.3.tar.gz
+  - cd apr-util-1.5.3
+  - sudo ./configure --with-apr=/usr/local/apr/bin/apr-1-config
+  - sudo make
+  - sudo make install
+  - cd ../
+
+  # Install and configure PCRE
+  - echo 'Installing PCRE'
+  - sudo tar xvfz pcre-8.34.tar.gz
+  - cd pcre-8.34
+  - sudo ./configure --prefix=/usr/local/pcre
+  - sudo make
+  - sudo make install
+  - cd ../..
+
+  # Install and configure Apache HTTPD 2.4
+  - echo 'Installing Apache'
+  - sudo ./configure --prefix=/usr/local/apache2 --with-pcre=/usr/local/pcre --enable-so
+  - sudo make
+  - sudo make install
+  - cd /usr/local/apache2/conf
+  - sudo mkdir sites-enabled
+
+  # Install Grasshopper
+  - echo 'Installing Grasshopper'
+  - cd ~/build/CUL-DigitalServices
+  - git clone --branch master --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
+  - cd ./grasshopper
+  - npm install --production
+
+  # Configure postgres
+  - echo 'Creating database'
+  - psql -c 'create database grasshopper;' -U postgres
+  - echo "config.db.username = 'postgres';" >> config.js
+
+  # Install Grasshopper UI
+  - echo 'Installing Grasshopper UI'
+  - cd ~/build/CUL-DigitalServices/grasshopper-ui
+  - npm install
+  - grunt configApache
+  - sudo cp ./target/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+  - sudo cp -R ./target/apache/app_*.conf /usr/local/apache2/conf/sites-enabled
+
+  # Start Apache
+  - sudo /usr/local/apache2/bin/apachectl start
+  - sleep 5
+
+  # Start Grasshopper
+  - node ~/build/CUL-DigitalServices/grasshopper/app.js &
+
+script:
+
+after_failure:
+
+notifications:
+  email:
+    - md623@cam.ac.uk
