@@ -82,5 +82,4 @@ define(['exports'], function(exports) {
     var updateAppAdmins = exports.updateAppAdmins = function(appId, administrators, callback) {
 
     };
-
 });

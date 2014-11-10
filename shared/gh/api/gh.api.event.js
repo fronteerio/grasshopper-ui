@@ -97,5 +97,4 @@ define(['exports'], function(exports) {
     var updateOrganisers = exports.updateOrganisers = function(eventId, groupId, organisers, callback) {
 
     };
-
 });

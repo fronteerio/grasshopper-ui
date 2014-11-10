@@ -180,5 +180,4 @@ define(['exports'], function(exports) {
     var updateUser = exports.updateUser = function(userId, appId, displayName, email, emailPreference, callback) {
 
     };
-
 });

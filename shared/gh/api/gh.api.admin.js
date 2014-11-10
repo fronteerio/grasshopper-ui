@@ -48,5 +48,4 @@ define(['exports'], function(exports) {
     var updateAdmin = exports.updateAdmin = function(userId, displayName, callback) {
 
     };
-
 });

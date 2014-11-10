@@ -178,5 +178,4 @@ define(['exports'], function(exports) {
     var updateOrgUnit = exports.updateOrgUnit = function(orgUnitId, description, displayName, groupId, parentId, type, callback) {
 
     };
-
 });

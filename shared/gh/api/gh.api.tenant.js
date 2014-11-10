@@ -54,5 +54,4 @@ define(['exports'], function(exports) {
     var updateTenant = exports.updateTenant = function(tenantId, displayName, callback) {
 
     };
-
 });

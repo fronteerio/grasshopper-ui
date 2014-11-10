@@ -55,5 +55,4 @@ define(['exports'], function(exports) {
     var updateConfig = exports.updateConfig = function(appId, configuration, callback) {
 
     };
-
 });
