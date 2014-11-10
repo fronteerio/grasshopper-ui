@@ -33,6 +33,7 @@ requirejs.config({
         'gh.api.orgunit': 'gh/api/gh.api.orgunit',
         'gh.api.series': 'gh/api/gh.api.series',
         'gh.api.user': 'gh/api/gh.api.user',
+        'gh.api.tenant': 'gh/api/gh.api.tenant',
         'gh.bootstrap': 'gh/api/gh.bootstrap',
         'gh.core': 'gh/api/gh.core'
     },
