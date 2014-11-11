@@ -2,6 +2,9 @@
 
 A container for grasshopper applications
 
+## Build status
+[![Build Status](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui.svg?branch=master)](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui)
+
 ## Installation
 
 ### Interfaces
@@ -23,27 +26,21 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 ### Apache 2
 
 ```
-# Add a homebrew tap
-brew tap homebrew/apache
-
-# Install zlib
-brew install zlib
-
-# Install apache 2.4
-brew install httpd24
+# Download Apache HHTP 2.4
+Follow the installation instructions from the [Apache website](http://httpd.apache.org/docs/2.4/install.html).
 
 # Create a sites-enabled directory
-mkdir /usr/local/etc/apache2/2.4/sites-enabled
+mkdir /usr/local/apache2/sites-enabled
 
 # Generate the apache configuration files
 grunt configApache
 
 # Place the generated apache files in the correct places
-cp target/apache/httpd.conf /usr/local/etc/apache2/2.4/httpd.conf
-cp -R target/apache/app_*.conf /usr/local/etc/apache2/2.4/sites-enabled/
+cp target/apache/httpd.conf /usr/local/apache2/httpd.conf
+cp -R target/apache/app_*.conf /usr/local/apache2/sites-enabled/
 
 # Restart apache
-sudo /usr/local/bin/apachectl restart
+sudo /usr/local/apache2/bin/apachectl restart
 ```
 
 ## How this works
