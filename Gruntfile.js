@@ -21,7 +21,52 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         'target': process.env['DESTDIR'] || 'target',
+        'clean': ['<%= target %>'],
+        'copy': {
+            'main': {
+                'files': [
+                    {
+                        'expand': true,
+                        'src': ['./**'],
+                        'dest': '<%= target %>/original'
+                    }
+                ]
+            }
+        },
+        'requirejs': {
+            'optimize': {
+                'options': {
+                    'appDir': './',
+                    'baseUrl': './shared',
+                    'mainConfigFile': './shared/gh/api/gh.bootstrap.js',
+                    'dir': '<%= target %>/optimized',
+                    'optimize': 'uglify',
+                    'preserveLicenseComments': false,
+                    'optimizeCss': 'standard',
+                    // TODO: Replace this with a saner value
+                    // @see https://github.com/jrburke/r.js/pull/653
+                    'cssImportIgnore': '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700&subset=latin,cyrillic-ext,latin-ext,greek-ext',
+                    'inlineText': true,
+                    'useStrict': false,
+                    'pragmas': {},
+                    'skipPragmas': false,
+                    'skipModuleInsertion': false,
+                    'modules': [{
+                        'name': 'gh.core'
+                    }],
+                    'fileExclusionRegExp': /^(\.|<%= target %>|tests|tools|grunt|optimist|properties-parser|readdirp|underscore$|shelljs$|oae-release-tools)/,
+                    'logLevel': 2
+                }
+            }
+        },
     });
+
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+        // Default task for production build
+    grunt.registerTask('release', ['clean', 'copy', 'requirejs']);
 
     // Task to fill out the Apache config template
     grunt.registerTask('configApache', function() {
