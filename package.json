@@ -27,7 +27,9 @@
     "grunt-cli": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-copy": "latest",
-    "grunt-contrib-requirejs": "latest"
+    "grunt-contrib-requirejs": "latest",
+    "grunt-text-replace": "latest",
+    "grunt-ver": "git://github.com/oaeproject/grunt-ver.git#v0.2.3-hilary-0.2"
   },
   "engines": {
     "node": ">=0.10"
