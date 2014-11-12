@@ -13,7 +13,6 @@
  * permissions and limitations under the License.
  */
 
-
 casper.test.begin('Page - Admin Index', function(test) {
 
     casper.start(configAPI.adminUI, function() {
