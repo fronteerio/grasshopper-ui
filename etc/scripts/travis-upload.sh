@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ##
 # This script will package and upload a successful build to Amazon S3. It should only
 # execute under the following conditions:

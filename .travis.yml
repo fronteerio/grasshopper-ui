@@ -103,8 +103,9 @@ after_failure:
 
 after_success:
   # Package and upload to Amazon S3
-  # - etc/scripts/travis-upload.sh
+  - ./etc/scripts/travis-upload.sh
 
 notifications:
   email:
+    - bp323@cam.ac.uk
     - md623@cam.ac.uk

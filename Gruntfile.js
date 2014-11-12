@@ -225,7 +225,7 @@ module.exports = function(grunt) {
     });
 
     /**
-     * Task to update the paths in oae.bootstrap to the hashed versions
+     * Task to update the paths in gh.bootstrap to the hashed versions
      */
     grunt.registerTask('updateBootstrapPaths', function() {
         this.requires('ver:gh');
