@@ -98,8 +98,10 @@ before_install:
   - node ~/build/CUL-DigitalServices/grasshopper/app.js &
 
 script:
+  - grunt qunit
 
-after_failure:
+after_success:
+  - grunt coveralls
 
 after_success:
   # Package and upload to Amazon S3

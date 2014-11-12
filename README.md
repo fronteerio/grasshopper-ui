@@ -5,6 +5,9 @@ A container for grasshopper applications
 ## Build status
 [![Build Status](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui.svg?branch=master)](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui)
 
+## Code coverage
+[![Coverage Status](https://coveralls.io/repos/CUL-DigitalServices/grasshopper-ui/badge.png)](https://coveralls.io/r/CUL-DigitalServices/grasshopper-ui)
+
 ## Installation
 
 ### Interfaces
