@@ -20,6 +20,13 @@ before_install:
   - sudo sed -i "2i127.0.0.1  admin.grasshopper.com" /etc/hosts
   - sudo cat /etc/hosts
 
+  # Install test dependencies
+  - npm install -g casperjs
+
+  # Show the CasperJS and PhantomJS version for debugging purposes
+  - casperjs --version
+  - phantomjs --version
+
   # Prepare the machine
   - sudo apt-get update
   - sudo apt-get install build-essential
@@ -98,7 +105,7 @@ before_install:
   - node ~/build/CUL-DigitalServices/grasshopper/app.js &
 
 script:
-  - grunt qunit
+  - tests/runTests.sh
 
 after_success:
   - grunt coveralls
@@ -106,3 +113,8 @@ after_success:
 notifications:
   email:
     - md623@cam.ac.uk
+    - bp323@cam.ac.uk
+  irc:
+    channels:
+      - "irc.freenode.org#ucam-ds"
+    skip_join: true
