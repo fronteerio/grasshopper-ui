@@ -27,7 +27,7 @@ before_install:
 
   # Get Apache HTTP-server 2.4
   - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz
-  - sudo tar xvfz httpd-2.4.10.tar.gz
+  - sudo tar xfz httpd-2.4.10.tar.gz
   - cd httpd-2.4.10/srclib/
 
   # Download depencendies
@@ -37,7 +37,7 @@ before_install:
 
   # Install and configure APR
   - echo 'Installing APR'
-  - sudo tar xvfz ./apr-1.5.1.tar.gz
+  - sudo tar xfz ./apr-1.5.1.tar.gz
   - cd apr-1.5.1
   - sudo ./configure
   - sudo make
@@ -46,7 +46,7 @@ before_install:
 
   # Install and configure APR util
   - echo 'Installing APR util'
-  - sudo tar xvfz ./apr-util-1.5.3.tar.gz
+  - sudo tar xfz ./apr-util-1.5.3.tar.gz
   - cd apr-util-1.5.3
   - sudo ./configure --with-apr=/usr/local/apr/bin/apr-1-config
   - sudo make
@@ -55,7 +55,7 @@ before_install:
 
   # Install and configure PCRE
   - echo 'Installing PCRE'
-  - sudo tar xvfz pcre-8.34.tar.gz
+  - sudo tar xfz pcre-8.34.tar.gz
   - cd pcre-8.34
   - sudo ./configure --prefix=/usr/local/pcre
   - sudo make
