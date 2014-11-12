@@ -101,7 +101,7 @@ script:
   - grunt qunit
 
 after_success:
-  - grunt-coveralls
+  - grunt coveralls
 
 notifications:
   email:
