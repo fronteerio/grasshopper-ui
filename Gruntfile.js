@@ -21,7 +21,34 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         'target': process.env['DESTDIR'] || 'target',
+        'coveralls': {
+            'gh': {
+                'src': 'coverage/lcov.info',
+                'options': {
+                    'src': 'coverage/lcov.info'
+                }
+            }
+        },
+        'qunit': {
+            'gh': {
+                'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                'options': {
+                    'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                    'coverage': {
+                        'disposeCollector': true,
+                        'baseUrl': ".",
+                        'src': ['shared/gh/api/*.js'],
+                        'instrumentedFiles': 'target/coverage',
+                        'lcovReport': 'coverage',
+                        'linesThresholdPct': 85
+                    }
+                }
+            }
+        }
     });
+
+    grunt.loadNpmTasks('grunt-qunit-istanbul');
+    grunt.loadNpmTasks('grunt-coveralls');
 
     // Task to fill out the Apache config template
     grunt.registerTask('configApache', function() {
