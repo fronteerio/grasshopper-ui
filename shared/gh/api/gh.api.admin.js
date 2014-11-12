@@ -35,7 +35,16 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback    Standard callback function
      */
     var getAdmins = exports.getAdmins = function(limit, offset, callback) {
-
+        $.ajax({
+            'url': '/api/admins',
+            'type': 'GET',
+            'success': function(data) {
+                callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
