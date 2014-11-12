@@ -20,16 +20,6 @@ var vm = require('vm');
 
 module.exports = function(grunt) {
 
-    ///////////////
-    // NPM TASKS //
-    ///////////////
-
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-text-replace');
-    grunt.loadNpmTasks('grunt-ver');
-
 
     ///////////////////
     // CONFIGURATION //
@@ -38,6 +28,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         'target': process.env['DESTDIR'] || 'target',
         'clean': ['<%= target %>'],
+        'exec': {
+            'removeTarget': {
+                'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
+            }
+        },
         'copy': {
             'main': {
                 'files': [
@@ -74,7 +69,7 @@ module.exports = function(grunt) {
                     'modules': [{
                         'name': 'gh.core'
                     }],
-                    'fileExclusionRegExp': /^(\.|<%= target %>|apache|etc|node_modules|tools)/,
+                    'fileExclusionRegExp': /^(\.|apache|etc|node_modules|tools)/,
                     'logLevel': 2
                 }
             }
@@ -170,13 +165,43 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-qunit-istanbul');
+
+    ///////////////
+    // NPM TASKS //
+    ///////////////
+
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-coveralls');
+    grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-ver');
+    grunt.loadNpmTasks('grunt-qunit-istanbul');
 
 
     //////////////////
     // GRUNT TASKS  //
     //////////////////
+
+    /**
+     * Task that changes the paths in the optimized Apache configuration files
+     */
+    grunt.registerTask('changePaths', function() {
+
+        // Get all the apps
+        var apps = fs.readdirSync('apps');
+        var basedir = grunt.config('target') + '/optimized/';
+
+        // Loop the Apache configuration files for every app
+        _.each(apps, function(appName) {
+            var file = basedir + 'apache/app_' + appName + '.conf';
+            var fileContent = grunt.file.read(file);
+            fileContent = fileContent.replace(/grasshopper-ui/g, 'grasshopper-ui/' + grunt.config('target') + '/optimized');
+            grunt.file.write(file, fileContent);
+            grunt.log.writeln(String('Apache file changed for app_' + appName + '.conf').green);
+        });
+    });
 
     /**
      * Task to fill out the Apache config template
@@ -249,6 +274,9 @@ module.exports = function(grunt) {
 
         // Run the default production build task
         grunt.task.run('default');
+
+        // Change the paths in the optimized Apache files
+        grunt.task.run('changePaths');
     });
 
     /**
@@ -283,7 +311,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', ['clean', 'copy', 'requirejs', 'hashFiles', 'configApache']);
+    grunt.registerTask('default', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**
