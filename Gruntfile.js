@@ -52,7 +52,10 @@ module.exports = function(grunt) {
         },
         'csslint': {
             'options': {
-                'ids': false // ignore "Don't use IDs in CSS selectors" warning
+                'box-model': false,
+                'ids': false,
+                'import': false,
+                'qualified-headings': false
             },
             'files': [
                 'apps/**/*.css',
@@ -73,7 +76,7 @@ module.exports = function(grunt) {
         'ghost': {
             'dist': {
                 'filesSrc': [
-                    'tests/casperjs/tests/*.js'
+                    'apps/**/tests/*.js'
                 ],
                 // CasperJS test command options
                 'options': {

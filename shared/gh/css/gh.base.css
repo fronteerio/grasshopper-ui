@@ -23,4 +23,17 @@
 body {
     font-family: 'Open Sans', arial, helvetica, sans-serif;
     font-size: 14px;
+    font-weight: 200;
+}
+
+main {
+    padding-top: 30px;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 200;
+}
+
+.gh-maxwidth {
+    max-width: 1360px;
 }

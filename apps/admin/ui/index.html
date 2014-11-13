@@ -2,10 +2,51 @@
 <head>
     <title>Admin UI</title>
     <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+    <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
 </head>
 <body>
-    This is the admin UI!
+    <!-- HEADER -->
+    <div id="gh-header">
+        <div id="gh-header-hero">
+            <div id="gh-header-hero-container" class="container gh-maxwidth">
+                <div class="col-xs-12">
+                    <a href="http://www.cam.ac.uk" title="Cambridge University website">
+                        <img src="/shared/gh/img/unilogo.png" alt="Cambridge University logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="gh-header-slogan">
+            <div id="gh-header-slogan-container" class="container gh-maxwidth">
+                <div class="col-xs-12">
+                    <h1>Timetable</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <main class="gh-maxwidth">
+        <div class="container">
+            <div class="col-xs-2 col-md-3 hidden-xs"></div>
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="gh-login-email">Email address</label>
+                        <input type="email" class="form-control" id="gh-login-email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="gh-login-password">Password</label>
+                        <input type="password" class="form-control" id="gh-login-password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                </form>
+            </div>
+            <div class="col-xs-2 col-md-3 hidden-xs"></div>
+        </div>
+    </main>
 
     <script data-main="/shared/gh/api/gh.bootstrap.js" src="/shared/vendor/js/require.js"></script>
 </body>

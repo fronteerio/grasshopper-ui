@@ -13,15 +13,23 @@
  * permissions and limitations under the License.
  */
 
-casper.test.begin('Page - Admin Index', function(test) {
+/**
+ * HEADER
+ */
 
-    casper.start(configAPI.adminUI, function() {
-        casper.waitForSelector('body', function() {
-            test.assertSelectorHasText('body', 'This is the admin UI!', 'Verify that the body has the text\'This is the admin UI!\'');
-        });
-    });
+#gh-header #gh-header-hero {
+    background-color: #000;
+    height: 80px;
+}
+#gh-header #gh-header-hero img {
+    margin: 18px 18px 18px 0;
+}
 
-    casper.run(function() {
-        test.done();
-    });
-});
+#gh-header #gh-header-slogan {
+    background-color: #006470;
+    border-bottom: 4px solid #999;
+    height: 90px;
+}
+#gh-header #gh-header-slogan h1 {
+    color: #FFF;
+}
