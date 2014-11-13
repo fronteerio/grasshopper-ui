@@ -20,53 +20,60 @@ before_install:
   - sudo sed -i "2i127.0.0.1  admin.grasshopper.com" /etc/hosts
   - sudo cat /etc/hosts
 
+  # Install test dependencies
+  - npm install -g casperjs
+
+  # Show the CasperJS and PhantomJS version for debugging purposes
+  - casperjs --version
+  - phantomjs --version
+
   # Prepare the machine
   - sudo apt-get update
   - sudo apt-get install build-essential
   - cd /usr/local/lib
 
   # Get Apache HTTP-server 2.4
-  - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz
-  - sudo tar xvfz httpd-2.4.10.tar.gz
+  - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz -q
+  - sudo tar xfz httpd-2.4.10.tar.gz
   - cd httpd-2.4.10/srclib/
 
   # Download depencendies
-  - sudo wget http://lib.gblearn.com/apache/apr/apr-1.5.1.tar.gz
-  - sudo wget http://lib.gblearn.com/apache/apr/apr-util-1.5.3.tar.gz
-  - sudo wget http://lib.gblearn.com/apache/pcre/pcre-8.34.tar.gz
+  - sudo wget http://lib.gblearn.com/apache/apr/apr-1.5.1.tar.gz -q
+  - sudo wget http://lib.gblearn.com/apache/apr/apr-util-1.5.3.tar.gz -q
+  - sudo wget http://lib.gblearn.com/apache/pcre/pcre-8.34.tar.gz -q
 
   # Install and configure APR
   - echo 'Installing APR'
-  - sudo tar xvfz ./apr-1.5.1.tar.gz
+  - sudo tar xfz ./apr-1.5.1.tar.gz
   - cd apr-1.5.1
   - sudo ./configure
-  - sudo make
-  - sudo make install
+  - sudo make --silent
+  - sudo make install --silent
   - cd ../
 
   # Install and configure APR util
   - echo 'Installing APR util'
-  - sudo tar xvfz ./apr-util-1.5.3.tar.gz
+  - sudo tar xfz ./apr-util-1.5.3.tar.gz
   - cd apr-util-1.5.3
   - sudo ./configure --with-apr=/usr/local/apr/bin/apr-1-config
-  - sudo make
-  - sudo make install
+  - sudo make --silent
+  - sudo make install --silent
   - cd ../
 
   # Install and configure PCRE
   - echo 'Installing PCRE'
-  - sudo tar xvfz pcre-8.34.tar.gz
+  - sudo tar xfz pcre-8.34.tar.gz
   - cd pcre-8.34
   - sudo ./configure --prefix=/usr/local/pcre
-  - sudo make
-  - sudo make install
+  - sudo make --silent
+  - sudo make install --silent
   - cd ../..
 
   # Install and configure Apache HTTPD 2.4
   - echo 'Installing Apache'
   - sudo ./configure --prefix=/usr/local/apache2 --with-pcre=/usr/local/pcre --enable-so
-  - sudo make
-  - sudo make install
+  - sudo make --silent
+  - sudo make install --silent
   - cd /usr/local/apache2/conf
   - sudo mkdir sites-enabled
 
@@ -98,7 +105,7 @@ before_install:
   - node ~/build/CUL-DigitalServices/grasshopper/app.js &
 
 script:
-  - grunt qunit
+  - tests/runTests.sh
 
 after_success:
   - grunt coveralls
@@ -111,3 +118,8 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
+    - bp323@cam.ac.uk
+  irc:
+    channels:
+      - "irc.freenode.org#ucam-ds"
+    skip_join: true

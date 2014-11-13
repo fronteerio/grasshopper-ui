@@ -1,8 +1,8 @@
 /*!
- * Copyright 2014 Apereo Foundation (AF) Licensed under the
- * Educational Community License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may
- * obtain a copy of the License at
+ * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  *     http://opensource.org/licenses/ECL-2.0
  *
@@ -138,6 +138,52 @@ module.exports = function(grunt) {
                 }
             }
         },
+        'ghost': {
+            'dist': {
+                'filesSrc': [
+                    'tests/casperjs/tests/*.js'
+                ],
+                // CasperJS test command options
+                'options': {
+                    // Specify the files to be included in each test
+                    'includes': [
+                        'tests/casperjs/util/include/gh.api.admin.js',
+                        'tests/casperjs/util/include/gh.api.app.js',
+                        'tests/casperjs/util/include/gh.api.authentication.js',
+                        'tests/casperjs/util/include/gh.api.config.js',
+                        'tests/casperjs/util/include/gh.api.event.js',
+                        'tests/casperjs/util/include/gh.api.orgunit.js',
+                        'tests/casperjs/util/include/gh.api.series.js',
+                        'tests/casperjs/util/include/gh.api.tenant.js',
+                        'tests/casperjs/util/include/gh.api.user.js',
+                        'tests/casperjs/util/include/util.js'
+                    ],
+                    // Prepare te testing environment before starting the tests
+                    'pre': ['tests/casperjs/util/prep.js'],
+                    // Don't stop casperjs after first test failure
+                    'failFast': false
+                }
+            }
+        },
+        'csslint': {
+            'options': {
+                'ids': false // ignore "Don't use IDs in CSS selectors" warning
+            },
+            'files': [
+                'apps/**/*.css',
+                'shared/gh/**/*.css'
+            ]
+        },
+        'jshint': {
+            'options': {
+                'sub': true
+            },
+            'files': [
+                'grunt.js',
+                'apps/**/*.js',
+                'shared/gh/**/*.js',
+            ]
+        },
         'qunit': {
             'gh': {
                 'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
@@ -163,9 +209,13 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-ghost');
+    grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-ver');
     grunt.loadNpmTasks('grunt-qunit-istanbul');
@@ -174,6 +224,10 @@ module.exports = function(grunt) {
     //////////////////
     // GRUNT TASKS  //
     //////////////////
+
+    // Lint tasks for JavaScript and CSS
+    grunt.registerTask('lint', ['jshint', 'csslint']);
+    grunt.registerTask('test', ['lint', 'qunit', 'ghost']);
 
     /**
      * Task that changes the paths in the optimized Apache configuration files
