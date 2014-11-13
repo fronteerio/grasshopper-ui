@@ -94,8 +94,8 @@ before_install:
   - cd ~/build/CUL-DigitalServices/grasshopper-ui
   - npm install
   - grunt configApache
-  - sudo cp ./target/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
-  - sudo cp -R ./target/apache/app_*.conf /usr/local/apache2/conf/sites-enabled
+  - sudo cp ./target/optimized/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+  - sudo cp -R ./target/optimized/apache/app_*.conf /usr/local/apache2/conf/sites-enabled
 
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start
@@ -110,8 +110,13 @@ script:
 after_success:
   - grunt coveralls
 
+after_success:
+  # Package and upload to Amazon S3
+  - ./etc/scripts/travis-upload.sh
+
 notifications:
   email:
+    - bp323@cam.ac.uk
     - md623@cam.ac.uk
     - bp323@cam.ac.uk
   irc:
