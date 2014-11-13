@@ -86,7 +86,8 @@ before_install:
 
   # Configure postgres
   - echo 'Creating database'
-  - psql -c 'create database grasshopper;' -U postgres
+  - psql -c 'DROP DATABASE IF EXISTS grasshopper;' -U postgres
+  - psql -c 'CREATE DATABASE grasshopper;' -U postgres
   - echo "config.db.username = 'postgres';" >> config.js
 
   # Install Grasshopper UI
@@ -118,7 +119,6 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
-    - bp323@cam.ac.uk
   irc:
     channels:
       - "irc.freenode.org#ucam-ds"

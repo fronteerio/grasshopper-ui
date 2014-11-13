@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'jquery', 'lodash'], function(exports, $, _) {
+define(['exports'], function(exports) {
 
     /**
      * Create a new global administrator

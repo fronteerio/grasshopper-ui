@@ -16,168 +16,299 @@
 define(['exports'], function(exports) {
 
     /**
-     * Change a user's local password
-     *
-     * @param  {Number}      userId           The ID of the user for which to change the local password
-     * @param  {String}      newPassword      The new password for the user
-     * @param  {String}      [oldPassword]    The previous password for the user. This is only required when the current user is not an administrator
-     * @param  {Function}    callback         Standard callback function
-     */
-    var changePassword = exports.changePassword = function(userId, newPassword, oldPassword, callback) {
-
-    };
-
-    /**
-     * Create a new user with a local authentication strategy
-     *
-     * @param  {Number}      appId              The ID of the app on which the user should be created
-     * @param  {String}      displayName        The display name of the user
-     * @param  {String}      email              The email address for the user. This will be used as the username for the user
-     * @param  {String}      password           The password with which the user will authenticate
-     * @param  {String}      emailPreference    The email preference for the user
-     * @param  {Function}    callback           Standard callback function
-     */
-    var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, callback) {
-
-    };
-
-    /**
-     * Crop the profile picture for a user
-     *
-     * @param  {Number}      userId      The ID of the user to crop the profile picture for
-     * @param  {Number}      width       The width of the square that needs to be cropped out
-     * @param  {Number}      x           The x coordinate of the top left corner to start cropping at
-     * @param  {Number}      y           The y coordinate of the top left corner to start cropping at
-     * @param  {Function}    callback    Standard callback function
-     */
-    var cropPicture = exports.cropPicture = function(userId, width, x, y, callback) {
-
-    };
-
-    /**
-     * Get the calendar for a user
-     *
-     * @param  {Number}      userId      The ID of the user to get the calendar for
-     * @param  {String}      from        The timestamp (ISO 8601) from which to get the calendar for the user
-     * @param  {String}      to          The timestamp (ISO 8601) until which to get the calendar for the user
-     * @param  {Function}    callback    Standard callback function
-     */
-    var getCalendar = exports.getCalendar = function(userId, from, to, callback) {
-
-    };
-
-    /**
-     * Get the calendar for a user in iCal
-     *
-     * @param  {Number}      userId       The ID of the user to get the calendar for
-     * @param  {String}      signature    The access control signature
-     * @param  {Function}    callback     Standard callback function
-     */
-    var getCalendarICal = exports.getCalendarICal = function(userId, signature, callback) {
-
-    };
-
-    /**
-     * Get the calendar for a user in RSS
-     *
-     * @param  {Number}      userId       the ID of the user to get the calendar for
-     * @param  {String}      signature    The access control signature
-     * @param  {Function}    callback     Standard callback function
-     */
-    var getCalendarRSS = exports.getCalendarRSS = function(userId, signature, callback) {
-
-    };
-
-    /**
      * Get the current user
      *
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The current user
      */
     var getMe = exports.getMe = function(callback) {
-
-    };
-
-    /**
-     * Get the upcoming events for a user
-     *
-     * @param  {Number}      userId      The ID of the user to get the upcoming events for
-     * @param  {Number}      [limit]     The maximum number of results to retrieve
-     * @param  {Number}      [offset]    The paging number of the results to retrieve
-     * @param  {Function}    callback    Standard callback function
-     */
-    var getUpcomingEvents = exports.getUpcomingEvents = function(userId, limit, offset, callback) {
-
+        $.ajax({
+            'url': '/api/me',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
      * Get a user
      *
-     * @param  {Number}      userId      The ID of the user to retrieve
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Number}      userId               The ID of the user to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The requested user
      */
     var getUser = exports.getUser = function(userId, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
 
+        return callback();
     };
 
     /**
      * Get all users for an app
      *
-     * @param  {Number}      appId         The ID of the app to retrieve the users for
-     * @param  {Number}      [limit]       The maximum number of results to retrieve
-     * @param  {Number}      [offset]      The paging number of the results to retrieve
-     * @param  {Function}    [callback]    [description]
+     * @param  {Number}      [appId]              The ID of the app to retrieve the users for
+     * @param  {Number}      [limit]              The maximum number of results to retrieve
+     * @param  {Number}      [offset]             The paging number of the results to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The users for the requested tenant or app
      */
     var getUsers = exports.getUsers = function(appId, limit, offset, callback) {
+        if (limit && !_.isNumber(limit)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'limit\' should be provided'});
+        } else if (offset && (!_.isNumber(offset))) {
+            return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
+        }
 
+        return callback();
+    };
+
+    /**
+     * Get the calendar for a user
+     *
+     * @param  {Number}      userId               The ID of the user to get the calendar for
+     * @param  {String}      from                 The timestamp (ISO 8601) from which to get the calendar for the user
+     * @param  {String}      to                   The timestamp (ISO 8601) until which to get the calendar for the user
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The requested user calendar
+     */
+    var getUserCalendar = exports.getUserCalendar = function(userId, from, to, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!from) {
+            return callback({'code': 400, 'msg': 'A valid value for \'from\' should be provided'});
+        } else  if (!to) {
+            return callback({'code': 400, 'msg': 'A valid value for \'to\' should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Get the calendar for a user in iCal
+     *
+     * @param  {Number}      userId               The ID of the user to get the calendar for
+     * @param  {String}      [signature]          The access control signature
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The requested user calendar in iCal format
+     */
+    var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, signature, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Get the calendar for a user in RSS
+     *
+     * @param  {Number}      userId               The ID of the user to get the calendar for
+     * @param  {String}      [signature]          The access control signature
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The requested event series calendar in RSS format
+     */
+    var getUserCalendarRSS = exports.getUserCalendarRSS = function(userId, signature, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Get the upcoming events for a user
+     *
+     * @param  {Number}      userId               The ID of the user to get the upcoming events for
+     * @param  {Number}      [limit]              The maximum number of results to retrieve
+     * @param  {Number}      [offset]             The paging number of the results to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The upcoming events for the user
+     */
+    var getUserUpcoming = exports.getUserUpcoming = function(userId, limit, offset, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (limit && !_.isNumber(limit)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'limit\' should be provided'});
+        } else if (offset && (!_.isNumber(offset))) {
+            return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Get the terms and conditions
+     *
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The Terms and Conditions for the current app
+     */
+    var getTermsAndConditions = exports.getTermsAndConditions = function(callback) {
+        return callback();
+    };
+
+    /**
+     * Accept the terms and conditions
+     *
+     * @param  {Number}      userId               The id of the user for which to accept the Terms and Conditions on the current app
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated status of the Terms and Conditions for the user on the current app
+     */
+    var acceptTermsAndConditions = exports.acceptTermsAndConditions = function(userId, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Create a new user with a local authentication strategy
+     *
+     * @param  {Number}      [appId]                 The ID of the app on which the user should be created
+     * @param  {String}      displayName             The display name of the user
+     * @param  {String}      email                   The email address for the user. This will be used as the username for the user
+     * @param  {String}      password                The password with which the user will authenticate
+     * @param  {String}      [emailPreference]       The email preference for the user
+     * @param  {String}      [recaptchaChallenge]    The identifier for the recaptcha challenge. Only required when the current user is not an app administrator
+     * @param  {String}      [recaptchaResponse]     The recaptcha response entered for the presented challenge. Only required when the current user is not an app administrator
+     * @param  {Function}    callback                Standard callback function
+     * @param  {Object}      callback.err            Error object containing the error code and error message
+     * @param  {Object}      callback.response       The created user
+     */
+    var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, recaptchaChallenge, recaptchaResponse, callback) {
+        if (!displayName) {
+            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
+        } else if (!email) {
+            return callback({'code': 400, 'msg': 'A valid email should be provided'});
+        } else if (!password) {
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
+        }
+
+        return callback();
     };
 
     /**
      * Import users using a CSV file
      *
-     * @param  {Number}      tenantId                  The ID of the tenant to which the users should be imported
-     * @param  {File}        file                      The CSV file to import
      * @param  {String}      authenticationStrategy    The authentication strategy for the user
+     * @param  {File}        file                      The CSV file to import
+     * @param  {Number}      tenantId                  The ID of the tenant to which the users should be imported
      * @param  {String[]}    [appIds]                  The ID(s) of the app(s) to which the users should be associated
      * @param  {Boolean}     [forceProfileUpdate]      Whether the user information should be updated, even when other user information is already present
-     * @param  {Function}    [callback]                Standard callback function
+     * @param  {Function}    callback                  Standard callback function
+     * @param  {Object}      callback.err              Error object containing the error code and error message
      */
-    var importUsers = exports.importUsers = function(tenantId, file, authenticationStrategy, appIds, forceProfileUpdate, callback) {
+    var importUsers = exports.importUsers = function(authenticationStrategy, file, tenantID, appIds, forceProfileUpdate, callback) {
+        if (!authenticationStrategy) {
+            return callback({'code': 400, 'msg': 'A valid authenticationStrategy should be provided'});
+        } else if (!file) {
+            return callback({'code': 400, 'msg': 'A valid file should be provided'});
+        } else if (!tenantId) {
+            return callback({'code': 400, 'msg': 'A valid tenant id should be provided'});
+        } else if (appIds && !_.isArray(appIds)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'appIds\' should be provided'});
+        } else if (appIds && !_.isBoolean(forceProfileUpdate)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'forceProfileUpdate\' should be provided'});
+        }
 
-    };
-
-    /**
-     * Update the app administrator status for a user
-     *
-     * @param {Number}      userId      The ID of the user to update the app administrator status for
-     * @param {Boolean}     isAdmin     Whether the user should be an app administrator or not
-     * @param {Function}    callback    Standard callback function
-     */
-    var setAdmin = exports.setAdmin = function(userId, isAdmin, callback) {
-
-    };
-
-    /**
-     * Store a profile picture for a user
-     *
-     * @param  {Number}      userId        The ID of the user to store the profile picture for
-     * @param  {File}        file          The image that should be stored as the user profile picture
-     * @param  {Function}    [callback]    Standard callback function
-     */
-    var storePicture = exports.storePicture = function(userId, file, callback) {
-
+        return callback();
     };
 
     /**
      * Update a user
      *
      * @param  {Number}      userId               The ID of the user to update
-     * @param  {Number}      appId                The ID of the app for which to update the app-specific user values
+     * @param  {Number}      [appId]              The ID of the app for which to update the app-specific user values
      * @param  {String}      [displayName]        The updated user display name
      * @param  {String}      [email]              The updated user email address
      * @param  {String}      [emailPreference]    The updated user email preference
-     * @param  {Function}    [callback]           Standard callback function
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated user
      */
     var updateUser = exports.updateUser = function(userId, appId, displayName, email, emailPreference, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
 
+        return callback();
+    };
+
+    /**
+     * Update the app administrator status for a user
+     *
+     * @param  {Number}      userId               The id of the user to update the app administrator status for
+     * @param  {Boolean}     isAdmin              Whether the user should be an app administrator
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated user
+     */
+    var updateAdminStatus = exports.updateAdminStatus = function(userId, isAdmin, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!_.isBoolean(isAdmin)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'isAdmin\' should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Store a profile picture for a user
+     *
+     * @param  {Number}      userId               The ID of the user to store the profile picture for
+     * @param  {File}        file                 The image that should be stored as the user profile picture
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated user
+     */
+    var setUserPicture = exports.setUserPicture = function(userId, file, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!file) {
+            return callback({'code': 400, 'msg': 'A valid file should be provided'});
+        }
+
+        return callback();
+    };
+
+    /**
+     * Crop the profile picture for a user
+     *
+     * @param  {Number}      userId               The ID of the user to crop the profile picture for
+     * @param  {Number}      width                The width of the square that needs to be cropped out
+     * @param  {Number}      x                    The x coordinate of the top left corner to start cropping at
+     * @param  {Number}      y                    The y coordinate of the top left corner to start cropping at
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated user
+     */
+    var cropPicture = exports.cropPicture = function(userId, width, x, y, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!width) {
+            return callback({'code': 400, 'msg': 'A valid value for \'width\' should be provided'});
+        } else if (!x) {
+            return callback({'code': 400, 'msg': 'A valid value for \'x\' should be provided'});
+        } else if (!y) {
+            return callback({'code': 400, 'msg': 'A valid value for \'y\' should be provided'});
+        }
+
+        return callback();
     };
 });

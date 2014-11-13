@@ -22,7 +22,7 @@ requirejs.config({
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
         'jquery': 'vendor/js/jquery-2.1.1',
-        'lodash': 'vendor/js/lodash-2.4.1',
+        'lodash': 'vendor/js/lodash',
 
         // GH API modules
         'gh.api': 'gh/api/gh.api',
@@ -33,8 +33,9 @@ requirejs.config({
         'gh.api.event': 'gh/api/gh.api.event',
         'gh.api.orgunit': 'gh/api/gh.api.orgunit',
         'gh.api.series': 'gh/api/gh.api.series',
-        'gh.api.user': 'gh/api/gh.api.user',
         'gh.api.tenant': 'gh/api/gh.api.tenant',
+        'gh.api.user': 'gh/api/gh.api.user',
+        'gh.api.util': 'gh/api/gh.api.util',
         'gh.bootstrap': 'gh/api/gh.bootstrap',
         'gh.core': 'gh/api/gh.core'
     },

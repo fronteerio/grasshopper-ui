@@ -188,9 +188,29 @@ module.exports = function(grunt) {
         },
         'qunit': {
             'gh': {
-                'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                'urls': [
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.admin.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.app.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.authentication.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.config.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.event.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                ],
                 'options': {
-                    'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                    'urls': [
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.admin.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.app.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.authentication.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.config.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.event.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                    ],
                     'coverage': {
                         'disposeCollector': true,
                         'baseUrl': ".",
