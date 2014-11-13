@@ -105,7 +105,8 @@ module.exports = function(grunt) {
                         'references': _replacementReferences({
                             'directories': [
                                 '<%= target %>/optimized/apps',
-                                '<%= target %>/optimized/shared'
+                                '<%= target %>/optimized/shared',
+                                '<%= target %>/optimized/tests'
                             ],
                             'includeExts': ['html']
                         })
@@ -121,7 +122,8 @@ module.exports = function(grunt) {
                         'references': _replacementReferences({
                             'directories': [
                                 '<%= target %>/optimized/apps',
-                                '<%= target %>/optimized/shared'
+                                '<%= target %>/optimized/shared',
+                                '<%= target %>/optimized/tests'
                             ],
                             'includeExts': ['html']
                         })
