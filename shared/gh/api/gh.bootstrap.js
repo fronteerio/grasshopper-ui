@@ -22,6 +22,7 @@ requirejs.config({
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
         'jquery': 'vendor/js/jquery-2.1.1',
+        'lodash': 'vendor/js/lodash-2.4.1',
 
         // GH API modules
         'gh.api': 'gh/api/gh.api',

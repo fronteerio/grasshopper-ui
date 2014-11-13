@@ -26,7 +26,8 @@ define([
         'gh.api!',
 
         'jquery',
-        'bootstrap',
+        'lodash',
+        'bootstrap'
     ],
 
     function(gh) {
