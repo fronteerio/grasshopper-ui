@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     ///////////////////
 
     grunt.initConfig({
-        'target': process.env['DESTDIR'] || 'target',
+        'target': 'target',
         'clean': ['<%= target %>'],
         'exec': {
             'removeTarget': {
@@ -124,15 +124,6 @@ module.exports = function(grunt) {
                                 '<%= target %>/optimized/shared'
                             ],
                             'includeExts': ['html']
-                        })
-                    },
-
-                    // 4. Hash the GH HTML files
-                    {
-                        'files': _hashFiles({
-                            'directories': [
-                                '<%= target %>/optimized/apps'
-                            ]
                         })
                     }
                 ],
@@ -271,6 +262,7 @@ module.exports = function(grunt) {
         if (!outputDir) {
             return grunt.log.writeln('Please provide a path where the release files should be copied to'.red);
         }
+        grunt.config.target = outputDir;
 
         // Run the default production build task
         grunt.task.run('default');
