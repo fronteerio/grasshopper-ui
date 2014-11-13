@@ -13,17 +13,15 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'jquery'], function(gh, $) {
-    module("API");
+casper.test.begin('Page - Admin Index', function(test) {
 
-    QUnit.asyncTest( "Admin API", function( assert ) {
-        expect(2);
-        gh.api.adminAPI.getAdmins(null, null, function(err, data) {
-            assert.ok(!err, 'Verify administrators can be retrieved without error');
-            assert.ok(data, 'Verify administrator data is returned');
-            QUnit.start();
+    casper.start(configAPI.adminUI, function() {
+        casper.waitForSelector('body', function() {
+            test.assertSelectorHasText('body', 'This is the admin UI!', 'Verify that the body has the text\'This is the admin UI!\'');
         });
     });
 
-    QUnit.start(1);
+    casper.run(function() {
+        test.done();
+    });
 });
