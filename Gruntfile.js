@@ -63,8 +63,11 @@ module.exports = function(grunt) {
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
+            'stopGrasshopper': {
+                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
+            },
             'startDependencies': {
-                cmd: 'node tests/startDependencies.js'
+                'cmd': 'node tests/startDependencies.js'
             }
         },
         'ghost': {
@@ -232,7 +235,7 @@ module.exports = function(grunt) {
 
     // Lint tasks for JavaScript and CSS
     grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('test', ['exec:startDependencies']);
+    grunt.registerTask('test', ['exec:stopGrasshopper', 'exec:startDependencies']);
 
     // Coverage report task
     grunt.registerTask('coverage', ['qunit']);
