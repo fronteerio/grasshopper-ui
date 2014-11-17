@@ -231,6 +231,9 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', ['jshint', 'csslint']);
     grunt.registerTask('test', ['lint', 'qunit', 'ghost']);
 
+    // Coverage report task
+    grunt.registerTask('coverage', ['qunit']);
+
     /**
      * Task that changes the paths in the optimized Apache configuration files
      */
