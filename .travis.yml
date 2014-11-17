@@ -99,6 +99,7 @@ before_install:
 
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start
+  - sleep 5
 
 script:
   - grunt test
