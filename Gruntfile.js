@@ -134,9 +134,9 @@ module.exports = function(grunt) {
         },
         'coveralls': {
             'gh': {
-                'src': 'coverage/lcov.info',
+                'src': 'coverage/lcov/lcov.info',
                 'options': {
-                    'src': 'coverage/lcov.info'
+                    'src': 'coverage/lcov/lcov.info'
                 }
             }
         },
@@ -196,7 +196,8 @@ module.exports = function(grunt) {
                         'baseUrl': ".",
                         'src': ['shared/gh/api/*.js'],
                         'instrumentedFiles': 'target/coverage',
-                        'lcovReport': 'coverage',
+                        'lcovReport': 'coverage/lcov',
+                        'htmlReport': 'coverage/html',
                         'linesThresholdPct': 85
                     }
                 }
@@ -220,7 +221,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-qunit-istanbul');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-ver');
-    grunt.loadNpmTasks('grunt-qunit-istanbul');
 
 
     //////////////////
