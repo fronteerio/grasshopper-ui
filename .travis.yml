@@ -80,14 +80,14 @@ before_install:
   # Install Grasshopper
   - echo 'Installing Grasshopper'
   - cd ~/build/CUL-DigitalServices
-  - git clone --branch master --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
+  - git clone --branch master --depth=1 git://github.com/CUL-DigitalServices/grasshopper.git ./grasshopper
   - cd ./grasshopper
   - npm install --production
 
   # Configure postgres
   - echo 'Creating database'
-  - psql -c 'create database grasshopper;' -U postgres
-  - echo "config.db.username = 'postgres';" >> config.js
+  - psql -c 'create database grasshoppertest;' -U postgres
+  - printf "\n\nconfig.db.username = 'postgres';" >> config.js
 
   # Install Grasshopper UI
   - echo 'Installing Grasshopper UI'
@@ -101,13 +101,10 @@ before_install:
   - sudo /usr/local/apache2/bin/apachectl start
   - sleep 5
 
-  # Start Grasshopper
-  - node ~/build/CUL-DigitalServices/grasshopper/app.js &
-
 script:
-  - tests/runTests.sh
+  - grunt test
 
-after_success:
+after_script:
   - grunt coveralls
 
 after_success:
@@ -118,7 +115,6 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
-    - bp323@cam.ac.uk
   irc:
     channels:
       - "irc.freenode.org#ucam-ds"
