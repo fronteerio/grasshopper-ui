@@ -26,13 +26,7 @@ module.exports = function(grunt) {
     ///////////////////
 
     grunt.initConfig({
-        'target': 'target',
         'clean': ['<%= target %>'],
-        'exec': {
-            'removeTarget': {
-                'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
-            }
-        },
         'copy': {
             'main': {
                 'files': [
@@ -46,6 +40,85 @@ module.exports = function(grunt) {
                         'dest': '<%= target %>/original'
                     }
                 ]
+            }
+        },
+        'coveralls': {
+            'gh': {
+                'src': 'coverage/lcov/lcov.info',
+                'options': {
+                    'src': 'coverage/lcov/lcov.info'
+                }
+            }
+        },
+        'csslint': {
+            'options': {
+                'ids': false // ignore "Don't use IDs in CSS selectors" warning
+            },
+            'files': [
+                'apps/**/*.css',
+                'shared/gh/**/*.css'
+            ]
+        },
+        'exec': {
+            'removeTarget': {
+                'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
+            },
+            'startDependencies': {
+                cmd: 'node tests/startDependencies.js'
+            }
+        },
+        'ghost': {
+            'dist': {
+                'filesSrc': [
+                    'tests/casperjs/tests/*.js'
+                ],
+                // CasperJS test command options
+                'options': {
+                    // Specify the files to be included in each test
+                    'includes': [
+                        'tests/casperjs/util/include/gh.api.admin.js',
+                        'tests/casperjs/util/include/gh.api.app.js',
+                        'tests/casperjs/util/include/gh.api.authentication.js',
+                        'tests/casperjs/util/include/gh.api.config.js',
+                        'tests/casperjs/util/include/gh.api.event.js',
+                        'tests/casperjs/util/include/gh.api.orgunit.js',
+                        'tests/casperjs/util/include/gh.api.series.js',
+                        'tests/casperjs/util/include/gh.api.tenant.js',
+                        'tests/casperjs/util/include/gh.api.user.js',
+                        'tests/casperjs/util/include/util.js'
+                    ],
+                    // Prepare te testing environment before starting the tests
+                    'pre': ['tests/casperjs/util/prep.js'],
+                    // Don't stop casperjs after first test failure
+                    'failFast': false
+                }
+            }
+        },
+        'jshint': {
+            'options': {
+                'sub': true
+            },
+            'files': [
+                'grunt.js',
+                'apps/**/*.js',
+                'shared/gh/**/*.js',
+            ]
+        },
+        'qunit': {
+            'gh': {
+                'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                'options': {
+                    'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                    'coverage': {
+                        'disposeCollector': true,
+                        'baseUrl': ".",
+                        'src': ['shared/gh/api/*.js'],
+                        'instrumentedFiles': 'target/coverage',
+                        'lcovReport': 'coverage/lcov',
+                        'htmlReport': 'coverage/html',
+                        'linesThresholdPct': 85
+                    }
+                }
             }
         },
         'requirejs': {
@@ -74,6 +147,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+        'target': 'target',
         'ver': {
             'gh': {
                 'basedir': '<%= target %>/optimized',
@@ -131,77 +205,6 @@ module.exports = function(grunt) {
                 ],
                 'version': '<%= target %>/optimized/hashes.json'
             }
-        },
-        'coveralls': {
-            'gh': {
-                'src': 'coverage/lcov/lcov.info',
-                'options': {
-                    'src': 'coverage/lcov/lcov.info'
-                }
-            }
-        },
-        'ghost': {
-            'dist': {
-                'filesSrc': [
-                    'tests/casperjs/tests/*.js'
-                ],
-                // CasperJS test command options
-                'options': {
-                    // Specify the files to be included in each test
-                    'includes': [
-                        'tests/casperjs/util/include/gh.api.admin.js',
-                        'tests/casperjs/util/include/gh.api.app.js',
-                        'tests/casperjs/util/include/gh.api.authentication.js',
-                        'tests/casperjs/util/include/gh.api.config.js',
-                        'tests/casperjs/util/include/gh.api.event.js',
-                        'tests/casperjs/util/include/gh.api.orgunit.js',
-                        'tests/casperjs/util/include/gh.api.series.js',
-                        'tests/casperjs/util/include/gh.api.tenant.js',
-                        'tests/casperjs/util/include/gh.api.user.js',
-                        'tests/casperjs/util/include/util.js'
-                    ],
-                    // Prepare te testing environment before starting the tests
-                    'pre': ['tests/casperjs/util/prep.js'],
-                    // Don't stop casperjs after first test failure
-                    'failFast': false
-                }
-            }
-        },
-        'csslint': {
-            'options': {
-                'ids': false // ignore "Don't use IDs in CSS selectors" warning
-            },
-            'files': [
-                'apps/**/*.css',
-                'shared/gh/**/*.css'
-            ]
-        },
-        'jshint': {
-            'options': {
-                'sub': true
-            },
-            'files': [
-                'grunt.js',
-                'apps/**/*.js',
-                'shared/gh/**/*.js',
-            ]
-        },
-        'qunit': {
-            'gh': {
-                'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
-                'options': {
-                    'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
-                    'coverage': {
-                        'disposeCollector': true,
-                        'baseUrl': ".",
-                        'src': ['shared/gh/api/*.js'],
-                        'instrumentedFiles': 'target/coverage',
-                        'lcovReport': 'coverage/lcov',
-                        'htmlReport': 'coverage/html',
-                        'linesThresholdPct': 85
-                    }
-                }
-            }
         }
     });
 
@@ -229,7 +232,7 @@ module.exports = function(grunt) {
 
     // Lint tasks for JavaScript and CSS
     grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('test', ['lint', 'qunit', 'ghost']);
+    grunt.registerTask('test', ['exec:startDependencies']);
 
     // Coverage report task
     grunt.registerTask('coverage', ['qunit']);
