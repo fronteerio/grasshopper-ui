@@ -22,7 +22,11 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback    Standard callback function
      */
     var becomeUser = exports.becomeUser = function(userId, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
 
+        return callback();
     };
 
     /**
@@ -30,10 +34,16 @@ define(['exports'], function(exports) {
      *
      * @param  {String}      username      The username to log in with
      * @param  {String}      password      The password to log in with
-     * @param  {Function}    [callback]    Standard callback function
+     * @param  {Function}    callback      Standard callback function
      */
     var login = exports.login = function(username, password, callback) {
+        if (!username) {
+            return callback({'code': 400, 'msg': 'A valid value for \'username\' should be provided'});
+        } else if (!password) {
+            return callback({'code': 400, 'msg': 'A valid value for \'password\' should be provided'});
+        }
 
+        return callback();
     };
 
     /**

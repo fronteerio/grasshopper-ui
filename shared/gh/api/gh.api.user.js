@@ -48,7 +48,20 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
-        return callback();
+        /**
+         * TODO: wait for back-end implementation
+         *
+        $.ajax({
+            'url': '/api/users/' + userId,
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+        */
     };
 
     /**
@@ -68,7 +81,20 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
         }
 
-        return callback();
+        /**
+         * TODO: wait for back-end implementation
+         *
+        $.ajax({
+            'url': '/api/users/',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+        */
     };
 
     /**
@@ -199,7 +225,27 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         }
 
-        return callback();
+        var data = {
+            'appId': appId,
+            'displayName': displayName,
+            'email': email,
+            'password': password,
+            'emailPreference': emailPreference,
+            'recaptchaChallenge': recaptchaChallenge,
+            'recaptchaResponse': recaptchaResponse
+        };
+
+        $.ajax({
+            'url': '/api/users',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

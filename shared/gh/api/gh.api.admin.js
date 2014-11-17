@@ -26,6 +26,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    The created global administrator
      */
     var createAdmin = exports.createAdmin = function(username, displayName, password, callback) {
+
+        // Set a default callback function in case no callback function has been provided
+        callback = callback || function() {};
+
         if (!username) {
             return callback({'code': 400, 'msg': 'A valid user name should be provided'});
         } else if (!displayName) {
@@ -33,9 +37,6 @@ define(['exports'], function(exports) {
         } else if (!password) {
             return callback({'code': 400, 'msg': 'A valid value for \'password\' should be provided'});
         }
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
 
         var data = {
             'username': username,

@@ -80,12 +80,6 @@ require(['gh.core'], function(gh) {
     QUnit.asyncTest('getAdmins', function(assert) {
         expect(6);
 
-        var user = {
-            'username': gh.api.utilAPI.generateRandomString(),
-            'displayName': gh.api.utilAPI.generateRandomString(),
-            'password': gh.api.utilAPI.generateRandomString()
-        };
-
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
