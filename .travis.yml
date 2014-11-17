@@ -86,8 +86,8 @@ before_install:
 
   # Configure postgres
   - echo 'Creating database'
-  - psql -c 'create database grasshopper;' -U postgres
-  - echo "config.db.username = 'postgres';" >> config.js
+  - psql -c 'create database grasshoppertest;' -U postgres
+  - printf "\n\nconfig.db.username = 'postgres';" >> config.js
 
   # Install Grasshopper UI
   - echo 'Installing Grasshopper UI'
@@ -99,13 +99,9 @@ before_install:
 
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start
-  - sleep 5
-
-  # Start Grasshopper
-  - node ~/build/CUL-DigitalServices/grasshopper/app.js &
 
 script:
-  - tests/runTests.sh
+  - grunt test
 
 after_script:
   - grunt coveralls
@@ -118,7 +114,6 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
-    - bp323@cam.ac.uk
   irc:
     channels:
       - "irc.freenode.org#ucam-ds"
