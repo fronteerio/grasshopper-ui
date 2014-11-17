@@ -108,7 +108,7 @@ before_install:
 script:
   - tests/runTests.sh
 
-after_success:
+after_script:
   - grunt coveralls
 
 after_success:
