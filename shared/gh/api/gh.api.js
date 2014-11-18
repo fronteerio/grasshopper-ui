@@ -31,11 +31,24 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 'tenantAPI': tenantAPI,
                 'userAPI': userAPI,
                 'utilAPI': utilAPI
+            },
+            'data': {
+                'me': null
             }
         };
 
         var initGH = function(callback) {
-            callback(gh);
+            // Load the me feed
+            userAPI.getMe(function(err, me) {
+                if (!err) {
+                    gh.data.me = me;
+                } else {
+                    throw new Error('The /me feed could not be loaded');
+                }
+
+                // Continue startup
+                return callback(gh);
+            });
         };
 
         return {

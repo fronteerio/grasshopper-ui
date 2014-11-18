@@ -34,7 +34,8 @@
 
 
 
-#gh-right-container #gh-header #gh-signin {
+#gh-signin-form,
+#gh-right-container #gh-header #gh-signout {
     margin: 42px 40px 35px 40px;
 }
 

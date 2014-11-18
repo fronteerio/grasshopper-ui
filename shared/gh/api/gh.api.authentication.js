@@ -67,21 +67,13 @@ define(['exports'], function(exports) {
 
     /**
      * Log out
-     *
-     * @param  {Function}    [callback]             Standard callback function
-     * @param  {Object}      [callback.err]         Error object containing the error code and error message
      */
-    var logOut = exports.logOut = function(callback) {
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
+    var logOut = exports.logOut = function() {
         $.ajax({
             'url': '/api/auth/logout',
             'type': 'POST',
-            'data': data,
             'success': function() {
-                return callback();
+                window.location = '/';
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
