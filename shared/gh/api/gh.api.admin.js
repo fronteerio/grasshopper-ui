@@ -18,31 +18,69 @@ define(['exports'], function(exports) {
     /**
      * Create a new global administrator
      *
-     * @param  {String}      username        The username for the new administrator
-     * @param  {String}      displayName     The display name for the new administrator
-     * @param  {String}      password        The password for the new administrator
-     * @param  {Function}    [callback]      Standard callback function
+     * @param  {String}      username               The username for the new administrator
+     * @param  {String}      displayName            The display name for the new administrator
+     * @param  {String}      password               The password for the new administrator
+     * @param  {Function}    callback               Standard callback function
+     * @param  {Object}      callback.err           Error object containing the error code and error message
+     * @param  {Object}      callback.response      The created global administrator
      */
     var createAdmin = exports.createAdmin = function(username, displayName, password, callback) {
+        if (!username) {
+            return callback({'code': 400, 'msg': 'A valid user name should be provided'});
+        } else if (!displayName) {
+            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
+        } else if (!password) {
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
 
+        var data = {
+            'username': username,
+            'displayName': displayName,
+            'password': password
+        };
+
+        $.ajax({
+            'url': '/api/admins',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
      * Get all global administrators
      *
-     * @param  {Number}      [limit]     The maximum number of results to retrieve
-     * @param  {Number}      [offset]    The paging number of the results to retrieve
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Number}      [limit]              The maximum number of results to retrieve
+     * @param  {Number}      [offset]             The paging number of the results to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    Object containing all the global administrators
      */
     var getAdmins = exports.getAdmins = function(limit, offset, callback) {
+        if (limit && !_.isNumber(limit)) {
+            return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
+        } else if (offset && !_.isNumber(offset)) {
+            return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
+
         $.ajax({
-            'url': '/api/admins',
+            'url': '/api/admins?limit=' + limit + '&offset=' + offset,
             'type': 'GET',
             'success': function(data) {
-                callback(null, data);
+                return callback(null, data);
             },
             'error': function(jqXHR, textStatus) {
-                callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
     };
@@ -50,11 +88,36 @@ define(['exports'], function(exports) {
     /**
      * Update a global administrator
      *
-     * @param  {Number}      userId          The ID of the administrator to update
-     * @param  {String}      displayName     The updated display name for the administrator
-     * @param  {Function}    callback        Standard callback function
+     * @param  {Number}      userId               The ID of the administrator to update
+     * @param  {String}      displayName          The updated display name for the administrator
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    Object representing the updated global administrator
+
      */
     var updateAdmin = exports.updateAdmin = function(userId, displayName, callback) {
+        if (!userId) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!displayName) {
+            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
 
+        data = {
+            'displayName': displayName
+        };
+
+        $.ajax({
+            'url': '/api/admins/' + userId,
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 });

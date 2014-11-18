@@ -15,7 +15,7 @@
 
 /*!
  * Load all of the 3rd party libraries that need to be present from the very beginning, as well as the actual
- * core client-side OAE APIs
+ * core client-side GH APIs
  */
 define([
         /*!
@@ -26,7 +26,8 @@ define([
         'gh.api!',
 
         'jquery',
-        'bootstrap',
+        'lodash',
+        'bootstrap'
     ],
 
     function(gh) {

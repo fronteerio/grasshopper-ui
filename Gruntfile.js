@@ -109,9 +109,29 @@ module.exports = function(grunt) {
         },
         'qunit': {
             'gh': {
-                'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                'urls': [
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.admin.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.app.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.authentication.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.config.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.event.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                ],
                 'options': {
-                    'urls': ['http://admin.grasshopper.com/tests/qunit/tests/api.html'],
+                    'urls': [
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.admin.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.app.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.authentication.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.config.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.event.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                    ],
                     'coverage': {
                         'disposeCollector': true,
                         'baseUrl': ".",
@@ -119,7 +139,8 @@ module.exports = function(grunt) {
                         'instrumentedFiles': 'target/coverage',
                         'lcovReport': 'coverage/lcov',
                         'htmlReport': 'coverage/html',
-                        'linesThresholdPct': 85
+                        'linesThresholdPct': 85,
+                        'testTimeout': 120000
                     }
                 }
             }
@@ -381,7 +402,7 @@ module.exports = function(grunt) {
  * @param  {String[]}   [options.excludeExts]   The extensions of files to ignore when hashing files
  * @param  {String[]}   [options.extra]         Extra glob patterns to append, in addition to the ones added for the extensions
  * @return {String[]}                           An array of glob expressions that match the files to hash in the directories
- * @api private
+ * @private
  */
 var _hashFiles = function(options) {
     options.excludeExts = options.excludeExts || [];
@@ -409,7 +430,7 @@ var _hashFiles = function(options) {
  * @param  {String[]}   [options.includeExts]   The file extensions that should have replacement performed
  * @param  {String[]}   [options.extra]         Additional replacements to perform
  * @return {String[]}                           The full derived list of all resources that replacement should be performed
- * @api private
+ * @private
  */
 var _replacementReferences = function(options) {
     options.includeExts = options.includeExts || [];

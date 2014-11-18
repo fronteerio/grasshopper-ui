@@ -44,7 +44,21 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback     Standard callback function
      */
     var getApps = exports.getApps = function(tenantId, callback) {
+        if (!tenantId) {
+            return callback({'code': 400, 'msg': 'A valid tenant id should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
 
+        $.ajax({
+            'url': '/api/apps/?tenantId=' + tenantId,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

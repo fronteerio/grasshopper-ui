@@ -38,18 +38,35 @@ define(['exports'], function(exports) {
     /**
      * Get all tenants
      *
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The returned tenants
      */
     var getTenants = exports.getTenants = function(callback) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
 
+        $.ajax({
+            'url': '/api/tenants',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
      * Update a tenant
      *
-     * @param  {Number}      tenantId       The ID of the tenant to update
-     * @param  {String}      displayName    The updated tenant display name
-     * @param  {Function}    [callback]     Standard callback function
+     * @param  {Number}      tenantId             The ID of the tenant to update
+     * @param  {String}      displayName          The updated tenant display name
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated tenant
      */
     var updateTenant = exports.updateTenant = function(tenantId, displayName, callback) {
 

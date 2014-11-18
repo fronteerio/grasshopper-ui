@@ -13,17 +13,12 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'jquery'], function(gh, $) {
-    module("API");
+require(['gh.core'], function(gh) {
+    module('Config API');
 
-    QUnit.asyncTest( "Admin API", function( assert ) {
-        expect(2);
-        gh.api.adminAPI.getAdmins(null, null, function(err, data) {
-            assert.ok(!err, 'Verify administrators can be retrieved without error');
-            assert.ok(data, 'Verify administrator data is returned');
-            QUnit.start();
-        });
+    QUnit.test('init', function(assert) {
+        assert.ok(true);
     });
 
-    QUnit.start(1);
+    QUnit.start();
 });
