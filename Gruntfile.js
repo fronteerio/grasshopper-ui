@@ -256,7 +256,7 @@ module.exports = function(grunt) {
 
     // Lint tasks for JavaScript and CSS
     grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('test', ['exec:startDependencies']);
+    grunt.registerTask('test', ['exec:stopGrasshopper', 'exec:startDependencies']);
 
     // Coverage report task
     grunt.registerTask('coverage', ['qunit']);

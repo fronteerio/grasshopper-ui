@@ -80,7 +80,7 @@ before_install:
   # Install Grasshopper
   - echo 'Installing Grasshopper'
   - cd ~/build/CUL-DigitalServices
-  - git clone --branch master --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
+  - git clone --branch master --depth=1 git://github.com/CUL-DigitalServices/grasshopper.git ./grasshopper
   - cd ./grasshopper
   - npm install --production
 
@@ -102,11 +102,8 @@ before_install:
   - sudo /usr/local/apache2/bin/apachectl start
   - sleep 5
 
-  # Start Grasshopper
-  - node ~/build/CUL-DigitalServices/grasshopper/app.js &
-
 script:
-  - tests/runTests.sh
+  - grunt test
 
 after_script:
   - grunt coveralls
