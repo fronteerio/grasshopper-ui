@@ -27,7 +27,7 @@ var mainUtil = (function() {
      * @param  {Function}   callback            Standard callback function
      * @param  {Object}     callback.err        Error object containing error code and error message as returned by the GH UI API function
      * @param  {Object}     callback.data       The response data as returned by the GH UI API function
-     * @api private
+     * @private
      */
     var callInternalAPI = function(api, apiFunction, params, callback) {
         // Before continuing we need to make sure that the internal API has loaded.

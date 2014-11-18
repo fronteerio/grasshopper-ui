@@ -22,7 +22,7 @@ require(['gh.core'], function(gh) {
      * @param  {Function}    callback         Standard callback function
      * @param  {Object}      callback.err     Error object containing error code and error message
      * @param  {Object}      callback.user    Response object containing the created user
-     * @api private
+     * @private
      */
     var _generateRandomUser = function(callback) {
 
@@ -49,7 +49,7 @@ require(['gh.core'], function(gh) {
 
     // Test the login functionality
     QUnit.asyncTest('login', function(assert) {
-        expect(3);
+        expect(4);
 
         // Create a new user
         _generateRandomUser(function(err, user, password) {
@@ -62,18 +62,26 @@ require(['gh.core'], function(gh) {
                 // Verify that an error is thrown when an invalid password was provided
                 gh.api.authenticationAPI.login(user.id, null, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when an invalid password was provided');
-                    QUnit.start();
 
-                    /**
-                     * TODO: wait for back-end implementation
-                     *
-                    // Verifty that a user can login without errors
-                    gh.api.authenticationAPI.login(user.id, password, function(err, data) {
-                        assert.ok(!err, 'Verifty that a user can login without errors');
-                        assert.ok(data, 'Verify that the logged user is returned');
+                    // Verify that an error is thrown when an invalid callback was provided
+                    try {
+                        gh.api.authenticationAPI.login(user.id, password);
+                    } catch(err) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
+                    } finally {
                         QUnit.start();
-                    });
-                    */
+
+                        /**
+                         * TODO: wait for back-end implementation
+                         *
+                        // Verifty that a user can login without errors
+                        gh.api.authenticationAPI.login(user.id, password, function(err, data) {
+                            assert.ok(!err, 'Verifty that a user can login without errors');
+                            assert.ok(data, 'Verify that the logged user is returned');
+                            QUnit.start();
+                        });
+                        */
+                    }
                 });
             });
         });

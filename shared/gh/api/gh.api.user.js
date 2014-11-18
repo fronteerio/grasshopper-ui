@@ -16,15 +16,20 @@
 define(['exports'], function(exports) {
 
     /**
-     * TODO: wait for back-end implementation
-     *
      * Get the current user
      *
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The current user
-     *
+     * @param  {Object}      callback.response    Object representing the current user
+     */
     var getMe = exports.getMe = function(callback) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
+
+        /**
+         * TODO: wait for back-end implementation
+         *
         $.ajax({
             'url': '/api/me',
             'type': 'GET',
@@ -35,8 +40,8 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
+        */
     };
-    */
 
     /**
      * Get a user
@@ -49,6 +54,8 @@ define(['exports'], function(exports) {
     var getUser = exports.getUser = function(userId, callback) {
         if (!userId) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
 
         /**
@@ -70,7 +77,7 @@ define(['exports'], function(exports) {
     /**
      * Get all users for an app
      *
-     * @param  {Number}      [appId]              The ID of the app to retrieve the users for
+     * @param  {Number}      appId                The ID of the app to retrieve the users for
      * @param  {Number}      [limit]              The maximum number of results to retrieve
      * @param  {Number}      [offset]             The paging number of the results to retrieve
      * @param  {Function}    callback             Standard callback function
@@ -78,10 +85,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The users for the requested tenant or app
      */
     var getUsers = exports.getUsers = function(appId, limit, offset, callback) {
-        if (limit && !_.isNumber(limit)) {
+        if (!appId) {
+            return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
 
         /**
@@ -117,6 +128,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for from should be provided'});
         } else  if (!to) {
             return callback({'code': 400, 'msg': 'A valid value for to should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -132,6 +145,8 @@ define(['exports'], function(exports) {
     var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, signature, callback) {
         if (!userId) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -147,6 +162,8 @@ define(['exports'], function(exports) {
     var getUserCalendarRss = exports.getUserCalendarRss = function(userId, signature, callback) {
         if (!userId) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!callbac || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -167,6 +184,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -178,7 +197,9 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The Terms and Conditions for the current app
      */
     var getTermsAndConditions = exports.getTermsAndConditions = function(callback) {
-
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        }
     };
 
     /**
@@ -192,13 +213,15 @@ define(['exports'], function(exports) {
     var acceptTermsAndConditions = exports.acceptTermsAndConditions = function(userId, callback) {
         if (!userId) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
     /**
      * Create a new user with a local authentication strategy
      *
-     * @param  {Number}      [appId]                 The ID of the app on which the user should be created
+     * @param  {Number}      appId                   The ID of the app on which the user should be created
      * @param  {String}      displayName             The display name of the user
      * @param  {String}      email                   The email address for the user. This will be used as the username for the user
      * @param  {String}      password                The password with which the user will authenticate
@@ -210,12 +233,16 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response       The created user
      */
     var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, recaptchaChallenge, recaptchaResponse, callback) {
-        if (!displayName) {
+        if (!appId) {
+            return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
+        } else if (!displayName) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
         } else if (!email) {
             return callback({'code': 400, 'msg': 'A valid email should be provided'});
         } else if (!password) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
 
         var data = {
@@ -247,7 +274,7 @@ define(['exports'], function(exports) {
      * @param  {String}      authenticationStrategy    The authentication strategy for the user
      * @param  {File}        file                      The CSV file to import
      * @param  {Number}      tenantId                  The ID of the tenant to which the users should be imported
-     * @param  {String[]}    [appIds]                  The ID(s) of the app(s) to which the users should be associated
+     * @param  {String[]}    appIds                    The ID(s) of the app(s) to which the users should be associated
      * @param  {Boolean}     [forceProfileUpdate]      Whether the user information should be updated, even when other user information is already present
      * @param  {Function}    callback                  Standard callback function
      * @param  {Object}      callback.err              Error object containing the error code and error message
@@ -263,6 +290,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for appIds should be provided'});
         } else if (!_.isEmpty(forceProfileUpdate) && !_.isBoolean(forceProfileUpdate)) {
             return callback({'code': 400, 'msg': 'A valid value for forceProfileUpdate should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -283,6 +312,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!appId) {
             return callback({'code': 400, 'msg': 'A valid app id should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -300,6 +331,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!_.isBoolean(isAdmin)) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -317,6 +350,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!file) {
             return callback({'code': 400, 'msg': 'A valid file should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 
@@ -340,6 +375,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for x should be provided'});
         } else if (!y) {
             return callback({'code': 400, 'msg': 'A valid value for y should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
     };
 });

@@ -19,12 +19,13 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     var _apps = null;
     var _tenants = null;
 
+
     ////////////////////////
     //  PUBLIC FUNCTIONS  //
     ////////////////////////
 
     /**
-     * Returns an app by its id
+     * Return an app by its id
      *
      * @param  {Number}    appId    The application id
      * @return {Object}             Object representing an application
@@ -34,7 +35,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Returns the test apps
+     * Return the test apps
      *
      * @return {Object[]}    The test apps
      */
@@ -43,7 +44,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Returns a tenant and its applications by its id
+     * Return a tenant and its applications by its id
      *
      * @param  {Number}    tenantId    The tenant id
      * @return {Object}                Object representing a tenant
@@ -60,7 +61,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Returns the test tenants
+     * Return the test tenants
      *
      * @return {Object[]}    The test tenants
      */
@@ -74,7 +75,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Returns a random application
+     * Return a random application
      *
      * @return {Object}    Object representing an application
      */
@@ -83,7 +84,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Returns a random tenant
+     * Return a random tenant
      *
      * @return {Object}    Object representing a tenant
      */
@@ -94,12 +95,13 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
         return _.extend(tenant, {'apps': _.filter(_apps, {'TenantId': tenant.id})});
     };
 
+
     //////////////////////////
     //  INTERNAL FUNCTIONS  //
     //////////////////////////
 
     /**
-     * Initialize the QUnit async tests
+     * Initialise the QUnit async tests
      */
     var init = function() {
         QUnit.moduleStart(onModuleStart);
@@ -108,10 +110,9 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     /**
      * Function that is executed before the QUnit module test is started
      *
-     * @param  {Object}    details
-     * @api private
+     * @private
      */
-    var onModuleStart = function(details) {
+    var onModuleStart = function() {
         QUnit.stop();
 
         // Login with the global administrator
@@ -134,9 +135,10 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     /**
      * Fetches all the tenants
      *
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Function}    [callback]    Standard callback function
+     * @private
      */
-    var fetchTenants = exports.fetchTenants = function(callback) {
+    var fetchTenants = function(callback) {
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
@@ -146,6 +148,8 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
             if (err) {
                 QUnit.stop();
             }
+
+            // Cache the tenants
             _tenants = tenants;
 
             return callback();
@@ -155,9 +159,10 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     /**
      * Fetch all the applications for the tenants
      *
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Function}    [callback]    Standard callback function
+     * @private
      */
-    var fetchAppsForTenants = exports.fetchAppsForTenants = function(callback) {
+    var fetchAppsForTenants = function(callback) {
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
@@ -165,8 +170,10 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
         // Collect the tenantIds
         var tenantIds = _.map(_tenants, function(tenant) { return tenant.id; });
 
-        /*!
+        /**
          * Fetches the apps for each tenant
+         *
+         * @private
          */
         var _fetchAppsForTenant = function() {
 
@@ -196,6 +203,6 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
         _fetchAppsForTenant();
     };
 
-    // Initialize the tests
+    // Initialise the tests
     init();
 });

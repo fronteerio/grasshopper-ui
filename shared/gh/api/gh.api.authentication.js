@@ -18,29 +18,33 @@ define(['exports'], function(exports) {
     /**
      * Get the request information for an administrator to become a user
      *
-     * @param  {Number}      userId      The ID of the user to become
-     * @param  {Function}    callback    Standard callback function
+     * @param  {Number}      userId          The ID of the user to become
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Object}      callback.err    Error object containing the error code and error message
      */
     var becomeUser = exports.becomeUser = function(userId, callback) {
         if (!userId) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
-
-        return callback();
     };
 
     /**
      * Log in using local authentication
      *
-     * @param  {String}      username      The username to log in with
-     * @param  {String}      password      The password to log in with
-     * @param  {Function}    callback      Standard callback function
+     * @param  {String}      username             The username to log in with
+     * @param  {String}      password             The password to log in with
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
      */
     var login = exports.login = function(username, password, callback) {
         if (!username) {
             return callback({'code': 400, 'msg': 'A valid value for username should be provided'});
         } else if (!password) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
+        } else if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
         }
 
         var data = {
@@ -52,8 +56,8 @@ define(['exports'], function(exports) {
             'url': '/api/auth/login',
             'type': 'POST',
             'data': data,
-            'success': function(data) {
-                return callback(null, data);
+            'success': function() {
+                return callback();
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
@@ -63,14 +67,21 @@ define(['exports'], function(exports) {
 
     /**
      * Log out
+     *
+     * @param  {Function}    [callback]             Standard callback function
+     * @param  {Object}      [callback.err]         Error object containing the error code and error message
      */
-    var logOut = exports.logOut = function() {
+    var logOut = exports.logOut = function(callback) {
+
+        // Set a default callback function in case no callback function has been provided
+        callback = callback || function() {};
+
         $.ajax({
             'url': '/api/auth/logout',
             'type': 'POST',
             'data': data,
-            'success': function(data) {
-                return callback(null, data);
+            'success': function() {
+                return callback();
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});

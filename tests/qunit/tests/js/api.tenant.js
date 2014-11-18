@@ -18,14 +18,22 @@ require(['gh.core'], function(gh) {
 
     // Test the getTenants functionality
     QUnit.asyncTest('getTenants', function(assert) {
-        expect(2);
+        expect(3);
 
-        // Verify that the tenants can be retrieved without errors
-        gh.api.tenantAPI.getTenants(function(err, data) {
-            assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
-            assert.ok(data, 'Verify that the tenants are returned');
-            QUnit.start();
-        });
+        // Verify that an error is thrown when an invalid callback was provided
+        try {
+            gh.api.tenantAPI.getTenants();
+        } catch(err) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
+        } finally {
+
+            // Verify that the tenants can be retrieved without errors
+            gh.api.tenantAPI.getTenants(function(err, data) {
+                assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
+                assert.ok(data, 'Verify that the tenants are returned');
+                QUnit.start();
+            });
+        }
     });
 
     QUnit.start();

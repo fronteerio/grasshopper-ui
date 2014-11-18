@@ -402,7 +402,7 @@ module.exports = function(grunt) {
  * @param  {String[]}   [options.excludeExts]   The extensions of files to ignore when hashing files
  * @param  {String[]}   [options.extra]         Extra glob patterns to append, in addition to the ones added for the extensions
  * @return {String[]}                           An array of glob expressions that match the files to hash in the directories
- * @api private
+ * @private
  */
 var _hashFiles = function(options) {
     options.excludeExts = options.excludeExts || [];
@@ -430,7 +430,7 @@ var _hashFiles = function(options) {
  * @param  {String[]}   [options.includeExts]   The file extensions that should have replacement performed
  * @param  {String[]}   [options.extra]         Additional replacements to perform
  * @return {String[]}                           The full derived list of all resources that replacement should be performed
- * @api private
+ * @private
  */
 var _replacementReferences = function(options) {
     options.includeExts = options.includeExts || [];

@@ -18,7 +18,7 @@ require(['gh.core'], function(gh) {
 
     // Test the getApps functionality
     QUnit.asyncTest('getApps', function(assert) {
-        expect(4);
+        expect(5);
 
         // Fetch a random test tenant
         var tenant = gh.api.testsAPI.getRandomTenant();
@@ -27,13 +27,21 @@ require(['gh.core'], function(gh) {
         gh.api.appAPI.getApps(null, function(err, data) {
             assert.ok(err, 'Verify that an error is thrown when an invalid tenantId was provided');
 
-            // Verify that the apps can be retrieved without errors
-            gh.api.appAPI.getApps(tenant.id, function(err, data) {
-                assert.ok(!err, 'Verify that the apps can be retrieved without errors');
-                assert.ok(data, 'Verify that the apps are returned');
-                assert.strictEqual(tenant.apps.length, data.length, 'Verify that the correct apps are returned');
-                QUnit.start();
-            });
+            // Verify that an error is thrown when an invalid callback was provided
+            try {
+                gh.api.appAPI.getApps(tenant.id);
+            } catch(err) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
+            } finally {
+
+                // Verify that the apps can be retrieved without errors
+                gh.api.appAPI.getApps(tenant.id, function(err, data) {
+                    assert.ok(!err, 'Verify that the apps can be retrieved without errors');
+                    assert.ok(data, 'Verify that the apps are returned');
+                    assert.strictEqual(tenant.apps.length, data.length, 'Verify that the correct apps are returned');
+                    QUnit.start();
+                });
+            }
         });
     });
 
