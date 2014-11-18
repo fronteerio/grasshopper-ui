@@ -35,7 +35,7 @@ define(['exports'], function(exports) {
         } else if (!displayName) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
         } else if (!password) {
-            return callback({'code': 400, 'msg': 'A valid value for \'password\' should be provided'});
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         }
 
         var data = {
@@ -68,9 +68,9 @@ define(['exports'], function(exports) {
      */
     var getAdmins = exports.getAdmins = function(limit, offset, callback) {
         if (limit && !_.isNumber(limit)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'limit\' should be provided'});
+            return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && !_.isNumber(offset)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
+            return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         }
 
         $.ajax({

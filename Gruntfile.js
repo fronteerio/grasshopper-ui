@@ -63,8 +63,11 @@ module.exports = function(grunt) {
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
+            'stopGrasshopper': {
+                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
+            },
             'startDependencies': {
-                cmd: 'node tests/startDependencies.js'
+                'cmd': 'node tests/startDependencies.js'
             }
         },
         'ghost': {
@@ -134,8 +137,10 @@ module.exports = function(grunt) {
                         'baseUrl': ".",
                         'src': ['shared/gh/api/*.js'],
                         'instrumentedFiles': 'target/coverage',
-                        'lcovReport': 'coverage',
-                        'linesThresholdPct': 85
+                        'lcovReport': 'coverage/lcov',
+                        'htmlReport': 'coverage/html',
+                        'linesThresholdPct': 85,
+                        'testTimeout': 120000
                     }
                 }
             }

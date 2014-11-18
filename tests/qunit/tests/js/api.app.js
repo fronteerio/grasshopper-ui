@@ -16,8 +16,25 @@
 require(['gh.core'], function(gh) {
     module('App API');
 
-    QUnit.test('init', function(assert) {
-        assert.ok(true);
+    // Test the getApps functionality
+    QUnit.asyncTest('getApps', function(assert) {
+        expect(4);
+
+        // Fetch a random test tenant
+        var tenant = gh.api.testsAPI.getRandomTenant();
+
+        // Verify that an error is thrown when an invalid tenantId was provided
+        gh.api.appAPI.getApps(null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid tenantId was provided');
+
+            // Verify that the apps can be retrieved without errors
+            gh.api.appAPI.getApps(tenant.id, function(err, data) {
+                assert.ok(!err, 'Verify that the apps can be retrieved without errors');
+                assert.ok(data, 'Verify that the apps are returned');
+                assert.strictEqual(tenant.apps.length, data.length, 'Verify that the correct apps are returned');
+                QUnit.start();
+            });
+        });
     });
 
     QUnit.start();

@@ -53,15 +53,15 @@ require(['gh.core'], function(gh) {
 
         // Verify that an error is thrown when an invalid value for 'username' was provided
         gh.api.adminAPI.createAdmin(null, user.displayName, user.password, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when an invalid value for \'username\' was provided');
+            assert.ok(err, 'Verify that an error is thrown when an invalid value for username was provided');
 
             // Verify that an error is thrown when an invalid value for 'displayName' was provided
             gh.api.adminAPI.createAdmin(user.username, null, user.password, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for \'displayName\' was provided');
+                assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
 
                 // Verify that an error is thrown when an invalid value for 'password' was provided
                 gh.api.adminAPI.createAdmin(user.username, user.displayName, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for \'password\' was provided');
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
 
                     // Verify that administrators can be created without retrieving an error
                     gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
@@ -86,11 +86,11 @@ require(['gh.core'], function(gh) {
 
             // Verify that an error is thrown when an invalid value for 'limit' was provided
             gh.api.adminAPI.getAdmins('some_string', null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for \'limit\' was provided');
+                assert.ok(err, 'Verify that an error is thrown when an invalid value for limit was provided');
 
                 // Verify that an error is thrown when an invalid value for 'offset' was provided
                 gh.api.adminAPI.getAdmins(null, 'some_string', function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for \'offset\' was provided');
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
 
                     // Verify administrators can be retrieved without error when providing a limit and an offset
                     gh.api.adminAPI.getAdmins(10, 0, function(err, data) {
@@ -109,6 +109,8 @@ require(['gh.core'], function(gh) {
     });
 
     /*
+     * TODO: wait for back-end implementation
+     *
     // Test the getMe functionality
     QUnit.asyncTest('getMe', function(assert) {
         expect(1);
@@ -133,11 +135,11 @@ require(['gh.core'], function(gh) {
 
             // Verify that an error is thrown when an invalid value for 'userId' was provided
             gh.api.adminAPI.updateAdmin(null, user.displayName, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for \'userId\' was provided');
+                assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
-                // Verify that an error is thrown when an invalid value for \'displayName\' was provided
+                // Verify that an error is thrown when an invalid value for 'displayName' was provided
                 gh.api.adminAPI.updateAdmin(user.id, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for \'displayName\' was provided');
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
 
                     // Verify that the updated administrator is returned
                     var newDisplayName = gh.api.utilAPI.generateRandomString();

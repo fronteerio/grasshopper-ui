@@ -16,8 +16,16 @@
 require(['gh.core'], function(gh) {
     module('Tenant API');
 
-    QUnit.test('init', function(assert) {
-        assert.ok(true);
+    // Test the getTenants functionality
+    QUnit.asyncTest('getTenants', function(assert) {
+        expect(2);
+
+        // Verify that the tenants can be retrieved without errors
+        gh.api.tenantAPI.getTenants(function(err, data) {
+            assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
+            assert.ok(data, 'Verify that the tenants are returned');
+            QUnit.start();
+        });
     });
 
     QUnit.start();

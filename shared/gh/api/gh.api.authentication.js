@@ -38,18 +38,43 @@ define(['exports'], function(exports) {
      */
     var login = exports.login = function(username, password, callback) {
         if (!username) {
-            return callback({'code': 400, 'msg': 'A valid value for \'username\' should be provided'});
+            return callback({'code': 400, 'msg': 'A valid value for username should be provided'});
         } else if (!password) {
-            return callback({'code': 400, 'msg': 'A valid value for \'password\' should be provided'});
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         }
 
-        return callback();
+        var data = {
+            'username': username,
+            'password': password
+        };
+
+        $.ajax({
+            'url': '/api/auth/login',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
      * Log out
      */
     var logOut = exports.logOut = function() {
-
+        $.ajax({
+            'url': '/api/auth/logout',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 });

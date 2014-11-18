@@ -41,7 +41,16 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback    Standard callback function
      */
     var getTenants = exports.getTenants = function(callback) {
-
+        $.ajax({
+            'url': '/api/tenants',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

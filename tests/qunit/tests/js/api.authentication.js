@@ -16,8 +16,67 @@
 require(['gh.core'], function(gh) {
     module('Authentication API');
 
-    QUnit.test('init', function(assert) {
-        assert.ok(true);
+    /*!
+     * Generates a random user
+     *
+     * @param  {Function}    callback         Standard callback function
+     * @param  {Object}      callback.err     Error object containing error code and error message
+     * @param  {Object}      callback.user    Response object containing the created user
+     * @api private
+     */
+    var _generateRandomUser = function(callback) {
+
+        // Login with the global administrator
+        gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {
+            if (err) {
+                return callback(err);
+            }
+
+            var appId = gh.api.testsAPI.getRandomApp().id;
+            var displayName = gh.api.utilAPI.generateRandomString();
+            var email = gh.api.utilAPI.generateRandomString();
+            var password = gh.api.utilAPI.generateRandomString();
+
+            // Create a new user
+            gh.api.userAPI.createUser(appId, displayName, email, password, null, null, null, function(err, user) {
+                if (err) {
+                    return callback(err);
+                }
+                return callback(null, user, password);
+            });
+        });
+    };
+
+    // Test the login functionality
+    QUnit.asyncTest('login', function(assert) {
+        expect(3);
+
+        // Create a new user
+        _generateRandomUser(function(err, user, password) {
+            assert.ok(!err, 'Verify that users can be created without retrieving an error');
+
+            // Verify that an error is thrown when an invalid user id was provided
+            gh.api.authenticationAPI.login(null, password, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+
+                // Verify that an error is thrown when an invalid password was provided
+                gh.api.authenticationAPI.login(user.id, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid password was provided');
+                    QUnit.start();
+
+                    /**
+                     * TODO: wait for back-end implementation
+                     *
+                    // Verifty that a user can login without errors
+                    gh.api.authenticationAPI.login(user.id, password, function(err, data) {
+                        assert.ok(!err, 'Verifty that a user can login without errors');
+                        assert.ok(data, 'Verify that the logged user is returned');
+                        QUnit.start();
+                    });
+                    */
+                });
+            });
+        });
     });
 
     QUnit.start();
