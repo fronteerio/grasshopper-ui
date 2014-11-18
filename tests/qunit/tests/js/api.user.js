@@ -366,15 +366,15 @@ require(['gh.core'], function(gh) {
 
                         // Verify that an error is thrown when an invalid value for 'appIds' was provided
                         gh.api.userAPI.importUsers('local', 'some_file', tenantId, null, true, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid value for tenantId was provided');
+                            assert.ok(err, 'Verify that an error is thrown when an invalid value for appIds was provided');
 
                             // Verify that an error is thrown when an invalid value for 'appIds' was provided
                             gh.api.userAPI.importUsers('local', 'some_file', tenantId, 'invalid_appIds', true, function(err, data) {
-                                assert.ok(err, 'Verify that an error is thrown when an invalid value for tenantId was provided');
+                                assert.ok(err, 'Verify that an error is thrown when an invalid value for appIds was provided');
 
                                 // Verify that an error is thrown when an invalid value for 'forceProfileUpdate' was provided
-                                gh.api.userAPI.importUsers('local', 'some_file', tenantId, [user.AppId], null, function(err, data) {
-                                    assert.ok(err, 'Verify that an error is thrown when an invalid value for tenantId was provided');
+                                gh.api.userAPI.importUsers('local', 'some_file', tenantId, [user.AppId], 'invalid_value', function(err, data) {
+                                    assert.ok(err, 'Verify that an error is thrown when an invalid value for forceProfileUpdate was provided');
                                     QUnit.start();
 
                                     /**

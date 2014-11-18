@@ -156,5 +156,5 @@ require(['gh.core'], function(gh) {
         });
     });
 
-    QUnit.start(1);
+    QUnit.start();
 });

@@ -131,10 +131,10 @@ define(['exports'], function(exports) {
             'type': 'POST',
             'data': data,
             'success': function(data) {
-                callback(null, data);
+                return callback(null, data);
             },
             'error': function(jqXHR, textStatus) {
-                callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
     };

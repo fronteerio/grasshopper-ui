@@ -86,8 +86,8 @@ before_install:
 
   # Configure postgres
   - echo 'Creating database'
-  - psql -c 'DROP DATABASE IF EXISTS grasshopper;' -U postgres
-  - psql -c 'CREATE DATABASE grasshopper;' -U postgres
+  - psql -c 'DROP DATABASE IF EXISTS grasshoppertest;' -U postgres
+  - psql -c 'CREATE DATABASE grasshoppertest;' -U postgres
   - echo "config.db.username = 'postgres';" >> config.js
 
   # Install Grasshopper UI

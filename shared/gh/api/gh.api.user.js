@@ -261,7 +261,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid tenant id should be provided'});
         } else if (!appIds || (appIds && !_.isArray(appIds))) {
             return callback({'code': 400, 'msg': 'A valid value for appIds should be provided'});
-        } else if (appIds && !_.isBoolean(forceProfileUpdate)) {
+        } else if (!_.isEmpty(forceProfileUpdate) && !_.isBoolean(forceProfileUpdate)) {
             return callback({'code': 400, 'msg': 'A valid value for forceProfileUpdate should be provided'});
         }
     };
