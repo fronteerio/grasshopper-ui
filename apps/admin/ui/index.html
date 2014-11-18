@@ -5,48 +5,27 @@
     <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
 </head>
 <body>
-    <!-- HEADER -->
-    <div id="gh-header">
-        <div id="gh-header-hero">
-            <div id="gh-header-hero-container" class="container gh-maxwidth">
-                <div class="col-xs-12">
-                    <a href="http://www.cam.ac.uk" title="Cambridge University website">
-                        <img src="/shared/gh/img/unilogo.png" alt="Cambridge University logo">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div id="gh-header-slogan">
-            <div id="gh-header-slogan-container" class="container gh-maxwidth">
-                <div class="col-xs-12">
-                    <h1>Timetable</h1>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- CONTENT -->
-    <main class="gh-maxwidth">
-        <div class="container">
-            <div class="col-xs-2 col-md-3 hidden-xs"></div>
-            <div class="col-xs-12 col-sm-8 col-md-6">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="gh-login-email">Email address</label>
-                        <input type="email" class="form-control" id="gh-login-email" placeholder="Enter email">
-                    </div>
-                    <div class="form-group">
-                        <label for="gh-login-password">Password</label>
-                        <input type="password" class="form-control" id="gh-login-password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
-                </form>
-            </div>
-            <div class="col-xs-2 col-md-3 hidden-xs"></div>
+    <div id="gh-page-container">
+        <div id="gh-left-container">
+            <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+            </a>
+            <div id="gh-content-description"></div>
         </div>
-    </main>
+        <div id="gh-right-container">
+            <div id="gh-header">
+                <button id="gh-signin" class="btn btn-default gh-btn-secondary pull-right"><i class="fa fa-sign-in"></i>Sign in</button>
+                <h1>My timetable</h1>
+            </div>
+            <div id="gh-subheader"></div>
+            <main></main>
+        </div>
+        <div class="clearfix"></div>
+    </div>
 
     <script data-main="/shared/gh/api/gh.bootstrap.js" src="/shared/vendor/js/require.js"></script>
 </body>

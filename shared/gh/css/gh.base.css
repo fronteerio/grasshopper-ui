@@ -27,13 +27,66 @@ body {
 }
 
 main {
-    padding-top: 30px;
+    padding: 20px;
 }
 
 h1, h2, h3, h4, h5 {
-    font-weight: 200;
+    margin: 0;
+    padding: 0;
 }
 
-.gh-maxwidth {
-    max-width: 1360px;
+h1 {
+    font-size: 40px;
+    font-weight: 300;
+}
+
+h2 {
+    font-size: 17px;
+    font-weight: 400;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+select.form-control {
+    height: 45px;
+}
+
+/**********/
+/* LAYOUT */
+/**********/
+
+/* Main page container */
+#gh-page-container {
+    min-width: 1280px;
+}
+
+/* Main page left hand side (navigation) container */
+#gh-page-container #gh-left-container {
+    float: left;
+    height: 100%;
+    padding: 0;
+    width: 270px;
+}
+
+#gh-page-container #gh-left-container #gh-header-logo img {
+    padding: 39px 46px 38px 46px;
+}
+
+#gh-page-container #gh-left-container #gh-content-description p {
+    margin: 0;
+    padding: 30px 45px;
+}
+
+/* Main page right hand side (content) container */
+#gh-page-container #gh-right-container #gh-subheader,
+#gh-page-container #gh-left-container #gh-content-description {
+    height: 100px;
+}
+
+#gh-page-container #gh-right-container {
+    padding-left: 270px;
+    width: 100%;
 }

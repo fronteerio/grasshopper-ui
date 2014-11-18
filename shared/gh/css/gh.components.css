@@ -13,23 +13,39 @@
  * permissions and limitations under the License.
  */
 
-/**
- * HEADER
- */
 
-#gh-header #gh-header-hero {
-    background-color: #000;
-    height: 80px;
-}
-#gh-header #gh-header-hero img {
-    margin: 18px 18px 18px 0;
+/***********/
+/* BUTTONS */
+/***********/
+
+.btn {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
 }
 
-#gh-header #gh-header-slogan {
-    background-color: #006470;
-    border-bottom: 4px solid #999;
-    height: 90px;
+.btn i {
+    padding-right: 5px;
 }
-#gh-header #gh-header-slogan h1 {
-    color: #FFF;
+
+
+
+
+
+
+
+#gh-right-container #gh-header #gh-signin {
+    margin: 42px 40px 35px 40px;
 }
+
+#gh-right-container #gh-subheader form {
+    margin-bottom: 0;
+    margin-right: 0;
+    padding: 28px 0 0;
+}
+
+#gh-right-container #gh-header h1 {
+    display: inline-block;
+    margin: 36px 0 35px 40px;
+}
+

@@ -55,7 +55,8 @@ module.exports = function(grunt) {
                 'box-model': false,
                 'ids': false,
                 'import': false,
-                'qualified-headings': false
+                'qualified-headings': false,
+                'unique-headings': false
             },
             'files': [
                 'apps/**/*.css',
