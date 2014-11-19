@@ -13,6 +13,7 @@
  * permissions and limitations under the License.
  */
 
+var argv = require('optimist').argv;
 var childProcess = require('child_process');
 
 var ghRoot = __dirname + '/../../grasshopper/';
@@ -23,7 +24,7 @@ var TestsUtil = require(ghModules + 'gh-tests/lib/util');
 
 require('./beforeTests.js')(function() {
     // Start the CasperJS tests
-    var testRunner = childProcess.spawn(__dirname + '/runTests.sh', [], {
+    var testRunner = childProcess.spawn(__dirname + '/runTests.sh', [argv.t], {
         'detached': true
     });
 

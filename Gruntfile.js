@@ -72,7 +72,13 @@ module.exports = function(grunt) {
                 'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
             },
             'startDependencies': {
-                'cmd': 'node tests/startDependencies.js'
+                'cmd': 'node tests/startDependencies.js -t all'
+            },
+            'startCasperDependencies': {
+                'cmd': 'node tests/startDependencies.js -t casper'
+            },
+            'startQUnitDependencies': {
+                'cmd': 'node tests/startDependencies.js -t qunit'
             }
         },
         'ghost': {
@@ -262,11 +268,15 @@ module.exports = function(grunt) {
     //////////////////
 
     // Lint tasks for JavaScript and CSS
-    grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('test', ['exec:stopGrasshopper', 'exec:startDependencies']);
-
-    // Coverage report task
-    grunt.registerTask('coverage', ['qunit']);
+    grunt.registerTask('lint', 'Run jshint and csslint', ['jshint', 'csslint']);
+    // Run all tests
+    grunt.registerTask('test', 'Run all tests (jshint, csslint, QUnit and CasperJS)', ['exec:stopGrasshopper', 'exec:startDependencies']);
+    // Run CasperJS tests
+    grunt.registerTask('casper', 'Run the CasperJS tests', ['exec:stopGrasshopper', 'exec:startCasperDependencies']);
+    // Run QUnit tests
+    grunt.registerTask('q', 'Run the QUnit tests', ['exec:stopGrasshopper', 'exec:startQUnitDependencies']);
+    // Generate a coverage report
+    grunt.registerTask('coverage', 'Generate coverage reports through QUnit and Istanbul (outputs to ./coverage)', ['qunit']);
 
     /**
      * Task that changes the paths in the optimized Apache configuration files
@@ -396,7 +406,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**
