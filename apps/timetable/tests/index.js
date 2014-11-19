@@ -13,35 +13,47 @@
  * permissions and limitations under the License.
  */
 
-casper.test.begin('Page - Admin', function(test) {
+casper.test.begin('Page - Timetable Index', function(test) {
 
     /**
      * Verify the admin page header
      */
     var verifyHeader = function() {
-        casper.echo('# Verify the administrator header', 'INFO');
-        test.assertExists('#gh-header-hero img', 'Verify the header hero has the Cambridge University logo');
-        test.assertExists('#gh-header-slogan h1', 'Verify the header slogan has a header');
-        test.assertSelectorHasText('#gh-header-slogan h1', 'Timetable', 'Verify that the header slogan has the text \'Timetable\'');
+        casper.echo('# Verify the timetable header', 'INFO');
+        casper.waitForSelector('#gh-right-container #gh-header', function() {
+            test.assertExists('#gh-left-container #gh-header-logo img', 'Verify the header hero has the Cambridge University logo');
+            test.assertExists('#gh-right-container #gh-header h1', 'Verify the header has a header h1');
+            test.assertSelectorHasText('#gh-right-container #gh-header h1', 'My timetable', 'Verify the header has the text \'My timetable\'');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form', 'Verify the header has a login form');
+        });
     };
 
     /**
      * Verify the admin page body
      */
-    var verifyBody = function() {
-        casper.echo('# Verify the administrator body', 'INFO');
-        test.assertExists('main form', 'Verify the body has a login form');
-        test.assertExists('main form label[for="gh-login-email"]', 'Verify the login form has a email label');
-        test.assertExists('main form input#gh-login-email', 'Verify the login form has a email field');
-        test.assertExists('main form label[for="gh-login-password"]', 'Verify the login form has a password label');
-        test.assertExists('main form input#gh-login-password', 'Verify the login form has a password field');
-        test.assertExists('main form button[type="submit"]', 'Verify the login form has a submit button');
+    var verifyLogInForm = function() {
+        casper.echo('# Verify the timetable login form', 'INFO');
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-email"]', 'Verify the login form has a email label');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-email', 'Verify the login form has a email field');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-password"]', 'Verify the login form has a password label');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-password', 'Verify the login form has a password field');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form button[type="submit"]', 'Verify the login form has a submit button');
+        });
     };
 
-    casper.start(configAPI.adminUI, function() {
+    var verifyLogIn = function() {
+        casper.echo('# Verify the timetable login functionality', 'INFO');
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+
+        });
+    };
+
+    casper.start(configAPI.tenantUI, function() {
         casper.waitForSelector('body', function() {
             casper.then(verifyHeader);
-            casper.then(verifyBody);
+            casper.then(verifyLogInForm);
+            casper.then(verifyLogIn);
         });
     });
 

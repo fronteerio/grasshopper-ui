@@ -52,6 +52,7 @@ module.exports = function(grunt) {
         },
         'csslint': {
             'options': {
+                'adjoining-classes': false,
                 'box-model': false,
                 'ids': false,
                 'import': false,
@@ -122,7 +123,8 @@ module.exports = function(grunt) {
                     'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
                     'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
                     'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
-                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.util.html'
                 ],
                 'options': {
                     'urls': [
@@ -134,7 +136,8 @@ module.exports = function(grunt) {
                         'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
                         'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
                         'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
-                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.util.html'
                     ],
                     'coverage': {
                         'disposeCollector': true,

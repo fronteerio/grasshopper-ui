@@ -43,7 +43,7 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 if (!err) {
                     gh.data.me = me;
                 } else {
-                    throw new Error('The /me feed could not be loaded');
+                    // throw new Error('The /me feed could not be loaded - ' + err.code + ': ' + err.msg);
                 }
 
                 // Continue startup
