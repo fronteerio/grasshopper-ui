@@ -16,31 +16,11 @@
 define(['exports'], function(exports) {
 
     /**
-     * Create a new tenant
-     *
-     * @param  {String}      displayName    The display name of the tenant
-     * @param  {Function}    [callback]     Standard callback function
-     */
-    var createTenant = exports.createTenant = function(displayName, callback) {
-
-    };
-
-    /**
-     * Get a tenant
-     *
-     * @param  {Number}      tenantId    The ID of the tenant to retrieve
-     * @param  {Function}    callback    Standard callback function
-     */
-    var getTenant = exports.getTenant = function(tenantId, callback) {
-
-    };
-
-    /**
      * Get all tenants
      *
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The returned tenants
+     * @param  {Object}      callback.response    All available tenants
      */
     var getTenants = exports.getTenants = function(callback) {
         if (!callback || (callback && !_.isFunction(callback))) {
@@ -60,6 +40,38 @@ define(['exports'], function(exports) {
     };
 
     /**
+     * Get a tenant
+     *
+     * @param  {Number}      tenantId             The ID of the tenant to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The requested tenant
+     */
+    var getTenant = exports.getTenant = function(tenantId, callback) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
+            return callback({'code': 400, 'msg': 'A valid tenantId should be provided'});
+        }
+    };
+
+    /**
+     * Create a new tenant
+     *
+     * @param  {String}      displayName          The display name of the tenant
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The created tenant
+     */
+    var createTenant = exports.createTenant = function(displayName, callback) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
+            return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
+        }
+    };
+
+    /**
      * Update a tenant
      *
      * @param  {Number}      tenantId             The ID of the tenant to update
@@ -69,6 +81,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated tenant
      */
     var updateTenant = exports.updateTenant = function(tenantId, displayName, callback) {
-
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
+            return callback({'code': 400, 'msg': 'A valid tenantId should be provided'});
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
+            return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
+        }
     };
 });

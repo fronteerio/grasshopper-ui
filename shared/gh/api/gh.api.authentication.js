@@ -23,10 +23,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err    Error object containing the error code and error message
      */
     var becomeUser = exports.becomeUser = function(userId, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
     };
 
@@ -39,12 +39,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err         Error object containing the error code and error message
      */
     var login = exports.login = function(username, password, callback) {
-        if (!username) {
-            return callback({'code': 400, 'msg': 'A valid value for username should be provided'});
-        } else if (!password) {
-            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!username || (username && !_.isString(username))) {
+            return callback({'code': 400, 'msg': 'A valid value for username should be provided'});
+        } else if (!password || (password && !_.isString(password))) {
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         }
 
         var data = {

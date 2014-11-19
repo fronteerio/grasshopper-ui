@@ -24,10 +24,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The tenant's applications
      */
     var getApps = exports.getApps = function(tenantId, callback) {
-        if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
-            return callback({'code': 400, 'msg': 'A valid value for tenantId should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
+            return callback({'code': 400, 'msg': 'A valid value for tenantId should be provided'});
         }
 
         $.ajax({
@@ -50,10 +50,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The requested application
      */
     var getApp = exports.getApp = function(appId, callback) {
-        if (!appId || (appId && !_.isNumber(appId))) {
-            return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!appId || (appId && !_.isNumber(appId))) {
+            return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         }
 
         $.ajax({
@@ -78,14 +78,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The application's administrators
      */
     var getAppAdmins = exports.getAppAdmins = function(appId, limit, offset, callback) {
-        if (!appId || (appId && !_.isNumber(appId))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!appId || (appId && !_.isNumber(appId))) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         $.ajax({
@@ -111,16 +111,16 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The created app
      */
     var createApp = exports.createApp = function(displayName, host, tenantId, type, callback) {
-        if (!displayName) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
-        } else if (!host) {
+        } else if (!host || (host && !_.isString(host))) {
             return callback({'code': 400, 'msg': 'A valid value for host should be provided'});
         } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
             return callback({'code': 400, 'msg': 'A valid value for tenantId should be provided'});
-        } else if (!type) {
+        } else if (!type || (type && !_.isString(type))) {
             return callback({'code': 400, 'msg': 'A valid value for type should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         var data = {
@@ -155,7 +155,9 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated app
      */
     var updateApp = exports.updateApp = function(appId, displayName, enabled, host, callback) {
-        if (!appId || (appId && !_.isNumber(appId))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!appId || (appId && !_.isNumber(appId))) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
@@ -163,8 +165,6 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for enabled should be provided'});
         } else if (host && !_.isString(host)) {
             return callback({'code': 400, 'msg': 'A valid value for host should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         var data = {

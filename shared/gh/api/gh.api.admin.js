@@ -26,14 +26,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response      The created global administrator
      */
     var createAdmin = exports.createAdmin = function(username, displayName, password, callback) {
-        if (!username) {
-            return callback({'code': 400, 'msg': 'A valid user name should be provided'});
-        } else if (!displayName) {
-            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
-        } else if (!password) {
-            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!username || (username && !_.isString(username))) {
+            return callback({'code': 400, 'msg': 'A valid user name should be provided'});
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
+            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
+        } else if (!password || (password && !_.isString(password))) {
+            return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         }
 
         var data = {
@@ -65,12 +65,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    Object containing all the global administrators
      */
     var getAdmins = exports.getAdmins = function(limit, offset, callback) {
-        if (limit && !_.isNumber(limit)) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         $.ajax({
@@ -96,12 +96,12 @@ define(['exports'], function(exports) {
 
      */
     var updateAdmin = exports.updateAdmin = function(userId, displayName, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!displayName) {
-            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
+            return callback({'code': 400, 'msg': 'A valid display name should be provided'});
         }
 
         data = {

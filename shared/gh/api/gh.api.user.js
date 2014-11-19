@@ -48,10 +48,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The requested user
      */
     var getUser = exports.getUser = function(userId, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
         /**
@@ -81,14 +81,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The users for the requested tenant or app
      */
     var getUsers = exports.getUsers = function(appId, limit, offset, callback) {
-        if (!appId) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!appId || (appId && !_.isNumber(appId))) {
             return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
         } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         /**
@@ -118,14 +118,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The requested user calendar
      */
     var getUserCalendar = exports.getUserCalendar = function(userId, from, to, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!from) {
-            return callback({'code': 400, 'msg': 'A valid value for from should be provided'});
-        } else  if (!to) {
-            return callback({'code': 400, 'msg': 'A valid value for to should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!from || (from && !_.isString(from))) {
+            return callback({'code': 400, 'msg': 'A valid value for from should be provided'});
+        } else  if (!to || (to && !_.isString(to))) {
+            return callback({'code': 400, 'msg': 'A valid value for to should be provided'});
         }
     };
 
@@ -139,10 +139,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The requested user calendar in iCal format
      */
     var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, signature, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
     };
 
@@ -156,10 +156,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The requested event series calendar in RSS format
      */
     var getUserCalendarRss = exports.getUserCalendarRss = function(userId, signature, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!callbac || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
     };
 
@@ -174,14 +174,14 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The upcoming events for the user
      */
     var getUserUpcoming = exports.getUserUpcoming = function(userId, limit, offset, callback) {
-        if (!userId) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
     };
 
@@ -207,10 +207,10 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated status of the Terms and Conditions for the user on the current app
      */
     var acceptTermsAndConditions = exports.acceptTermsAndConditions = function(userId, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
     };
 
@@ -230,18 +230,18 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response       The created user
      */
     var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, isAdmin, recaptchaChallenge, recaptchaResponse, callback) {
-        if (!appId) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!appId || (appId && !_.isNumber(appId))) {
             return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
-        } else if (!displayName) {
+        } else if (!displayName || (displayName && !_.isString(displayName))) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
-        } else if (!email) {
+        } else if (!email || (email && !_.isString(email))) {
             return callback({'code': 400, 'msg': 'A valid email should be provided'});
-        } else if (!password) {
+        } else if (!password || (password && !_.isString(password))) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
         } else if (!_.isEmpty(isAdmin) && !_.isBoolean(isAdmin)) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
 
         var data = {
@@ -280,18 +280,18 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err              Error object containing the error code and error message
      */
     var importUsers = exports.importUsers = function(authenticationStrategy, file, tenantId, appIds, forceProfileUpdate, callback) {
-        if (!authenticationStrategy) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!authenticationStrategy || (authenticationStrategy && !_.isString(authenticationStrategy))) {
             return callback({'code': 400, 'msg': 'A valid authenticationStrategy should be provided'});
         } else if (!file) {
             return callback({'code': 400, 'msg': 'A valid file should be provided'});
-        } else if (!tenantId) {
+        } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
             return callback({'code': 400, 'msg': 'A valid tenant id should be provided'});
         } else if (!appIds || (appIds && !_.isArray(appIds))) {
             return callback({'code': 400, 'msg': 'A valid value for appIds should be provided'});
         } else if (!_.isEmpty(forceProfileUpdate) && !_.isBoolean(forceProfileUpdate)) {
             return callback({'code': 400, 'msg': 'A valid value for forceProfileUpdate should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
     };
 
@@ -308,12 +308,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated user
      */
     var updateUser = exports.updateUser = function(userId, appId, displayName, email, emailPreference, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!appId) {
-            return callback({'code': 400, 'msg': 'A valid app id should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!appId || (appId && !_.isNumber(appId))) {
+            return callback({'code': 400, 'msg': 'A valid app id should be provided'});
         }
     };
 
@@ -327,12 +327,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated user
      */
     var updateAdminStatus = exports.updateAdminStatus = function(userId, isAdmin, callback) {
-        if (!userId) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!_.isBoolean(isAdmin)) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
     };
 
@@ -346,12 +346,12 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated user
      */
     var setUserPicture = exports.setUserPicture = function(userId, file, callback) {
-        if (!userId) {
+        if (!callback || (callback && !_.isFunction(callback))) {
+            throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!file) {
             return callback({'code': 400, 'msg': 'A valid file should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
-            throw new Error('A callback function should be provided');
         }
     };
 
@@ -367,16 +367,16 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The updated user
      */
     var cropPicture = exports.cropPicture = function(userId, width, x, y, callback) {
-        if (!userId) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!width) {
-            return callback({'code': 400, 'msg': 'A valid value for width should be provided'});
-        } else if (!x) {
-            return callback({'code': 400, 'msg': 'A valid value for x should be provided'});
-        } else if (!y) {
-            return callback({'code': 400, 'msg': 'A valid value for y should be provided'});
-        } else if (!callback || (callback && !_.isFunction(callback))) {
+        if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
+        } else if (!userId || (userId && !_.isNumber(userId))) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!width || (width && !_.isNumber(width))) {
+            return callback({'code': 400, 'msg': 'A valid value for width should be provided'});
+        } else if (!x || (x && !_.isNumber(x))) {
+            return callback({'code': 400, 'msg': 'A valid value for x should be provided'});
+        } else if (!y || (y && !_.isNumber(y))) {
+            return callback({'code': 400, 'msg': 'A valid value for y should be provided'});
         }
     };
 });
