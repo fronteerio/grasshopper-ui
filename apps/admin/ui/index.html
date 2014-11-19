@@ -2,10 +2,30 @@
 <head>
     <title>Admin UI</title>
     <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+    <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
 </head>
 <body>
-    This is the admin UI!
+
+    <div id="gh-page-container">
+        <div id="gh-left-container">
+            <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+            </a>
+            <div id="gh-content-description"></div>
+        </div>
+        <div id="gh-right-container">
+            <div id="gh-header">
+                <button id="gh-signin" class="btn btn-default gh-btn-secondary pull-right"><i class="fa fa-sign-in"></i>Sign in</button>
+                <h1>My timetable</h1>
+            </div>
+            <div id="gh-subheader"></div>
+            <main></main>
+        </div>
+        <div class="clearfix"></div>
+    </div>
 
     <script data-main="/shared/gh/api/gh.bootstrap.js" src="/shared/vendor/js/require.js"></script>
 </body>

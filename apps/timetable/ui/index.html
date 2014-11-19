@@ -1,12 +1,78 @@
 <html>
 <head>
-    <title>Timetable UI</title>
+    <title>My timetable</title>
     <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+    <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+    <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
 </head>
 <body>
-    This is the Timetable UI!
+    <div id="gh-page-container">
+        <div id="gh-left-container">
+            <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+            </a>
+            <div id="gh-content-description">
+                <p>Select your course and part to view available modules</p>
+            </div>
+        </div>
+        <div id="gh-right-container">
+            <div id="gh-header"></div>
+            <div id="gh-subheader">
+                <form class="row form-horizontal">
+                    <div class="col-xs-3">
+                        <select name="cars" class="form-control">
+                            <option value="volvo">Volvo</option>
+                            <option value="saab">Saab</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-3">
+                        <select name="cars" class="form-control">
+                            <option value="volvo">Volvo XC90</option>
+                            <option value="saab">Saab 95</option>
+                            <option value="mercedes">Mercedes SLK</option>
+                            <option value="audi">Audi TT</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <main>
 
-    <script data-main="/shared/gh/api/gh.bootstrap.js" src="/shared/vendor/js/require.js"></script>
+            </main>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <script id="gh-header-template" type="text/template">
+        <% if (!gh.data.me || gh.data.me.anon) { %>
+        <form id="gh-signin-form" class="form-inline pull-right" role="form">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only" for="gh-signin-email">Email address</label>
+                    <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="gh-signin-password">Password</label>
+                    <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Password" required>
+                </div>
+            </div>
+            <button type="submit" id="gh-signin" class="btn btn-default gh-btn-secondary">
+                <i class="fa fa-sign-in"></i>Sign in
+            </button>
+        </form>
+        <% } else { %>
+            <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
+                <button type="submit" class="btn btn-default gh-btn-secondary">
+                    <i class="fa fa-sign-out"></i>Sign out
+                </button>
+            </form>
+        <% } %>
+        <h1>My timetable</h1>
+    </script>
+
+    <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="js/index.js" src="/shared/vendor/js/require.js"></script>
 </body>
 </html>

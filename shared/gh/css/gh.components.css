@@ -13,15 +13,43 @@
  * permissions and limitations under the License.
  */
 
-casper.test.begin('Page - Admin Index', function(test) {
 
-    casper.start(configAPI.adminUI, function() {
-        casper.waitForSelector('body', function() {
-            test.assertSelectorHasText('body', 'This is the admin UI!', 'Verify that the body has the text\'This is the admin UI!\'');
-        });
-    });
+/***********/
+/* BUTTONS */
+/***********/
 
-    casper.run(function() {
-        test.done();
-    });
-});
+.btn {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+}
+
+.btn i {
+    padding-right: 5px;
+}
+
+
+/**********/
+/* HEADER */
+/**********/
+
+#gh-right-container #gh-header h1 {
+    display: inline-block;
+    margin: 36px 0 35px 40px;
+}
+
+#gh-right-container #gh-header #gh-signin-form,
+#gh-right-container #gh-header #gh-signout-form {
+    margin: 42px 40px 35px 40px;
+}
+
+
+/*************/
+/* SUBHEADER */
+/*************/
+
+#gh-right-container #gh-subheader form {
+    margin-bottom: 0;
+    margin-right: 0;
+    padding: 28px 0 0;
+}

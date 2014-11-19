@@ -32,4 +32,36 @@ define(['exports'], function(exports) {
         }
         return rndString;
     };
+
+    /**
+     * Render a template and either return the HTML or populate a target container with the result
+     *
+     * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container
+     * @param  {Object}            [data]       JSON object representing the values used to process the template
+     * @param  {Element|String}    [$target]    jQuery element representing the HTML element in which the template output should be put, or jQuery selector for the output container
+     *
+     * @return {String}                         The rendered HTML
+     * @throws {Error}                          Error thrown when no template has been provided
+     */
+    var renderTemplate = exports.renderTemplate = function($template, data, $target) {
+        if (!$template) {
+            throw new Error('No valid template has been provided');
+        }
+
+        // Make sure we're dealing with jQuery objects
+        $template = $($template);
+        $target = $($target);
+
+        // Compile the template
+        var compiled = _.template($template.text());
+        compiled = compiled(data);
+
+        // If a target container was specified, render the HTML into it
+        if ($target.length) {
+            $target.html(compiled);
+        }
+
+        // Always return the rendered HTML string
+        return compiled;
+    };
 });

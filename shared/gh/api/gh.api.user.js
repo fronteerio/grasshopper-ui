@@ -27,9 +27,6 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         }
 
-        /**
-         * TODO: wait for back-end implementation
-         *
         $.ajax({
             'url': '/api/me',
             'type': 'GET',
@@ -40,7 +37,6 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
-        */
     };
 
     /**

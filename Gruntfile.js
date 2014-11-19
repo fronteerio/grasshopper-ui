@@ -52,7 +52,12 @@ module.exports = function(grunt) {
         },
         'csslint': {
             'options': {
-                'ids': false // ignore "Don't use IDs in CSS selectors" warning
+                'adjoining-classes': false,
+                'box-model': false,
+                'ids': false,
+                'import': false,
+                'qualified-headings': false,
+                'unique-headings': false
             },
             'files': [
                 'apps/**/*.css',
@@ -73,7 +78,7 @@ module.exports = function(grunt) {
         'ghost': {
             'dist': {
                 'filesSrc': [
-                    'tests/casperjs/tests/*.js'
+                    'apps/**/tests/*.js'
                 ],
                 // CasperJS test command options
                 'options': {
@@ -118,7 +123,8 @@ module.exports = function(grunt) {
                     'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
                     'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
                     'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
-                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.user.html',
+                    'http://admin.grasshopper.com/tests/qunit/tests/api.util.html'
                 ],
                 'options': {
                     'urls': [
@@ -130,7 +136,8 @@ module.exports = function(grunt) {
                         'http://admin.grasshopper.com/tests/qunit/tests/api.orgunit.html',
                         'http://admin.grasshopper.com/tests/qunit/tests/api.series.html',
                         'http://admin.grasshopper.com/tests/qunit/tests/api.tenant.html',
-                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html'
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.user.html',
+                        'http://admin.grasshopper.com/tests/qunit/tests/api.util.html'
                     ],
                     'coverage': {
                         'disposeCollector': true,
