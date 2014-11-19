@@ -18,13 +18,17 @@ define(['exports'], function(exports) {
     /**
      * Generates a random 10 character sequence of upper and lowercase letters.
      *
-     * @return {String}    Random 10 character sequence of upper and lowercase letters
+     * @param  {Boolean}    toLowerCase    Whether or not the string should be returned lowercase
+     * @return {String}                    Random 10 character sequence of upper and lowercase letters
      */
-    var generateRandomString = exports.generateRandomString = function() {
+    var generateRandomString = exports.generateRandomString = function(toLowerCase) {
         var rndString = '';
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i < 10; i++) {
             rndString += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        if (toLowerCase) {
+            rndString = rndString.toLowerCase();
         }
         return rndString;
     };

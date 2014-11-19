@@ -226,13 +226,14 @@ define(['exports'], function(exports) {
      * @param  {String}      email                   The email address for the user. This will be used as the username for the user
      * @param  {String}      password                The password with which the user will authenticate
      * @param  {String}      [emailPreference]       The email preference for the user
+     * @param  {Boolean}     [isAdmin]               Whether the user is an app administrator
      * @param  {String}      [recaptchaChallenge]    The identifier for the recaptcha challenge. Only required when the current user is not an app administrator
      * @param  {String}      [recaptchaResponse]     The recaptcha response entered for the presented challenge. Only required when the current user is not an app administrator
      * @param  {Function}    callback                Standard callback function
      * @param  {Object}      callback.err            Error object containing the error code and error message
      * @param  {Object}      callback.response       The created user
      */
-    var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, recaptchaChallenge, recaptchaResponse, callback) {
+    var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, isAdmin, recaptchaChallenge, recaptchaResponse, callback) {
         if (!appId) {
             return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
         } else if (!displayName) {
@@ -241,6 +242,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid email should be provided'});
         } else if (!password) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
+        } else if (!_.isEmpty(isAdmin) && !_.isBoolean(isAdmin)) {
+            return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
         } else if (!callback || (callback && !_.isFunction(callback))) {
             throw new Error('A callback function should be provided');
         }
@@ -251,6 +254,7 @@ define(['exports'], function(exports) {
             'email': email,
             'password': password,
             'emailPreference': emailPreference,
+            'isAdmin': isAdmin,
             'recaptchaChallenge': recaptchaChallenge,
             'recaptchaResponse': recaptchaResponse
         };

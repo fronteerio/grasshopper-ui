@@ -21,19 +21,16 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         expect(3);
 
         // Verify that an error is thrown when an invalid callback was provided
-        try {
+        assert.throws(function() {
             gh.api.tenantAPI.getTenants();
-        } catch(err) {
-            assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
-        } finally {
+        }, 'Verify that an error is thrown when an invalid callback was provided');
 
-            // Verify that the tenants can be retrieved without errors
-            gh.api.tenantAPI.getTenants(function(err, data) {
-                assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
-                assert.ok(data, 'Verify that the tenants are returned');
-                QUnit.start();
-            });
-        }
+        // Verify that the tenants can be retrieved without errors
+        gh.api.tenantAPI.getTenants(function(err, data) {
+            assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
+            assert.ok(data, 'Verify that the tenants are returned');
+            QUnit.start();
+        });
     });
 
     testAPI.init();
