@@ -68,17 +68,25 @@ module.exports = function(grunt) {
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
-            'stopGrasshopper': {
-                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
-            },
-            'startDependencies': {
-                'cmd': 'node tests/startDependencies.js -t all'
+            'runCasperTest': {
+                'cmd': function(path) {
+                    var includes = grunt.config('ghost').dist.options.includes;
+                    var pre = grunt.config('ghost').dist.options.pre;
+
+                    return 'casperjs test --includes=' + includes + ' --pre=' + pre + ' ' + path;
+                }
             },
             'startCasperDependencies': {
                 'cmd': 'node tests/startDependencies.js -t casper'
             },
+            'startDependencies': {
+                'cmd': 'node tests/startDependencies.js -t all'
+            },
             'startQUnitDependencies': {
                 'cmd': 'node tests/startDependencies.js -t qunit'
+            },
+            'stopGrasshopper': {
+                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
             }
         },
         'ghost': {
@@ -277,6 +285,16 @@ module.exports = function(grunt) {
     grunt.registerTask('q', 'Run the QUnit tests', ['exec:stopGrasshopper', 'exec:startQUnitDependencies']);
     // Generate a coverage report
     grunt.registerTask('coverage', 'Generate coverage reports through QUnit and Istanbul (outputs to ./coverage)', ['qunit']);
+    // Run a single CasperJS test
+    grunt.registerTask('casper', 'Run a single CasperJS test', function(path) {
+        path = path || grunt.option('path');
+
+        if (!path) {
+            return grunt.fail.fatal('Please provide a path to a CasperJS test file. e.g. `grunt casper --path node_modules/oae-core/preferences/tests/preferences.js`');
+        }
+
+        grunt.task.run('exec:runCasperTest:' + path);
+    });
 
     /**
      * Task that changes the paths in the optimized Apache configuration files
