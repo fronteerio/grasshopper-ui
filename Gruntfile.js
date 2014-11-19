@@ -279,21 +279,21 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', 'Run jshint and csslint', ['jshint', 'csslint']);
     // Run all tests
     grunt.registerTask('test', 'Run all tests (jshint, csslint, QUnit and CasperJS)', ['exec:stopGrasshopper', 'exec:startDependencies']);
-    // Run CasperJS tests
-    grunt.registerTask('casper', 'Run the CasperJS tests', ['exec:stopGrasshopper', 'exec:startCasperDependencies']);
     // Run QUnit tests
     grunt.registerTask('q', 'Run the QUnit tests', ['exec:stopGrasshopper', 'exec:startQUnitDependencies']);
     // Generate a coverage report
     grunt.registerTask('coverage', 'Generate coverage reports through QUnit and Istanbul (outputs to ./coverage)', ['qunit']);
     // Run a single CasperJS test
-    grunt.registerTask('casper', 'Run a single CasperJS test', function(path) {
+    grunt.registerTask('casper', 'Run the CasperJS tests. A single test can be specified with the --path parameter. e.g., grunt casper --path /path/to/test.js', function(path) {
         path = path || grunt.option('path');
 
-        if (!path) {
-            return grunt.fail.fatal('Please provide a path to a CasperJS test file. e.g. `grunt casper --path node_modules/oae-core/preferences/tests/preferences.js`');
+        if (path) {
+            grunt.task.run('exec:runCasperTest:' + path);
+        } else {
+            grunt.log.ok('Running all CasperJS tests. If you intended to run a single test try `grunt casper --path /path/to/test.js`');
+            grunt.task.run('exec:stopGrasshopper');
+            grunt.task.run('exec:startCasperDependencies');
         }
-
-        grunt.task.run('exec:runCasperTest:' + path);
     });
 
     /**
