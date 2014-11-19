@@ -25,19 +25,10 @@ define(['exports', 'gh.core'], function(exports, gh) {
     };
 
     /**
-     * Render the subheader
+     * Log in using the local authentication strategy
+     *
+     * @return {Boolean}     Return false to avoid default form behaviour
      */
-    var renderSubheader = function() {
-
-    };
-
-    /**
-     * Render the content of the page
-     */
-    var renderContent = function() {
-
-    };
-
     var doLogin = function() {
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
         gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
@@ -51,19 +42,19 @@ define(['exports', 'gh.core'], function(exports, gh) {
         return false;
     };
 
+    /**
+     * Add bindings to various elements on the page
+     */
     var addBinding = function() {
-        $('body').on('click', '#gh-signout', gh.api.authenticationAPI.logOut);
         $('body').on('submit', '#gh-signin-form', doLogin);
     };
 
     /**
-     * Initialise the index page
+     * Initialise the page
      */
     var initIndex = function() {
         addBinding();
         renderHeader();
-        renderSubheader();
-        renderContent();
     };
 
     initIndex();

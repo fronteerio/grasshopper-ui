@@ -68,7 +68,7 @@ select.form-control {
     float: left;
     height: 100%;
     padding: 0;
-    width: 270px;
+    width: 320px;
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
@@ -81,6 +81,10 @@ select.form-control {
 }
 
 /* Main page right hand side (content) container */
+#gh-page-container #gh-header {
+    height: 115px;
+}
+
 #gh-page-container #gh-right-container #gh-subheader,
 #gh-page-container #gh-left-container #gh-content-description {
     height: 100px;

@@ -64,20 +64,4 @@ define(['exports'], function(exports) {
             }
         });
     };
-
-    /**
-     * Log out
-     */
-    var logOut = exports.logOut = function() {
-        $.ajax({
-            'url': '/api/auth/logout',
-            'type': 'POST',
-            'success': function() {
-                window.location = '/';
-            },
-            'error': function(jqXHR, textStatus) {
-                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-            }
-        });
-    };
 });

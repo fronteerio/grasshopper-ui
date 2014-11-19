@@ -16,6 +16,20 @@
 define(['exports'], function(exports) {
 
     /**
+     * Generates a random 10 character sequence of upper and lowercase letters.
+     *
+     * @return {String}    Random 10 character sequence of upper and lowercase letters
+     */
+    var generateRandomString = exports.generateRandomString = function() {
+        var rndString = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        for (var i = 0; i < 10; i++) {
+            rndString += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return rndString;
+    };
+
+    /**
      * Render a template and either return the HTML or populate a target container with the result
      *
      * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container.
@@ -30,30 +44,20 @@ define(['exports'], function(exports) {
             throw new Error('No valid template has been provided');
         }
 
+        // Make sure we're dealing with jQuery objects
         $template = $($template);
         $target = $($target);
 
+        // Compile the template
         var compiled = _.template($template.text());
         compiled = compiled(data);
 
+        // If a target container was specified, render the HTML into it
         if ($target.length) {
             $target.html(compiled);
         }
 
+        // Always return the rendered HTML string
         return compiled;
-    };
-
-    /**
-     * Generates a random 10 character sequence of upper and lowercase letters.
-     *
-     * @return {String}    Random 10 character sequence of upper and lowercase letters
-     */
-    var generateRandomString = exports.generateRandomString = function() {
-        var rndString = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        for (var i = 0; i < 10; i++) {
-            rndString += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return rndString;
     };
 });

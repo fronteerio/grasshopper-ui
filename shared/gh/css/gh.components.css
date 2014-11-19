@@ -29,24 +29,27 @@
 }
 
 
-
-
-
-
-
-#gh-signin-form,
-#gh-right-container #gh-header #gh-signout {
-    margin: 42px 40px 35px 40px;
-}
-
-#gh-right-container #gh-subheader form {
-    margin-bottom: 0;
-    margin-right: 0;
-    padding: 28px 0 0;
-}
+/**********/
+/* HEADER */
+/**********/
 
 #gh-right-container #gh-header h1 {
     display: inline-block;
     margin: 36px 0 35px 40px;
 }
 
+#gh-right-container #gh-header #gh-signin-form,
+#gh-right-container #gh-header #gh-signout-form {
+    margin: 42px 40px 35px 40px;
+}
+
+
+/*************/
+/* SUBHEADER */
+/*************/
+
+#gh-right-container #gh-subheader form {
+    margin-bottom: 0;
+    margin-right: 0;
+    padding: 28px 0 0;
+}
