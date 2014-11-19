@@ -22,6 +22,10 @@ define(['exports'], function(exports) {
      * @return {String}                    Random 10 character sequence of upper and lowercase letters
      */
     var generateRandomString = exports.generateRandomString = function(toLowerCase) {
+        if (!_.isEmpty(toLowerCase) && !_.isBoolean(toLowerCase)) {
+            throw new Error('An invalid value for toLowerCase has been provided');
+        }
+
         var rndString = '';
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         for (var i = 0; i < 10; i++) {
