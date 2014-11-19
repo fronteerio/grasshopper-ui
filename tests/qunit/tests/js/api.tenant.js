@@ -34,10 +34,89 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     });
 
     // Test the getTenant functionality
+    QUnit.asyncTest('getTenant', function(assert) {
+        expect(4);
+
+        // Fetch a random tenant
+        var tenant = testAPI.getRandomTenant();
+
+        // Verify that an error is thrown when an invalid tenant id was provided
+        gh.api.tenantAPI.getTenant(null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid tenant id was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.tenantAPI.getTenant(tenant.id);
+            }, 'Verify that an error is thrown when an invalid callback was provided');
+
+            // Verify that a tenant can be returend without errors
+            gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
+                assert.ok(!err, 'Verify that a tenant can be returend without errors');
+                assert.ok(data, 'Verify that the tenant is returned');
+                QUnit.start();
+            });
+        });
+    });
 
     // Test the createTenant functionality
+    QUnit.asyncTest('createTenant', function(assert) {
+        expect(5);
+
+        // Generate a display name
+        var displayName = gh.api.utilAPI.generateRandomString(true);
+
+        // Verify that an error is thrown when an invalid displayName was provided
+        gh.api.tenantAPI.createTenant(null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid displayName was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.tenantAPI.createTenant(displayName);
+            }, 'Verify that an error is thrown when an invalid callback was provided');
+
+            // Verify that a tenant can be created without errors
+            gh.api.tenantAPI.createTenant(displayName, function(err, data) {
+                assert.ok(!err, 'Verify that a tenant can be created without errors');
+                assert.ok(data, 'Verify that the created tenant is returned');
+                assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
+                QUnit.start();
+            });
+        });
+    });
 
     // Test the updateTenant functionality
+    QUnit.asyncTest('updateTenant', function(assert) {
+        expect(6);
+
+        // Fetch a random tenant
+        var tenant = testAPI.getRandomTenant();
+
+        // Generate a display name
+        var displayName = gh.api.utilAPI.generateRandomString(true);
+
+        // Verify that an error is thrown when an invalid tenantId was provided
+        gh.api.tenantAPI.updateTenant(null, displayName, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid tenantId was provided');
+
+            // Verify that an error is thrown when an invalid displayName was provided
+            gh.api.tenantAPI.updateTenant(tenant.id, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid displayName was provided');
+
+                // Verify that an error is thrown when an invalid callback was provided
+                assert.throws(function() {
+                    gh.api.tenantAPI.updateTenant(tenant.id, displayName);
+                }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                // Verify that a tenant can be updated without errors
+                gh.api.tenantAPI.updateTenant(tenant.id, displayName, function(err, data) {
+                    assert.ok(!err, 'Verify that a tenant can be updated without errors');
+                    assert.ok(data, 'Verify that the updated tenant is returned');
+                    assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
+                    QUnit.start();
+                });
+            });
+        });
+    });
 
     testAPI.init();
 });

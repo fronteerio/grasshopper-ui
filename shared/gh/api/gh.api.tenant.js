@@ -53,6 +53,17 @@ define(['exports'], function(exports) {
         } else if (!tenantId || (tenantId && !_.isNumber(tenantId))) {
             return callback({'code': 400, 'msg': 'A valid tenantId should be provided'});
         }
+
+        $.ajax({
+            'url': '/api/tenants/' + tenantId,
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
@@ -69,6 +80,22 @@ define(['exports'], function(exports) {
         } else if (!displayName || (displayName && !_.isString(displayName))) {
             return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
         }
+
+        var data = {
+            'displayName': displayName
+        };
+
+        $.ajax({
+            'url': '/api/tenants',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
@@ -88,5 +115,21 @@ define(['exports'], function(exports) {
         } else if (!displayName || (displayName && !_.isString(displayName))) {
             return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
         }
+
+        var data = {
+            'displayName': displayName
+        };
+
+        $.ajax({
+            'url': '/api/tenants/' + tenantId,
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 });
