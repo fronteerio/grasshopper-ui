@@ -16,8 +16,8 @@
 /**
  * Initialises the grasshopper APIs
  */
-define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.tests', 'gh.api.user', 'gh.api.util'],
-    function(adminAPI, appAPI, authenticationAPI, configAPI, eventAPI, orgunitAPI, seriesAPI, tenantAPI, testsAPI, userAPI, utilAPI) {
+define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'],
+    function(adminAPI, appAPI, authenticationAPI, configAPI, eventAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI, utilAPI) {
 
         var gh = {
             'api': {
@@ -29,7 +29,6 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 'orgunitAPI': orgunitAPI,
                 'seriesAPI': seriesAPI,
                 'tenantAPI': tenantAPI,
-                'testsAPI': testsAPI,
                 'userAPI': userAPI,
                 'utilAPI': utilAPI
             }

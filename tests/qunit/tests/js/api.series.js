@@ -13,12 +13,12 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('Series API');
 
     QUnit.test('init', function(assert) {
         assert.ok(true);
     });
 
-    QUnit.start();
+    testAPI.init();
 });

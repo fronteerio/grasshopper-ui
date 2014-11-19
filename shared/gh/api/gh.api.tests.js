@@ -25,6 +25,14 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     ////////////////////////
 
     /**
+     * Initialise the QUnit async tests
+     */
+    var init = exports.init = function() {
+        QUnit.moduleStart(onModuleStart);
+        QUnit.start();
+    };
+
+    /**
      * Return an app by its id
      *
      * @param  {Number}    appId    The application id
@@ -99,13 +107,6 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     //////////////////////////
     //  INTERNAL FUNCTIONS  //
     //////////////////////////
-
-    /**
-     * Initialise the QUnit async tests
-     */
-    var init = function() {
-        QUnit.moduleStart(onModuleStart);
-    };
 
     /**
      * Function that is executed before the QUnit module test is started
@@ -202,7 +203,4 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
         // Start fetching the apps
         _fetchAppsForTenant();
     };
-
-    // Initialise the tests
-    init();
 });

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.module('Admin API');
 
     /*!
@@ -157,5 +157,5 @@ require(['gh.core'], function(gh) {
         });
     });
 
-    QUnit.start();
+    testAPI.init();
 });
