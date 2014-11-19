@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.module('User API');
 
     /*!
@@ -32,7 +32,7 @@ require(['gh.core'], function(gh) {
                 return callback(err);
             }
 
-            var appId = gh.api.testsAPI.getRandomApp().id;
+            var appId = testAPI.getRandomApp().id;
             var user = {
                 'displayName': gh.api.utilAPI.generateRandomString(),
                 'email': gh.api.utilAPI.generateRandomString(),
@@ -381,7 +381,7 @@ require(['gh.core'], function(gh) {
     QUnit.asyncTest('createUser', function(assert) {
         expect(7);
 
-        var appId = gh.api.testsAPI.getRandomApp().id;
+        var appId = testAPI.getRandomApp().id;
         var user = {
             'displayName': gh.api.utilAPI.generateRandomString(),
             'email': gh.api.utilAPI.generateRandomString(),
@@ -429,7 +429,7 @@ require(['gh.core'], function(gh) {
         expect(8);
 
         // Get a random tenant id
-        var tenantId = gh.api.testsAPI.getRandomTenant().id;
+        var tenantId = testAPI.getRandomTenant().id;
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -655,5 +655,5 @@ require(['gh.core'], function(gh) {
         });
     });
 
-    QUnit.start();
+    testAPI.init();
 });

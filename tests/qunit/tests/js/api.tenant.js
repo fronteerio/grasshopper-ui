@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('Tenant API');
 
     // Test the getTenants functionality
@@ -36,5 +36,5 @@ require(['gh.core'], function(gh) {
         }
     });
 
-    QUnit.start();
+    testAPI.init();
 });

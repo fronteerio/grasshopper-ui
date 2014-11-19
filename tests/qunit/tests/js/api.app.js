@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('App API');
 
     // Test the getApps functionality
@@ -21,7 +21,7 @@ require(['gh.core'], function(gh) {
         expect(5);
 
         // Fetch a random test tenant
-        var tenant = gh.api.testsAPI.getRandomTenant();
+        var tenant = testAPI.getRandomTenant();
 
         // Verify that an error is thrown when an invalid tenantId was provided
         gh.api.appAPI.getApps(null, function(err, data) {
@@ -45,5 +45,5 @@ require(['gh.core'], function(gh) {
         });
     });
 
-    QUnit.start();
+    testAPI.init();
 });

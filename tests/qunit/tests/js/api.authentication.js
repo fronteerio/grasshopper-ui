@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core'], function(gh) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('Authentication API');
 
     /*!
@@ -32,7 +32,7 @@ require(['gh.core'], function(gh) {
                 return callback(err);
             }
 
-            var appId = gh.api.testsAPI.getRandomApp().id;
+            var appId = testAPI.getRandomApp().id;
             var displayName = gh.api.utilAPI.generateRandomString();
             var email = gh.api.utilAPI.generateRandomString();
             var password = gh.api.utilAPI.generateRandomString();
@@ -87,5 +87,5 @@ require(['gh.core'], function(gh) {
         });
     });
 
-    QUnit.start();
+    testAPI.init();
 });
