@@ -72,6 +72,10 @@ select.form-control {
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
+    -webkit-box-sizing: initial;
+       -moz-box-sizing: initial;
+            box-sizing: initial;
+    width: 177px;
     padding: 39px 46px 38px 46px;
 }
 

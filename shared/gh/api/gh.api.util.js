@@ -32,9 +32,9 @@ define(['exports'], function(exports) {
     /**
      * Render a template and either return the HTML or populate a target container with the result
      *
-     * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container.
-     * @param  {Object}            [data]       JSON object representing the values used to process the template.
-     * @param  {Element|String}    [$target]    jQuery element representing the HTML element in which the template output should be put, or jQuery selector for the output container.
+     * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container
+     * @param  {Object}            [data]       JSON object representing the values used to process the template
+     * @param  {Element|String}    [$target]    jQuery element representing the HTML element in which the template output should be put, or jQuery selector for the output container
      *
      * @return {String}                         The rendered HTML
      * @throws {Error}                          Error thrown when no template has been provided

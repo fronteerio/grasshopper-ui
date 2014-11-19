@@ -34,8 +34,8 @@ casper.test.begin('Page - Timetable Index', function(test) {
     var verifyLogInForm = function() {
         casper.echo('# Verify the timetable login form', 'INFO');
         casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-email"]', 'Verify the login form has a email label');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-email', 'Verify the login form has a email field');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-email"]', 'Verify the login form has an email label');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-email', 'Verify the login form has an email field');
             test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-password"]', 'Verify the login form has a password label');
             test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-password', 'Verify the login form has a password field');
             test.assertExists('#gh-right-container #gh-header #gh-signin-form button[type="submit"]', 'Verify the login form has a submit button');
