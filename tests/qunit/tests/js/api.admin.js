@@ -41,43 +41,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     };
 
-    // Test the createAdmin functionality
-    QUnit.asyncTest('createAdmin', function(assert) {
-        expect(7);
-
-        var user = {
-            'username': gh.api.utilAPI.generateRandomString(),
-            'displayName': gh.api.utilAPI.generateRandomString(),
-            'password': gh.api.utilAPI.generateRandomString()
-        };
-
-        // Verify that an error is thrown when an invalid value for 'username' was provided
-        gh.api.adminAPI.createAdmin(null, user.displayName, user.password, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when an invalid value for username was provided');
-
-            // Verify that an error is thrown when an invalid value for 'displayName' was provided
-            gh.api.adminAPI.createAdmin(user.username, null, user.password, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
-
-                // Verify that an error is thrown when an invalid value for 'password' was provided
-                gh.api.adminAPI.createAdmin(user.username, user.displayName, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
-
-                    // Verify that administrators can be created without retrieving an error
-                    gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
-                        assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
-                        assert.ok(data, 'Verify that the created administrator is returned');
-                        assert.strictEqual(data.username, user.username, 'Verify that the created administrator has the correct user name');
-                        assert.strictEqual(data.displayName, user.displayName, 'Verify that the created administrator has the correct display name');
-                        QUnit.start();
-                    });
-                });
-            });
-        });
-    });
-
-    // Test the getAdmins functionality
-    QUnit.asyncTest('getAdmins', function(assert) {
+    // Test the getGlobalAdmins functionality
+    QUnit.asyncTest('getGlobalAdmins', function(assert) {
         expect(7);
 
         // Create a new user
@@ -113,8 +78,43 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the updateAdmin functionality
-    QUnit.asyncTest('updateAdmin', function(assert) {
+    // Test the createGlobalAdmin functionality
+    QUnit.asyncTest('createGlobalAdmin', function(assert) {
+        expect(7);
+
+        var user = {
+            'username': gh.api.utilAPI.generateRandomString(),
+            'displayName': gh.api.utilAPI.generateRandomString(),
+            'password': gh.api.utilAPI.generateRandomString()
+        };
+
+        // Verify that an error is thrown when an invalid value for 'username' was provided
+        gh.api.adminAPI.createAdmin(null, user.displayName, user.password, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid value for username was provided');
+
+            // Verify that an error is thrown when an invalid value for 'displayName' was provided
+            gh.api.adminAPI.createAdmin(user.username, null, user.password, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
+
+                // Verify that an error is thrown when an invalid value for 'password' was provided
+                gh.api.adminAPI.createAdmin(user.username, user.displayName, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
+
+                    // Verify that administrators can be created without retrieving an error
+                    gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
+                        assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
+                        assert.ok(data, 'Verify that the created administrator is returned');
+                        assert.strictEqual(data.username, user.username, 'Verify that the created administrator has the correct user name');
+                        assert.strictEqual(data.displayName, user.displayName, 'Verify that the created administrator has the correct display name');
+                        QUnit.start();
+                    });
+                });
+            });
+        });
+    });
+
+    // Test the updateGlobalAdmin functionality
+    QUnit.asyncTest('updateGlobalAdmin', function(assert) {
         expect(9);
 
         // Create a new user

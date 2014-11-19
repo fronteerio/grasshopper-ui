@@ -47,6 +47,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     };
 
+
+    //////////////////////////
+    // LOCAL AUTHENTICATION //
+    //////////////////////////
+
     // Test the login functionality
     QUnit.asyncTest('login', function(assert) {
         expect(4);
@@ -84,6 +89,28 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             });
         });
     });
+
+    // Test the changePassword functionality
+
+
+    ///////////////////////////////
+    // SHIBBOLETH AUTHENTICATION //
+    ///////////////////////////////
+
+    // Test the shibbolethLogin functionality
+
+    // Test the redirectToIdentityProvider functionality
+
+    // Test the identityProviderCallback functionality
+
+    // Test the redirectToOriginatingApp functionality
+
+
+    //////////////////////////
+    // SIGNED AUTHENTICATON //
+    //////////////////////////
+
+    // Test the becomeUser functionality
 
     testAPI.init();
 });

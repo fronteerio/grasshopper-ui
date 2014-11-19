@@ -33,5 +33,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
+    // Test the getTenant functionality
+
+    // Test the createTenant functionality
+
+    // Test the updateTenant functionality
+
     testAPI.init();
 });
