@@ -64,24 +64,23 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     assert.ok(err, 'Verify that an error is thrown when an invalid password was provided');
 
                     // Verify that an error is thrown when an invalid callback was provided
-                    try {
+                    assert.throws(function() {
                         gh.api.authenticationAPI.login(user.id, password);
-                    } catch(err) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
-                    } finally {
-                        QUnit.start();
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                        /**
-                         * TODO: wait for back-end implementation
-                         *
-                        // Verifty that a user can login without errors
-                        gh.api.authenticationAPI.login(user.id, password, function(err, data) {
-                            assert.ok(!err, 'Verifty that a user can login without errors');
-                            assert.ok(data, 'Verify that the logged user is returned');
-                            QUnit.start();
-                        });
-                        */
-                    }
+                    QUnit.start();
+
+                    /**
+                     * TODO: wait for back-end implementation
+                     *
+                    // Verifty that a user can login without errors
+                    gh.api.authenticationAPI.login(user.id, password, function(err, data) {
+                        assert.ok(!err, 'Verifty that a user can login without errors');
+                        assert.ok(data, 'Verify that the logged user is returned');
+                        QUnit.start();
+                    });
+                    */
+
                 });
             });
         });
