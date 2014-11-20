@@ -1,6 +1,6 @@
 #!/bin/sh
-# Run the full set of tests and keep track of the
-# exit codes for each of the tests to exit at the end.
+# Run the full set of tests or a subset and keep track of
+# the exit codes for each of the tests to exit at the end.
 
 # Function to lint the source code
 LINTEXITCODE=0
@@ -25,10 +25,16 @@ runCasperJSTests() {
 
 # Lint the source code
 runLint
-# Run the QUnit tests
-runQunitTests
-# Run the CasperJS tests
-runCasperJSTests
+# Run the QUnit tests, if required
+if [ $1 = "qunit" ] || [ $1 = "all" ]
+    then
+    runQunitTests
+fi
+# Run the CasperJS tests, if required
+if [ $1 = "casper" ]  || [ $1 = "all" ]
+    then
+    runCasperJSTests
+fi
 
 # Determine to end tests with failure or success exit code
 EXITCODE=$((CASPEREXITCODE+QUNITEXITCODE+LINTEXITCODE))
