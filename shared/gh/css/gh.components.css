@@ -110,13 +110,18 @@
     display: table-cell;
     max-width: 50px;
     overflow: hidden;
+    position: relative;
     text-align: center;
     vertical-align: middle;
     width: 50px;
 }
 
 .list-group .list-group-item .gh-list-action .btn-link {
+    height: 100%;
     padding: 16px;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .list-group .list-group-item .gh-list-action .btn-link i {
