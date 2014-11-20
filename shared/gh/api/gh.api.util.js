@@ -52,10 +52,10 @@ define(['exports'], function(exports) {
 
         // Add our own functions to lodash to declare and access partials
         _.mixin({
-            declarePartial: function(name, template) {
+            'declarePartial': function(name, template) {
                 partialCache[name] = _.template(template);
             },
-            partial: function(name, data) {
+            'partial': function(name, data) {
                 return partialCache[name](data);
             }
         });
