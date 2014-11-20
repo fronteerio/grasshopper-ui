@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.listview'], function(gh) {
+define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
 
     // Dummy module JSON data to render the partial with
     var dummyModules = [
@@ -115,6 +115,20 @@ define(['gh.core', 'bootstrap.listview'], function(gh) {
     };
 
     /**
+     * Render the subheader
+     */
+    var renderSubHeader = function() {
+        $('#gh-subheader-tripos').chosen({
+            'no_results_text': 'No matches for'
+        });
+
+        $('#gh-subheader-part').chosen({
+            'no_results_text': 'No matches for',
+            'disable_search_threshold': 10
+        });
+    };
+
+    /**
      * Render the modules in the sidebar
      */
     var renderModules = function() {
@@ -154,6 +168,7 @@ define(['gh.core', 'bootstrap.listview'], function(gh) {
     var initIndex = function() {
         addBinding();
         renderHeader();
+        renderSubHeader();
         renderModules();
     };
 

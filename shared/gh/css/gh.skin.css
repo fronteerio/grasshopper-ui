@@ -50,6 +50,15 @@ h1, h2, h3, h4, h5 {
 }
 
 
+/*********/
+/* FORMS */
+/*********/
+
+#gh-right-container #gh-subheader form {
+    color: #313131;
+}
+
+
 /***********/
 /* BUTTONS */
 /***********/
@@ -180,4 +189,23 @@ h1, h2, h3, h4, h5 {
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
     background-color: #07525D;
+}
+
+
+/**********/
+/* CHOSEN */
+/**********/
+
+.chosen-container .chosen-single {
+    background: #FFF;
+    color: #171717;
+}
+
+.chosen-container .chosen-search input {
+    color: #555 !important;
+    border-color: #CCC !important;
+}
+
+.chosen-container .chosen-results li.highlighted {
+    background-color: #127077;
 }

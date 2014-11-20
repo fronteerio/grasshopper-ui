@@ -3,6 +3,7 @@
     <title>My timetable</title>
     <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
     <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
+    <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
     <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
@@ -25,22 +26,44 @@
             <div id="gh-header"></div>
             <div id="gh-subheader">
                 <form class="row form-horizontal">
-                    <div class="col-xs-3">
-                        <select name="cars" class="form-control">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-3">
-                        <select name="cars" class="form-control">
-                            <option value="volvo">Volvo XC90</option>
-                            <option value="saab">Saab 95</option>
-                            <option value="mercedes">Mercedes SLK</option>
-                            <option value="audi">Audi TT</option>
-                        </select>
-                    </div>
+                    <select id="gh-subheader-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="width: 350px;" tabindex="-1">
+                        <option value=""></option>
+                        <optgroup label="Engineering">
+                            <option>Advanced Chemical Engineering MPhil</option>
+                            <option>Advanced Computer Science MPhil</option>
+                            <option>African Studies MPhil</option>
+                            <option>American Literature MPhil</option>
+                            <option>Anglo-Saxon, Norse and Celtic</option>
+                            <option>Applied Biological Anthropology MPhil</option>
+                            <option>Archaeological Research MPhil</option>
+                            <option>Archaeology MPhil</option>
+                            <option>Archaeology and Anthropology Tripos</option>
+                            <option>Architecture</option>
+                        </optgroup>
+                        <optgroup label="Asian and Middle Eastern Studies">
+                            <option>Assyriology MPhil</option>
+                            <option>Bioscience Enterprise MPhil</option>
+                            <option>Chemical Engineering</option>
+                            <option>Choral Studies MMus</option>
+                            <option>Classics</option>
+                            <option>Clinical Science MPhil</option>
+                            <option>Computational Biology MPhil</option>
+                            <option>Computer Science Tripos</option>
+                            <option>Conservation Leadership MPhil</option>
+                            <option>Criminological Research MPhil</option>
+                            <option>Criminology MPhil</option>
+                            <option>Development Studies MPhil</option>
+                            <option>Early Modern History MPhil</option>
+                            <option>Economic and Social History MPhil</option>
+                        </optgroup>
+                    </select>
+
+                    <select id="gh-subheader-part" class="chosen-select" data-placeholder="Choose a part/paper" style="width: 350px;" tabindex="-1">
+                        <option value=""></option>
+                        <option>Part IA</option>
+                        <option>Part IB</option>
+                        <option>Part II</option>
+                    </select>
                 </form>
             </div>
             <main>
