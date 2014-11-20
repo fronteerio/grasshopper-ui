@@ -2,14 +2,14 @@
 <html>
     <head>
         <title>QUnit</title>
-        <link rel="stylesheet" href="../css/qunit.css">
-        <script src="/tests/qunit/js/qunit.js"></script>
+        <link rel="stylesheet" href="/qunit/css/qunit.css">
+        <script src="/qunit/js/qunit.js"></script>
     </head>
     <body>
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
 
         <script>QUnit.config.autostart = false;</script>
-        <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/tests/qunit/tests/js/api.util.js" src="/shared/vendor/js/require.js"></script>
+        <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/qunit/tests/js/api.util.js" src="/shared/vendor/js/require.js"></script>
     </body>
 </html>
