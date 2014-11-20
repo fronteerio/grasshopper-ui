@@ -68,11 +68,25 @@ module.exports = function(grunt) {
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
-            'stopGrasshopper': {
-                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
+            'runCasperTest': {
+                'cmd': function(path) {
+                    var includes = grunt.config('ghost').dist.options.includes;
+                    var pre = grunt.config('ghost').dist.options.pre;
+
+                    return 'casperjs test --includes=' + includes + ' --pre=' + pre + ' ' + path;
+                }
+            },
+            'startCasperDependencies': {
+                'cmd': 'node tests/startDependencies.js -t casper'
             },
             'startDependencies': {
-                'cmd': 'node tests/startDependencies.js'
+                'cmd': 'node tests/startDependencies.js -t all'
+            },
+            'startQUnitDependencies': {
+                'cmd': 'node tests/startDependencies.js -t qunit'
+            },
+            'stopGrasshopper': {
+                'cmd': 'kill $(ps aux | grep \'node app.js\' | grep -v \'grep node app.js\' | awk \'{print $2}\') &> /dev/null || true'
             }
         },
         'ghost': {
@@ -262,11 +276,25 @@ module.exports = function(grunt) {
     //////////////////
 
     // Lint tasks for JavaScript and CSS
-    grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('test', ['exec:stopGrasshopper', 'exec:startDependencies']);
+    grunt.registerTask('lint', 'Run jshint and csslint', ['jshint', 'csslint']);
+    // Run all tests
+    grunt.registerTask('test', 'Run all tests (jshint, csslint, QUnit and CasperJS)', ['exec:stopGrasshopper', 'exec:startDependencies']);
+    // Run QUnit tests
+    grunt.registerTask('q', 'Run the QUnit tests', ['exec:stopGrasshopper', 'exec:startQUnitDependencies']);
+    // Generate a coverage report
+    grunt.registerTask('coverage', 'Generate coverage reports through QUnit and Istanbul (outputs to ./coverage)', ['qunit']);
+    // Run a single CasperJS test
+    grunt.registerTask('casper', 'Run the CasperJS tests. A single test can be specified with the --path parameter. e.g., grunt casper --path /path/to/test.js', function(path) {
+        path = path || grunt.option('path');
 
-    // Coverage report task
-    grunt.registerTask('coverage', ['qunit']);
+        if (path) {
+            grunt.task.run('exec:runCasperTest:' + path);
+        } else {
+            grunt.log.ok('Running all CasperJS tests. If you intended to run a single test try `grunt casper --path /path/to/test.js`');
+            grunt.task.run('exec:stopGrasshopper');
+            grunt.task.run('exec:startCasperDependencies');
+        }
+    });
 
     /**
      * Task that changes the paths in the optimized Apache configuration files
@@ -396,7 +424,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**
