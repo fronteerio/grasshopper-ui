@@ -23,6 +23,7 @@ requirejs.config({
         'bootstrap': 'vendor/js/bootstrap',
         'jquery': 'vendor/js/jquery-2.1.1',
         'lodash': 'vendor/js/lodash',
+        'text': 'vendor/js/require.text',
 
         // GH API modules
         'gh.api': 'gh/api/gh.api',
@@ -39,7 +40,10 @@ requirejs.config({
         'gh.api.user': 'gh/api/gh.api.user',
         'gh.api.util': 'gh/api/gh.api.util',
         'gh.bootstrap': 'gh/api/gh.bootstrap',
-        'gh.core': 'gh/api/gh.core'
+        'gh.core': 'gh/api/gh.core',
+
+        // GH Plugins
+        'bootstrap.listview': 'gh/js/bootstrap.listview'
     },
     'shim' : {
         'bootstrap' : {

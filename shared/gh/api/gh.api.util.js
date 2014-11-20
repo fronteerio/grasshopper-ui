@@ -38,6 +38,39 @@ define(['exports'], function(exports) {
     };
 
     /**
+     * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with
+     * custom functions that are available in every template. By running
+     * `_.partial('name', data)` in a template the partial can be accessed. The name
+     * corresponds to the name given when declaring the partial. The data should be an
+     * object containing values used in the partial.
+     *
+     * @param  {Function}    callback    Standard callback function
+     */
+    var cachePartials = exports.cachePartials = function(callback) {
+        // Used to cache the partials
+        var partialCache = {};
+
+        // Add our own functions to lodash to declare and access partials
+        _.mixin({
+            declarePartial: function(name, template) {
+                partialCache[name] = _.template(template);
+            },
+            partial: function(name, data) {
+                return partialCache[name](data);
+            }
+        });
+
+        // Require all the partial HTML files
+        require(['text!gh/partials/list-group-item.html'], function(listGroupItem) {
+
+            // Declare all partials which makes them available in every template
+            _.declarePartial('list-group-item', listGroupItem);
+
+            callback();
+        });
+    };
+
+    /**
      * Render a template and either return the HTML or populate a target container with the result
      *
      * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container

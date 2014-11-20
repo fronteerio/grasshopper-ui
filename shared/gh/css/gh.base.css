@@ -81,7 +81,18 @@ select.form-control {
 
 #gh-page-container #gh-left-container #gh-content-description p {
     margin: 0;
-    padding: 30px 45px;
+    padding: 30px 39px;
+}
+
+#gh-page-container #gh-left-container #gh-result-summary {
+    background-color: #127077;
+    border-bottom: 1px solid #171717;
+    height: 45px;
+}
+
+#gh-page-container #gh-left-container #gh-result-summary p {
+    margin: 0;
+    padding: 12px 39px;
 }
 
 /* Main page right hand side (content) container */

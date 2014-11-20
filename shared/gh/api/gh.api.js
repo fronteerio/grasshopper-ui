@@ -47,8 +47,10 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                     // throw new Error('The /me feed could not be loaded - ' + err.code + ': ' + err.msg);
                 }
 
-                // Continue startup
-                return callback(gh);
+                utilAPI.cachePartials(function() {
+                    // Continue startup
+                    return callback(gh);
+                });
             });
         };
 
