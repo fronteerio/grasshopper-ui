@@ -8,6 +8,10 @@ A container for grasshopper applications
 ## Code coverage
 [![Coverage Status](https://coveralls.io/repos/CUL-DigitalServices/grasshopper-ui/badge.png)](https://coveralls.io/r/CUL-DigitalServices/grasshopper-ui)
 
+# Dependencies
+[![Dependency Status](https://david-dm.org/CUL-DigitalServices/grasshopper-ui.svg)](https://david-dm.org/CUL-DigitalServices/grasshopper-ui)
+[![devDependency Status](https://david-dm.org/CUL-DigitalServices/grasshopper-ui/dev-status.svg)](https://david-dm.org/CUL-DigitalServices/grasshopper-ui#info=devDependencies)
+
 ## Installation
 
 ### Interfaces
