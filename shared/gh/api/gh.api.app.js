@@ -31,7 +31,7 @@ define(['exports'], function(exports) {
         }
 
         $.ajax({
-            'url': '/api/apps/?tenantId=' + tenantId,
+            'url': '/api/apps?tenantId=' + tenantId,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -131,7 +131,7 @@ define(['exports'], function(exports) {
         };
 
         $.ajax({
-            'url': '/api/apps/',
+            'url': '/api/apps',
             'type': 'POST',
             'data': data,
             'success': function(data) {

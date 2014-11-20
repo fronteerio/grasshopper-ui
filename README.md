@@ -28,10 +28,10 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 
 ### Apache 2
 
-```
-# Download Apache HHTP 2.4
+# Download Apache HTTP 2.4
 Follow the installation instructions from the [Apache website](http://httpd.apache.org/docs/2.4/install.html).
 
+```
 # Create a sites-enabled directory
 mkdir /usr/local/apache2/sites-enabled
 

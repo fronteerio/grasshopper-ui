@@ -95,7 +95,7 @@ define(['exports'], function(exports) {
          * TODO: wait for back-end implementation
          *
         $.ajax({
-            'url': '/api/users/',
+            'url': '/api/users',
             'type': 'GET',
             'success': function(data) {
                 return callback(null, data);
