@@ -41,5 +41,23 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
     });
 
+    // Test the generateRandomString functionality
+    QUnit.test('generateRandomString', function(assert) {
+
+        // Verify that only boolean values are allowed as a parameter
+        assert.throws(function() {
+            gh.api.utilAPI.generateRandomString('invalid_value');
+        }, 'Verify that only boolean values are allowed as a parameter');
+
+        // Verify that the returned string has exactly 10 characters
+        assert.strictEqual(gh.api.utilAPI.generateRandomString().length, 10, 'Verify that the returned string has exactly 10 characters');
+
+        // Verify that the returned string does not contain any uppercase characters when lowercase is specified
+        assert.ok((/^[a-z]*$/).test(gh.api.utilAPI.generateRandomString(true)));
+
+        // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
+        assert.ok((/[A-Z]/g).test(gh.api.utilAPI.generateRandomString()));
+    });
+
     testAPI.init();
 });

@@ -31,6 +31,7 @@ requirejs.config({
         'gh.api.authentication': 'gh/api/gh.api.authentication',
         'gh.api.config': 'gh/api/gh.api.config',
         'gh.api.event': 'gh/api/gh.api.event',
+        'gh.api.groups': 'gh/api/gh.api.groups',
         'gh.api.orgunit': 'gh/api/gh.api.orgunit',
         'gh.api.series': 'gh/api/gh.api.series',
         'gh.api.tenant': 'gh/api/gh.api.tenant',

@@ -20,5 +20,37 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.ok(true);
     });
 
+    // Test the getSeries functionality
+
+    // Test the getSeriesEvents functionality
+
+    // Test the getSeriesCalendar functionality
+
+    // Test the getSeriesCalendarIcal functionality
+
+    // Test the getSeriesCalendarRss functionality
+
+    // Test the getSeriesUpcoming functionality
+
+    // Test the createSeries functionality
+
+    // Test the createSeriesByApp functionality
+
+    // Test the updateSeries functionality
+
+    // Test the setSeriesPicture functionality
+
+    // Test the cropSeriesPicture functionality
+
+    // Test the addSeriesEvent functionality
+
+    // Test the deleteSeriesEvents functionality
+
+    // Test the deleteSeries functionality
+
+    // Test the getSeriesSubscribers functionality
+
+    // Test the subscribeSeries functionality
+
     testAPI.init();
 });

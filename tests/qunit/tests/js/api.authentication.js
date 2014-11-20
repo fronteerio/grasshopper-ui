@@ -38,7 +38,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             var password = gh.api.utilAPI.generateRandomString();
 
             // Create a new user
-            gh.api.userAPI.createUser(appId, displayName, email, password, null, null, null, function(err, user) {
+            gh.api.userAPI.createUser(appId, displayName, email, password, null, false, null, null, function(err, user) {
                 if (err) {
                     return callback(err);
                 }
@@ -46,6 +46,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             });
         });
     };
+
+
+    //////////////////////////
+    // LOCAL AUTHENTICATION //
+    //////////////////////////
 
     // Test the login functionality
     QUnit.asyncTest('login', function(assert) {
@@ -80,11 +85,32 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                         QUnit.start();
                     });
                     */
-
                 });
             });
         });
     });
+
+    // Test the changePassword functionality
+
+
+    ///////////////////////////////
+    // SHIBBOLETH AUTHENTICATION //
+    ///////////////////////////////
+
+    // Test the shibbolethLogin functionality
+
+    // Test the redirectToIdentityProvider functionality
+
+    // Test the identityProviderCallback functionality
+
+    // Test the redirectToOriginatingApp functionality
+
+
+    //////////////////////////
+    // SIGNED AUTHENTICATON //
+    //////////////////////////
+
+    // Test the becomeUser functionality
 
     testAPI.init();
 });

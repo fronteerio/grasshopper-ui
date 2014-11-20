@@ -19,6 +19,11 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     var _apps = null;
     var _tenants = null;
 
+    // Application types
+    var _types = {
+        'TIMETABLE': 'timetable'
+    };
+
 
     ////////////////////////
     //  PUBLIC FUNCTIONS  //
@@ -28,7 +33,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
      * Initialise the QUnit async tests
      */
     var init = exports.init = function() {
-        QUnit.moduleStart(onModuleStart);
+        QUnit.testStart(onTestStart);
         QUnit.start();
     };
 
@@ -49,6 +54,27 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
      */
     var getApps = exports.getApps = function() {
         return _apps;
+    };
+
+    /**
+     * Return a random application
+     *
+     * @return {Object}    Object representing an application
+     */
+    var getRandomApp = exports.getRandomApp = function() {
+        return _.sample(_apps);
+    };
+
+    /**
+     * Return a random tenant
+     *
+     * @return {Object}    Object representing a tenant
+     */
+    var getRandomTenant = exports.getRandomTenant = function() {
+        var tenant = _.chain(_.cloneDeep(_tenants)).sample().value();
+
+        // Add the tenant's applications
+        return _.extend(tenant, {'apps': _.filter(_apps, {'TenantId': tenant.id})});
     };
 
     /**
@@ -83,55 +109,16 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Return a random application
-     *
-     * @return {Object}    Object representing an application
+     * Returns the test application types
      */
-    var getRandomApp = exports.getRandomApp = function() {
-        return _.sample(_apps);
-    };
-
-    /**
-     * Return a random tenant
-     *
-     * @return {Object}    Object representing a tenant
-     */
-    var getRandomTenant = exports.getRandomTenant = function() {
-        var tenant = _.chain(_.cloneDeep(_tenants)).sample().value();
-
-        // Add the tenant's applications
-        return _.extend(tenant, {'apps': _.filter(_apps, {'TenantId': tenant.id})});
+    var getTypes = exports.getTypes = function() {
+        return _types;
     };
 
 
     //////////////////////////
     //  INTERNAL FUNCTIONS  //
     //////////////////////////
-
-    /**
-     * Function that is executed before the QUnit module test is started
-     *
-     * @private
-     */
-    var onModuleStart = function() {
-        QUnit.stop();
-
-        // Login with the global administrator
-        authenticationAPI.login('administrator', 'administrator', function(err, data) {
-            if (err) {
-                QUnit.stop();
-            }
-
-            // Fetch all the tenants
-            fetchTenants(function() {
-
-                // Fetch all the apps
-                fetchAppsForTenants(function() {
-                    QUnit.start();
-                });
-            });
-        });
-    };
 
     /**
      * Fetches all the tenants
@@ -202,5 +189,32 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
 
         // Start fetching the apps
         _fetchAppsForTenant();
+    };
+
+    /**
+     * Function that fetches the test data after each test
+     */
+    var onTestStart = function() {
+        QUnit.stop();
+
+        // Reset the test data
+        _apps = null;
+        _tenants = null;
+
+        // Login with the global administrator
+        authenticationAPI.login('administrator', 'administrator', function(err, data) {
+            if (err) {
+                QUnit.stop();
+            }
+
+            // Fetch all the tenants
+            fetchTenants(function() {
+
+                // Fetch all the apps
+                fetchAppsForTenants(function() {
+                    QUnit.start();
+                });
+            });
+        });
     };
 });
