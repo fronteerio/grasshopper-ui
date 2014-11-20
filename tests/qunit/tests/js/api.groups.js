@@ -14,31 +14,19 @@
  */
 
 require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
-    module('Event API');
+    module('Groups API');
 
     QUnit.test('init', function(assert) {
         assert.ok(true);
     });
 
-    // Test the getEvent functionality
+    // Test the getGroupMembers functionality
 
-    // Test the createEvent functionality
+    // Test the updateGroupMembers functionality
 
-    // Test the createEventByApp functionality
+    // Test the lock functionality
 
-    // Test the updateEvent functionality
-
-    // Test the updateEventOrganisers functionality
-
-    // Test the setEventPicture functionality
-
-    // Test the cropEventPicture functionality
-
-    // Test the deleteEvent functionality
-
-    // Test the getEventSubscribers functionality
-
-    // Test the subscribeEvent functionality
+    // Test the releaseLock functionality
 
     testAPI.init();
 });

@@ -20,5 +20,39 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.ok(true);
     });
 
+    // Test the getOrgUnits functionality
+
+    // Test the getOrgUnitsByApp functionality
+
+    // Test the getOrgUnit functionality
+
+    // Test the getOrgUnitSeries functionality
+
+    // Test the getOrgUnitCalendar functionality
+
+    // Test the getOrgUnitCalendarIcal functionality
+
+    // Test the getOrgUnitCalendarRss functionality
+
+    // Test the getOrgUnitUpcoming functionality
+
+    // Test the createOrgUnit functionality
+
+    // Test the createOrgUnitByApp functionality
+
+    // Test the updateOrgUnit functionality
+
+    // Test the addOrgUnitSeries functionality
+
+    // Test the addOrgUnitEvents functionality
+
+    // Test the deleteOrgUnitSeries functionality
+
+    // Test the deleteOrgUnitEvents functionality
+
+    // Test the deleteOrgUnit functionality
+
+    // Test the subscribeOrgUnit functionality
+
     testAPI.init();
 });

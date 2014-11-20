@@ -13,26 +13,9 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
-    module('Config API');
-
-    QUnit.test('init', function(assert) {
-        assert.ok(true);
-    });
-
-    // Test the getConfigSchema functionality
-
-    // Test the getConfig functionality
-
-    // Test the getConfigByApp functionality
-
-    // Test the updateConfig functionality
-
-    // Test the updateConfigByApp functionality
-
-    // Test the clearConfig functionality
-
-    // Test the clearConfigByApp functionality
-
-    testAPI.init();
-});
+/**
+ * Search API functions
+ */
+var searchAPI = (function() {
+    return {};
+})();

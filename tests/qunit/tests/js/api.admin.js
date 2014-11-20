@@ -24,7 +24,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
      * @param  {Object}      callback.user    Response object containing the created administrator
      * @private
      */
-    var _generateRandomUser = function(callback) {
+    var _generateRandomAdmin = function(callback) {
 
         var user = {
             'username': gh.api.utilAPI.generateRandomString(),
@@ -41,8 +41,45 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     };
 
-    // Test the createAdmin functionality
-    QUnit.asyncTest('createAdmin', function(assert) {
+    // Test the getGlobalAdmins functionality
+    QUnit.asyncTest('getGlobalAdmins', function(assert) {
+        expect(7);
+
+        // Create a new user
+        _generateRandomAdmin(function(err, user) {
+            assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
+
+            // Verify that an error is thrown when an invalid value for 'limit' was provided
+            gh.api.adminAPI.getAdmins('some_string', null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid value for limit was provided');
+
+                // Verify that an error is thrown when an invalid value for 'offset' was provided
+                gh.api.adminAPI.getAdmins(null, 'some_string', function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
+
+                    // Verify administrators can be retrieved without error when providing a limit and an offset
+                    gh.api.adminAPI.getAdmins(10, 0, function(err, data) {
+                        assert.ok(!err, 'Verify administrators can be retrieved without retrieving an error');
+
+                        // Verify that an error is thrown when an invalid callback was provided
+                        assert.throws(function() {
+                            gh.api.adminAPI.getAdmins(null, null);
+                        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                        // Verify administrators can be retrieved without error
+                        gh.api.adminAPI.getAdmins(null, null, function(err, data) {
+                            assert.ok(!err, 'Verify that administrators can be retrieved without retrieving an error');
+                            assert.ok(data, 'Verify that the administrators are returned');
+                            QUnit.start();
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    // Test the createGlobalAdmin functionality
+    QUnit.asyncTest('createGlobalAdmin', function(assert) {
         expect(7);
 
         var user = {
@@ -76,52 +113,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the getAdmins functionality
-    QUnit.asyncTest('getAdmins', function(assert) {
-        expect(7);
-
-        // Create a new user
-        _generateRandomUser(function(err, user) {
-            assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
-
-            // Verify that an error is thrown when an invalid value for 'limit' was provided
-            gh.api.adminAPI.getAdmins('some_string', null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for limit was provided');
-
-                // Verify that an error is thrown when an invalid value for 'offset' was provided
-                gh.api.adminAPI.getAdmins(null, 'some_string', function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
-
-                    // Verify administrators can be retrieved without error when providing a limit and an offset
-                    gh.api.adminAPI.getAdmins(10, 0, function(err, data) {
-                        assert.ok(!err, 'Verify administrators can be retrieved without retrieving an error');
-
-                        // Verify that an error is thrown when an invalid callback was provided
-                        try {
-                            gh.api.adminAPI.getAdmins(null, null);
-                        } catch(err) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
-                        } finally {
-
-                            // Verify administrators can be retrieved without error
-                            gh.api.adminAPI.getAdmins(null, null, function(err, data) {
-                                assert.ok(!err, 'Verify that administrators can be retrieved without retrieving an error');
-                                assert.ok(data, 'Verify that the administrators are returned');
-                                QUnit.start();
-                            });
-                        }
-                    });
-                });
-            });
-        });
-    });
-
-    // Test the updateAdmin functionality
-    QUnit.asyncTest('updateAdmin', function(assert) {
+    // Test the updateGlobalAdmin functionality
+    QUnit.asyncTest('updateGlobalAdmin', function(assert) {
         expect(9);
 
         // Create a new user
-        _generateRandomUser(function(err, user) {
+        _generateRandomAdmin(function(err, user) {
             assert.ok(!err, 'Verify that administrators can be created without retrieving an error');
 
             // Verify that an error is thrown when an invalid value for 'userId' was provided
@@ -136,22 +133,19 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     var newDisplayName = gh.api.utilAPI.generateRandomString();
 
                     // Verify that an error is thrown when an invalid callback was provided
-                    try {
+                    assert.throws(function() {
                         gh.api.adminAPI.updateAdmin(user.id, newDisplayName);
-                    } catch(err) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid callback was provided');
-                    } finally {
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                        // Verify that an administrator can be updated without retrieving an error
-                        gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
-                            assert.ok(!err, 'Verify that an administrator can be updated without retrieving an error');
-                            assert.ok(data, 'Verify that the updated administrator is returned');
-                            assert.strictEqual(data.id, user.id, 'Verify that the correct administrator has been updated');
-                            assert.strictEqual(data.username, user.username, 'Verify that the username remained unchanged');
-                            assert.strictEqual(data.displayName, newDisplayName, 'Verify that the displayName was updated');
-                            QUnit.start();
-                        });
-                    }
+                    // Verify that an administrator can be updated without retrieving an error
+                    gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
+                        assert.ok(!err, 'Verify that an administrator can be updated without retrieving an error');
+                        assert.ok(data, 'Verify that the updated administrator is returned');
+                        assert.strictEqual(data.id, user.id, 'Verify that the correct administrator has been updated');
+                        assert.strictEqual(data.username, user.username, 'Verify that the username remained unchanged');
+                        assert.strictEqual(data.displayName, newDisplayName, 'Verify that the displayName was updated');
+                        QUnit.start();
+                    });
                 });
             });
         });
