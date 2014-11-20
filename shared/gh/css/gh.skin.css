@@ -45,6 +45,10 @@ h1, h2, h3, h4, h5 {
     color: #FFF;
 }
 
+#gh-page-container #gh-left-container #gh-result-summary p {
+    color: #FFF;
+}
+
 
 /***********/
 /* BUTTONS */
@@ -127,4 +131,53 @@ h1, h2, h3, h4, h5 {
 .btn-default.gh-btn-tertiary:active {
     background-color: #2A2A2A;
     border-color: #2A2A2A;
+}
+
+
+/*********/
+/* LISTS */
+/*********/
+
+.list-group .list-group-item {
+    background-color: #07525D;
+    border-bottom-color: #171717;
+    color: #FFF;
+}
+
+.list-group .list-group-item p {
+    color: #FFF;
+}
+
+.list-group .list-group-item.gh-list-group-item-open {
+    background-color: #3c858e;
+}
+
+.list-group .list-group-item .gh-list-action {
+    background-color: #127077;
+}
+
+.list-group .list-group-item .gh-list-icon i,
+.list-group .list-group-item .gh-list-action i {
+    color: #FFF;
+}
+
+.list-group .list-group-item.gh-list-group-item-added .gh-list-action {
+    background-color: #FFF !important;
+}
+
+.list-group .list-group-item.gh-list-group-item-added .gh-list-action .btn-link i {
+    color: #BE0F34;
+}
+
+/* Nested lists */
+.list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
+    background-color: #3c858e;
+}
+
+.list-group .list-group-item .list-group .list-group-item:first-child {
+    border-color: #171717;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-action {
+    background-color: #07525D;
 }

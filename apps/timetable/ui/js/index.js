@@ -13,7 +13,97 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.core'], function(exports, gh) {
+define(['gh.core', 'bootstrap.listview'], function(gh) {
+
+    // Dummy module JSON data to render the partial with
+    var dummyModules = [
+        {
+            "description": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "displayName": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "eventSummary": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "id": 0,
+            "subscribed": false,
+            'events': [
+                {
+                    "description": "Citizenship",
+                    "displayName": "Citizenship",
+                    "location": "Seminar Room, Social Anthropology",
+                    "notes": "Mi1-4 W 10",
+                    "subscribed": false,
+                    "organisers": [
+                        {
+                            "organiser": {
+                                "user": {
+                                    "displayName": "Dr S Lazar",
+                                    "isAdmin": false
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "description": "Citizenship",
+                    "displayName": "Citizenship",
+                    "location": "Seminar Room, Social Anthropology",
+                    "notes": "Mi1-4 W 10",
+                    "subscribed": false,
+                    "organisers": [
+                        {
+                            "organiser": {
+                                "user": {
+                                    "displayName": "Dr S Lazar",
+                                    "isAdmin": false
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "description": "Citizenship",
+                    "displayName": "Citizenship",
+                    "location": "Seminar Room, Social Anthropology",
+                    "notes": "Mi1-4 W 10",
+                    "subscribed": false,
+                    "organisers": [
+                        {
+                            "organiser": {
+                                "user": {
+                                    "displayName": "Dr S Lazar",
+                                    "isAdmin": false
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "displayName": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "eventSummary": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
+            "id": 0,
+            "subscribed": false,
+            'events': [
+                {
+                    "description": "Citizenship 2",
+                    "displayName": "Citizenship 2",
+                    "location": "Seminar Room, Social Anthropology",
+                    "notes": "Mi1-4 W 10",
+                    "subscribed": true,
+                    "organisers": [
+                        {
+                            "organiser": {
+                                "user": {
+                                    "displayName": "Dr S Lazar",
+                                    "isAdmin": false
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
 
     /**
      * Render the header
@@ -22,6 +112,15 @@ define(['exports', 'gh.core'], function(exports, gh) {
         gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
+    };
+
+    /**
+     * Render the modules in the sidebar
+     */
+    var renderModules = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
+            'data': dummyModules
+        }, $('#gh-modules-container'));
     };
 
     /**
@@ -55,6 +154,7 @@ define(['exports', 'gh.core'], function(exports, gh) {
     var initIndex = function() {
         addBinding();
         renderHeader();
+        renderModules();
     };
 
     initIndex();

@@ -16,6 +16,10 @@
             <div id="gh-content-description">
                 <p>Select your course and part to view available modules</p>
             </div>
+            <div id="gh-result-summary">
+                <p>Found 8 modules</p>
+            </div>
+            <ul id="gh-modules-container" class="list-group">
         </div>
         <div id="gh-right-container">
             <div id="gh-header"></div>
@@ -71,6 +75,10 @@
             </form>
         <% } %>
         <h1>My timetable</h1>
+    </script>
+
+    <script id="gh-modules-template" type="text/template">
+        <%= _.partial('list-group-item', {'data': data}) %>
     </script>
 
     <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="js/index.js" src="/shared/vendor/js/require.js"></script>
