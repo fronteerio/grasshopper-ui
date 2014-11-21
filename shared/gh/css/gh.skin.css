@@ -49,6 +49,16 @@ h1, h2, h3, h4, h5 {
     color: #FFF;
 }
 
+/* Main view container */
+#gh-page-container .gh-main-view {
+    bottom: 0;
+    left: 320px;
+    position: absolute;
+    top: 215px;
+    right: 0;
+    overflow: visible;
+}
+
 
 /*********/
 /* FORMS */

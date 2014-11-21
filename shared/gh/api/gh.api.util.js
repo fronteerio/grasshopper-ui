@@ -61,9 +61,10 @@ define(['exports'], function(exports) {
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/list-group-item.html'], function(listGroupItem) {
+        require(['text!gh/partials/calendar.html', 'text!gh/partials/list-group-item.html'], function(calendar, listGroupItem) {
 
             // Declare all partials which makes them available in every template
+            _.declarePartial('calendar', calendar);
             _.declarePartial('list-group-item', listGroupItem);
 
             callback();

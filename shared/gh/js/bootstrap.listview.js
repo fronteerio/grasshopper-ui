@@ -46,7 +46,7 @@ define(['gh.core'], function(gh) {
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
             }
@@ -74,7 +74,7 @@ define(['gh.core'], function(gh) {
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
             }
@@ -110,7 +110,7 @@ define(['gh.core'], function(gh) {
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
             }
@@ -142,7 +142,7 @@ define(['gh.core'], function(gh) {
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
             }

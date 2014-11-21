@@ -22,8 +22,10 @@ requirejs.config({
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
         'chosen': 'vendor/js/chosen.jquery',
+        'fullcalendar': 'vendor/js/fullcalendar',
         'jquery': 'vendor/js/jquery-2.1.1',
         'lodash': 'vendor/js/lodash',
+        'moment': 'vendor/js/moment',
         'text': 'vendor/js/require.text',
 
         // GH API modules
@@ -44,12 +46,16 @@ requirejs.config({
         'gh.core': 'gh/api/gh.core',
 
         // GH Plugins
+        'bootstrap.calendar': 'gh/js/bootstrap.calendar',
         'bootstrap.listview': 'gh/js/bootstrap.listview'
     },
     'shim' : {
         'bootstrap' : {
-            'deps': ['jquery'],
+            'deps': ['jquery', 'fullcalendar'],
             'exports': 'Bootstrap'
+        },
+        'fullcalendar': {
+            'deps': ['jquery', 'moment']
         }
     },
     'waitSeconds': 30

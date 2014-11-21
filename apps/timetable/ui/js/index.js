@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], function(gh) {
 
     // Dummy module JSON data to render the partial with
     var dummyModules = [
@@ -138,6 +138,19 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
     };
 
     /**
+     * Render the calendar view
+     */
+    var renderCalendarView = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
+            'data': dummyModules
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Render the calendar
+     */
+
+    /**
      * Log in using the local authentication strategy
      *
      * @return {Boolean}     Return false to avoid default form behaviour
@@ -170,6 +183,7 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
         renderHeader();
         renderSubHeader();
         renderModules();
+        renderCalendarView();
     };
 
     initIndex();
