@@ -80,7 +80,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the createGlobalAdmin functionality
     QUnit.asyncTest('createGlobalAdmin', function(assert) {
-        expect(7);
+        expect(8);
 
         var user = {
             'username': gh.api.utilAPI.generateRandomString(),
@@ -99,6 +99,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 // Verify that an error is thrown when an invalid value for 'password' was provided
                 gh.api.adminAPI.createAdmin(user.username, user.displayName, null, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
+
+                    // Verify that an error is thrown when an invalid callback was provided
+                    assert.throws(function() {
+                        gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, null);
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
                     // Verify that administrators can be created without retrieving an error
                     gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
