@@ -1,0 +1,31 @@
+body {
+    margin-top: 10px;
+}
+
+#gh-qunit-bench,
+#gh-qunit-bench-iframe {
+    width: 1px;
+    height: 1px;
+}
+
+#gh-qunit-bench {
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* Tests table */
+.table tbody td,
+.table tfoot th.active {
+    border: 1px solid #DDD;
+}
+
+.gh-qunit-row-test .gh-qunit-failed,
+.gh-qunit-row-test .gh-qunit-passed,
+.gh-qunit-row-test .gh-qunit-total {
+    text-align: center;
+    width: 100px;
+}
+
+.gh-qunit-row-test .gh-qunit-result {
+    width: 10px;
+}

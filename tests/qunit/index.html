@@ -3,26 +3,137 @@
 <head>
     <title>QUnit tests</title>
     <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+
     <div class="container">
-        <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-                <h2>QUnit tests</h2>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="api.admin">Admin API</a></li>
-                    <li class="list-group-item"><a href="api.app">App API</a></li>
-                    <li class="list-group-item"><a href="api.authentication">Auth API</a></li>
-                    <li class="list-group-item"><a href="api.config">Config API</a></li>
-                    <li class="list-group-item"><a href="api.event">Event API</a></li>
-                    <li class="list-group-item"><a href="api.orgunit">Orgunit API</a></li>
-                    <li class="list-group-item"><a href="api.series">Series API</a></li>
-                    <li class="list-group-item"><a href="api.tenant">Tenant API</a></li>
-                    <li class="list-group-item"><a href="api.user">User API</a></li>
-                    <li class="list-group-item"><a href="api.util">Util API</a></li>
-                </ul>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">QUnit</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <form class="navbar-form navbar-right" role="search">
+                        <button id="gh-btn-run-all-tests" class="btn btn-primary">Run all tests</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div id="gh-qunit-tests-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Module</th>
+                        <th class="text-center">Failed</th>
+                        <th class="text-center">Passed</th>
+                        <th class="text-center">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th class="gh-qunit-total-failed active text-center">0</th>
+                        <th class="gh-qunit-total-passed active text-center">0</th>
+                        <th class="gh-qunit-total-total active text-center">0</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr id="gh-test-admin-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.admin">Admin API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-app-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.app">App API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-authentication-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.authentication">Authentication API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-config-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.config">Config API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-event-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.event">Event API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-orgunit-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.orgunit">Orgunit API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-series-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.series">Series API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-tenant-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.tenant">Tenant API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-user-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.user">User API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                    <tr id="gh-test-util-api" class="gh-qunit-row-test active">
+                        <td class="gh-qunit-result"></td>
+                        <td class="gh-qunit-link"><a href="api.util">Util API</a></td>
+                        <td class="gh-qunit-failed">0</td>
+                        <td class="gh-qunit-passed">0</td>
+                        <td class="gh-qunit-total">0</td>
+                        <td class="gh-qunit-result"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="gh-qunit-bench">
+                <iframe id="gh-qunit-bench-iframe"></iframe>
             </div>
         </div>
     </div>
+    <script data-main="js/app.js" src="/shared/vendor/js/require.js"></script>
 </body>
 </html>
