@@ -12,14 +12,14 @@ addons:
 before_install:
 
   # Add a local loopback interface for IP 127.0.0.2
-  - sudo ip addr add 127.0.0.2 dev lo
+  # (This is not needed on Linux, all of 127.0.0.0/8 is supported by default)
 
   # Create virtual hosts
-  - sudo sed -i "2 i 127.0.0.2  2014.cam.timetable.grasshopper.com" /etc/hosts
-  - sudo sed -i "2 i 127.0.0.2  2013.cam.timetable.grasshopper.com" /etc/hosts
-  - sudo sed -i "2 i 127.0.0.2  2014.timetable.cam.ac.uk" /etc/hosts
   - sudo sed -i "2 i 127.0.0.1  admin.grasshopper.com" /etc/hosts
-  - sudo cat /etc/hosts
+  - sudo sed -i "2 i 127.0.0.2  2013.cam.timetable.grasshopper.com" /etc/hosts
+  - sudo sed -i "2 i 127.0.0.2  2014.cam.timetable.grasshopper.com" /etc/hosts
+  - sudo sed -i "2 i 127.0.0.2  2014.timetable.cam.ac.uk" /etc/hosts
+  - cat /etc/hosts
 
   # Install test dependencies
   - npm install -g casperjs
@@ -31,14 +31,14 @@ before_install:
   # Prepare the machine
   - sudo apt-get update
   - sudo apt-get install build-essential
-  - cd /usr/local/lib
 
   # Get Apache HTTP-server 2.4
+  - cd /usr/local/lib
   - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz -q
   - sudo tar xfz httpd-2.4.10.tar.gz
-  - cd httpd-2.4.10/srclib/
 
-  # Download depencendies
+  # Download dependencies
+  - cd httpd-2.4.10/srclib/
   - sudo wget http://lib.gblearn.com/apache/apr/apr-1.5.1.tar.gz -q
   - sudo wget http://lib.gblearn.com/apache/apr/apr-util-1.5.3.tar.gz -q
   - sudo wget http://lib.gblearn.com/apache/pcre/pcre-8.34.tar.gz -q
@@ -116,6 +116,7 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
+    - rwlc3@cam.ac.uk
   irc:
     channels:
       - "irc.freenode.org#ucam-ds"
