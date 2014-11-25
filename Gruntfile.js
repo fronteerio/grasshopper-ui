@@ -54,8 +54,11 @@ module.exports = function(grunt) {
             'options': {
                 'adjoining-classes': false,
                 'box-model': false,
+                'box-sizing': false,
                 'ids': false,
                 'import': false,
+                'important': false,
+                'overqualified-elements': false,
                 'qualified-headings': false,
                 'unique-headings': false
             },

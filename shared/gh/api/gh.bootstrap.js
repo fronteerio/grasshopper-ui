@@ -21,6 +21,7 @@ requirejs.config({
     'paths': {
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
+        'chosen': 'vendor/js/chosen.jquery',
         'jquery': 'vendor/js/jquery-2.1.1',
         'lodash': 'vendor/js/lodash',
         'text': 'vendor/js/require.text',
