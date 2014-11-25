@@ -210,7 +210,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateAppAdmins functionality
     QUnit.asyncTest('updateAppAdmins', function(assert) {
-        expect(9);
+        expect(10);
 
         // Fetch a random test app
         var app = testAPI.getRandomApp();
@@ -251,6 +251,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 assert.throws(function() {
                                     gh.api.appAPI.updateAppAdmins(app.id, {}, 'invalid_callback');
                                 }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                                // Verify that a default callback is set when none is provided and no error is thrown
+                                assert.equal(null, gh.api.appAPI.updateAppAdmins(app.id, {}), 'Verify that a default callback is set when none is provided and no error is thrown');
 
                                 var adminUpdates = {};
                                 adminUpdates[administrator.id] = false;
