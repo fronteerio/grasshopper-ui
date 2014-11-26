@@ -49,16 +49,6 @@ h1, h2, h3, h4, h5 {
     color: #FFF;
 }
 
-/* Main view container */
-#gh-page-container .gh-main-view {
-    bottom: 0;
-    left: 320px;
-    position: absolute;
-    top: 215px;
-    right: 0;
-    overflow: visible;
-}
-
 
 /*********/
 /* FORMS */
@@ -87,7 +77,11 @@ h1, h2, h3, h4, h5 {
     border-color: #2A2A2A;
 }
 
-.btn-default:active {
+.btn-default:active,
+.btn-default.active {
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
     color: #FFF;
     background-color: #7A7A7A;
     border-color: #7A7A7A;
@@ -122,15 +116,21 @@ h1, h2, h3, h4, h5 {
 
 .btn-default.gh-btn-secondary.gh-btn-reverse:hover,
 .btn-default.gh-btn-secondary.gh-btn-reverse:focus {
-    color: #FFF;
     background-color: #28828A;
     border-color: #28828A;
+    color: #FFF;
 }
 
 .btn-default.gh-btn-secondary.gh-btn-reverse:active {
-    color: #FFF;
     background-color: #2D939C;
     border-color: #2D939C;
+    color: #FFF;
+}
+
+.btn-default.gh-btn-secondary.gh-btn-reverse.active {
+    background-color: #FFF;
+    border-color: #FFF;
+    color: #171717;
 }
 
 /* Secondary buttons */

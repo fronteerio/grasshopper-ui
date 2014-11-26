@@ -54,6 +54,11 @@ select.form-control {
 /* LAYOUT */
 /**********/
 
+#gh-main {
+    margin-bottom: 20px;
+    padding-top: 215px;
+}
+
 /* Main page container */
 #gh-page-container {
     min-width: 1280px;
@@ -64,6 +69,7 @@ select.form-control {
     float: left;
     height: 100%;
     padding: 0;
+    position: fixed;
     width: 320px;
 }
 
@@ -93,7 +99,14 @@ select.form-control {
 
 /* Main page right hand side (content) container */
 #gh-page-container #gh-header {
+    background-color: #FFF;
     height: 115px;
+}
+
+#gh-page-container #gh-right-container #gh-header-container {
+    left: 320px;
+    position: fixed;
+    right: 0;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,
@@ -105,4 +118,12 @@ select.form-control {
     padding-left: 320px;
     width: 100%;
     height: 100%;
+}
+
+/***********/
+/* BUTTONS */
+/***********/
+
+.btn {
+    font-weight: 200;
 }

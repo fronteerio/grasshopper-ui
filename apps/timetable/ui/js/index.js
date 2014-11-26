@@ -144,11 +144,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
             'data': dummyModules
         }, $('#gh-main'));
-    };
 
-    /**
-     * Render the calendar
-     */
+        $(document).trigger('gh.calendar.init');
+    };
 
     /**
      * Log in using the local authentication strategy
