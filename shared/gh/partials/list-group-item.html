@@ -10,7 +10,7 @@
             <% } %>
         <% }); %>
     <% } %>
-    <li class="list-group-item <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>">
+    <li class="list-group-item <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%= d.id %>">
         <div class="gh-list-group-item-container">
             <% if (!isChild) { %>
                 <button class="btn btn-link gh-toggle-list">

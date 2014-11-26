@@ -26,10 +26,6 @@ body {
     font-weight: 200;
 }
 
-main {
-    padding: 20px;
-}
-
 h1, h2, h3, h4, h5 {
     margin: 0;
     padding: 0;
@@ -58,6 +54,11 @@ select.form-control {
 /* LAYOUT */
 /**********/
 
+#gh-main {
+    margin-bottom: 30px;
+    padding-top: 215px;
+}
+
 /* Main page container */
 #gh-page-container {
     min-width: 1280px;
@@ -68,6 +69,7 @@ select.form-control {
     float: left;
     height: 100%;
     padding: 0;
+    position: fixed;
     width: 320px;
 }
 
@@ -85,8 +87,8 @@ select.form-control {
 }
 
 #gh-page-container #gh-left-container #gh-result-summary {
-    background-color: #127077;
-    border-bottom: 1px solid #171717;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     height: 45px;
 }
 
@@ -100,12 +102,28 @@ select.form-control {
     height: 115px;
 }
 
+#gh-page-container #gh-right-container #gh-header-container {
+    left: 320px;
+    position: fixed;
+    right: 0;
+    z-index: 1;
+}
+
 #gh-page-container #gh-right-container #gh-subheader,
 #gh-page-container #gh-left-container #gh-content-description {
     height: 100px;
 }
 
 #gh-page-container #gh-right-container {
-    padding-left: 270px;
+    padding-left: 320px;
     width: 100%;
+    height: 100%;
+}
+
+/***********/
+/* BUTTONS */
+/***********/
+
+.btn {
+    font-weight: 200;
 }

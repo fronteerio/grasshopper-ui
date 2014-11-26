@@ -1,0 +1,35 @@
+<div id="gh-calendar-view" class="gh-main-view">
+
+    <div id="gh-calendar-toolbar">
+        <div class="gh-toolbar gh-toolbar-primary">
+            <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
+                <button class="btn btn-default gh-btn-secondary gh-btn-reverse active" data-view="agendaWeek">Week</button>
+                <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="month">Month</button>
+                <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="agendaDay">List</button>
+            </div>
+            <div id="gh-calendar-toolbar-actions" class="gh-toolbar-actions pull-right">
+                <button id="gh-btn-calendar-print" class="btn btn-default gh-btn-secondary gh-btn-reverse default"><i class="fa fa-print"></i><span> Print</span></button>
+                <button id="gh-btn-calendar-export" class="btn btn-default"><i class="fa fa-calendar"></i><span> Export to calendar</span></button>
+            </div>
+        </div>
+        <div class="gh-toolbar gh-toolbar-secondary">
+
+            <!-- Navigate through the weeks/months/days -->
+            <div id="gh-calendar-toolbar-period" class="gh-toolbar-period pull-left">
+                <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
+                <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
+                <span id="gh-toolbar-label-period" class="gh-toolbar-label">Week 6</span>
+            </div>
+
+            <!-- Navigate through the terms -->
+            <div id="gh-calendar-toolbar-terms" class="gh-toolbar-term pull-right">
+                <button class="btn btn-default gh-btn-tertiary"><i class="fa fa-chevron-left"></i></button>
+                <button class="btn btn-default gh-btn-tertiary"><i class="fa fa-chevron-right"></i></button>
+                <span id="gh-toolbar-label-term" class="gh-toolbar-label">{CURRENT_TERM}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar -->
+    <div id="gh-calendar-container"><!-- --></div>
+</div>

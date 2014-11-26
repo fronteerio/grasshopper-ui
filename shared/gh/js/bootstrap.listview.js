@@ -15,6 +15,43 @@
 
 define(['gh.core'], function(gh) {
 
+    var modules = null;
+
+    /**
+     * Get an event or multiple events by ID
+     *
+     * @param  {Number}    [parentId]    The ID of the parent of the event
+     * @param  {Number}    [eventId]     The ID of the event to get
+     * @return {Event[]}                 Array of events matching the IDs
+     * @api private
+     */
+    var getEventById = function(parentId, eventId) {
+        // Filter out the parent from the Array
+        var parentByID = _.find(modules, function(par) {
+            return par.id === parentId;
+        });
+
+        // Filter out the event from the parent
+        var eventByID = _.find(parentByID.events, function(ev) {
+            return ev.id === eventId;
+        });
+        return [eventByID];
+    };
+
+    /**
+     * Get multiple events by ID of their parent
+     *
+     * @param  {Number}    parentId    The ID of the parent to get events for
+     * @return {Event[]}               Array of events inside of the parent matching the ID
+     */
+    var getEventsById = function(parentId) {
+        // Filter out the parent from the Array
+        var parentByID = _.find(modules, function(par) {
+            return par.id === parentId;
+        });
+        return parentByID.events;
+    };
+
     /**
      * Toggle a list item's children's visibility and update the icon classes
      */
@@ -42,14 +79,17 @@ define(['gh.core'], function(gh) {
         // Toggle the children's class from add to remove
         $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
+        // Get the events to add to the calendar
+        var eventsToAdd = getEventsById($list.data('id'));
         $(document).trigger('gh.listview.addallevents', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
-            }
+            },
+            'events': eventsToAdd
         }]);
     });
 
@@ -70,14 +110,17 @@ define(['gh.core'], function(gh) {
         // Toggle the children's class from remove to add
         $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
 
+        // Get the events to remove from the calendar
+        var eventsToRemove = getEventsById($list.data('id'));
         $(document).trigger('gh.listview.removeallevents', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
-            }
+            },
+            'events': eventsToRemove
         }]);
     });
 
@@ -106,14 +149,17 @@ define(['gh.core'], function(gh) {
             $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-remove');
         }
 
+        // Get the events to add to the calendar
+        var eventsToAdd = getEventById($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
         $(document).trigger('gh.listview.addevent', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
-            }
+            },
+            'events': eventsToAdd
         }]);
     });
 
@@ -122,7 +168,6 @@ define(['gh.core'], function(gh) {
      */
     $('body').on('click', '.gh-remove-from-calendar', function() {
         // TODO: Move this into the callback
-
         // Toggle the event's item-added class
         $(this).closest('li').toggleClass('gh-list-group-item-added');
         // Toggle the event's button class
@@ -138,14 +183,23 @@ define(['gh.core'], function(gh) {
         // Change the icon of the parent's list item button
         $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-plus');
 
+        // Get the events to remove from the calendar
+        var eventsToRemove = getEventById($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
         $(document).trigger('gh.listview.removeevent', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
                 // This callback should be executed after all the database queries have
-                // happened. If there's an error it should be passed back in here and 
+                // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
-            }
+            },
+            'events': eventsToRemove
         }]);
     });
+
+    $(document).on('gh.listview.init', function(ev, data) {
+        modules = data.modules;
+    });
+
+    $(document).trigger('gh.listview.ready');
 });

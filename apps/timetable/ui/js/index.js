@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], function(gh) {
 
     // Dummy module JSON data to render the partial with
     var dummyModules = [
@@ -25,10 +25,13 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
             "subscribed": false,
             'events': [
                 {
+                    "id": 1,
                     "description": "Citizenship",
                     "displayName": "Citizenship",
                     "location": "Seminar Room, Social Anthropology",
                     "notes": "Mi1-4 W 10",
+                    "start": '2014-11-20T12:30:00',
+                    "end": '2014-11-20T15:45:00',
                     "subscribed": false,
                     "organisers": [
                         {
@@ -42,10 +45,13 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
                     ]
                 },
                 {
+                    "id": 2,
                     "description": "Citizenship",
                     "displayName": "Citizenship",
                     "location": "Seminar Room, Social Anthropology",
                     "notes": "Mi1-4 W 10",
+                    "start": '2014-11-24T09:30:00',
+                    "end": '2014-11-24T12:00:00',
                     "subscribed": false,
                     "organisers": [
                         {
@@ -59,10 +65,13 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
                     ]
                 },
                 {
+                    "id": 3,
                     "description": "Citizenship",
                     "displayName": "Citizenship",
                     "location": "Seminar Room, Social Anthropology",
                     "notes": "Mi1-4 W 10",
+                    "start": '2014-11-22T08:30:00',
+                    "end": '2014-11-22T10:45:00',
                     "subscribed": false,
                     "organisers": [
                         {
@@ -81,15 +90,18 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
             "description": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
             "displayName": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
             "eventSummary": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "id": 0,
+            "id": 4,
             "subscribed": false,
             'events': [
                 {
+                    "id": 5,
                     "description": "Citizenship 2",
                     "displayName": "Citizenship 2",
                     "location": "Seminar Room, Social Anthropology",
                     "notes": "Mi1-4 W 10",
-                    "subscribed": true,
+                    "start": '2014-11-23T11:30:00',
+                    "end": '2014-11-23T12:45:00',
+                    "subscribed": false,
                     "organisers": [
                         {
                             "organiser": {
@@ -135,6 +147,21 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
         gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
             'data': dummyModules
         }, $('#gh-modules-container'));
+
+        $(document).trigger('gh.listview.init', {
+            'modules': dummyModules
+        });
+    };
+
+    /**
+     * Render the calendar view
+     */
+    var renderCalendarView = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
+            'data': dummyModules
+        }, $('#gh-main'));
+
+        $(document).trigger('gh.calendar.init');
     };
 
     /**
@@ -160,6 +187,14 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
+
+        $(document).on('gh.calendar.ready', function() {
+            renderCalendarView();
+        });
+
+        $(document).on('gh.listview.ready', function() {
+            renderModules();
+        });
     };
 
     /**
@@ -170,6 +205,7 @@ define(['gh.core', 'bootstrap.listview', 'chosen'], function(gh) {
         renderHeader();
         renderSubHeader();
         renderModules();
+        renderCalendarView();
     };
 
     initIndex();
