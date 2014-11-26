@@ -180,7 +180,7 @@ define(['gh.core'], function(gh) {
     /**
      * Initialize the calendar
      *
-     * @api private
+     * @private
      */
     var initCalendar = function() {
         // Initialize the calendar object
@@ -192,7 +192,7 @@ define(['gh.core'], function(gh) {
                 'day': 'dddd'
             },
             'allDaySlot': false,
-            'defaultDate': '2014-11-21',
+            'defaultDate': new Date(),
             'defaultView': currentView,
             'editable': false,
             'eventLimit': true,
@@ -217,10 +217,10 @@ define(['gh.core'], function(gh) {
         setCurrentDay();
     };
 
-
     // Initialise the calendar
     $(document).on('gh.calendar.init', initCalendar);
 
+    // Inform the page that the calendar is ready to go so that
+    // it can initialise the calendar when it's ready for it
     $(document).trigger('gh.calendar.ready');
-
 });

@@ -25,32 +25,31 @@ define(['gh.core'], function(gh) {
      * @return {Event[]}                 Array of events matching the IDs
      * @api private
      */
-    var getEventByID = function(parentId, eventId) {
+    var getEventById = function(parentId, eventId) {
         // Filter out the parent from the Array
-        var parentByID = _.filter(modules, function(par) {
+        var parentByID = _.find(modules, function(par) {
             return par.id === parentId;
         });
 
         // Filter out the event from the parent
-        var eventByID = _.filter(parentByID[0].events, function(ev) {
+        var eventByID = _.find(parentByID.events, function(ev) {
             return ev.id === eventId;
         });
-        return eventByID;
+        return [eventByID];
     };
 
     /**
      * Get multiple events by ID of their parent
      *
      * @param  {Number}    parentId    The ID of the parent to get events for
-     *
      * @return {Event[]}               Array of events inside of the parent matching the ID
      */
-    var getEventsByID = function(parentId) {
+    var getEventsById = function(parentId) {
         // Filter out the parent from the Array
-        var parentByID = _.filter(modules, function(par) {
+        var parentByID = _.find(modules, function(par) {
             return par.id === parentId;
         });
-        return parentByID[0].events;
+        return parentByID.events;
     };
 
     /**
@@ -81,7 +80,7 @@ define(['gh.core'], function(gh) {
         $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
         // Get the events to add to the calendar
-        var eventsToAdd = getEventsByID($list.data('id'));
+        var eventsToAdd = getEventsById($list.data('id'));
         $(document).trigger('gh.listview.addallevents', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
@@ -112,7 +111,7 @@ define(['gh.core'], function(gh) {
         $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
 
         // Get the events to remove from the calendar
-        var eventsToRemove = getEventsByID($list.data('id'));
+        var eventsToRemove = getEventsById($list.data('id'));
         $(document).trigger('gh.listview.removeallevents', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
@@ -151,7 +150,7 @@ define(['gh.core'], function(gh) {
         }
 
         // Get the events to add to the calendar
-        var eventsToAdd = getEventByID($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
+        var eventsToAdd = getEventById($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
         $(document).trigger('gh.listview.addevent', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
@@ -185,7 +184,7 @@ define(['gh.core'], function(gh) {
         $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-plus');
 
         // Get the events to remove from the calendar
-        var eventsToRemove = getEventByID($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
+        var eventsToRemove = getEventById($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
         $(document).trigger('gh.listview.removeevent', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
