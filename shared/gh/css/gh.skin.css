@@ -35,8 +35,17 @@ h1, h2, h3, h4, h5 {
 /* LAYOUT */
 /**********/
 
+#gh-page-container #gh-left-container #gh-result-summary {
+    background-color: #127077;
+    border-bottom-color: #171717;
+}
+
 #gh-page-container #gh-left-container {
     background-color: #171717;
+}
+
+#gh-page-container #gh-header {
+    background-color: #FFF;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,
@@ -218,4 +227,44 @@ h1, h2, h3, h4, h5 {
 
 .chosen-container .chosen-results li.highlighted {
     background-color: #127077;
+}
+
+
+/************/
+/* CALENDAR */
+/************/
+
+/* Primary toolbar */
+.gh-toolbar-primary {
+    background-color: #127077;
+}
+
+.fc-row.fc-widget-header thead tr th,
+.fc-month-view .fc-row.fc-widget-header thead tr th:first-child {
+    border-bottom-color: #E0E7E4;
+}
+
+.fc-widget-header table th.fc-today {
+    border-bottom-color: #171717 !important;
+}
+
+.fc-slats .fc-minor td {
+    border-color: #E1E7E4;
+}
+
+.fc-event-container .fc-event {
+    background-color: #E1F6EB;
+    border-left-color: #127077;
+}
+
+.fc-event-container .fc-event .fc-content {
+    color: #171717;
+}
+
+.fc-time-grid-event .fc-location {
+    color: #07525D;
+}
+
+.fc-unthemed .fc-today {
+    background-color: transparent;
 }

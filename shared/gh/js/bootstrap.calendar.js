@@ -36,6 +36,8 @@ define(['gh.core'], function(gh) {
         calendar.fullCalendar(action);
         // Set the period label
         setPeriodLabel();
+        // Set the current day
+        setCurrentDay();
     };
 
     /**
@@ -67,6 +69,8 @@ define(['gh.core'], function(gh) {
         $button.removeClass('default').addClass('active');
         // Set the period label
         setPeriodLabel();
+        // Set the current day
+        setCurrentDay();
     };
 
     /**
@@ -109,6 +113,14 @@ define(['gh.core'], function(gh) {
     };
 
     /**
+     * Highlight the header of the current day by adding a class
+     */
+    var setCurrentDay = function() {
+        var selectedDay = $('.fc-today').index();
+        $('.fc-widget-header table th:nth-child(' + (selectedDay + 1) + ')').addClass('fc-today');
+    };
+
+    /**
      * Add event listeners to UI-components
      *
      * @api private
@@ -132,9 +144,6 @@ define(['gh.core'], function(gh) {
      * @api private
      */
     var initCalendar = function() {
-
-        addBinding();
-
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
             'header': false,
@@ -149,35 +158,49 @@ define(['gh.core'], function(gh) {
             'editable': false,
             'eventLimit': true,
             'firstDay': 4,
-            'handleWindowResize': false,
+            'handleWindowResize': true,
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
-            'slotDuration': '00:30:00',
+            'slotDuration': '00:15:00',
             'events': [
                 {
                     'title': 'Some flipping event with a extra long name',
+                    'location': 'Big room on the right',
                     'start': '2014-11-23T11:30:00',
-                    'end': '2014-11-23T13:00:00'
+                    'end': '2014-11-23T11:45:00'
                 },
                 {
                     'title': 'Some flipping event with a extra long name',
+                    'location': 'Big room on the right',
                     'start': '2014-11-24T12:00:00',
                     'end': '2014-11-24T13:30:00'
                 },
                 {
                     'title': 'Another flipping event with a extra long name',
+                    'location': 'Big room on the right',
                     'start': '2014-11-24T15:30:00',
                     'end': '2014-11-24T18:30:00'
                 }
-            ]
+            ],
+            'eventRender': function(ev, element) {
+                return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
+                    'data': ev
+                });
+            }
         });
 
+        // Add binding to various elements
+        addBinding();
         // Set the period label
         setPeriodLabel();
+        // Set the current day
+        setCurrentDay();
     };
 
 
     // Initialise the calendar
     $(document).on('gh.calendar.init', initCalendar);
+
+    $(document).trigger('gh.calendar.ready');
 
 });

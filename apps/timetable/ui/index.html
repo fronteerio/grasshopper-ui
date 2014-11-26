@@ -110,6 +110,10 @@
         <%= _.partial('calendar', {'data': data}) %>
     </script>
 
+    <script id="gh-event-template" type="text/template">
+        <%= _.partial('event', {'data': data}) %>
+    </script>
+
     <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="js/index.js" src="/shared/vendor/js/require.js"></script>
 </body>
 </html>

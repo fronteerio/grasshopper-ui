@@ -55,7 +55,7 @@ select.form-control {
 /**********/
 
 #gh-main {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     padding-top: 215px;
 }
 
@@ -87,8 +87,8 @@ select.form-control {
 }
 
 #gh-page-container #gh-left-container #gh-result-summary {
-    background-color: #127077;
-    border-bottom: 1px solid #171717;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     height: 45px;
 }
 
@@ -99,7 +99,6 @@ select.form-control {
 
 /* Main page right hand side (content) container */
 #gh-page-container #gh-header {
-    background-color: #FFF;
     height: 115px;
 }
 
@@ -107,6 +106,7 @@ select.form-control {
     left: 320px;
     position: fixed;
     right: 0;
+    z-index: 1;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,

@@ -25,7 +25,7 @@
 
 #gh-right-container #gh-header #gh-signin-form,
 #gh-right-container #gh-header #gh-signout-form {
-    margin: 42px 40px 35px 40px;
+    margin: 42px 30px 35px 40px;
 }
 
 
@@ -81,9 +81,8 @@
     height: 100%;
 }
 
-/* Primary buttons */
+/* Primary toolbar */
 .gh-toolbar-primary {
-    background-color: #127077;
     height: 44px;
     left: 320px;
     position: fixed;
@@ -95,10 +94,8 @@
     height: 100%;
 }
 
-/* Secondary buttons */
+/* Secondary toolbar */
 #gh-calendar-toolbar .gh-toolbar-secondary {
-    /*height: 90px;
-    line-height: 90px;*/
     padding-top: 80px;
 }
 
@@ -141,35 +138,45 @@
 
 .fc-row.fc-widget-header thead tr th,
 .fc-month-view .fc-row.fc-widget-header thead tr th:first-child {
-    border-bottom: 5px solid #e0e7e4 !important;
     border-bottom-style: solid !important;
+    border-bottom-width: 5px;
     font-size: 16px;
     font-weight: 600;
     height: 35px;
 }
 
 .fc-slats .fc-minor td {
-    border-color: #e1e7e4;
     border-top-style: dashed;
 }
 
 .fc-event-container {
-    margin: 0 1px;
+    margin: 1px 1px 0 0 !important;
 }
-#gh-calendar-container > div > div > table > tbody > tr > td > div > div > div.fc-slats > table > tbody > tr:nth-child(1) > td:nth-child(2) {
-    border-top-style: none;
-}
+
 .fc-event-container .fc-event {
-    background-color: #E1F6EB;
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
     border: none;
-    border-left: 5px solid #127077;
+    border-left-style: solid;
+    border-left-width: 5px;
 }
 
 .fc-event-container .fc-event .fc-content {
-    color: #171717;
+    font-weight: 600;
+}
+
+.fc-time-grid-event .fc-title,
+.fc-time-grid-event .fc-location {
+    display: block !important;
+    margin: 4px 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fc-time-grid-event .fc-location {
+    margin-top: 2px;
 }
 
 .fc-time-grid > hr {
@@ -204,126 +211,6 @@ td.fc-widget-content {
 tbody tr:last-child > td.fc-widget-content {
     border-bottom-width: 0;
 }
-
-
-/*.gh-toolbar-secondary .gh-toolbar-period,
-.gh-toolbar-secondary .gh-toolbar-term {
-    height: 100%;
-}
-
-.gh-toolbar-secondary .gh-toolbar-period {
-    margin-left: 80px;
-}
-
-.gh-toolbar-secondary .gh-toolbar-button {
-    color: #414141;
-    height: 44px;
-    width: 22px;
-}
-
-.gh-toolbar-primary .gh-toolbar-button.default:hover {
-    background-color: #07525D;
-}
-
-.gh-toolbar-primary .gh-toolbar-button.active {
-    color: #414141;
-}*/
-
-/* Calendar Container */
-/*#gh-calendar-container {
-    padding-right: 44px;
-}
-
-.fc .fc-axis{
-    width: 70px !important;
-    padding-right: 10px;
-}
-
-.fc-view.fc-month-view {
-    margin-left: 79px;
-}
-
-.gh-calendar-container {
-    padding: 0 20px;
-    background-color: green;
-}*/
-
-/* FullCalendar */
-/*.fc-unthemed th,
-.fc-unthemed td,
-.fc-unthemed hr,
-.fc-unthemed thead,
-.fc-unthemed tbody,
-.fc-unthemed .fc-row,
-.fc-unthemed .fc-popover {
-    border-color: #DFE7E4;
-}
-
-.fc td.fc-today {
-    background: none;
-    position: relative;
-}
-
-.fc .fc-event-container {
-    margin: 0 !important;
-}
-
-.fc .fc-event-container .fc-content span {
-    display: block;
-}*/
-
-/* month view */
-/*.fc .fc-day-grid-container .fc-bg td.fc-today:before {
-    border-top: 7px solid #414141;
-    content: "";
-    width: 100%;
-    position: absolute;
-}
-
-.fc .fc-day-grid-container .fc-content-skeleton thead td {
-    padding: 10px;
-}
-
-.fc .fc-day-grid-container .fc-content-skeleton td.fc-today {
-    font-weight: bold;
-}
-
-.fc-ltr .fc-basic-view .fc-day-number {
-    text-align: left;
-}
-
-.fc-unthemed .fc-agenda-view th {
-    text-align: center;
-}
-
-.fc-unthemed .fc-month-view th {
-    text-align: left;
-}
-
-.fc-bgevent,
-.fc-event {
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    background-color: #E7F8F0;
-    border-width: 0;
-    border-left: 5px solid #127077;
-    color: #414141;
-    padding: 6px;
-}
-
-.fc-time-grid-event .fc-time,
-.fc-time-grid-event .fc-title {
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-td.fc-day.fc-widget-content.fc-sat,
-td.fc-day.fc-widget-content.fc-sun {
-    background-color: #EFF3F1;
-}*/
 
 
 /*********/

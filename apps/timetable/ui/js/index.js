@@ -171,6 +171,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
+
+        $(document).on('gh.calendar.ready', function() {
+            console.log('trigger');
+            renderCalendarView();
+        });
     };
 
     /**
