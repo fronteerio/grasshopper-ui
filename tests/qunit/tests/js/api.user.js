@@ -51,36 +51,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUsers functionality
     QUnit.asyncTest('getUsers', function(assert) {
-        expect(4);
+        expect(5);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid value for limit was provided
-            gh.api.userAPI.getUsers(null, 'invalid_limit', null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid value for limit was provided');
+            // Verify that an error is thrown when an invalid app id was provided
+            gh.api.userAPI.getUsers('invalid_appId', 1, 2, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
 
-                // Verify that an error is thrown when an invalid value for offset was provided
-                gh.api.userAPI.getUsers(null, 'invalid_limit', null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
+                // Verify that an error is thrown when an invalid value for limit was provided
+                gh.api.userAPI.getUsers(1, 'invalid_limit', 1, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for limit was provided');
 
-                    // Verify that an error is thrown when an invalid callback was provided
-                    assert.throws(function() {
-                        gh.api.userAPI.getUsers(null, null, null);
-                    }, 'Verify that an error is thrown when an invalid callback was provided');
-
-                    QUnit.start();
-
-                    /*
-                     * TODO: wait for back-end implementation
-                     *
                     // Verify that an error is thrown when an invalid value for offset was provided
-                    gh.api.userAPI.getUsers(null, null, null, function(err, data) {
-                        assert.ok(err, 'Verify that users can be retrieved without an error');
+                    gh.api.userAPI.getUsers(1, 1, 'invalid_offset', function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
+
+                        // Verify that an error is thrown when an invalid callback was provided
+                        assert.throws(function() {
+                            gh.api.userAPI.getUsers(null, null, null);
+                        }, 'Verify that an error is thrown when an invalid callback was provided');
+
                         QUnit.start();
+
+                        /*
+                         * TODO: wait for back-end implementation
+                         *
+                        // Verify that an error is thrown when an invalid value for offset was provided
+                        gh.api.userAPI.getUsers(null, null, null, function(err, data) {
+                            assert.ok(err, 'Verify that users can be retrieved without an error');
+                            QUnit.start();
+                        });
+                        */
                     });
-                    */
                 });
             });
         });
@@ -88,33 +93,38 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUser functionality
     QUnit.asyncTest('getUser', function(assert) {
-        expect(3);
+        expect(4);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid user id was provided
+            // Verify that an error is thrown when no user id was provided
             gh.api.userAPI.getUser(null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+                assert.ok(err, 'Verify that an error is thrown when no user id was provided');
 
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.userAPI.getUser(user.id);
-                }, 'Verify that an error is thrown when an invalid callback was provided');
+                // Verify that an error is thrown when an invalid user id was provided
+                gh.api.userAPI.getUser('stringId', function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                QUnit.start();
+                    // Verify that an error is thrown when an invalid callback was provided
+                    assert.throws(function() {
+                        gh.api.userAPI.getUser(user.id);
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                /*
-                 * TODO: wait for back-end implementation
-                 *
-                // Verifty that a user can be retrieved without errors
-                gh.api.userAPI.getUser(user.id, function(err, data) {
-                    assert.ok(!err, 'Verify that a user can be retrieved without errors');
-                    assert.ok(data, 'Verify that the requested user is returned');
                     QUnit.start();
+
+                    /*
+                     * TODO: wait for back-end implementation
+                     *
+                    // Verifty that a user can be retrieved without errors
+                    gh.api.userAPI.getUser(user.id, function(err, data) {
+                        assert.ok(!err, 'Verify that a user can be retrieved without errors');
+                        assert.ok(data, 'Verify that the requested user is returned');
+                        QUnit.start();
+                    });
+                    */
                 });
-                */
             });
         });
     });
@@ -149,7 +159,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUserCalender functionality
     QUnit.asyncTest('getUserCalender', function(assert) {
-        expect(5);
+        expect(7);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -159,31 +169,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.userAPI.getUserCalendar(null, '2013-10-01', '2014-07-31', function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                // Verify that an error is thrown when an invalid value for 'from' was provided
+                // Verify that an error is thrown when no value for 'from' was provided
                 gh.api.userAPI.getUserCalendar(user.id, null, '2014-07-31', function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for from was provided');
+                    assert.ok(err, 'Verify that an error is thrown when no value for from was provided');
 
-                    // Verify that an error is thrown when an invalid value for 'to' was provided
-                    gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', null, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid value for to was provided');
+                    // Verify that an error is thrown when an invalid value for 'from' was provided
+                    gh.api.userAPI.getUserCalendar(user.id, 123, '2014-07-31', function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for from was provided');
 
-                        // Verify that an error is thrown when an invalid callback was provided
-                        assert.throws(function() {
-                            gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', '2014-07-31');
-                        }, 'Verify that an error is thrown when an invalid callback was provided');
+                        // Verify that an error is thrown when no value for 'to' was provided
+                        gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', null, function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid value for to was provided');
 
-                        QUnit.start();
+                            // Verify that an error is thrown when an invalid for 'to' was provided
+                            gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', 123, function(err, data) {
+                                assert.ok(err, 'Verify that an error is thrown when an invalid value for to was provided');
 
-                        /**
-                         * Wait for back-end implementation
-                         *
-                        // Verify that a calendar can be retrieved without errors
-                        gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', '2014-07-31', function(err, data) {
-                            assert.ok(!err, 'Verify that a calendar can be retrieved without errors');
-                            assert.ok(data, 'Verify that a calendar is returned');
-                            QUnit.start();
+                                // Verify that an error is thrown when an invalid callback was provided
+                                assert.throws(function() {
+                                    gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', '2014-07-31');
+                                }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                                QUnit.start();
+
+                                /**
+                                 * Wait for back-end implementation
+                                 *
+                                // Verify that a calendar can be retrieved without errors
+                                gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', '2014-07-31', function(err, data) {
+                                    assert.ok(!err, 'Verify that a calendar can be retrieved without errors');
+                                    assert.ok(data, 'Verify that a calendar is returned');
+                                    QUnit.start();
+                                });
+                                */
+                            });
                         });
-                        */
                     });
                 });
             });
@@ -192,66 +212,76 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUserCalenderIcal functionality
     QUnit.asyncTest('getUserCalenderIcal', function(assert) {
-        expect(3);
+        expect(4);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid user id was provided
+            // Verify that an error is thrown when no user id was provided
             gh.api.userAPI.getUserCalendarIcal(null, null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+                assert.ok(err, 'Verify that an error is thrown when no user id was provided');
 
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.userAPI.getUserCalendarIcal(user.id, null);
-                }, 'Verify that an error is thrown when an invalid callback was provided');
+                // Verify that an error is thrown when an invalid user id was provided
+                gh.api.userAPI.getUserCalendarIcal('invalid user id', null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                QUnit.start();
+                    // Verify that an error is thrown when an invalid callback was provided
+                    assert.throws(function() {
+                        gh.api.userAPI.getUserCalendarIcal(user.id, null);
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                /**
-                 * Wait for back-end implementation
-                 *
-                // Verify that calendars can be retrieved without errors
-                gh.api.userAPI.getUserCalendarIcal(user.id, null, function(err, data) {
-                    assert.ok(!err, 'Verify that users can be retrieved without errors');
-                    assert.ok(data, 'Verify that the users are returned');
                     QUnit.start();
+
+                    /**
+                     * Wait for back-end implementation
+                     *
+                    // Verify that calendars can be retrieved without errors
+                    gh.api.userAPI.getUserCalendarIcal(user.id, null, function(err, data) {
+                        assert.ok(!err, 'Verify that users can be retrieved without errors');
+                        assert.ok(data, 'Verify that the users are returned');
+                        QUnit.start();
+                    });
+                    */
                 });
-                */
             });
         });
     });
 
     // Test the getUserCalenderRss functionality
     QUnit.asyncTest('getUserCalenderRss', function(assert) {
-        expect(3);
+        expect(4);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid user id was provided
+            // Verify that an error is thrown when no user id was provided
             gh.api.userAPI.getUserCalendarRss(null, null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+                assert.ok(err, 'Verify that an error is thrown when no user id was provided');
 
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.userAPI.getUserCalendarRss(user.id, null);
-                }, 'Verify that an error is thrown when an invalid callback was provided');
+                // Verify that an error is thrown when an invalid user id was provided
+                gh.api.userAPI.getUserCalendarRss('invalid user id', null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                QUnit.start();
+                    // Verify that an error is thrown when an invalid callback was provided
+                    assert.throws(function() {
+                        gh.api.userAPI.getUserCalendarRss(user.id, null);
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                /**
-                 * Wait for back-end implementation
-                 *
-                // Verify that calendars can be retrieved without errors
-                gh.api.userAPI.getUserCalendarRss(user.id, null, function(err, data) {
-                    assert.ok(!err, 'Verify that users can be retrieved without errors');
-                    assert.ok(data, 'Verify that the users are returned');
                     QUnit.start();
+
+                    /**
+                     * Wait for back-end implementation
+                     *
+                    // Verify that calendars can be retrieved without errors
+                    gh.api.userAPI.getUserCalendarRss(user.id, null, function(err, data) {
+                        assert.ok(!err, 'Verify that users can be retrieved without errors');
+                        assert.ok(data, 'Verify that the users are returned');
+                        QUnit.start();
+                    });
+                    */
                 });
-                */
             });
         });
     });
@@ -301,15 +331,20 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getTermsAndConditions functionality
     QUnit.asyncTest('getTermsAndConditions', function(assert) {
-        expect(2);
+        expect(3);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid callback was provided
+            // Verify that an error is thrown when no callback was provided
             assert.throws(function() {
                 gh.api.userAPI.getTermsAndConditions();
+            }, 'Verify that an error is thrown when no callback was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.userAPI.getTermsAndConditions('invalid callback');
             }, 'Verify that an error is thrown when an invalid callback was provided');
 
             QUnit.start();
@@ -329,39 +364,44 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the acceptTermsAndConditions functionality
     QUnit.asyncTest('acceptTermsAndConditions', function(assert) {
-        expect(3);
+        expect(4);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
-            // Verify that an error is thrown when an invalid user id was provided
+            // Verify that an error is thrown when no user id was provided
             gh.api.userAPI.acceptTermsAndConditions(null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+                assert.ok(err, 'Verify that an error is thrown when no user id was provided');
 
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.userAPI.acceptTermsAndConditions(user.id);
-                }, 'Verify that an error is thrown when an invalid callback was provided');
+                // Verify that an error is thrown when an invalid user id was provided
+                gh.api.userAPI.acceptTermsAndConditions('invalid user id', function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                QUnit.start();
+                    // Verify that an error is thrown when an invalid callback was provided
+                    assert.throws(function() {
+                        gh.api.userAPI.acceptTermsAndConditions(user.id);
+                    }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                /**
-                 * Wait for back-end implementation
-                 *
-                // Verify that the terms and conditions can be accepted without errors
-                gh.api.userAPI.acceptTermsAndConditions(user.id, function(err, data) {
-                    assert.ok(err, 'Verify that the terms and conditions can be accepted without errors');
                     QUnit.start();
+
+                    /**
+                     * Wait for back-end implementation
+                     *
+                    // Verify that the terms and conditions can be accepted without errors
+                    gh.api.userAPI.acceptTermsAndConditions(user.id, function(err, data) {
+                        assert.ok(err, 'Verify that the terms and conditions can be accepted without errors');
+                        QUnit.start();
+                    });
+                    */
                 });
-                */
             });
         });
     });
 
     // Test the createUser functionality
     QUnit.asyncTest('createUser', function(assert) {
-        expect(8);
+        expect(9);
 
         var appId = testAPI.getRandomApp().id;
         var user = {
@@ -370,36 +410,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             'password': gh.api.utilAPI.generateRandomString()
         };
 
-        // Verify that an error is thrown when an invalid app id was provided
-        gh.api.userAPI.createUser(appId, null, user.email, user.password, null, null, null, null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
+        // Verify that an error is thrown when no app id was provided
+        gh.api.userAPI.createUser(null, null, user.email, user.password, null, null, null, null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when no app id was provided');
 
-            // Verify that an error is thrown when an invalid value for 'displayName' was provided
-            gh.api.userAPI.createUser(appId, null, user.email, user.password, null, null, null, null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid display name was provided');
+            // Verify that an error is thrown when an invalid app id was provided
+            gh.api.userAPI.createUser(999999, null, user.email, user.password, null, null, null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
 
-                // Verify that an error is thrown when an invalid value for 'email' was provided
-                gh.api.userAPI.createUser(appId, user.displayName, null, user.password, null, null, null, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid email address was provided');
+                // Verify that an error is thrown when an invalid value for 'displayName' was provided
+                gh.api.userAPI.createUser(appId, null, user.email, user.password, null, null, null, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid display name was provided');
 
-                    // Verify that an error is thrown when an invalid value for 'password' was provided
-                    gh.api.userAPI.createUser(appId, user.displayName, user.email, null, null, null, null, null, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
+                    // Verify that an error is thrown when an invalid value for 'email' was provided
+                    gh.api.userAPI.createUser(appId, user.displayName, null, user.password, null, null, null, null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid email address was provided');
 
-                        // Verify that an error is thrown when an invalid value for 'isAdmin' was provided
-                        gh.api.userAPI.createUser(appId, user.displayName, user.email, null, null, 'invalid_isAdmin', null, null, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid value for isAdmin was provided');
+                        // Verify that an error is thrown when an invalid value for 'password' was provided
+                        gh.api.userAPI.createUser(appId, user.displayName, user.email, null, null, null, null, null, function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid value for password was provided');
 
-                            // Verify that an error is thrown when an invalid callback was provided
-                            assert.throws(function() {
-                                gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null);
-                            }, 'Verify that an error is thrown when an invalid callback was provided');
+                            // Verify that an error is thrown when an invalid value for 'isAdmin' was provided
+                            gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, 'invalid_isAdmin', null, null, function(err, data) {
+                                assert.ok(err, 'Verify that an error is thrown when an invalid value for isAdmin was provided');
 
-                            // Verify that a user can be created without errors
-                            gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
-                                assert.ok(!err, 'Verify that a user can be created without errors');
-                                assert.ok(data, 'Verify that the created user is returned');
-                                QUnit.start();
+                                // Verify that an error is thrown when an invalid callback was provided
+                                assert.throws(function() {
+                                    gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null);
+                                }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                                // Verify that a user can be created without errors
+                                gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
+                                    assert.ok(!err, 'Verify that a user can be created without errors');
+                                    assert.ok(data, 'Verify that the created user is returned');
+                                    QUnit.start();
+                                });
                             });
                         });
                     });
@@ -470,7 +515,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateUser functionality
     QUnit.asyncTest('updateUser', function(assert) {
-        expect(4);
+        expect(5);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -480,26 +525,31 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.userAPI.updateUser(null, null, null, null, null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
-                // Verify that an error is thrown when an invalid value for 'appId' was provided
+                // Verify that an error is thrown when no value for 'appId' was provided
                 gh.api.userAPI.updateUser(user.id, null, null, null, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for appId was provided');
+                    assert.ok(err, 'Verify that an error is thrown when no value for appId was provided');
 
-                    // Verify that an error is thrown when an invalid callback was provided
-                    assert.throws(function() {
-                        gh.api.userAPI.updateUser(user.id, user.AppId, null, null, null);
-                    }, 'Verify that an error is thrown when an invalid callback was provided');
+                    // Verify that an error is thrown when an invalid value for 'appId' was provided
+                    gh.api.userAPI.updateUser(user.id, 'invalid app id', null, null, null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for appId was provided');
 
-                    QUnit.start();
+                        // Verify that an error is thrown when an invalid callback was provided
+                        assert.throws(function() {
+                            gh.api.userAPI.updateUser(user.id, user.AppId, null, null, null);
+                        }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                    /**
-                     * TODO: wait for back-end implementation
-                     *
-                    // Verify that a user can be updated without errors
-                    gh.api.userAPI.updateUser(user.id, user.AppId, null, null, null, function(err, data) {
-                        assert.ok(!err, 'Verify that a user can be updated without errors');
                         QUnit.start();
+
+                        /**
+                         * TODO: wait for back-end implementation
+                         *
+                        // Verify that a user can be updated without errors
+                        gh.api.userAPI.updateUser(user.id, user.AppId, null, null, null, function(err, data) {
+                            assert.ok(!err, 'Verify that a user can be updated without errors');
+                            QUnit.start();
+                        });
+                        */
                     });
-                    */
                 });
             });
         });
@@ -583,7 +633,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the cropPicture functionality
     QUnit.asyncTest('cropPicture', function(assert) {
-        expect(6);
+        expect(9);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -593,35 +643,50 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.userAPI.cropPicture(null, 0, 0, 0, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
-                // Verify that an error is thrown when an invalid value for 'width' was provided
+                // Verify that an error is thrown when no value for 'width' was provided
                 gh.api.userAPI.cropPicture(user.id, null, 0, 0, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid value for width was provided');
+                    assert.ok(err, 'Verify that an error is thrown when no value for width was provided');
 
-                    // Verify that an error is thrown when an invalid value for 'x' was provided
-                    gh.api.userAPI.cropPicture(user.id, 0, null, 0, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid value for x was provided');
+                    // Verify that an error is thrown when an invalid value for 'width' was provided
+                    gh.api.userAPI.cropPicture(user.id, 'invalid width', 0, 0, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for width was provided');
 
-                        // Verify that an error is thrown when an invalid value for 'y' was provided
-                        gh.api.userAPI.cropPicture(user.id, 0, 0, null, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid value for y was provided');
+                        // Verify that an error is thrown when an invalid value for 'x' was provided
+                        gh.api.userAPI.cropPicture(user.id, 10, null, 0, function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid value for x was provided');
 
-                            // Verify that an error is thrown when an invalid callback was provided
-                            assert.throws(function() {
-                                gh.api.userAPI.cropPicture(user.id, 0, 0, 0);
-                            }, 'Verify that an error is thrown when an invalid callback was provided');
+                            // Verify that an error is thrown when an invalid value for 'x' was provided
+                            gh.api.userAPI.cropPicture(user.id, 10, 'invalid x', 0, function(err, data) {
+                                assert.ok(err, 'Verify that an error is thrown when an invalid value for x was provided');
 
-                            QUnit.start();
+                                // Verify that an error is thrown when no value for 'y' was provided
+                                gh.api.userAPI.cropPicture(user.id, 10, 10, null, function(err, data) {
+                                    assert.ok(err, 'Verify that an error is thrown when no value for y was provided');
 
-                            /**
-                             * TODO: wait for back-end implementation
-                             *
-                            // Verify that a picture can be cropped without errors
-                            gh.api.userAPI.cropPicture(user.id, 0, 0, 0, function(err, data) {
-                                assert.ok(err, 'Verify that a picture can be cropped without errors');
-                                assert.ok(err, 'Verify that the updated user is returned');
-                                QUnit.start();
+                                    // Verify that an error is thrown when an invalid value for 'y' was provided
+                                    gh.api.userAPI.cropPicture(user.id, 10, 10, 'invalid y', function(err, data) {
+                                        assert.ok(err, 'Verify that an error is thrown when an invalid value for y was provided');
+
+                                        // Verify that an error is thrown when an invalid callback was provided
+                                        assert.throws(function() {
+                                            gh.api.userAPI.cropPicture(user.id, 10, 10, 10);
+                                        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                                        QUnit.start();
+
+                                        /**
+                                         * TODO: wait for back-end implementation
+                                         *
+                                        // Verify that a picture can be cropped without errors
+                                        gh.api.userAPI.cropPicture(user.id, 0, 0, 0, function(err, data) {
+                                            assert.ok(err, 'Verify that a picture can be cropped without errors');
+                                            assert.ok(err, 'Verify that the updated user is returned');
+                                            QUnit.start();
+                                        });
+                                        */
+                                    });
+                                });
                             });
-                            */
                         });
                     });
                 });

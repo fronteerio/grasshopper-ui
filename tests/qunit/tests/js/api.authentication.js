@@ -34,7 +34,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
             var appId = testAPI.getRandomApp().id;
             var displayName = gh.api.utilAPI.generateRandomString();
-            var email = gh.api.utilAPI.generateRandomString();
+            var email = gh.api.utilAPI.generateRandomString() + '@' + gh.api.utilAPI.generateRandomString() + '.com';
             var password = gh.api.utilAPI.generateRandomString();
 
             // Create a new user
@@ -54,10 +54,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the login functionality
     QUnit.asyncTest('login', function(assert) {
-        expect(4);
+        expect(5);
 
         // Create a new user
         _generateRandomUser(function(err, user, password) {
+            // Stringify the user ID
+            user.id = '' + user.id;
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
             // Verify that an error is thrown when an invalid user id was provided
@@ -73,18 +75,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                         gh.api.authenticationAPI.login(user.id, password);
                     }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                    QUnit.start();
-
-                    /**
-                     * TODO: wait for back-end implementation
-                     *
                     // Verifty that a user can login without errors
-                    gh.api.authenticationAPI.login(user.id, password, function(err, data) {
+                    // Since we're testing on global admin we're just using the default admin user and password here
+                    gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {
                         assert.ok(!err, 'Verifty that a user can login without errors');
-                        assert.ok(data, 'Verify that the logged user is returned');
                         QUnit.start();
                     });
-                    */
                 });
             });
         });
@@ -111,6 +107,27 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //////////////////////////
 
     // Test the becomeUser functionality
+    QUnit.asyncTest('becomeUser', function(assert) {
+        expect(3);
+
+        // Verify that an error is thrown when no user id was provided
+        gh.api.authenticationAPI.becomeUser(null, function(err) {
+            assert.ok(err, 'Verify that an error is thrown when no user id was provided');
+
+            // Verify that an error is thrown when an invalid user id was provided
+            gh.api.authenticationAPI.becomeUser('1234', function(err) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
+
+                // Verify that an error is thrown when an invalid callback was provided
+                assert.throws(function() {
+                    gh.api.authenticationAPI.becomeUser(1234, null);
+                }, 'Verify that an error is thrown when an invalid callback was provided');
+
+                QUnit.start();
+            });
+        });
+    });
+
 
     testAPI.init();
 });
