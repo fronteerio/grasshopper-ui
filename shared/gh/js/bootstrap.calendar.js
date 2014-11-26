@@ -121,6 +121,37 @@ define(['gh.core'], function(gh) {
     };
 
     /**
+     * Add an Array of events to the calendar
+     *
+     * @param {Event}      ev      Standard event object
+     * @param {Event[]}    data    Data object containing the events to add to the calendar
+     */
+    var addEventsToCalendar = function(ev, data) {
+        $.each(data.events, function(index, ev) {
+            calendar.fullCalendar('removeEvents', ev.id);
+            calendar.fullCalendar('renderEvent', {
+                'id': ev.id,
+                'title': ev.displayName,
+                'location': ev.location,
+                'start': ev.start,
+                'end': ev.end
+            }, true);
+        });
+    };
+
+    /**
+     * Remove an Array of events from the calendar
+     *
+     * @param  {Event}      ev      Standard event object
+     * @param  {Event[]}    data    Data object containing the events to remove from the calendar
+     */
+    var removeEventsFromCalendar = function(ev, data) {
+        $.each(data.events, function(index, ev) {
+            calendar.fullCalendar('removeEvents', ev.id);
+        });
+    };
+
+    /**
      * Add event listeners to UI-components
      *
      * @api private
@@ -136,6 +167,14 @@ define(['gh.core'], function(gh) {
         $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
         // Change the calendar's view
         $('#gh-calendar-toolbar-views button').on('click', changeView);
+        // Add the event to the calendar
+        $(document).on('gh.listview.addevent', addEventsToCalendar);
+        // Add the event to the calendar
+        $(document).on('gh.listview.addallevents', addEventsToCalendar);
+        // Remove the event from the calendar
+        $(document).on('gh.listview.removeevent', removeEventsFromCalendar);
+        // Remove the events from the calendar
+        $(document).on('gh.listview.removeallevents', removeEventsFromCalendar);
     };
 
     /**
@@ -162,26 +201,7 @@ define(['gh.core'], function(gh) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:15:00',
-            'events': [
-                {
-                    'title': 'Some flipping event with a extra long name',
-                    'location': 'Big room on the right',
-                    'start': '2014-11-23T11:30:00',
-                    'end': '2014-11-23T11:45:00'
-                },
-                {
-                    'title': 'Some flipping event with a extra long name',
-                    'location': 'Big room on the right',
-                    'start': '2014-11-24T12:00:00',
-                    'end': '2014-11-24T13:30:00'
-                },
-                {
-                    'title': 'Another flipping event with a extra long name',
-                    'location': 'Big room on the right',
-                    'start': '2014-11-24T15:30:00',
-                    'end': '2014-11-24T18:30:00'
-                }
-            ],
+            'events': [],
             'eventRender': function(ev, element) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
                     'data': ev
