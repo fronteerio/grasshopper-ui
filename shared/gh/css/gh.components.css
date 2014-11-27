@@ -165,6 +165,10 @@
     text-align: left;
 }
 
+.fc-ltr .fc-basic-view .fc-today.fc-day-number {
+    padding: 2px 5px 5px 5px;
+}
+
 .fc-slats .fc-minor td {
     border-top-style: dashed;
 }
