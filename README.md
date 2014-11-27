@@ -16,6 +16,10 @@ A container for grasshopper applications
 
 ### Interfaces
 
+On Linux, no need to add new loopback IP addresses manually, all of the 127.0.0.0/8 block (IPv4 loopback) is already enabled by default.
+
+On OS X:
+
 ```
 # Add a local loopback interface for IP 127.0.0.2
 sudo ifconfig lo0 alias 127.0.0.2 up
