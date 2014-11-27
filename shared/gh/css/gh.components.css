@@ -96,6 +96,7 @@
 
 /* Secondary toolbar */
 #gh-calendar-toolbar .gh-toolbar-secondary {
+    font-weight: 800;
     padding-top: 80px;
 }
 
@@ -139,14 +140,45 @@
 .fc-row.fc-widget-header thead tr th,
 .fc-month-view .fc-row.fc-widget-header thead tr th:first-child {
     border-bottom-style: solid !important;
-    border-bottom-width: 5px;
+    border-bottom-width: 6px;
     font-size: 16px;
     font-weight: 600;
-    height: 35px;
+    height: 50px;
+    vertical-align: middle;
+}
+
+.fc-month-view td.fc-today {
+    border-top-style: solid !important;
+    border-top-width: 6px;
+}
+
+.fc-month-view .fc-bg td.fc-today:before {
+    border-top-width: 6px;
+    border-top-style: solid;
+    content: "";
+    width: 100%;
+    position: absolute;
+}
+
+.fc-ltr .fc-basic-view .fc-day-number {
+    padding: 5px;
+    text-align: left;
+}
+
+.fc-ltr .fc-basic-view .fc-today.fc-day-number {
+    padding: 2px 5px 5px 5px;
 }
 
 .fc-slats .fc-minor td {
     border-top-style: dashed;
+}
+
+.fc td.fc-today {
+    border-right-style: solid !important;
+}
+
+.fc td:last-child.fc-today {
+    border-right-style: none !important;
 }
 
 .fc-event-container {
@@ -200,6 +232,11 @@ td.fc-widget-content {
 
 .fc-month-view tbody > tr > td.fc-day.fc-widget-content {
     border-style: solid !important;
+}
+
+.fc-month-view tbody > tr > td.fc-today.fc-widget-content {
+    border-top-width: 0;
+    position: relative;
 }
 
 .fc-day-grid .fc-week:first-child tbody tr td,

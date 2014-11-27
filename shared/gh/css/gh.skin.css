@@ -234,6 +234,16 @@ h1, h2, h3, h4, h5 {
 /* CALENDAR */
 /************/
 
+.fc-unthemed th,
+.fc-unthemed td,
+.fc-unthemed hr,
+.fc-unthemed thead,
+.fc-unthemed tbody,
+.fc-unthemed .fc-row,
+.fc-unthemed .fc-popover {
+    border-color: #E0E7E4;
+}
+
 /* Primary toolbar */
 .gh-toolbar-primary {
     background-color: #127077;
@@ -244,17 +254,31 @@ h1, h2, h3, h4, h5 {
     border-bottom-color: #E0E7E4;
 }
 
-.fc-widget-header table th.fc-today {
+.fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today,
+.fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
     border-bottom-color: #171717 !important;
+}
+
+.fc-month-view .fc-bg td.fc-today:before {
+    border-top-color: #414141;
+}
+
+.fc-month-view td.fc-today {
+    border-top-color: #171717 !important;
 }
 
 .fc-slats .fc-minor td {
     border-color: #E1E7E4;
 }
 
+tbody .fc-sat,
+tbody .fc-sun {
+    background-color: #EFF3F1;
+}
+
 .fc-event-container .fc-event {
-    background-color: #E1F6EB;
-    border-left-color: #127077;
+    background-color: #E7F8F0;
+    border-left-color: #198289;
 }
 
 .fc-event-container .fc-event .fc-content {
@@ -262,7 +286,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .fc-time-grid-event .fc-location {
-    color: #07525D;
+    color: #07646F;
 }
 
 .fc-unthemed .fc-today {
