@@ -1,0 +1,25 @@
+
+/************/
+/* CALENDAR */
+/************/
+
+#gh-page-container #gh-left-container,
+#gh-page-container #gh-right-container #gh-header-container,
+#gh-page-container #gh-right-container #gh-main #gh-calendar-toolbar {
+    display: none;
+}
+
+#gh-page-container #gh-right-container {
+    padding-left: 0;
+}
+
+#gh-page-container #gh-right-container #gh-main {
+    margin-bottom: 0;
+    padding-top: 0;
+}
+
+.fc-event-container .fc-event {
+    background-color: #FFF !important;
+    border: 1px solid #127077;
+    border-left-width: 5px;
+}
