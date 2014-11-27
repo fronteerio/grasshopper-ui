@@ -194,7 +194,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Function that is executed when the module was completed
+     * Fire an event that indicates the end of the module tests
      *
      * @param  {Object}    details    Object containing test information
      * @private
@@ -204,7 +204,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Function that is executed when the module was started
+     * Fire an event that indicates the start of the module tests
      *
      * @param  {Object}    details    Object containing test information
      * @private
@@ -244,7 +244,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Dispatches an event to the window object
+     * Dispatch an event to the window object
      *
      * @param  {String}    event    The event name
      * @paran  {Object}    data     Object containing the event data

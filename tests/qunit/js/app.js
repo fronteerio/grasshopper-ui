@@ -16,7 +16,7 @@ require(['jquery','lodash'], function($, _) {
     var totalScorePassed = 0;
 
     /**
-     * Converts a module name to a class name
+     * Convert a module name to a class name
      *
      * @param  {String}    name    The module name that needs to be converted
      * @return {String}            The converted module name
@@ -27,7 +27,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Marks a test as being run
+     * Mark a test as being run
      *
      * @param  {String}    name         The name of the test
      * @param  {String}    className    The name of the class to apply
@@ -70,7 +70,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Updates the score for a test
+     * Update the score for a test
      *
      * @param  {String}    name       The name of the QUnit module
      * @param  {Object}    details    Object containing module details
@@ -85,7 +85,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Resets the test suite
+     * Reset the test suite
      *
      * @private
      */
@@ -114,7 +114,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Invokes all the QUnit tests
+     * Invoke all the QUnit tests
      *
      * @private
      */
@@ -134,7 +134,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Runs the first test from the collection
+     * Run the first test from the collection
      */
     var runTest = function() {
         if (tests.length) {
@@ -146,7 +146,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Runs all the unit tests
+     * Run all the unit tests
      *
      * @private
      */
@@ -168,7 +168,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Runs a specific test
+     * Run a specific test
      *
      * @param  {String}    test    The url of a test
      * @private
@@ -178,7 +178,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Updates the total scores
+     * Update the total scores
      *
      * @param  {Object}    details    Object containing module details
      * @private
@@ -197,7 +197,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Adds event listeners to the UI components
+     * Add event listeners to the UI components
      *
      * @private
      */
@@ -207,7 +207,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Adds event listeners for QUnit tests
+     * Add event listeners for QUnit tests
      *
      * @private
      */
@@ -219,7 +219,7 @@ require(['jquery','lodash'], function($, _) {
     };
 
     /**
-     * Removes event listeners for QUnit tests
+     * Remove event listeners for QUnit tests
      *
      * @private
      */
