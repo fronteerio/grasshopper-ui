@@ -102,12 +102,12 @@ before_install:
 script:
   - grunt test
 
-after_script:
-  - grunt coveralls
-
 after_success:
   # Package and upload to Amazon S3
   - ./etc/scripts/travis-upload.sh
+
+after_script:
+  - grunt coveralls
 
 notifications:
   email:
