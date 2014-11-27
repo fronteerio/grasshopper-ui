@@ -259,6 +259,10 @@ h1, h2, h3, h4, h5 {
     border-bottom-color: #171717 !important;
 }
 
+.fc-month-view .fc-bg td.fc-today:before {
+    border-top-color: #414141;
+}
+
 .fc-month-view td.fc-today {
     border-top-color: #171717 !important;
 }
