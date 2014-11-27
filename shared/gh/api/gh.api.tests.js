@@ -33,6 +33,8 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
      * Initialise the QUnit async tests
      */
     var init = exports.init = function() {
+        QUnit.moduleDone(onModuleDone);
+        QUnit.moduleStart(onModuleStart);
         QUnit.testStart(onTestStart);
         QUnit.start();
     };
@@ -192,9 +194,32 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
     };
 
     /**
-     * Function that fetches the test data after each test
+     * Fire an event that indicates the end of the module tests
+     *
+     * @param  {Object}    details    Object containing test information
+     * @private
      */
-    var onTestStart = function() {
+    var onModuleDone = function(details) {
+        fireEvent('done.module.qunit.gh', details);
+    };
+
+    /**
+     * Fire an event that indicates the start of the module tests
+     *
+     * @param  {Object}    details    Object containing test information
+     * @private
+     */
+    var onModuleStart = function(details) {
+        fireEvent('start.module.qunit.gh', details);
+    };
+
+    /**
+     * Function that fetches the test data after each test
+     *
+     * @param  {Object}    details    Object containing test information
+     * @private
+     */
+    var onTestStart = function(details) {
         QUnit.stop();
 
         // Reset the test data
@@ -216,5 +241,16 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
                 });
             });
         });
+    };
+
+    /**
+     * Dispatch an event to the window object
+     *
+     * @param  {String}    event    The event name
+     * @paran  {Object}    data     Object containing the event data
+     * @private
+     */
+    var fireEvent = function(event, data) {
+        window.parent.$(window.parent.document).trigger(event, data);
     };
 });

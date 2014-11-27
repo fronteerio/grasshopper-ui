@@ -1,4 +1,4 @@
-._DS_store
+.DS_Store
 bootstrap.log
 coverage/
 node_modules/
