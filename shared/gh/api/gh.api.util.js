@@ -61,11 +61,15 @@ define(['exports'], function(exports) {
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/calendar.html', 'text!gh/partials/event.html', 'text!gh/partials/list-group-item.html'], function(calendar, eventItem, listGroupItem) {
+        require(['text!gh/partials/calendar.html',
+                 'text!gh/partials/event.html',
+                 'text!gh/partials/event-popover.html',
+                 'text!gh/partials/list-group-item.html'], function(calendar, eventItem, eventPopover, listGroupItem) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('calendar', calendar);
             _.declarePartial('event', eventItem);
+            _.declarePartial('event-popover', eventPopover);
             _.declarePartial('list-group-item', listGroupItem);
 
             callback();
@@ -90,6 +94,8 @@ define(['exports'], function(exports) {
         // Make sure we're dealing with jQuery objects
         $template = $($template);
         $target = $($target);
+
+        data = data || {};
 
         // Compile the template
         var compiled = _.template($template.text());

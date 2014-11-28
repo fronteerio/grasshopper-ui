@@ -281,6 +281,10 @@ tbody .fc-sun {
     border-left-color: #198289;
 }
 
+.fc-event-container .fc-event.highlighted {
+    background-color: #0b646f;
+}
+
 .fc-event-container .fc-event .fc-content {
     color: #171717;
 }
@@ -289,6 +293,33 @@ tbody .fc-sun {
     color: #07646F;
 }
 
+.fc-event-container .fc-event.highlighted .fc-content,
+.fc-time-grid-event.highlighted .fc-content .fc-location {
+    color: #FFF;
+}
+
 .fc-unthemed .fc-today {
     background-color: transparent;
+}
+
+
+/***********/
+/* POPOVER */
+/***********/
+
+.popover {
+    background-color: #F8F6FB;
+}
+
+.popover.right > .arrow:after {
+    border-right-color: #F8F6FB;
+}
+
+.popover h3 {
+    border-bottom-color: #DDD;
+}
+
+.popover small {
+    border-top-color: #DDD;
+    color: #777;
 }

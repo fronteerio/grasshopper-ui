@@ -21,6 +21,7 @@ requirejs.config({
     'paths': {
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
+        'clickover': 'vendor/js/bootstrapx-clickover',
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
         'jquery': 'vendor/js/jquery-2.1.1',
