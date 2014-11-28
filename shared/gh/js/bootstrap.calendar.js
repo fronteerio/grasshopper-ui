@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'moment'], function(gh, moment) {
+define(['gh.core', 'clickover', 'moment'], function(gh) {
 
 
     ////////////////
@@ -204,7 +204,8 @@ define(['gh.core', 'moment'], function(gh, moment) {
                 'title': ev.displayName,
                 'location': ev.location,
                 'start': ev.start,
-                'end': ev.end
+                'end': ev.end,
+                'organisers': ev.organisers
             }, true);
         });
     };
@@ -439,12 +440,40 @@ define(['gh.core', 'moment'], function(gh, moment) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:15:00',
-            'events': [],
-            'eventRender': function(ev, element) {
+            'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
-                    'data': ev
+                    'data': data
                 });
             }
+        });
+
+        // Show extra information for the event in a popover when it's clicked
+        $('#gh-calendar-container').on('click', '.fc-event', function() {
+            var eventId = $(this).data('id');
+            var $trigger = $(this);
+            var $content = $('.popover[data-id="' + eventId + '"]');
+
+            // Wait until the current call stack cleared so we're sure
+            // all popovers are hidden before adding a new one
+            _.defer(function() {
+                var options = {
+                    'container': 'body',
+                    'content': $content.html(),
+                    'global_close': true,
+                    'html': true,
+                    'placement': 'right',
+                    'title': '',
+                    'onHidden': function() {
+                        $trigger.removeClass('highlighted');
+                    },
+                    'onShown': function() {
+                        $trigger.addClass('highlighted');
+                    }
+                };
+
+                $trigger.clickover(options);
+                $trigger.trigger('click');
+            });
         });
 
         // Add binding to various elements

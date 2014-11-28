@@ -58,10 +58,6 @@
 /* CALENDAR */
 /************/
 
-.fc-view {
-    z-index: -1;
-}
-
 #gh-calendar-container,
 .gh-toolbar-secondary {
     margin: 0 30px;
@@ -87,6 +83,7 @@
     left: 320px;
     position: fixed;
     right: 0;
+    z-index: 2;
 }
 
 .gh-toolbar-primary .gh-toolbar-views,
@@ -192,6 +189,11 @@
     border: none;
     border-left-style: solid;
     border-left-width: 5px;
+    cursor: pointer;
+}
+
+.fc-event-container .fc-event.highlighted {
+    z-index: 1000 !important;
 }
 
 .fc-event-container .fc-event .fc-content {
@@ -201,10 +203,12 @@
 .fc-time-grid-event .fc-title,
 .fc-time-grid-event .fc-location {
     display: block !important;
-    margin: 4px 2px;
+    margin: 4px 6px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.fc-time-grid-event .fc-title {
+    font-weight: 400;
 }
 
 .fc-time-grid-event .fc-location {
@@ -422,4 +426,40 @@ tbody tr:last-child > td.fc-widget-content {
 
 .chosen-container .chosen-results li.highlighted {
     background-image: none;
+}
+
+
+/***********/
+/* POPOVER */
+/***********/
+
+.popover {
+    font-size: 12px;
+    max-width: 350px;
+    width: 350px;
+}
+
+.popover .popover-content {
+    margin: 12px 10px;
+}
+
+.popover h3 {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    padding-bottom: 7px;
+}
+
+.popover p {
+    margin: 0 0 3px;
+}
+
+.popover small {
+    border-top-style: solid;
+    border-top-width: 1px;
+    display: block;
+    margin-top: 15px;
+    padding-top: 7px;
 }

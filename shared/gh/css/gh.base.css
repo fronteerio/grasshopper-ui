@@ -106,7 +106,7 @@ select.form-control {
     left: 320px;
     position: fixed;
     right: 0;
-    z-index: 1;
+    z-index: 3;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,
