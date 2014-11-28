@@ -25,23 +25,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     // Add a target container to the page
     $('body').append('<div id="qunit-template-target" style="display: none;"></div>');
 
-    // Test the renderTemplate functionality
-    QUnit.test('renderTemplate', function(assert) {
-        // Verify that a template needs to be provided
-        assert.throws(function() {
-            gh.api.utilAPI.renderTemplate(null, templateData, $('#qunit-template-target'));
-        }, 'Verify that a template needs to be provided');
-
-        // Verify that the template renders in the target container
-        gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
-        assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu', 'Verify the template HTML is rendered in the target container when specified');
-
-        // Verify that the rendered HTML is returned when no target is specified
-        var returnedHTML = gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData);
-        assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
-    });
-
-    // Test the generateRandomString functionality
+    // Test the 'generateRandomString' functionality
     QUnit.test('generateRandomString', function(assert) {
 
         // Verify that only boolean values are allowed as a parameter
@@ -57,6 +41,125 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
         assert.ok((/[A-Z]/g).test(gh.api.utilAPI.generateRandomString()));
+    });
+
+    // Test the 'renderTemplate' functionality
+    QUnit.test('renderTemplate', function(assert) {
+        // Verify that a template needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.renderTemplate(null, templateData, $('#qunit-template-target'));
+        }, 'Verify that a template needs to be provided');
+
+        // Verify that the template renders in the target container
+        gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
+        assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu', 'Verify the template HTML is rendered in the target container when specified');
+
+        // Verify that the rendered HTML is returned when no target is specified
+        var returnedHTML = gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData);
+        assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
+    });
+
+
+    ////////////////
+    //  CALENDAR  //
+    ////////////////
+
+    // Test the 'convertISODatetoUnixDate' functionality
+    QUnit.test('convertISODatetoUnixDate', function(assert) {
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.convertISODatetoUnixDate(null);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid string should be provided
+        assert.throws(function() {
+            gh.api.utilAPI.convertISODatetoUnixDate(9999);
+        }, 'Verify that a valid string should be provided');
+
+        var date = '2014-11-28T10:50:49.000Z';
+        var convertedDate = gh.api.utilAPI.convertISODatetoUnixDate(date);
+
+        // Verify that the date is converted correctly
+        assert.strictEqual(convertedDate, 1417171849000, 'Verify that the date is converted correctly');
+    });
+
+    // Test the 'convertUnixDatetoISODate' functionality
+    QUnit.test('convertUnixDatetoISODate', function(assert) {
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.convertUnixDatetoISODate(null);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid numeric date should be provided
+        assert.throws(function() {
+            gh.api.utilAPI.convertUnixDatetoISODate('invalid_date');
+        }, 'Verify that a valid numeric date should be provided');
+
+        var date = 1417171849000;
+        var convertedDate = gh.api.utilAPI.convertUnixDatetoISODate(date);
+
+        // Verify that the date is converted correctly
+        assert.strictEqual(convertedDate, '2014-11-28T10:50:49.000Z', 'Verify that the date is converted correctly');
+    });
+
+    // Test the 'isDateInRange' functionality
+    QUnit.test('isDateInRange', function(assert) {
+
+        var date = Date.now();
+        var startDate = Date.now() - (60 * 60 * 24 * 7);
+        var endDate = Date.now() + (60 * 60 * 24 * 7);
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(null, startDate, endDate);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a startDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(date, null, endDate);
+        }, 'Verify that a valid startDate needs to be provided');
+
+        // Verify that a endDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(date, null, endDate);
+        }, 'Verify that a valid endDate needs to be provided');
+
+        // Verify that en error is thrown when the startDate is after the endDate
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(date, endDate, startDate);
+        }, 'Verify that en error is thrown when the startDate is after the endDate');
+
+        // Verify that true is returned when a date is within a range of dates
+        assert.ok(gh.api.utilAPI.isDateInRange(date, startDate, endDate));
+
+        // Verify that false is returned when a date is outside a range of dates
+        assert.ok(!gh.api.utilAPI.isDateInRange(startDate, date, endDate));
+    });
+
+    // Test the 'weeksInDateRange' functionality
+    QUnit.test('weeksInDateRange', function(assert) {
+
+        var startDate = Date.now() - (60 * 60 * 24 * 7);
+        var endDate = Date.now() + (60 * 60 * 24 * 7);
+
+        // Verify that a startDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.weeksInDateRange(null, endDate);
+        }, 'Verify that a valid startDate needs to be provided');
+
+        // Verify that a endDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.weeksInDateRange(startDate, null);
+        }, 'Verify that a valid endDate needs to be provided');
+
+        // Verify that en error is thrown when the startDate is after the endDate
+        assert.throws(function() {
+            gh.api.utilAPI.weeksInDateRange(startDate, null);
+        }, 'Verify that en error is thrown when the startDate is after the endDate');
+
+        // Verify that the correct number of weeks are returned
+        var numWeeks = gh.api.utilAPI.weeksInDateRange(startDate, endDate);
+        assert.equal(2, numWeeks);
     });
 
     testAPI.init();
