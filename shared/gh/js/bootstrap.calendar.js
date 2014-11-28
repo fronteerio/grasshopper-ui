@@ -187,7 +187,6 @@ define(['gh.core', 'clickover'], function(gh) {
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
             'header': false,
-            'aspectRatio': 1.35,
             'columnFormat': {
                 'month': 'ddd',
                 'week': 'ddd D/M',
