@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports'], function(exports) {
+define(['exports', 'moment'], function(exports) {
 
     /**
      * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with
@@ -123,9 +123,9 @@ define(['exports'], function(exports) {
      * @return {Number}                 The number of weeks within the date range
      */
     var weeksInDateRange = exports.weeksInDateRange = function(startDate, endDate) {
-        if (!startDate) {
+        if (!startDate || !moment(startDate).isValid()) {
             throw new Error('An invalid value for startDate has been provided');
-        } else if (!endDate) {
+        } else if (!endDate || !moment(endDate).isValid()) {
             throw new Error('An invalid value for endDate has been provided');
         } else if (startDate > endDate) {
             throw new Error('The startDate cannot be after the endDate');
@@ -143,7 +143,7 @@ define(['exports'], function(exports) {
      * @return {Number}            The UNIX date
      */
     var convertISODatetoUnixDate = exports.convertISODatetoUnixDate = function(date) {
-        if (!date || (date && !_.isString(date))) {
+        if (!date || !_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
             throw new Error('An invalid value for date has been provided');
         }
         return Date.parse(date);
@@ -156,7 +156,7 @@ define(['exports'], function(exports) {
      * @return {Number}            The ISO8601 date
      */
     var convertUnixDatetoISODate = exports.convertUnixDatetoISODate = function(date) {
-        if (!date || (date && !_.isNumber(date))) {
+        if (!date || !moment(date).isValid()) {
             throw new Error('An invalid value for date has been provided');
         }
         return new Date(date).toISOString();
@@ -171,11 +171,11 @@ define(['exports'], function(exports) {
      * @return {Boolean}                Whether or not the date is in the range
      */
     var isDateInRange = exports.isDateInRange = function(date, startDate, endDate) {
-        if (!date) {
+        if (!date || !moment(date).isValid()) {
             throw new Error('An invalid value for date has been provided');
-        } else if (!startDate) {
+        } else if (!startDate || !moment(startDate).isValid()) {
             throw new Error('An invalid value for startDate has been provided');
-        } else if (!endDate) {
+        } else if (!endDate || !moment(endDate).isValid()) {
             throw new Error('An invalid value for endDate has been provided');
         } else if (startDate > endDate) {
             throw new Error('The startDate cannot be after the endDate');

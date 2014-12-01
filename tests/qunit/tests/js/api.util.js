@@ -76,6 +76,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.utilAPI.convertISODatetoUnixDate(9999);
         }, 'Verify that a valid string should be provided');
 
+        // Verify that a valid date format should be provided
+        assert.throws(function() {
+            gh.api.utilAPI.convertISODatetoUnixDate('12-3456-78');
+        }, 'Verify that a valid date format should be provided');
+
         var date = '2014-11-28T10:50:49.000Z';
         var convertedDate = gh.api.utilAPI.convertISODatetoUnixDate(date);
 
@@ -112,16 +117,31 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Verify that a date needs to be provided
         assert.throws(function() {
             gh.api.utilAPI.isDateInRange(null, startDate, endDate);
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange('invalid_date', startDate, endDate);
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a startDate needs to be provided
         assert.throws(function() {
             gh.api.utilAPI.isDateInRange(date, null, endDate);
+        }, 'Verify that a startDate needs to be provided');
+
+        // Verify that a valid startDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(date, 'invalid_date', endDate);
         }, 'Verify that a valid startDate needs to be provided');
 
         // Verify that a endDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, null, endDate);
+            gh.api.utilAPI.isDateInRange(date, startDate, null);
+        }, 'Verify that an endDate needs to be provided');
+
+        // Verify that a valid endDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.isDateInRange(date, startDate, 'invalid_date');
         }, 'Verify that a valid endDate needs to be provided');
 
         // Verify that en error is thrown when the startDate is after the endDate
@@ -145,16 +165,26 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Verify that a startDate needs to be provided
         assert.throws(function() {
             gh.api.utilAPI.weeksInDateRange(null, endDate);
+        }, 'Verify that a startDate needs to be provided');
+
+        // Verify that a valid startDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.weeksInDateRange('invalid_date', endDate);
         }, 'Verify that a valid startDate needs to be provided');
 
-        // Verify that a endDate needs to be provided
+        // Verify that an endDate needs to be provided
         assert.throws(function() {
             gh.api.utilAPI.weeksInDateRange(startDate, null);
+        }, 'Verify that an endDate needs to be provided');
+
+        // Verify that a valid endDate needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.weeksInDateRange(startDate, 'invalid_date');
         }, 'Verify that a valid endDate needs to be provided');
 
         // Verify that en error is thrown when the startDate is after the endDate
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange(startDate, null);
+            gh.api.utilAPI.weeksInDateRange(endDate, startDate);
         }, 'Verify that en error is thrown when the startDate is after the endDate');
 
         // Verify that the correct number of weeks are returned

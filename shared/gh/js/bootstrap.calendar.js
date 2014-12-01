@@ -52,12 +52,11 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
     /**
      * Change the calendar's current period
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changePeriod = function(event) {
+    var changePeriod = function() {
         // Cache the clicked button
-        var $button = $(event.currentTarget);
+        var $button = $(this);
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Update the calendar
@@ -74,18 +73,17 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
     /**
      * Change the calendar's current term
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changeTerm = function(event) {
+    var changeTerm = function() {
         // Create a jQuery object from the originating button
-        var $button = $(event.currentTarget);
+        var $button = $(this);
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Get the current term
         var currentTerm = getCurrentTerm(getCurrentViewDate());
 
-        // Retrieve the term to navigate to
+        // Retrieve the term to navigate to, based on the current term
         var term = null;
         if (currentTerm) {
             if (action === 'next') {
@@ -93,6 +91,8 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
             } else {
                 term = getPreviousTerm(currentTerm);
             }
+
+        // This gets called when you are inbetween terms
         } else {
             if (action === 'next') {
                 term = getNearestTerm(currentTerm, 'start');
@@ -113,12 +113,11 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
     /**
      * Change the calendar's current view
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changeView = function(event) {
+    var changeView = function() {
         // Cache the clicked button
-        var $button = $(event.currentTarget);
+        var $button = $(this);
         // Retrieve the view
         currentView = $button.attr('data-view');
         // Change the view
