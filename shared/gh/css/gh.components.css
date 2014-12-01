@@ -95,6 +95,7 @@
 #gh-calendar-toolbar .gh-toolbar-secondary {
     font-weight: 800;
     padding-top: 80px;
+    position: relative;
 }
 
 #gh-calendar-toolbar .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
@@ -103,6 +104,12 @@
 
 #gh-calendar-toolbar .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
     padding: 0;
+}
+
+/* Today button */
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-today {
+    position: absolute;
+    width: 100%;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
@@ -414,7 +421,7 @@ tbody tr:last-child > td.fc-widget-content {
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
 }
 
-.chosen-container .chosen-results { 
+.chosen-container .chosen-results {
     margin: 0 8px 8px 0;
     max-height: 320px;
     padding: 0 0 0 8px;

@@ -91,6 +91,15 @@ define(['gh.core', 'clickover'], function(gh) {
     };
 
     /**
+     * Navigate to the current day
+     *
+     * @private
+     */
+    var navigateToToday = function() {
+        calendar.fullCalendar('today');
+    };
+
+    /**
      * Print the calendar
      *
      * @private
@@ -162,6 +171,8 @@ define(['gh.core', 'clickover'], function(gh) {
         $('#gh-btn-calendar-export').on('click', exportCalendar);
         // Print the calendar
         $('#gh-btn-calendar-print').on('click', printCalendar);
+        // Navigate to the current day
+        $('#gh-btn-calendar-today').on('click', navigateToToday);
         // Change the calendar's period
         $('#gh-calendar-toolbar-period button').on('click', changePeriod);
         // Change the calendar's term
