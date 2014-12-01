@@ -32,7 +32,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         {
             'name': 'michaelmas',
             'label': 'Michaelmas',
-            'start': '2014-10-07',
+            'start': '2014-10-09',
             'end': '2014-12-05'
         },
         {
@@ -154,7 +154,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
-            var weekNumber = getCurrentAcademicWeekNumber(getCurrentViewDate());
+            var weekNumber = getCurrentAcademicWeekNumber();
 
             // Set the label
             label = 'Outside term';
@@ -262,14 +262,12 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
     /**
      * Return the current academic week number if the current date is within a term
      *
-     * @param  {Number}    date    The date in a UNIX time format
-     * @return {Number}            The academic week number
+     * @return {Number}    The academic week number
      * @private
      */
-    var getCurrentAcademicWeekNumber = function(date) {
+    var getCurrentAcademicWeekNumber = function() {
         var currentViewDate = getCurrentViewDate();
         var currentTerm = getCurrentTerm(currentViewDate);
-
         if (!currentTerm) {
             return null;
         }
@@ -278,7 +276,12 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         var startDate = gh.api.utilAPI.convertISODatetoUnixDate(currentTerm.start);
 
         // Return the current academic week number
-        return Math.floor((currentViewDate - startDate) / (1000 * 60 * 60 * 24 * 7));
+        var weekNumber = Math.floor((currentViewDate - startDate) / (1000 * 60 * 60 * 24 * 7)) + 1;
+
+        if (weekNumber > 8) {
+            weekNumber = null;
+        }
+        return weekNumber;
     };
 
     /**
@@ -338,7 +341,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
             return {
                 'name': term.name,
                 'date': gh.api.utilAPI.convertISODatetoUnixDate(term[property])
-            }
+            };
         });
 
         // Pick the nearest start date
