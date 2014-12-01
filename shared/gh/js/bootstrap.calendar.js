@@ -97,6 +97,10 @@ define(['gh.core', 'clickover'], function(gh) {
      */
     var navigateToToday = function() {
         calendar.fullCalendar('today');
+        // Set the period label
+        setPeriodLabel();
+        // Set the current day
+        setCurrentDay();
     };
 
     /**

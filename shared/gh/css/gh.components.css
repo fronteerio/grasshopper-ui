@@ -98,6 +98,12 @@
     position: relative;
 }
 
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-period,
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+    position: relative;
+    z-index: 1;
+}
+
 #gh-calendar-toolbar .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
     height: auto;
 }
