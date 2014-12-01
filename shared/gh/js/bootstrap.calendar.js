@@ -153,6 +153,18 @@ define(['gh.core', 'clickover'], function(gh) {
     };
 
     /**
+     * Set the height of the calendar view
+     *
+     * @private
+     */
+    var setCalendarHeight = function() {
+        // Calculate the new height
+        var height = window.innerHeight - 380;
+        // Apply the new height on the calendar
+        calendar.fullCalendar('option', 'height', height);
+    };
+
+    /**
      * Add event listeners to UI-components
      *
      * @api private
@@ -176,6 +188,8 @@ define(['gh.core', 'clickover'], function(gh) {
         $(document).on('gh.listview.removeevent', removeEventsFromCalendar);
         // Remove the events from the calendar
         $(document).on('gh.listview.removeallevents', removeEventsFromCalendar);
+        // Resize the calendar
+        $(window).on('resize', setCalendarHeight);
     };
 
     /**
@@ -198,7 +212,7 @@ define(['gh.core', 'clickover'], function(gh) {
             'editable': false,
             'eventLimit': true,
             'firstDay': 4,
-            'handleWindowResize': true,
+            'handleWindowResize': false,
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:15:00',
@@ -244,6 +258,8 @@ define(['gh.core', 'clickover'], function(gh) {
         setPeriodLabel();
         // Set the current day
         setCurrentDay();
+        // Set the calendar height
+        setCalendarHeight();
     };
 
     // Initialise the calendar
