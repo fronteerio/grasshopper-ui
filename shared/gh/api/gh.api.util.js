@@ -200,6 +200,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * @param  {String}     message       The notification message that will be shown underneath the title.
      * @param  {String}     [type]        The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
      * @throws {Error}                    Error thrown when no message has been provided
+     * @return {Boolean}                  Returns true when the notification has been shown
      */
     var notification = exports.notification = function(title, message, type) {
         if (!message) {
@@ -230,5 +231,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             'message': {'html': message},
             'transition': 'fade'
         }).show();
+
+        return true;
     };
 });
