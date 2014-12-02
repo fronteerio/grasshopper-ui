@@ -123,17 +123,12 @@
 /* Today button */
 #gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-today {
     height: 32px;
-    width: 100%;
     position: absolute;
+    width: 100%;
 }
 
 #gh-calendar-toolbar .gh-toolbar-secondary #gh-btn-calendar-today {
-    background-color: #2A2A2A;
     border: none;
-}
-
-#gh-calendar-toolbar .gh-toolbar-secondary #gh-btn-calendar-today:hover {
-    background-color: #2D939C;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
