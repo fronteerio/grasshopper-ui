@@ -23,9 +23,11 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The configuration schema
      */
     var getConfigSchema = exports.getConfigSchema = function(callback) {
-        if (!callback || (callback && !_.isFunction(callback))) {
+        if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         }
+
+        return callback();
     };
 
     /**
@@ -36,9 +38,11 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The configuration for the current app
      */
     var getConfig = exports.getConfig = function(callback) {
-        if (!callback || (callback && !_.isFunction(callback))) {
+        if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         }
+
+        return callback();
     };
 
     /**
@@ -50,13 +54,13 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    The configuration for the specified app
      */
     var getConfigByApp = exports.getConfigByApp = function(appId, callback) {
-        if (!callback || (callback && !_.isFunction(callback))) {
+        if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
-        }
-
-        if (!appId || (appId && !_.isNumber(appId))) {
+        } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         }
+
+        return callback();
     };
 
     /**
@@ -74,9 +78,11 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
-        if (!configValues || (configValues && !_.isObject(configValues))) {
+        if (!_.isObject(configValues)) {
             return callback({'code': 400, 'msg': 'A valid value for configValues should be provided'});
         }
+
+        return callback();
     };
 
     /**
@@ -95,11 +101,13 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
-        if (!appId || (appId && !_.isNumber(appId))) {
+        if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
-        } else if (!configValues || (configValues && !_.isObject(configValues))) {
+        } else if (!_.isObject(configValues)) {
             return callback({'code': 400, 'msg': 'A valid value for configValues should be provided'});
         }
+
+        return callback();
     };
 
     /**
@@ -117,9 +125,11 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
-        if (!configFields || (configFields && !_.isArray(configFields))) {
+        if (!_.isArray(configFields)) {
             return callback({'code': 400, 'msg': 'A valid value for configFields should be provided'});
         }
+
+        return callback();
     };
 
     /**
@@ -138,10 +148,12 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
-        if (!appId || (appId && !_.isNumber(appId))) {
+        if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
-        } else if (!configFields || (configFields && !_.isArray(configFields))) {
+        } else if (!_.isArray(configFields)) {
             return callback({'code': 400, 'msg': 'A valid value for configFields should be provided'});
         }
+
+        return callback();
     };
 });
