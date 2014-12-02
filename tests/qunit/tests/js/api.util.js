@@ -209,9 +209,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a notification can be triggered with a title and a message
         assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');
-
     });
-
 
     testAPI.init();
 });
