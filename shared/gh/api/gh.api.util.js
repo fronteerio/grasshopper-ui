@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'moment'], function(exports) {
+define(['exports', 'moment'], function(exports, moment) {
 
     /**
      * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with

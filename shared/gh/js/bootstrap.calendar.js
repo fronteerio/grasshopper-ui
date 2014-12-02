@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'clickover', 'moment'], function(gh) {
+define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
 
     ////////////////
