@@ -88,6 +88,7 @@ define(['gh.core'], function(gh) {
                 // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
+                gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
             },
             'events': eventsToAdd
         }]);
@@ -119,6 +120,7 @@ define(['gh.core'], function(gh) {
                 // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
+                gh.api.utilAPI.notification('Events removed.', 'All events where successfully removed from your calendar.');
             },
             'events': eventsToRemove
         }]);
@@ -158,6 +160,7 @@ define(['gh.core'], function(gh) {
                 // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
+                gh.api.utilAPI.notification('Event added.', 'The event was successfully added to your calendar.');
             },
             'events': eventsToAdd
         }]);
@@ -192,6 +195,7 @@ define(['gh.core'], function(gh) {
                 // happened. If there's an error it should be passed back in here and
                 // the list view should be appropriately updated (or not). Error notifications
                 // shouldn't be handled in here as they are custom to the app
+                gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.');
             },
             'events': eventsToRemove
         }]);

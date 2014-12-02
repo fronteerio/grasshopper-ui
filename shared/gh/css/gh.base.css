@@ -120,10 +120,54 @@ select.form-control {
     height: 100%;
 }
 
+
 /***********/
 /* BUTTONS */
 /***********/
 
 .btn {
     font-weight: 200;
+}
+
+
+/*****************/
+/* NOTIFICATIONS */
+/*****************/
+
+/* @see http://getbootstrap.com/components/#alerts
+ * @see http://nijikokun.github.io/bootstrap-notify */
+
+.alert {
+    padding: 8px 35px 8px 14px;
+}
+
+.alert h4 {
+    margin-bottom: 12px;
+}
+
+.notifications .alert {
+    padding: 20px 40px 20px 30px;
+    border-top: none;
+    -webkit-box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3);
+       -moz-box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 0 0 4px 4px;
+       -moz-border-radius: 0 0 4px 4px;
+            border-radius: 0 0 4px 4px;
+}
+
+.notifications.top-center {
+    top: 0;
+    left: 20%;
+    position: fixed;
+    width: 60%;
+    z-index: 9999;
+}
+
+.notifications.top-center > div {
+    margin: 0 auto;
+    max-width: 600px;
+    text-align: left;
+    width: 100%;
+    word-wrap: break-word;
 }

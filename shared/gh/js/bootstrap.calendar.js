@@ -207,6 +207,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 'organisers': ev.organisers
             }, true);
         });
+        data.callback();
     };
 
     /**
@@ -220,6 +221,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $.each(data.events, function(index, ev) {
             calendar.fullCalendar('removeEvents', ev.id);
         });
+        data.callback();
     };
 
 
