@@ -56,7 +56,6 @@ select.form-control {
 
 #gh-main {
     margin-bottom: 30px;
-    padding-top: 215px;
 }
 
 /* Main page container */
@@ -71,6 +70,7 @@ select.form-control {
     padding: 0;
     position: fixed;
     width: 320px;
+    z-index: 3;
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
@@ -104,7 +104,6 @@ select.form-control {
 
 #gh-page-container #gh-right-container #gh-header-container {
     left: 320px;
-    position: fixed;
     right: 0;
     z-index: 3;
 }
