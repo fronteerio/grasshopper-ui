@@ -192,5 +192,24 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(2, numWeeks);
     });
 
+
+    ///////////////////
+    // NOTIFICATIONS //
+    ///////////////////
+
+    // Test the 'notification' functionality
+    QUnit.test('notification', function(assert) {
+        // Verify that a message for the notification needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.notification();
+        }, 'Verify that a message for the notification needs to be provided');
+
+        // Verify that a notification can be triggered with only a message
+        assert.ok(gh.api.utilAPI.notification(null, 'Notification message'), 'Verify that a notification can be triggered with only a message');
+
+        // Verify that a notification can be triggered with a title and a message
+        assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');
+    });
+
     testAPI.init();
 });

@@ -324,3 +324,34 @@ tbody .fc-sun {
     border-top-color: #DDD;
     color: #777;
 }
+
+
+/*****************/
+/* NOTIFICATIONS */
+/*****************/
+
+.notifications .alert.alert-success,
+.notifications .alert.alert-error,
+.notifications .alert.alert-info {
+    color: #313131;
+    border-color: #BBB;
+    background-color: #E0E6E4;
+}
+
+.notifications .alert.alert-error {
+    background-color: #F2DEDE;
+    border-color: #F1D1D1;
+}
+
+.notifications .alert.alert-error h4 {
+    color: #B94A48;
+}
+
+.notifications .alert.alert-info {
+    background-color: #d9EDF7;
+    border-color: #BBE2F6;
+}
+
+.notifications .alert.alert-info h4 {
+    color: #31708F;
+}

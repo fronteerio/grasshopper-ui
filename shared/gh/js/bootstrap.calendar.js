@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'clickover', 'moment'], function(gh) {
+define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
 
     ////////////////
@@ -226,6 +226,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
                 'organisers': ev.organisers
             }, true);
         });
+        data.callback();
     };
 
     /**
@@ -239,6 +240,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         $.each(data.events, function(index, ev) {
             calendar.fullCalendar('removeEvents', ev.id);
         });
+        data.callback();
     };
 
 

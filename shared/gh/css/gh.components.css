@@ -35,6 +35,8 @@
 
 #gh-right-container #gh-subheader form {
     margin: 0;
+    min-width: 960px;
+    overflow: hidden;
     padding: 28px 0 0;
 }
 
@@ -81,7 +83,6 @@
 .gh-toolbar-primary {
     height: 44px;
     left: 320px;
-    position: fixed;
     right: 0;
     z-index: 2;
 }
@@ -94,7 +95,7 @@
 /* Secondary toolbar */
 #gh-calendar-toolbar .gh-toolbar-secondary {
     font-weight: 800;
-    padding-top: 80px;
+    padding-top: 40px;
     position: relative;
 }
 
