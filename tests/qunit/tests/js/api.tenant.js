@@ -13,12 +13,12 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
+require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     module('Tenant API');
 
     // Test the getTenants functionality
     QUnit.asyncTest('getTenants', function(assert) {
-        expect(3);
+        expect(5);
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -29,13 +29,25 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         gh.api.tenantAPI.getTenants(function(err, data) {
             assert.ok(!err, 'Verify that the tenants can be retrieved without errors');
             assert.ok(data, 'Verify that the tenants are returned');
+
+            // Mock an error from the back-end
+            var server = sinon.fakeServer.create();
+            server.respondWith('GET', '/api/tenants', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+
+            gh.api.tenantAPI.getTenants(function(err, data) {
+                assert.ok(err);
+                assert.ok(!data);
+            });
+            server.respond();
+            server.restore();
+
             QUnit.start();
         });
     });
 
     // Test the getTenant functionality
     QUnit.asyncTest('getTenant', function(assert) {
-        expect(4);
+        expect(6);
 
         // Fetch a random tenant
         var tenant = testAPI.getRandomTenant();
@@ -53,6 +65,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
                 assert.ok(!err, 'Verify that a tenant can be returend without errors');
                 assert.ok(data, 'Verify that the tenant is returned');
+
+                // Mock an error from the back-end
+                var server = sinon.fakeServer.create();
+                server.respondWith('GET', '/api/tenants/' + tenant.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+
+                gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
+                    assert.ok(err);
+                    assert.ok(!data);
+                });
+                server.respond();
+                server.restore();
+
                 QUnit.start();
             });
         });
@@ -60,7 +84,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the createTenant functionality
     QUnit.asyncTest('createTenant', function(assert) {
-        expect(5);
+        expect(7);
 
         // Generate a display name
         var displayName = gh.api.utilAPI.generateRandomString(true);
@@ -79,6 +103,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 assert.ok(!err, 'Verify that a tenant can be created without errors');
                 assert.ok(data, 'Verify that the created tenant is returned');
                 assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
+
+                // Mock an error from the back-end
+                var server = sinon.fakeServer.create();
+                server.respondWith('POST', '/api/tenants/', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+
+                gh.api.tenantAPI.createTenant(displayName, function(err, data) {
+                    assert.ok(err);
+                    assert.ok(!data);
+                });
+                server.respond();
+                server.restore();
+
                 QUnit.start();
             });
         });
@@ -86,7 +122,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateTenant functionality
     QUnit.asyncTest('updateTenant', function(assert) {
-        expect(6);
+        expect(8);
 
         // Fetch a random tenant
         var tenant = testAPI.getRandomTenant();
@@ -112,6 +148,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     assert.ok(!err, 'Verify that a tenant can be updated without errors');
                     assert.ok(data, 'Verify that the updated tenant is returned');
                     assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
+
+                    // Mock an error from the back-end
+                    var server = sinon.fakeServer.create();
+                    server.respondWith('POST', '/api/tenants/' + tenant.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+
+                    gh.api.tenantAPI.updateTenant(tenant.id, displayName, function(err, data) {
+                        assert.ok(err);
+                        assert.ok(!data);
+                    });
+                    server.respond();
+                    server.restore();
+
                     QUnit.start();
                 });
             });
