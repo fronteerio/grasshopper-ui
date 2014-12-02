@@ -80,7 +80,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .btn-default:hover,
-.btn-default:focus {
+.btn-default:focus,
+.btn-default#gh-btn-calendar-today {
     color: #FFF;
     background-color: #2A2A2A;
     border-color: #2A2A2A;
@@ -130,7 +131,8 @@ h1, h2, h3, h4, h5 {
     color: #FFF;
 }
 
-.btn-default.gh-btn-secondary.gh-btn-reverse:active {
+.btn-default.gh-btn-secondary.gh-btn-reverse:active,
+.btn-default#gh-btn-calendar-today:hover {
     background-color: #2D939C;
     border-color: #2D939C;
     color: #FFF;
@@ -160,7 +162,6 @@ h1, h2, h3, h4, h5 {
     background-color: #2A2A2A;
     border-color: #2A2A2A;
 }
-
 
 /*********/
 /* LISTS */
