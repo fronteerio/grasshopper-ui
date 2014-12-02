@@ -104,6 +104,8 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         // Navigate to a specific date in the calendar
         calendar.fullCalendar('gotoDate', term.start);
 
+         // Set the current day
+        setCurrentDay();
         // Set the week label
         setPeriodLabel();
         // Set the term label
@@ -127,10 +129,27 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         // Update the button's status
         $button.removeClass('default').addClass('active');
 
-        // Set the period label
-        setPeriodLabel();
         // Set the current day
         setCurrentDay();
+        // Set the period label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
+    };
+
+    /**
+     * Change the current view to today's view
+     *
+     * @private
+     */
+    var navigateToToday = function() {
+        calendar.fullCalendar('today');
+        // Set the current day
+        setCurrentDay();
+        // Set the week label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
     };
 
     /**

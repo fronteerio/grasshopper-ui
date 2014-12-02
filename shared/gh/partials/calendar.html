@@ -16,9 +16,11 @@
 
             <!-- Navigate through the weeks/months/days -->
             <div id="gh-calendar-toolbar-period" class="gh-toolbar-period pull-left">
-                <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
-                <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
-                <span id="gh-toolbar-label-period" class="gh-toolbar-label">{ACADEMIC_WEEK_NUMBER}</span>
+                <div class="gh-toolbar-inner">
+                    <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
+                    <span id="gh-toolbar-label-period" class="gh-toolbar-label">{ACADEMIC_WEEK_NUMBER}</span>
+                </div>
             </div>
 
             <!-- Navigate to the current day -->
@@ -28,9 +30,11 @@
 
             <!-- Navigate through the terms -->
             <div id="gh-calendar-toolbar-terms" class="gh-toolbar-term pull-right">
-                <span id="gh-toolbar-label-term" class="gh-toolbar-label">{CURRENT_TERM}</span>
-                <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
-                <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
+                <div class="gh-toolbar-inner">
+                    <span id="gh-toolbar-label-term" class="gh-toolbar-label">{CURRENT_TERM}</span>
+                    <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
+                </div>
             </div>
         </div>
     </div>
