@@ -13,7 +13,12 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'clickover'], function(gh) {
+define(['gh.core', 'clickover', 'moment'], function(gh) {
+
+
+    ////////////////
+    //  CALENDAR  //
+    ////////////////
 
     // Cache the calendar object
     var calendar = null;
@@ -21,44 +26,98 @@ define(['gh.core', 'clickover'], function(gh) {
     // Set the default view
     var currentView = 'agendaWeek';
 
+    // The start and end dates for the terms
+    // TODO: make this configurable in the admin UI
+    var terms = [
+        {
+            'name': 'michaelmas',
+            'label': 'Michaelmas',
+            'start': '2014-10-09',
+            'end': '2014-12-05'
+        },
+        {
+            'name': 'lent',
+            'label': 'Lent',
+            'start': '2015-01-13',
+            'end': '2015-03-13'
+        },
+        {
+            'name': 'easter',
+            'label': 'Easter',
+            'start': '2015-04-21',
+            'end': '2015-06-12'
+        }
+    ];
+
     /**
      * Change the calendar's current period
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changePeriod = function(event) {
+    var changePeriod = function() {
         // Cache the clicked button
-        var $button = $(event.currentTarget);
+        var $button = $(this);
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Update the calendar
         calendar.fullCalendar(action);
-        // Set the period label
-        setPeriodLabel();
+
         // Set the current day
         setCurrentDay();
+        // Set the period label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
     };
 
     /**
      * Change the calendar's current term
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changeTerm = function(event) {
-        return false;
+    var changeTerm = function() {
+        // Create a jQuery object from the originating button
+        var $button = $(this);
+        // Retrieve the button's action
+        var action = $button.attr('data-action');
+        // Get the current term
+        var currentTerm = getCurrentTerm(getCurrentViewDate());
+
+        // Retrieve the term to navigate to, based on the current term
+        var term = null;
+        if (currentTerm) {
+            if (action === 'next') {
+                term = getNextTerm(currentTerm);
+            } else {
+                term = getPreviousTerm(currentTerm);
+            }
+
+        // This gets called when you are inbetween terms
+        } else {
+            if (action === 'next') {
+                term = getNearestTerm(currentTerm, 'start');
+            } else {
+                term = getNearestTerm(currentTerm, 'end');
+            }
+        }
+
+        // Navigate to a specific date in the calendar
+        calendar.fullCalendar('gotoDate', term.start);
+
+        // Set the week label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
     };
 
     /**
      * Change the calendar's current view
      *
-     * @param  {Event}    event    A jQuery event
      * @private
      */
-    var changeView = function(event) {
+    var changeView = function() {
         // Cache the clicked button
-        var $button = $(event.currentTarget);
+        var $button = $(this);
         // Retrieve the view
         currentView = $button.attr('data-view');
         // Change the view
@@ -67,11 +126,106 @@ define(['gh.core', 'clickover'], function(gh) {
         $('#gh-calendar-toolbar-views .active').removeClass('active').addClass('default');
         // Update the button's status
         $button.removeClass('default').addClass('active');
+
         // Set the period label
         setPeriodLabel();
         // Set the current day
         setCurrentDay();
     };
+
+    /**
+     * Highlight the header of the current day by adding a class
+     *
+     * @private
+     */
+    var setCurrentDay = function() {
+        var selectedDay = $('.fc-today').index();
+        $('.fc-widget-header table th:nth-child(' + (selectedDay + 1) + ')').addClass('fc-today');
+    };
+
+    /**
+     * Set the period label
+     *
+     * @private
+     */
+    var setPeriodLabel = function() {
+        var label = calendar.fullCalendar('getView').title;
+        if (currentView === 'agendaWeek') {
+
+            // Get the current academic week number
+            var weekNumber = getCurrentAcademicWeekNumber();
+
+            // Set the label
+            label = 'Outside term';
+            if (weekNumber) {
+                label = 'Week ' + weekNumber;
+            }
+        }
+        $('#gh-toolbar-label-period').html(label);
+    };
+
+    /**
+     * Set the term label
+     *
+     * @private
+     */
+    var setTermLabel = function() {
+
+        // Get the current term
+        var term = getCurrentTerm(getCurrentViewDate());
+
+        // Set the label
+        var label = 'Outside term';
+        if (term) {
+            label = term.label;
+        }
+
+        $('#gh-toolbar-label-term').html(label);
+    };
+
+
+    //////////////
+    //  EVENTS  //
+    //////////////
+
+    /**
+     * Add an Array of events to the calendar
+     *
+     * @param {Event}      ev      Standard event object
+     * @param {Event[]}    data    Data object containing the events to add to the calendar
+     * @private
+     */
+    var addEventsToCalendar = function(ev, data) {
+        $.each(data.events, function(index, ev) {
+            calendar.fullCalendar('removeEvents', ev.id);
+            calendar.fullCalendar('renderEvent', {
+                'id': ev.id,
+                'title': ev.displayName,
+                'location': ev.location,
+                'start': ev.start,
+                'end': ev.end,
+                'organisers': ev.organisers
+            }, true);
+        });
+    };
+
+    /**
+     * Remove an Array of events from the calendar
+     *
+     * @param  {Event}      ev      Standard event object
+     * @param  {Event[]}    data    Data object containing the events to remove from the calendar
+     * @private
+     */
+    var removeEventsFromCalendar = function(ev, data) {
+        $.each(data.events, function(index, ev) {
+            calendar.fullCalendar('removeEvents', ev.id);
+        });
+    };
+
+
+    ///////////////
+    //  ACTIONS  //
+    ///////////////
 
     /**
      * Export the calendar
@@ -99,63 +253,149 @@ define(['gh.core', 'clickover'], function(gh) {
         return window.print();
     };
 
+
+    ////////////
+    //  UTIL  //
+    ////////////
+
     /**
-     * Set the period label
+     * Return the current academic week number if the current date is within a term
      *
-     * @api private
+     * @return {Number}    The academic week number
+     * @private
      */
-    var setPeriodLabel = function() {
-        var label = calendar.fullCalendar('getView').title;
-        if (currentView === 'agendaWeek') {
-            label = '{ACADEMIC_WEEK_NUMBER}';
+    var getCurrentAcademicWeekNumber = function() {
+        var currentViewDate = getCurrentViewDate();
+        var currentTerm = getCurrentTerm(currentViewDate);
+        if (!currentTerm) {
+            return null;
         }
-        $('#gh-toolbar-label-period').html(label);
+
+        // Current term
+        var startDate = gh.api.utilAPI.convertISODatetoUnixDate(currentTerm.start);
+
+        // Return the current academic week number
+        var weekNumber = Math.floor((currentViewDate - startDate) / (1000 * 60 * 60 * 24 * 7)) + 1;
+
+        if (weekNumber > 8) {
+            weekNumber = null;
+        }
+        return weekNumber;
     };
 
     /**
-     * Highlight the header of the current day by adding a class
-     */
-    var setCurrentDay = function() {
-        var selectedDay = $('.fc-today').index();
-        $('.fc-widget-header table th:nth-child(' + (selectedDay + 1) + ')').addClass('fc-today');
-    };
-
-    /**
-     * Add an Array of events to the calendar
+     * Return the current term if the current date is within a term
      *
-     * @param {Event}      ev      Standard event object
-     * @param {Event[]}    data    Data object containing the events to add to the calendar
+     * @param  {Number}    date    The date in a UNIX time format
+     * @return {String}            The term
+     * @private
      */
-    var addEventsToCalendar = function(ev, data) {
-        $.each(data.events, function(index, ev) {
-            calendar.fullCalendar('removeEvents', ev.id);
-            calendar.fullCalendar('renderEvent', {
-                'id': ev.id,
-                'title': ev.displayName,
-                'location': ev.location,
-                'start': ev.start,
-                'end': ev.end,
-                'organisers': ev.organisers
-            }, true);
+    var getCurrentTerm = function(date) {
+        // Get the current term and return its name
+        return _.find(terms, function(term) {
+            var startDate = gh.api.utilAPI.convertISODatetoUnixDate(term.start);
+            var endDate = gh.api.utilAPI.convertISODatetoUnixDate(term.end);
+            if (gh.api.utilAPI.isDateInRange(date, startDate, endDate)) {
+                return term.name;
+            }
         });
     };
 
     /**
-     * Remove an Array of events from the calendar
+     * Return the start date of the current view in UNIX format
      *
-     * @param  {Event}      ev      Standard event object
-     * @param  {Event[]}    data    Data object containing the events to remove from the calendar
+     * @return {Number}    The start date of the current view
+     * @private
      */
-    var removeEventsFromCalendar = function(ev, data) {
-        $.each(data.events, function(index, ev) {
-            calendar.fullCalendar('removeEvents', ev.id);
-        });
+    var getCurrentViewDate = function() {
+        // Get the start date from the current calendar view
+        var viewStartDate = calendar.fullCalendar('getDate')['_d'];
+        // Convert the Moment object to a UTC date
+        return moment(viewStartDate).utc().valueOf();
     };
+
+    /**
+     * Return a term by its name
+     *
+     * @param  {String}    name    The name of the term
+     * @return {Object}            Object containing term data
+     * @private
+     */
+    var getTermByName = function(name) {
+        return _.find(terms, {'name': name});
+    };
+
+    /**
+     * Return the nearest term
+     *
+     * @param  {String}    term        Object containing the current term data
+     * @param  {String}    property    The term property that is used to calculate the difference
+     * @return {Object}                Object containing the next term data
+     * @private
+     */
+    var getNearestTerm = function(term, property) {
+
+        // Get the term start dates and covert them to a UNIX format
+        var termDates = _.map(terms, function(term) {
+            return {
+                'name': term.name,
+                'date': gh.api.utilAPI.convertISODatetoUnixDate(term[property])
+            };
+        });
+
+        // Pick the nearest start date
+        var nearest = _.first(termDates);
+        _.each(termDates, function(term) {
+            if ((Math.abs(term.date - getCurrentViewDate())) < (Math.abs(nearest.date - getCurrentViewDate()))) {
+                nearest = term;
+            }
+        });
+
+        // Return the term
+        return getTermByName(nearest.name);
+    };
+
+    /**
+     * Return a following term
+     *
+     * @param  {String}    term    Object containing the current term data
+     * @return {Object}            Object containing the next term data
+     * @private
+     */
+    var getNextTerm = function(term) {
+        var currentTermIndex = terms.indexOf(term);
+        var nextIndex = currentTermIndex + 1;
+        if (!terms[nextIndex]) {
+            return terms[0];
+        }
+        return terms[nextIndex];
+    };
+
+    /**
+     * Return a preceeding term
+     *
+     * @param  {String}    term    Object containing the current term data
+     * @return {Object}            Object containing the previous term data
+     * @private
+     */
+    var getPreviousTerm = function(term) {
+        var currentTermIndex = terms.indexOf(term);
+        var nextIndex = currentTermIndex - 1;
+        if (!terms[nextIndex]) {
+            return terms[terms.length - 1];
+        }
+        return terms[nextIndex];
+    };
+
+
+    ///////////////
+    //  BINDING  //
+    ///////////////
 
     /**
      * Add event listeners to UI-components
      *
-     * @api private
+     * @private
      */
     var addBinding = function() {
         // Export the calendar
@@ -193,7 +433,7 @@ define(['gh.core', 'clickover'], function(gh) {
                 'day': 'dddd'
             },
             'allDaySlot': false,
-            'defaultDate': new Date(),
+            'defaultDate': Date.now(),
             'defaultView': currentView,
             'editable': false,
             'eventLimit': true,
@@ -240,10 +480,12 @@ define(['gh.core', 'clickover'], function(gh) {
 
         // Add binding to various elements
         addBinding();
-        // Set the period label
-        setPeriodLabel();
         // Set the current day
         setCurrentDay();
+        // Set the period label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
     };
 
     // Initialise the calendar
