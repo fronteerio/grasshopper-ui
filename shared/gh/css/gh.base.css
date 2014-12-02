@@ -108,6 +108,26 @@ select.form-control {
     z-index: 3;
 }
 
+@media (max-width: 767px) {
+
+    #gh-page-container #gh-right-container #gh-header-container .form-inline .form-group {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+
+    #gh-page-container #gh-right-container #gh-header-container .form-inline .input-group {
+        display: inline-table;
+        vertical-align: middle;
+    }
+
+    #gh-page-container #gh-right-container #gh-header-container .form-inline .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
+}
+
 #gh-page-container #gh-right-container #gh-subheader,
 #gh-page-container #gh-left-container #gh-content-description {
     height: 100px;
