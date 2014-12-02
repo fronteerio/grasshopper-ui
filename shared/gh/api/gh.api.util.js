@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'moment'], function(exports, moment) {
+define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
     /**
      * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with
@@ -182,5 +182,56 @@ define(['exports', 'moment'], function(exports, moment) {
         }
 
         return (date >= startDate && date <= endDate);
+    };
+
+
+    ///////////////////
+    // NOTIFICATIONS //
+    ///////////////////
+
+    /**
+     * Show a Growl-like notification message. A notification can have a title and a message, and will also have
+     * a close button for closing the notification. Notifications can be used as a confirmation message, error message, etc.
+     *
+     * This function is mostly just a wrapper around jQuery.bootstrap.notify.js and supports all of the options documented
+     * at https://github.com/goodybag/bootstrap-notify.
+     *
+     * @param  {String}    [title]    The notification title
+     * @param  {String}    message    The notification message that will be shown underneath the title
+     * @param  {String}    [type]     The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
+     * @throws {Error}                Error thrown when no message has been provided
+     * @return {Boolean}              Returns true when the notification has been shown
+     */
+    var notification = exports.notification = function(title, message, type) {
+        if (!message) {
+            throw new Error('A valid notification message should be provided');
+        }
+
+        // Check if the notifications container has already been created.
+        // If the container has not been created yet, we create it and add
+        // it to the DOM.
+        var $notificationContainer = $('#gh-notification-container');
+        if ($notificationContainer.length === 0) {
+            $notificationContainer = $('<div>').attr('id', 'gh-notification-container').addClass('notifications top-center');
+            $('body').append($notificationContainer);
+        }
+
+        // If a title has been provided, we wrap it in an h4 and prepend it to the message
+        if (title) {
+            message = '<h4>' + title + '</h4>' + message;
+        }
+
+        // Show the actual notification
+        $notificationContainer.notify({
+            'fadeOut': {
+                'enabled': true,
+                'delay': 5000
+            },
+            'type': type,
+            'message': {'html': message},
+            'transition': 'fade'
+        }).show();
+
+        return true;
     };
 });
