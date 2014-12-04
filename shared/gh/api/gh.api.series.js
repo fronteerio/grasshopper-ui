@@ -60,8 +60,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the created event series
      */
     var createSeries = exports.createSeries = function(appId, displayName, description, groupId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid app ID should be provided'});
         } else if (!_.isString(displayName)) {
@@ -143,8 +143,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the deleted event series
      */
     var deleteSeries = exports.deleteSeries = function(serieId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid series ID should be provided'});
         }
@@ -174,8 +174,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the deleted event
      */
     var deleteSeriesEvents = exports.deleteSeriesEvents = function(serieId, eventId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid series ID should be provided'});
         } else if (!_.isNumber(eventId)) {
@@ -492,8 +492,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the subscribed to event series
      */
     var subscribeSeries = exports.subscribeSeries = function(serieId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
@@ -522,8 +522,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the unsubscribed from event series
      */
     var unsubscribeSeries = exports.unsubscribeSeries = function(serieId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
@@ -555,8 +555,8 @@ define(['exports'], function(exports) {
      * @param  {Object}      [callback.response]    Object representing the updated event series
      */
     var updateSeries = exports.updateSeries = function(serieId, displayName, description, groupId, callback) {
-        if (!_.isEmpty(callback) && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
         } else if (!_.isEmpty(serieId) && !_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         } else if (displayName && !_.isString(displayName)) {

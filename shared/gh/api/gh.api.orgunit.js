@@ -23,11 +23,11 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback     Standard callback function
      */
     var addOrgUnitEvent = exports.addOrgUnitEvent = function(orgUnitId, eventId, callback) {
-        if (!callback || !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!eventId || !_.isString(eventId)) {
+        } else if (!_.isString(eventId)) {
             return callback({'code': 400, 'msg': 'A valid eventId should be provided'});
         }
 
@@ -54,11 +54,11 @@ define(['exports'], function(exports) {
      * @param {Function}    callback     Standard callback function
      */
     var addOrgUnitSeries = exports.addOrgUnitSeries = function(orgUnitId, serieId, callback) {
-        if (!callback || !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!serieId || !_.isString(serieId)) {
+        } else if (!_.isString(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
 
@@ -80,22 +80,22 @@ define(['exports'], function(exports) {
     /**
      * Create a new organisational unit in an app
      *
-     * @param  {Number}      appId          The ID of the app to create the organisational unit for
-     * @param  {String}      displayName    The name of the organisational unit
-     * @param  {String}      type           The type of the organisational unit. e.g., `tripos`, `part`
-     * @param  {Number}      [parentId]     The ID of the parent organisational unit
-     * @param  {Number}      [groupId]      The ID of the group that can manage the organisational unit
-     * @param  {String}      [description]  The description of the organisational unit
-     * @param  {Function}    [callback]     Standard callback function
+     * @param  {Number}      appId            The ID of the app to create the organisational unit for
+     * @param  {String}      displayName      The name of the organisational unit
+     * @param  {String}      type             The type of the organisational unit. e.g., `tripos`, `part`
+     * @param  {Number}      [parentId]       The ID of the parent organisational unit
+     * @param  {Number}      [groupId]        The ID of the group that can manage the organisational unit
+     * @param  {String}      [description]    The description of the organisational unit
+     * @param  {Function}    [callback]       Standard callback function
      */
     var createOrgUnit = exports.createOrgUnit = function(appId, displayName, type, parentId, groupId, description, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!appId || !_.isNumber(appId)) {
+        } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid appId should be provided'});
-        } else if (!displayName || !_.isString(displayName)) {
+        } else if (!_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
-        } else if (!type || !_.isString(type)) {
+        } else if (!_.isString(type)) {
             return callback({'code': 400, 'msg': 'A valid type should be provided'});
         } else if (parentId && !_.isNumber(parentId)) {
             return callback({'code': 400, 'msg': 'A valid parentId should be provided'});
@@ -137,7 +137,7 @@ define(['exports'], function(exports) {
     var deleteOrgUnit = exports.deleteOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         }
 
@@ -166,9 +166,9 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback      Standard callback function
      */
     var getOrgUnitSeries = exports.getOrgUnitSeries = function(orgUnitId, limit, offset, upcoming, callback) {
-        if (!callback || !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
@@ -198,15 +198,15 @@ define(['exports'], function(exports) {
     /**
      * Get the calendar for an organisational unit
      *
-     * @param  {Number}       orgUnitId     The ID of the organisational unit to get the calendar for
-     * @param  {String}       from          The timestamp (ISO 8601) from which to get the calendar for the organisational unit
-     * @param  {String}       to            The timestamp (ISO 8601) until which to get the calendar for the organisational unit
-     * @param  {Function}     callback      Standard callback function
+     * @param  {Number}       orgUnitId    The ID of the organisational unit to get the calendar for
+     * @param  {String}       from         The timestamp (ISO 8601) from which to get the calendar for the organisational unit
+     * @param  {String}       to           The timestamp (ISO 8601) until which to get the calendar for the organisational unit
+     * @param  {Function}     callback     Standard callback function
      */
     var getOrgUnitCalendar = exports.getOrgUnitCalendar = function(orgUnitId, from, to, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         } else if (from && !_.isString(from)) {
             return callback({'code': 400, 'msg': 'A valid from ISO 8601 date should be provided'});
@@ -239,7 +239,7 @@ define(['exports'], function(exports) {
     var getOrgUnitCalendarICal = exports.getOrgUnitCalendarICal = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         }
 
@@ -264,7 +264,7 @@ define(['exports'], function(exports) {
     var getOrgUnitCalendarRSS = exports.getOrgUnitCalendarRSS = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         }
 
@@ -288,9 +288,9 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback           Standard callback function
      */
     var getOrgUnit = exports.getOrgUnit = function(orgUnitId, includeSeries, callback) {
-        if (!callback || (callback && !_.isFunction(callback))) {
+        if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         } else if (includeSeries && !_.isBoolean(includeSeries)) {
             return callback({'code': 400, 'msg': 'A valid includeSeries should be provided'});
@@ -323,9 +323,9 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback           Standard callback function
      */
     var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, parentId, type, callback) {
-        if (!callback || !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!appId || !_.isNumber(appId)) {
+        } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid appId should be provided'});
         } else if (includeSeries && !_.isBoolean(includeSeries)) {
             return callback({'code': 400, 'msg': 'A valid includeSeries should be provided'});
@@ -364,9 +364,9 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback     Standard callback function
      */
     var getOrgUnitUpcoming = exports.getOrgUnitUpcoming = function(orgUnitId, limit, offset, callback) {
-        if (!callback || !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
@@ -399,13 +399,12 @@ define(['exports'], function(exports) {
      */
     var deleteOrgUnitEvent = exports.deleteOrgUnitEvent = function(orgUnitId, eventId, callback) {
         if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!eventId || !_.isNumber(eventId)) {
+        } else if (!_.isNumber(eventId)) {
             return callback({'code': 400, 'msg': 'A valid eventId should be provided'});
         }
-
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
@@ -431,10 +430,10 @@ define(['exports'], function(exports) {
      */
     var deleteOrgUnitSeries = exports.deleteOrgUnitSeries = function(orgUnitId, serieId, callback) {
         if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!serieId || !_.isNumber(serieId)) {
+        } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
 
@@ -461,8 +460,8 @@ define(['exports'], function(exports) {
      */
     var subscribeOrgUnit = exports.subscribeOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         }
 
@@ -489,8 +488,8 @@ define(['exports'], function(exports) {
      */
     var unsubscribeOrgUnit = exports.unsubscribeOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         }
 
@@ -522,8 +521,8 @@ define(['exports'], function(exports) {
      */
     var updateOrgUnit = exports.updateOrgUnit = function(orgUnitId, description, displayName, groupId, parentId, type, callback) {
         if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
         } else if (description && !_.isString(description)) {
             return callback({'code': 400, 'msg': 'A valid description should be provided'});

@@ -44,7 +44,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
             'data': null
         }, $('#gh-main'));
 
-        if (!gh.data .me) {
+        if (!gh.data.me) {
             $(document).trigger('gh.calendar.init');
         } else {
             gh.api.seriesAPI.getSeriesCalendar(1, '2014-01-12', '2014-12-12', function(err, data) {
@@ -58,8 +58,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     /**
      * Set up the modules of events in the sidebar
      *
-     * @param {jQuery}    ev      Standard jQuery event
-     * @param {Object}    data    Data object describing the selected part to fetch modules for
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected part to fetch modules for
      */
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
@@ -75,14 +75,14 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     /**
      * Set up the part picker in the subheader
      *
-     * @param {jQuery}    ev      Standard jQuery event
-     * @param {Object}    data    Data object describing the selected tripos to fetch parts for
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected tripos to fetch parts for
      */
     var setUpPartPicker = function(ev, data) {
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
-                        return parseInt(data.selected, 10) === part.parentId;
-                    });
+            return parseInt(data.selected, 10) === part.parentId;
+        });
         // Render the results in the part picker
         gh.api.utilAPI.renderTemplate($('#gh-subheader-part-template'), {
             'data': parts
@@ -101,7 +101,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     };
 
     /**
-     * Set up the Trips picker in the subheader
+     * Set up the Tripos picker in the subheader
      */
     var setUpTriposPicker = function() {
         var triposPickerData = {
@@ -110,8 +110,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
 
         _.each(triposPickerData.courses, function(course) {
             course.subjects = _.filter(triposData.subjects, function(subject) {
-                                    return course.id === subject.parentId;
-                                });
+                return course.id === subject.parentId;
+            });
         });
 
         // Massage the data so that courses are linked to their child subjects
@@ -139,16 +139,16 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     var getTripos = function() {
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, false, null, ['course', 'subject', 'part'], function(err, data) {
             triposData.courses = _.filter(data.results, function(course) {
-                                    return course.type === 'course';
-                                });
+                return course.type === 'course';
+            });
 
             triposData.subjects = _.filter(data.results, function(subject) {
-                                    return subject.type === 'subject';
-                                });
+                return subject.type === 'subject';
+            });
 
             triposData.parts = _.filter(data.results, function(part) {
-                                    return part.type === 'part';
-                                });
+                return part.type === 'part';
+            });
 
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
@@ -202,11 +202,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         renderHeader();
         setUpCalendar();
 
-        // If the user isn't logged in the page shouldn't be fully initialised
+        // If the user isn't logged in, the page shouldn't be fully initialised
         if (gh.data.me) {
             getTripos();
         }
-        
     };
 
     initIndex();

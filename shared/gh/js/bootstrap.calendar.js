@@ -392,11 +392,13 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-toolbar-views button').on('click', changeView);
     };
 
-    /**
-     * Initialize the calendar
-     *
-     * @private
-     */
+     /**
+      * Initialise FullCalendar on the page and bind event handlers for navigating it
+      *
+      * @param  {Event}       ev        Standard event object
+      * @param  {Object[]}    events    An Array of events to add to the calendar on initialisation
+      * @private
+      */
     var initCalendar = function(ev, events) {
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
