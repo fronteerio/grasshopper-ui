@@ -21,12 +21,14 @@ requirejs.config({
     'paths': {
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
+        'bootstrap-notify': 'vendor/js/bootstrap-notify',
         'clickover': 'vendor/js/bootstrapx-clickover',
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
         'jquery': 'vendor/js/jquery-2.1.1',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
+        'sinon': 'vendor/js/sinon-1.12.1',
         'text': 'vendor/js/require.text',
 
         // GH API modules

@@ -35,6 +35,8 @@
 
 #gh-right-container #gh-subheader form {
     margin: 0;
+    min-width: 960px;
+    overflow: hidden;
     padding: 28px 0 0;
 }
 
@@ -81,7 +83,6 @@
 .gh-toolbar-primary {
     height: 44px;
     left: 320px;
-    position: fixed;
     right: 0;
     z-index: 2;
 }
@@ -94,7 +95,16 @@
 /* Secondary toolbar */
 #gh-calendar-toolbar .gh-toolbar-secondary {
     font-weight: 800;
-    padding-top: 80px;
+    padding-top: 40px;
+    position: relative;
+}
+
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-period,
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+    display: table;
+    height: 32px;
+    position: relative;
+    z-index: 1;
 }
 
 #gh-calendar-toolbar .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
@@ -103,6 +113,29 @@
 
 #gh-calendar-toolbar .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
     padding: 0;
+}
+
+.gh-toolbar-inner {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/* Today button */
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-calendar-toolbar-today {
+    height: 32px;
+    position: absolute;
+    width: 100%;
+}
+
+#gh-calendar-toolbar .gh-toolbar-secondary #gh-btn-calendar-today {
+    border: none;
+}
+
+.gh-toolbar-label {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
@@ -414,7 +447,7 @@ tbody tr:last-child > td.fc-widget-content {
             transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
 }
 
-.chosen-container .chosen-results { 
+.chosen-container .chosen-results {
     margin: 0 8px 8px 0;
     max-height: 320px;
     padding: 0 0 0 8px;

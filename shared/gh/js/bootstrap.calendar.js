@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'clickover', 'moment'], function(gh) {
+define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
 
     ////////////////
@@ -104,6 +104,8 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         // Navigate to a specific date in the calendar
         calendar.fullCalendar('gotoDate', term.start);
 
+         // Set the current day
+        setCurrentDay();
         // Set the week label
         setPeriodLabel();
         // Set the term label
@@ -127,10 +129,27 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         // Update the button's status
         $button.removeClass('default').addClass('active');
 
-        // Set the period label
-        setPeriodLabel();
         // Set the current day
         setCurrentDay();
+        // Set the period label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
+    };
+
+    /**
+     * Change the current view to today's view
+     *
+     * @private
+     */
+    var navigateToToday = function() {
+        calendar.fullCalendar('today');
+        // Set the current day
+        setCurrentDay();
+        // Set the week label
+        setPeriodLabel();
+        // Set the term label
+        setTermLabel();
     };
 
     /**
@@ -207,6 +226,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
                 'organisers': ev.organisers
             }, true);
         });
+        data.callback();
     };
 
     /**
@@ -220,6 +240,7 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         $.each(data.events, function(index, ev) {
             calendar.fullCalendar('removeEvents', ev.id);
         });
+        data.callback();
     };
 
 
@@ -414,6 +435,8 @@ define(['gh.core', 'clickover', 'moment'], function(gh) {
         $('#gh-btn-calendar-export').on('click', exportCalendar);
         // Print the calendar
         $('#gh-btn-calendar-print').on('click', printCalendar);
+        // Navigate to the current day
+        $('#gh-btn-calendar-today').on('click', navigateToToday);
         // Change the calendar's period
         $('#gh-calendar-toolbar-period button').on('click', changePeriod);
         // Change the calendar's term
