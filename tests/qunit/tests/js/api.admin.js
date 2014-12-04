@@ -72,17 +72,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             assert.ok(data, 'Verify that the administrators are returned');
 
                             // Mock an error from the back-end
-                            var server = sinon.fakeServer.create();
-                            server.respondWith('GET', '/api/admins?limit=1&offset=1', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                            var body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.api.utilAPI.mockRequest('GET', '/api/admins?limit=1&offset=1', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.adminAPI.getAdmins(1, 1, function(err, data) {
+                                    assert.ok(err);
+                                    assert.ok(!data);
+                                });
 
-                            gh.api.adminAPI.getAdmins(1, 1, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                QUnit.start();
                             });
-                            server.respond();
-                            server.restore();
-
-                            QUnit.start();
                         });
                     });
                 });
@@ -125,17 +123,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         assert.strictEqual(data.displayName, user.displayName, 'Verify that the created administrator has the correct display name');
 
                         // Mock an error from the back-end
-                        var server = sinon.fakeServer.create();
-                        server.respondWith('POST', '/api/admins', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                        var body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
+                                assert.ok(err);
+                                assert.ok(!data);
+                            });
 
-                        gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
-                            assert.ok(err);
-                            assert.ok(!data);
+                            QUnit.start();
                         });
-                        server.respond();
-                        server.restore();
-
-                        QUnit.start();
                     });
                 });
             });
@@ -175,17 +171,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         assert.strictEqual(data.displayName, newDisplayName, 'Verify that the displayName was updated');
 
                         // Mock an error from the back-end
-                        var server = sinon.fakeServer.create();
-                        server.respondWith('POST', '/api/admins/' + user.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                        var body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
+                                assert.ok(err);
+                                assert.ok(!data);
+                            });
 
-                        gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
-                            assert.ok(err);
-                            assert.ok(!data);
+                            QUnit.start();
                         });
-                        server.respond();
-                        server.restore();
-
-                        QUnit.start();
                     });
                 });
             });

@@ -39,17 +39,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.strictEqual(tenant.apps.length, data.length, 'Verify that the correct apps are returned');
 
                 // Mock an error from the back-end
-                var server = sinon.fakeServer.create();
-                server.respondWith('GET', '/api/apps?tenantId=' + tenant.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.api.utilAPI.mockRequest('GET', '/api/apps?tenantId=' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.appAPI.getApps(tenant.id, function(err, data) {
+                        assert.ok(err);
+                        assert.ok(!data);
+                    });
 
-                gh.api.appAPI.getApps(tenant.id, function(err, data) {
-                    assert.ok(err);
-                    assert.ok(!data);
+                    QUnit.start();
                 });
-                server.respond();
-                server.restore();
-
-                QUnit.start();
             });
         });
     });
@@ -84,17 +82,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.strictEqual(data.TenantId, app.TenantId, 'Verify that the tenantId corresponds');
 
                 // Mock an error from the back-end
-                var server = sinon.fakeServer.create();
-                server.respondWith('GET', '/api/apps/' + app.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.api.utilAPI.mockRequest('GET', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.appAPI.getApp(app.id, function(err, data) {
+                        assert.ok(err);
+                        assert.ok(!data);
+                    });
 
-                gh.api.appAPI.getApp(app.id, function(err, data) {
-                    assert.ok(err);
-                    assert.ok(!data);
+                    QUnit.start();
                 });
-                server.respond();
-                server.restore();
-
-                QUnit.start();
             });
         });
     });
@@ -129,17 +125,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         assert.ok(data, 'Verify that the administrators are returned');
 
                         // Mock an error from the back-end
-                        var server = sinon.fakeServer.create();
-                        server.respondWith('GET', '/api/apps/' + app.id + '/admins?limit=0&offset=0', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                        var body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.api.utilAPI.mockRequest('GET', '/api/apps/' + app.id + '/admins?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.appAPI.getAppAdmins(app.id, 0, 0, function(err, data) {
+                                assert.ok(err);
+                                assert.ok(!data);
+                            });
 
-                        gh.api.appAPI.getAppAdmins(app.id, 0, 0, function(err, data) {
-                            assert.ok(err);
-                            assert.ok(!data);
+                            QUnit.start();
                         });
-                        server.respond();
-                        server.restore();
-
-                        QUnit.start();
                     });
                 });
             });
@@ -186,17 +180,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             assert.strictEqual(data.type, types.TIMETABLE, 'Verify that the type corresponds');
 
                             // Mock an error from the back-end
-                            var server = sinon.fakeServer.create();
-                            server.respondWith('POST', '/api/apps/', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                            var body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/apps', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.appAPI.createApp(displayName, host, tenant.id, types.TIMETABLE, function(err, data) {
+                                    assert.ok(err);
+                                    assert.ok(!data);
+                                });
 
-                            gh.api.appAPI.createApp(displayName, host, tenant.id, types.TIMETABLE, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                QUnit.start();
                             });
-                            server.respond();
-                            server.restore();
-
-                            QUnit.start();
                         });
                     });
                 });
@@ -250,17 +242,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             assert.ok(data.updatedAt !== app.updatedAt, 'Verify that the value for updatedAt was changed');
 
                             // Mock an error from the back-end
-                            var server = sinon.fakeServer.create();
-                            server.respondWith('POST', '/api/apps/' + app.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                            var body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.appAPI.updateApp(app.id, displayName, enabled, host, function(err, data) {
+                                    assert.ok(err);
+                                    assert.ok(!data);
+                                });
 
-                            gh.api.appAPI.updateApp(app.id, displayName, enabled, host, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                QUnit.start();
                             });
-                            server.respond();
-                            server.restore();
-
-                            QUnit.start();
                         });
                     });
                 });
@@ -323,17 +313,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                     assert.ok(!err, 'Verify that an app administrator can be updated without errors');
 
                                     // Mock an error from the back-end
-                                    var server = sinon.fakeServer.create();
-                                    server.respondWith('POST', '/api/apps/' + app.id + '/admins', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                                    var body = {'code': 400, 'msg': 'Bad Request'};
+                                    gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id + '/admins', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.appAPI.updateAppAdmins(app.id, adminUpdates, function(err) {
+                                            assert.ok(err);
+                                            assert.ok(!data);
+                                        });
 
-                                    gh.api.appAPI.updateAppAdmins(app.id, adminUpdates, function(err) {
-                                        assert.ok(err);
-                                        assert.ok(!data);
+                                        QUnit.start();
                                     });
-                                    server.respond();
-                                    server.restore();
-
-                                    QUnit.start();
                                 });
                             });
                         });

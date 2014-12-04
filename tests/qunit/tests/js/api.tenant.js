@@ -31,17 +31,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             assert.ok(data, 'Verify that the tenants are returned');
 
             // Mock an error from the back-end
-            var server = sinon.fakeServer.create();
-            server.respondWith('GET', '/api/tenants', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+            var body = {'code': 400, 'msg': 'Bad Request'};
+            gh.api.utilAPI.mockRequest('GET', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
+                gh.api.tenantAPI.getTenants(function(err, data) {
+                    assert.ok(err);
+                    assert.ok(!data);
+                });
 
-            gh.api.tenantAPI.getTenants(function(err, data) {
-                assert.ok(err);
-                assert.ok(!data);
+                QUnit.start();
             });
-            server.respond();
-            server.restore();
-
-            QUnit.start();
         });
     });
 
@@ -67,17 +65,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.ok(data, 'Verify that the tenant is returned');
 
                 // Mock an error from the back-end
-                var server = sinon.fakeServer.create();
-                server.respondWith('GET', '/api/tenants/' + tenant.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.api.utilAPI.mockRequest('GET', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
+                        assert.ok(err);
+                        assert.ok(!data);
+                    });
 
-                gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
-                    assert.ok(err);
-                    assert.ok(!data);
+                    QUnit.start();
                 });
-                server.respond();
-                server.restore();
-
-                QUnit.start();
             });
         });
     });
@@ -105,17 +101,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
 
                 // Mock an error from the back-end
-                var server = sinon.fakeServer.create();
-                server.respondWith('POST', '/api/tenants/', [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.api.utilAPI.mockRequest('POST', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.tenantAPI.createTenant(displayName, function(err, data) {
+                        assert.ok(err);
+                        assert.ok(!data);
+                    });
 
-                gh.api.tenantAPI.createTenant(displayName, function(err, data) {
-                    assert.ok(err);
-                    assert.ok(!data);
+                    QUnit.start();
                 });
-                server.respond();
-                server.restore();
-
-                QUnit.start();
             });
         });
     });
@@ -150,17 +144,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                     assert.strictEqual(data.displayName, displayName, 'Verify that the displayName corresponds');
 
                     // Mock an error from the back-end
-                    var server = sinon.fakeServer.create();
-                    server.respondWith('POST', '/api/tenants/' + tenant.id, [400, {'Content-Type': 'application/json'}, JSON.stringify({'code': '400'})]);
+                    var body = {'code': 400, 'msg': 'Bad Request'};
+                    gh.api.utilAPI.mockRequest('POST', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.tenantAPI.updateTenant(tenant.id, displayName, function(err, data) {
+                            assert.ok(err);
+                            assert.ok(!data);
+                        });
 
-                    gh.api.tenantAPI.updateTenant(tenant.id, displayName, function(err, data) {
-                        assert.ok(err);
-                        assert.ok(!data);
+                        QUnit.start();
                     });
-                    server.respond();
-                    server.restore();
-
-                    QUnit.start();
                 });
             });
         });
