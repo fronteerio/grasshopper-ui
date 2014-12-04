@@ -40,7 +40,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * @return {Number}            The ISO8601 date
      */
     var convertUnixDatetoISODate = exports.convertUnixDatetoISODate = function(date) {
-        if (!date || !moment(date).isValid()) {
+        if (!date || !moment(date, 'x').isValid()) {
             throw new Error('An invalid value for date has been provided');
         }
         return new Date(date).toISOString();
@@ -55,11 +55,11 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * @return {Boolean}                Whether or not the date is in the range
      */
     var isDateInRange = exports.isDateInRange = function(date, startDate, endDate) {
-        if (!date || !moment(date).isValid()) {
+        if (!date || !moment(date, 'x').isValid()) {
             throw new Error('An invalid value for date has been provided');
-        } else if (!startDate || !moment(startDate).isValid()) {
+        } else if (!startDate || !moment(startDate, 'x').isValid()) {
             throw new Error('An invalid value for startDate has been provided');
-        } else if (!endDate || !moment(endDate).isValid()) {
+        } else if (!endDate || !moment(endDate, 'x').isValid()) {
             throw new Error('An invalid value for endDate has been provided');
         } else if (startDate > endDate) {
             throw new Error('The startDate cannot be after the endDate');
@@ -76,9 +76,9 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * @return {Number}                 The number of weeks within the date range
      */
     var weeksInDateRange = exports.weeksInDateRange = function(startDate, endDate) {
-        if (!startDate || !moment(startDate).isValid()) {
+        if (!startDate || !moment(startDate, 'x').isValid()) {
             throw new Error('An invalid value for startDate has been provided');
-        } else if (!endDate || !moment(endDate).isValid()) {
+        } else if (!endDate || !moment(endDate, 'x').isValid()) {
             throw new Error('An invalid value for endDate has been provided');
         } else if (startDate > endDate) {
             throw new Error('The startDate cannot be after the endDate');
