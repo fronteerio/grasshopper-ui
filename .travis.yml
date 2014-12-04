@@ -80,7 +80,7 @@ before_install:
   - cd ~/build/CUL-DigitalServices
   - git clone --branch groups-events-series-import --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
   - cd ./grasshopper
-  - npm install --production
+  - npm install
 
   # Configure postgres
   - echo 'Creating database'
