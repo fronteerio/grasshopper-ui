@@ -132,6 +132,12 @@
     border: none;
 }
 
+.gh-toolbar-label {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+}
+
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
 
 .fc-time-grid-container {
