@@ -141,7 +141,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
                             // Verify that the series in an organisational unit can be retrieved successfully
                             gh.api.orgunitAPI.getOrgUnitSeries(1, null, null, null, function(err, data) {
-                                assert.ok(err, 'Verify that the series in an organisational unit can be retrieved successfully');
+                                assert.ok(!err, 'Verify that the series in an organisational unit can be retrieved successfully');
                                 QUnit.start();
                             });
                         });

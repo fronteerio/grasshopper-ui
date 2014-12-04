@@ -319,7 +319,7 @@ define(['exports'], function(exports) {
      * @param  {Number}      appId              The ID of the app to get the organisational units for
      * @param  {Boolean}     [includeSeries]    Whether to include the event series associated to the oranisational units
      * @param  {Number}      [parentId]         The ID of the parent to retrieve the organisational units for
-     * @param  {String}      [type]             The organisational unit type(s) to filter the organisational unit by
+     * @param  {String[]}    [type]             The organisational unit type(s) to filter the organisational unit by
      * @param  {Function}    callback           Standard callback function
      */
     var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, parentId, type, callback) {
@@ -331,7 +331,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid includeSeries should be provided'});
         } else if (parentId && !_.isNumber(parentId)) {
             return callback({'code': 400, 'msg': 'A valid parentId should be provided'});
-        } else if (type && !_.isString(type)) {
+        } else if (type && !(_.isArray(type) || _.isString(type))) {
             return callback({'code': 400, 'msg': 'A valid type should be provided'});
         }
 
@@ -454,7 +454,7 @@ define(['exports'], function(exports) {
     };
 
     /**
-     * Subscirbe to the event series and events in an organisational unit
+     * Subscribe to the event series and events in an organisational unit
      *
      * @param  {Number}      orgUnitId     The ID of the organisational unit to subscribe to the event series and events for
      * @param  {Function}    [callback]    Standard callback function
@@ -471,6 +471,34 @@ define(['exports'], function(exports) {
 
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/subscribe',
+            'type': 'POST',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
+
+    /**
+     * Unsubscribe from the event series and events in an organisational unit
+     *
+     * @param  {Number}      orgUnitId     The ID of the organisational unit to unsubscribe from the event series and events for
+     * @param  {Function}    [callback]    Standard callback function
+     */
+    var unsubscribeOrgUnit = exports.unsubscribeOrgUnit = function(orgUnitId, callback) {
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!orgUnitId || !_.isNumber(orgUnitId)) {
+            return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
+        }
+
+        // Set a default callback function in case no callback function has been provided
+        callback = callback || function() {};
+
+        $.ajax({
+            'url': '/api/orgunit/' + orgUnitId + '/unsubscribe',
             'type': 'POST',
             'success': function(data) {
                 return callback(null, data);

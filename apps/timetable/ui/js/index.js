@@ -22,107 +22,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         'modules': []
     };
 
-    // Dummy module JSON data to render the partial with
-    var dummyModules = [
-        {
-            "description": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "displayName": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "eventSummary": "S1: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "id": 0,
-            "subscribed": false,
-            'events': [
-                {
-                    "id": 1,
-                    "description": "Citizenship",
-                    "displayName": "Citizenship",
-                    "location": "Seminar Room, Social Anthropology",
-                    "notes": "Mi1-4 W 10",
-                    "start": '2014-11-27T12:30:00',
-                    "end": '2014-11-27T15:45:00',
-                    "subscribed": false,
-                    "organisers": [
-                        {
-                            "organiser": {
-                                "user": {
-                                    "displayName": "Dr S Lazar",
-                                    "isAdmin": false
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": 2,
-                    "description": "Citizenship",
-                    "displayName": "Citizenship",
-                    "location": "Seminar Room, Social Anthropology",
-                    "notes": "Mi1-4 W 10",
-                    "start": '2014-11-27T09:30:00',
-                    "end": '2014-11-27T12:00:00',
-                    "subscribed": false,
-                    "organisers": [
-                        {
-                            "organiser": {
-                                "user": {
-                                    "displayName": "Dr S Lazar",
-                                    "isAdmin": false
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": 3,
-                    "description": "Citizenship",
-                    "displayName": "Citizenship",
-                    "location": "Seminar Room, Social Anthropology",
-                    "notes": "Mi1-4 W 10",
-                    "start": '2014-11-27T08:30:00',
-                    "end": '2014-11-27T10:45:00',
-                    "subscribed": false,
-                    "organisers": [
-                        {
-                            "organiser": {
-                                "user": {
-                                    "displayName": "Dr S Lazar",
-                                    "isAdmin": false
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "description": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "displayName": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "eventSummary": "S2: Advanced Social Anthropology I: Thought, Belief and Ethics",
-            "id": 4,
-            "subscribed": false,
-            'events': [
-                {
-                    "id": 5,
-                    "description": "Citizenship 2",
-                    "displayName": "Citizenship 2",
-                    "location": "Seminar Room, Social Anthropology",
-                    "notes": "Mi1-4 W 10",
-                    "start": '2014-11-23T11:30:00',
-                    "end": '2014-11-23T12:45:00',
-                    "subscribed": false,
-                    "organisers": [
-                        {
-                            "organiser": {
-                                "user": {
-                                    "displayName": "Dr S Lazar",
-                                    "isAdmin": false
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
+
+    /////////////////
+    //  RENDERING  //
+    /////////////////
 
     /**
      * Render the header
@@ -134,23 +37,43 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     };
 
     /**
-     * Set up the series of events in the sidebar
+     * Render the calendar view
+     */
+    var setUpCalendar = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
+            'data': null
+        }, $('#gh-main'));
+
+        if (!gh.data .me) {
+            $(document).trigger('gh.calendar.init');
+        } else {
+            gh.api.seriesAPI.getSeriesCalendar(1, '2014-01-12', '2014-12-12', function(err, data) {
+                $(document).trigger('gh.calendar.init', {
+                    'events': data.results
+                });
+            });
+        }
+    };
+
+    /**
+     * Set up the modules of events in the sidebar
      *
      * @param {jQuery}    ev      Standard jQuery event
-     * @param {Object}    data    Data object describing the selected part to fetch series for
+     * @param {Object}    data    Data object describing the selected part to fetch modules for
      */
-    var setUpSeries = function(ev, data) {
-        gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
-            'data': dummyModules
-        }, $('#gh-modules-container'));
+    var setUpModules = function(ev, data) {
+        var partId = parseInt(data.selected, 10);
 
-        $(document).trigger('gh.listview.init', {
-            'modules': dummyModules
+        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, data) {
+            // Render the series in the sidebar
+            gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
+                'data': data.results
+            }, $('#gh-modules-container'));
         });
     };
 
     /**
-     * Set up the Part picker in the subheader
+     * Set up the part picker in the subheader
      *
      * @param {jQuery}    ev      Standard jQuery event
      * @param {Object}    data    Data object describing the selected tripos to fetch parts for
@@ -174,7 +97,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         $('#gh-subheader-part').chosen({
             'no_results_text': 'No matches for',
             'disable_search_threshold': 10
-        }).change(setUpSeries);
+        }).change(setUpModules);
     };
 
     /**
@@ -214,7 +137,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
      * access in the templates
      */
     var getTripos = function() {
-        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, false, null, null, function(err, data) {
+        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, false, null, ['course', 'subject', 'part'], function(err, data) {
             triposData.courses = _.filter(data.results, function(course) {
                                     return course.type === 'course';
                                 });
@@ -227,29 +150,15 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
                                     return part.type === 'part';
                                 });
 
-            triposData.modules = _.filter(data.results, function(module) {
-                                    return module.type === 'module';
-                                });
-
-            triposData.series = _.filter(data.results, function(serie) {
-                                    return serie.type === 'serie';
-                                });
-
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
         });
     };
 
-    /**
-     * Render the calendar view
-     */
-    var renderCalendarView = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
-            'data': dummyModules
-        }, $('#gh-main'));
 
-        $(document).trigger('gh.calendar.init');
-    };
+    /////////////////
+    //  UTILITIES  //
+    /////////////////
 
     /**
      * Log in using the local authentication strategy
@@ -269,6 +178,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         return false;
     };
 
+
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
+
     /**
      * Add bindings to various elements on the page
      */
@@ -276,7 +190,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         $('body').on('submit', '#gh-signin-form', doLogin);
 
         $(document).on('gh.calendar.ready', function() {
-            renderCalendarView();
+            setUpCalendar();
         });
     };
 
@@ -286,7 +200,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     var initIndex = function() {
         addBinding();
         renderHeader();
-        renderCalendarView();
+        setUpCalendar();
 
         // If the user isn't logged in the page shouldn't be fully initialised
         if (gh.data.me) {
