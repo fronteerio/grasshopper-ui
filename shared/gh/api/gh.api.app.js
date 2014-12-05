@@ -82,9 +82,9 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
-        } else if (!_.isEmpty(offset) && !_.isNumber(offset)) {
+        } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         }
 
@@ -161,7 +161,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
-        } else if (!_.isEmpty(enabled) && !_.isBoolean(enabled)) {
+        } else if (enabled && !_.isBoolean(enabled)) {
             return callback({'code': 400, 'msg': 'A valid value for enabled should be provided'});
         } else if (host && !_.isString(host)) {
             return callback({'code': 400, 'msg': 'A valid value for host should be provided'});

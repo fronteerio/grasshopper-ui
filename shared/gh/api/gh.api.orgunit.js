@@ -58,7 +58,7 @@ define(['exports'], function(exports) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!_.isString(serieId)) {
+        } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
 
@@ -208,9 +208,9 @@ define(['exports'], function(exports) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (from && !_.isString(from)) {
+        } else if (!_.isString(from)) {
             return callback({'code': 400, 'msg': 'A valid from ISO 8601 date should be provided'});
-        } else if (to && !_.isString(to)) {
+        } else if (!_.isString(to)) {
             return callback({'code': 400, 'msg': 'A valid to ISO 8601 date should be provided'});
         }
 
@@ -237,7 +237,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback     Standard callback function
      */
     var getOrgUnitCalendarICal = exports.getOrgUnitCalendarICal = function(orgUnitId, callback) {
-        if (callback && !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
@@ -262,7 +262,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback     Standard callback function
      */
     var getOrgUnitCalendarRSS = exports.getOrgUnitCalendarRSS = function(orgUnitId, callback) {
-        if (callback && !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});

@@ -87,9 +87,9 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
-        } else if (!_.isEmpty(offset) && (!_.isNumber(offset))) {
+        } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         }
 
@@ -149,7 +149,7 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!_.isEmpty(signature) && !_.isString(signature)) {
+        } else if (signature && !_.isString(signature)) {
             return callback({'code': 400, 'msg': 'A valid value for signature should be provided'});
         }
 
@@ -170,7 +170,7 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!_.isEmpty(signature) && !_.isString(signature)) {
+        } else if (signature && !_.isString(signature)) {
             return callback({'code': 400, 'msg': 'A valid value for signature should be provided'});
         }
 
@@ -192,9 +192,9 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
-        } else if (!_.isEmpty(offset) && (!_.isNumber(offset))) {
+        } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         }
 
@@ -260,13 +260,13 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid email should be provided'});
         } else if (!_.isString(password)) {
             return callback({'code': 400, 'msg': 'A valid value for password should be provided'});
-        } else if (!_.isEmpty(emailPreference) && !_.isString(emailPreference)) {
+        } else if (emailPreference && !_.isString(emailPreference)) {
             return callback({'code': 400, 'msg': 'A valid value for emailPreference should be provided'});
-        } else if (!_.isEmpty(isAdmin) && !_.isBoolean(isAdmin)) {
+        } else if (isAdmin && !_.isBoolean(isAdmin)) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
-        } else if (!_.isEmpty(recaptchaChallenge) && !_.isString(recaptchaChallenge)) {
+        } else if (recaptchaChallenge && !_.isString(recaptchaChallenge)) {
             return callback({'code': 400, 'msg': 'A valid value for recaptchaChallenge should be provided'});
-        } else if (!_.isEmpty(recaptchaResponse) && !_.isString(recaptchaResponse)) {
+        } else if (recaptchaResponse && !_.isString(recaptchaResponse)) {
             return callback({'code': 400, 'msg': 'A valid value for recaptchaResponse should be provided'});
         }
 
@@ -316,7 +316,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid tenant id should be provided'});
         } else if (!_.isArray(appIds)) {
             return callback({'code': 400, 'msg': 'A valid value for appIds should be provided'});
-        } else if (!_.isEmpty(forceProfileUpdate) && !_.isBoolean(forceProfileUpdate)) {
+        } else if (forceProfileUpdate && !_.isBoolean(forceProfileUpdate)) {
             return callback({'code': 400, 'msg': 'A valid value for forceProfileUpdate should be provided'});
         }
 
@@ -342,11 +342,11 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         } else if (!_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid app id should be provided'});
-        } else if (!_.isEmpty(displayName) && !_.isString(displayName)) {
+        } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
-        } else if (!_.isEmpty(email) && !_.isBoolean(email)) {
+        } else if (email && !_.isBoolean(email)) {
             return callback({'code': 400, 'msg': 'A valid value for email should be provided'});
-        } else if (!_.isEmpty(emailPreference) && !_.isBoolean(emailPreference)) {
+        } else if (emailPreference && !_.isBoolean(emailPreference)) {
             return callback({'code': 400, 'msg': 'A valid value for emailPreference should be provided'});
         }
 

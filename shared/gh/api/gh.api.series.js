@@ -280,11 +280,11 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
-        } else if (!_.isEmpty(offset) && !_.isNumber(offset)) {
+        } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
-        } else if (!_.isEmpty(upcoming) && !_.isNumber(upcoming)) {
+        } else if (upcoming && !_.isNumber(upcoming)) {
             return callback({'code': 400, 'msg': 'A valid upcoming should be provided'});
         }
 
@@ -394,9 +394,9 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
-        } else if (!_.isEmpty(offset) && !_.isNumber(offset)) {
+        } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
         }
 
@@ -431,9 +431,9 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
-        } else if (!_.isEmpty(limit) && !_.isNumber(limit)) {
+        } else if (limit && !_.isNumber(limit)) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
-        } else if (!_.isEmpty(offset) && !_.isNumber(offset)) {
+        } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
         }
 
@@ -557,7 +557,7 @@ define(['exports'], function(exports) {
     var updateSeries = exports.updateSeries = function(serieId, displayName, description, groupId, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
-        } else if (!_.isEmpty(serieId) && !_.isNumber(serieId)) {
+        } else if (serieId && !_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
