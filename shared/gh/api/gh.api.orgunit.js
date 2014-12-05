@@ -27,12 +27,12 @@ define(['exports'], function(exports) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!_.isString(eventId)) {
+        } else if (!_.isNumber(eventId)) {
             return callback({'code': 400, 'msg': 'A valid eventId should be provided'});
         }
 
         $.ajax({
-            'url': '/orgunit/' + orgUnitId + '/events',
+            'url': '/api/orgunit/' + orgUnitId + '/events',
             'type': 'POST',
             'data': {
                 'event': eventId
@@ -63,7 +63,7 @@ define(['exports'], function(exports) {
         }
 
         $.ajax({
-            'url': '/orgunit/' + orgUnitId + '/series',
+            'url': '/api/orgunit/' + orgUnitId + '/series',
             'type': 'POST',
             'data': {
                 'serie': serieId
@@ -425,7 +425,7 @@ define(['exports'], function(exports) {
      * Remove an event series from an organisational unit
      *
      * @param  {Number}      orgUnitId     The ID of the organisational unit to remove an event series from
-     * @param  {Number}      serieId       The ID of the event series to remove from the organisational unit
+     * @param  {String[]}      serieId       The ID of the event series to remove from the organisational unit
      * @param  {Function}    [callback]    Standard callback function
      */
     var deleteOrgUnitSeries = exports.deleteOrgUnitSeries = function(orgUnitId, serieId, callback) {
@@ -439,10 +439,13 @@ define(['exports'], function(exports) {
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
-
+console.log('SERIE ID', serieId);
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/series',
             'type': 'DELETE',
+            'data': {
+                'serie': [serieId + '']
+            },
             'success': function(data) {
                 return callback(null, data);
             },
