@@ -312,6 +312,10 @@ tbody .fc-sun {
     background-color: #F8F6FB;
 }
 
+.popover.left > .arrow:after {
+    border-left-color: #F8F6FB;
+}
+
 .popover.right > .arrow:after {
     border-right-color: #F8F6FB;
 }

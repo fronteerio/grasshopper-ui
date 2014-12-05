@@ -50,8 +50,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
                     "displayName": "Citizenship",
                     "location": "Seminar Room, Social Anthropology",
                     "notes": "Mi1-4 W 10",
-                    "start": '2014-11-27T09:30:00',
-                    "end": '2014-11-27T12:00:00',
+                    "start": '2014-12-10T09:30:00',
+                    "end": '2014-12-10T12:00:00',
                     "subscribed": false,
                     "organisers": [
                         {
