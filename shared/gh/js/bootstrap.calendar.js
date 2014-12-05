@@ -493,6 +493,11 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                     },
                     'onShown': function() {
                         $trigger.addClass('highlighted');
+
+                        // Hide the popovers on resize
+                        $(window).one('resize', function() {
+                            $trigger.trigger('click');
+                        });
                     }
                 };
 
