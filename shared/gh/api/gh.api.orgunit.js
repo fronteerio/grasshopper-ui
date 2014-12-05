@@ -394,7 +394,7 @@ define(['exports'], function(exports) {
      * Remove an event from an organisational unit
      *
      * @param  {Number}      orgUnitId     The ID of the organisational unit to remove an event from
-     * @param  {Number}      eventId       The ID of the event to remove from the organisational unit
+     * @param  {String[]}    eventId       The ID of the event to remove from the organisational unit
      * @param  {Function}    [callback]    Standard callback function
      */
     var deleteOrgUnitEvent = exports.deleteOrgUnitEvent = function(orgUnitId, eventId, callback) {
@@ -410,8 +410,11 @@ define(['exports'], function(exports) {
         callback = callback || function() {};
 
         $.ajax({
-            'url': '/api/orgunit',
-            'type': 'GET',
+            'url': '/api/orgunit/' + orgUnitId + '/events',
+            'type': 'DELETE',
+            'data': {
+                'event': [eventId]
+            },
             'success': function(data) {
                 return callback(null, data);
             },
@@ -439,12 +442,12 @@ define(['exports'], function(exports) {
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
-console.log('SERIE ID', serieId);
+
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/series',
             'type': 'DELETE',
             'data': {
-                'serie': [serieId + '']
+                'serie': [serieId]
             },
             'success': function(data) {
                 return callback(null, data);
@@ -548,8 +551,8 @@ console.log('SERIE ID', serieId);
             'data': {
                 'description': description,
                 'displayName': displayName,
-                'groupId': groupId,
-                'parentId': parentId,
+                'group': groupId,
+                'parent': parentId,
                 'type': type
             },
             'success': function(data) {

@@ -132,7 +132,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnitSeries functionality
     QUnit.asyncTest('getOrgUnitSeries', function(assert) {
-        expect(8);
+        expect(10);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -169,7 +169,17 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             // Verify that the series in an organisational unit can be retrieved successfully
                             gh.api.orgunitAPI.getOrgUnitSeries(testOrgUnit.id, null, null, null, function(err, data) {
                                 assert.ok(!err, 'Verify that the series in an organisational unit can be retrieved successfully');
-                                QUnit.start();
+
+                                // Verify that the error is handled when the organisational unit event series can't be successfully retrieved
+                                var body = {'code': 400, 'msg': 'Bad Request'};
+                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.orgunitAPI.getOrgUnitSeries(testOrgUnit.id, null, null, null, function(err, data) {
+                                        assert.ok(err, 'Verify that the error is handled when the organisational unit event series can\'t be successfully retrieved');
+                                        assert.ok(!data, 'Verify that no data returns when the organisational unit event series can\'t be successfully retrieved');
+
+                                        QUnit.start();
+                                    });
+                                });
                             });
                         });
                     });
@@ -180,7 +190,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnitCalendar functionality
     QUnit.asyncTest('getOrgUnitCalendar', function(assert) {
-        expect(9);
+        expect(11);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -218,11 +228,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', 2014, function(err, data) {
                                 assert.ok(err, 'Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided');
 
-                                /* TODO: Enable the test once the /api/orgunit/:id/calendar endpoint is implemented */
-                                // Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided
-                                gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
-                                    assert.ok(err, 'Verify that an organisational unit\'s calendar can be retrieved successfully');
-                                    QUnit.start();
+                                // Verify that the calendar can be successfully retrieved
+                                // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                                var body = {'code': 200, 'msg': 'OK'};
+                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 200, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
+                                        assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
+
+                                        // Verify that the error is handled when the calendar can't be retrieved
+                                        body = {'code': 400, 'msg': 'Bad Request'};
+                                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 400, {'Content-Type': 'application/json'}, body, function() {
+                                            gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
+                                                assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
+                                                assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
+
+                                                QUnit.start();
+                                            });
+                                        });
+                                    });
                                 });
                             });
                         });
@@ -234,7 +257,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnitCalendarICal functionality
     QUnit.asyncTest('getOrgUnitCalendarICal', function(assert) {
-        expect(5);
+        expect(7);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -256,11 +279,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             gh.api.orgunitAPI.getOrgUnitCalendarICal('invalid_orgunitid', function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                /* TODO: Enable the test once the /api/orgunit/:id/calendar.ical endpoint is implemented */
-                // Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided
-                gh.api.orgunitAPI.getOrgUnitCalendarICal(testOrgUnit.id, function(err, data) {
-                    assert.ok(err, 'Verify that an organisational unit\'s ICal calendar can be retrieved successfully');
-                    QUnit.start();
+                // Verify that the calendar can be successfully retrieved
+                // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                var body = {'code': 200, 'msg': 'OK'};
+                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 200, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.orgunitAPI.getOrgUnitCalendarICal(testOrgUnit.id, function(err, data) {
+                        assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
+
+                        // Verify that the error is handled when the calendar can't be retrieved
+                        body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.orgunitAPI.getOrgUnitCalendarICal(testOrgUnit.id, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
+                                assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
+
+                                QUnit.start();
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -268,7 +304,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnitCalendarRSS functionality
     QUnit.asyncTest('getOrgUnitCalendarRSS', function(assert) {
-        expect(5);
+        expect(7);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -290,11 +326,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             gh.api.orgunitAPI.getOrgUnitCalendarRSS('invalid_orgunitid', function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                /* TODO: Enable the test once the /api/orgunit/:id/calendar.rss endpoint is implemented */
-                // Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided
-                gh.api.orgunitAPI.getOrgUnitCalendarRSS(testOrgUnit.id, function(err, data) {
-                    assert.ok(err, 'Verify that an organisational unit\'s RSS calendar can be retrieved successfully');
-                    QUnit.start();
+                // Verify that the calendar can be successfully retrieved
+                // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                var body = {'code': 200, 'msg': 'OK'};
+                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 200, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.orgunitAPI.getOrgUnitCalendarRSS(testOrgUnit.id, function(err, data) {
+                        assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
+
+                        // Verify that the error is handled when the calendar can't be retrieved
+                        body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.orgunitAPI.getOrgUnitCalendarRSS(testOrgUnit.id, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
+                                assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
+
+                                QUnit.start();
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -302,7 +351,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnitUpcoming functionality
     QUnit.asyncTest('getOrgUnitUpcoming', function(assert) {
-        expect(7);
+        expect(9);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -332,11 +381,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                     gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, 2, 'invalid_offset', function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when an invalid offset was provided');
 
-                        /* TODO: Enable the test once the /api/orgunit/:id/upcoming endpoint is implemented */
                         // Verify that the upcoming events in an organisational unit can be retrieved successfully
-                        gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, null, null, function(err, data) {
-                            assert.ok(err, 'Verify that the upcoming events in an organisational unit can be retrieved successfully');
-                            QUnit.start();
+                        // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                        var body = {'code': 200, 'msg': 'OK'};
+                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=&offset=', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, null, null, function(err, data) {
+                                assert.ok(!err, 'Verify that the upcoming events in an organisational unit can be retrieved successfully');
+
+                                // Verify that the error is handled when the upcoming events in an organisational unit can't be retrieved
+                                body = {'code': 400, 'msg': 'Bad Request'};
+                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=&offset=', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, null, null, function(err, data) {
+                                        assert.ok(err, 'Verify that the error is handled when the upcoming events in an organisational unit can\'t be retrieved');
+                                        assert.ok(!data, 'Verify that no data returns when the upcoming events in an organisational unit can\'t be retrieved');
+
+                                        QUnit.start();
+                                    });
+                                });
+                            });
                         });
                     });
                 });
@@ -347,7 +409,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the createOrgUnit functionality
     QUnit.asyncTest('createOrgUnit', function(assert) {
-        expect(12);
+        expect(13);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -400,6 +462,10 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                                 var testApp = testAPI.getApps()[0];
                                                 gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', null, null, null, function(err, data) {
                                                     assert.ok(!err, 'Verify that an organisational unit can be successfully created');
+
+                                                    // Verify that a default callback is set when none is provided and no error is thrown
+                                                    assert.equal(null, gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', null, null, null, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
                                                     QUnit.start();
                                                 });
                                             });
@@ -419,7 +485,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the updateOrgUnit functionality
     QUnit.asyncTest('updateOrgUnit', function(assert) {
-        expect(9);
+        expect(12);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -456,17 +522,27 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                 gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, 123, function(err, data) {
                                     assert.ok(err, 'Verify that an error is thrown when an invalid type was provided');
 
-                                    // Verify that an unexisting organisational unit cannot be updated
-                                    gh.api.orgunitAPI.updateOrgUnit(9999999, null, null, null, null, 'tripos', function(err, data) {
-                                        assert.ok(err, 'Verify that an unexisting organisational unit cannot be updated');
+                                    // Verify that a default callback is set when none is provided and no error is thrown
+                                    assert.equal(null, gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, null), 'Verify that a default callback is set when none is provided and no error is thrown');
 
-                                        /* TODO: Enable the test once the /api/orgunit/:id endpoint is implemented */
-                                        // Verify that an organisational unit can be updated successfully
-                                        // gh.api.orgunitAPI.updateOrgUnit(1, null, null, null, null, 'tripos', function(err, data) {
-                                        //     assert.ok(!err, 'Verify that an organisational unit can be updated successfully');
-                                        //     QUnit.start();
-                                        // });
-                                        QUnit.start();
+                                    // Verify that the organisational unit can be updated
+                                    // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                                    var body = {'code': 200, 'msg': 'OK'};
+                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 200, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, function(err, data) {
+                                            assert.ok(!err, 'Verify that the organisational unit can be updated successfully');
+
+                                            // Verify that the error is handled when the organisational unit could not be successfully updated
+                                            body = {'code': 400, 'msg': 'Bad Request'};
+                                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                                gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, function(err, data) {
+                                                    assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully updated');
+                                                    assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully updated');
+
+                                                    QUnit.start();
+                                                });
+                                            });
+                                        });
                                     });
                                 });
                             });
@@ -517,6 +593,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             // Verify that an event series can be added to an organisational unit
                             gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
                                 assert.ok(!err, 'Verify that an event series can be added to an organisational unit');
+
                                 QUnit.start();
                             });
                         });
@@ -528,7 +605,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the addOrgUnitEvent functionality
     QUnit.asyncTest('addOrgUnitEvent', function(assert) {
-        expect(7);
+        expect(9);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
         testAPI.getRandomEvent(function(err, testEvent) {
@@ -558,16 +635,23 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, 'invalid_eventid', function(err, data) {
                             assert.ok(err, 'Verify that an error is thrown when an invalid eventId was provided');
 
-                            // Verify that an error is thrown when an event that doesn't exist is being added to the organisational unit
-                            gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, 99999999, function(err, data) {
-                                assert.ok(err, 'Verify that an error is thrown when an event that doesn\'t exist is being added to the organisational unit');
+                            // Verify that an event can be successfully added to an organisational unit
+                            var body = {'code': 200, 'msg': 'OK'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
+                                    assert.ok(!err, 'Verify that an event can be successfully added to an organisational unit');
 
-                                // TODO: Enable this test once the endpoint has been implemented
-                                // Verify that adding an event to an organisational unit succeeds
-                                // gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
-                                    // assert.ok(!err, 'Verify that adding an event to an organisational unit succeeds');
-                                    QUnit.start();
-                                // });
+                                    // Verify that the error is handled when the event could not be successfully added to the organisational unit
+                                    body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
+                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
+                                            assert.ok(err, 'Verify that the error is handled when the event could not be successfully added to the organisational unit');
+                                            assert.ok(!data, 'Verify that no data returns when the event could not be successfully added to the organisational unit');
+
+                                            QUnit.start();
+                                        });
+                                    });
+                                });
                             });
                         });
                     });
@@ -578,11 +662,10 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the deleteOrgUnitSeries functionality
     QUnit.asyncTest('deleteOrgUnitSeries', function(assert) {
-        expect(8);
+        expect(9);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
         var testSeries = testOrgUnit.Series[0];
-        console.log(JSON.stringify(testOrgUnit));
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -605,19 +688,25 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                     gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, 'invalid_eventid', function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when an invalid serieId was provided');
 
-                        // Verify that an error is thrown when an event series that doesn't exist is being deleted from the organisational unit
-                        gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, 99999999, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an event series that doesn\'t exist is being deleted from the organisational unit');
+                        // Verify that a default callback is set when none is provided and no error is thrown
+                        assert.equal(null, gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, testSeries.id, null), 'Verify that a default callback is set when none is provided and no error is thrown');
 
-                            // Verify that an event series can be successfully deleted from an organisational unit
+                        // Verify that an event series can be successfully deleted from an organisational unit
+                        // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
+                        var body = {'code': 200, 'msg': 'OK'};
+                        gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
-                                console.log(JSON.stringify(err), JSON.stringify(data), testOrgUnit.id, testSeries.id);
                                 assert.ok(!err, 'Verify that an event series can be successfully deleted from an organisational unit');
 
-                                // Verify that deleting an event series that is not part of the organisational unit fails
-                                gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, 99999999, function(err, data) {
-                                    assert.ok(err, 'Verify that deleting an event series that is not part of the organisational unit fails');
-                                    QUnit.start();
+                                // Verify that the error is handled when the event series could not be successfully deleted from the organisational unit
+                                body = {'code': 400, 'msg': 'One or more of the specified series are not part of the organisational unit'};
+                                gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
+                                        assert.ok(err, 'Verify that the error is handled when the event series could not be successfully deleted from the organisational unit');
+                                        assert.ok(!data, 'Verify that no data returns when the event series could not be successfully deleted from the organisational unit');
+
+                                        QUnit.start();
+                                    });
                                 });
                             });
                         });
@@ -629,33 +718,55 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the deleteOrgUnitEvent functionality
     QUnit.asyncTest('deleteOrgUnitEvent', function(assert) {
-        expect(6);
+        expect(9);
 
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.orgunitAPI.deleteOrgUnitEvent(1, 2, 'not_a_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+        var testOrgUnit = testAPI.getRandomOrgUnit();
+        var testSeries = testOrgUnit.Series[0];
 
-        // Verify that an error is thrown when no orgUnitId was provided
-        gh.api.orgunitAPI.deleteOrgUnitEvent(null, null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
+        testAPI.getRandomEvent(function(err, testEvent) {
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, 'not_a_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
 
-            // Verify that an error is thrown when an invalid orgUnitId was provided
-            gh.api.orgunitAPI.deleteOrgUnitEvent('invalid_orgunitid', null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
+            // Verify that an error is thrown when no orgUnitId was provided
+            gh.api.orgunitAPI.deleteOrgUnitEvent(null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
 
-                // Verify that an error is thrown when no eventId was provided
-                gh.api.orgunitAPI.deleteOrgUnitEvent(1, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no eventId was provided');
+                // Verify that an error is thrown when an invalid orgUnitId was provided
+                gh.api.orgunitAPI.deleteOrgUnitEvent('invalid_orgunitid', null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                    // Verify that an error is thrown when an invalid eventId was provided
-                    gh.api.orgunitAPI.deleteOrgUnitEvent(1, 'invalid_eventid', function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid eventId was provided');
+                    // Verify that an error is thrown when no eventId was provided
+                    gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when no eventId was provided');
 
-                        // Verify that an error is thrown when an event that doesn't exist is being deleted from the organisational unit
-                        gh.api.orgunitAPI.deleteOrgUnitEvent(1, 99999999, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an event that doesn\'t exist is being deleted from the organisational unit');
-                            QUnit.start();
+                        // Verify that an error is thrown when an invalid eventId was provided
+                        gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, 'invalid_eventid', function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid eventId was provided');
+
+                            // Verify that a default callback is set when none is provided and no error is thrown
+                            assert.equal(null, gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                            // Verify that an event can be successfully deleted from an organisational unit
+                            // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
+                            var body = {'code': 200, 'msg': 'OK'};
+                            gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
+                                    assert.ok(!err, 'Verify that an event can be successfully deleted from an organisational unit');
+
+                                    // Verify that the error is handled when the event could not be successfully deleted from the organisational unit
+                                    body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
+                                    gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
+                                            assert.ok(err, 'Verify that the error is handled when the event could not be successfully deleted from the organisational unit');
+                                            assert.ok(!data, 'Verify that no data returns when the event could not be successfully deleted from the organisational unit');
+
+                                            QUnit.start();
+                                        });
+                                    });
+                                });
+                            });
                         });
                     });
                 });
@@ -665,7 +776,9 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the deleteOrgUnit functionality
     QUnit.asyncTest('deleteOrgUnit', function(assert) {
-        expect(4);
+        expect(7);
+
+        var testOrgUnit = testAPI.getRandomOrgUnit();
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -680,10 +793,27 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             gh.api.orgunitAPI.deleteOrgUnit('invalid_orgunitid', function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                // Verify that an error is thrown when an orgunit that doesn't exist is being deleted
-                gh.api.orgunitAPI.deleteOrgUnit(99999999, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an orgunit that doesn\'t exist is being deleted');
-                    QUnit.start();
+                // Verify that a default callback is set when none is provided and no error is thrown
+                assert.equal(null, gh.api.orgunitAPI.deleteOrgUnit(99999999, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                // Verify that an organisational unit can be successfully deleted
+                // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
+                var body = {'code': 200, 'msg': 'OK'};
+                gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 200, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.orgunitAPI.deleteOrgUnit(testOrgUnit.id, function(err, data) {
+                        assert.ok(!err, 'Verify that an organisational unit can be successfully deleted');
+
+                        // Verify that the error is handled when the organisational unit could not be successfully updated
+                        body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
+                        gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.orgunitAPI.deleteOrgUnit(testOrgUnit.id, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully deleted');
+                                assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully deleted');
+
+                                QUnit.start();
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -691,7 +821,9 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the subscribeOrgUnit functionality
     QUnit.asyncTest('subscribeOrgUnit', function(assert) {
-        expect(4);
+        expect(8);
+
+        var testOrgUnit = testAPI.getRandomOrgUnit();
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -709,7 +841,28 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 // Verify that an error is thrown when an orgunit that doesn't exist is being subscribed to
                 gh.api.orgunitAPI.subscribeOrgUnit(99999999, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when an orgunit that doesn\'t exist is being subscribed to');
-                    QUnit.start();
+
+                    // Verify that a default callback is set when none is provided and no error is thrown
+                    assert.equal(null, gh.api.orgunitAPI.subscribeOrgUnit(99999999, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                    // Verify that an organisational unit can be successfully subscribed to
+                    var body = {'code': 200, 'msg': 'OK'};
+                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/subscribe', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.orgunitAPI.subscribeOrgUnit(testOrgUnit.id, function(err, data) {
+                            assert.ok(!err, 'Verify that an organisational unit can be successfully subscribed to');
+
+                            // Verify that the error is handled when an an organisational unit cannot be successfully subscribed to
+                            body = {'code': 400, 'msg': 'Bad request'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/subscribe', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.subscribeOrgUnit(testOrgUnit.id, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully subscribed to');
+                                    assert.ok(!data, 'Verify that no data returns when an an organisational unit cannot be successfully subscribed to');
+
+                                    QUnit.start();
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -717,7 +870,9 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the unsubscribeOrgUnit functionality
     QUnit.asyncTest('unsubscribeOrgUnit', function(assert) {
-        expect(4);
+        expect(8);
+
+        var testOrgUnit = testAPI.getRandomOrgUnit();
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -735,7 +890,28 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 // Verify that an error is thrown when an orgunit that doesn't exist is being subscribed to
                 gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when an orgunit that doesn\'t exist is being subscribed to');
-                    QUnit.start();
+
+                    // Verify that a default callback is set when none is provided and no error is thrown
+                    assert.equal(null, gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                    // Verify that an organisational unit can be successfully unsubscribed from
+                    var body = {'code': 200, 'msg': 'OK'};
+                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/unsubscribe', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.orgunitAPI.unsubscribeOrgUnit(testOrgUnit.id, function(err, data) {
+                            assert.ok(!err, 'Verify that an organisational unit can be successfully unsubscribed from');
+
+                            // Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from
+                            body = {'code': 400, 'msg': 'Bad request'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/unsubscribe', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.unsubscribeOrgUnit(testOrgUnit.id, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from');
+                                    assert.ok(!data, 'Verify that no data returns when an an organisational unit cannot be successfully unsubscribed from');
+
+                                    QUnit.start();
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
