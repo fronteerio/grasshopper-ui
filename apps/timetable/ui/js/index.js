@@ -81,7 +81,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
     var setUpPartPicker = function(ev, data) {
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
-            return parseInt(data.selected, 10) === part.parentId;
+            return parseInt(data.selected, 10) === part.ParentId;
         });
         // Render the results in the part picker
         gh.api.utilAPI.renderTemplate($('#gh-subheader-part-template'), {
@@ -110,7 +110,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
 
         _.each(triposPickerData.courses, function(course) {
             course.subjects = _.filter(triposData.subjects, function(subject) {
-                return course.id === subject.parentId;
+                return course.id === subject.ParentId;
             });
         });
 
