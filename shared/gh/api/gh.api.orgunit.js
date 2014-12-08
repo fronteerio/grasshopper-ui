@@ -415,18 +415,18 @@ define(['exports'], function(exports) {
     /**
      * Remove an event from an organisational unit
      *
-     * @param  {Number}      orgUnitId              The ID of the organisational unit to remove an event from
-     * @param  {String[]}    eventId                The ID of the event to remove from the organisational unit
-     * @param  {Function}    [callback]             Standard callback function
-     * @param  {Object}      [callback.err]         Error object containing the error code and error message
-     * @param  {Object}      [callback.response]    Object representing the removed event
+     * @param  {Number}             orgUnitId              The ID of the organisational unit to remove an event from
+     * @param  {String[]|String}    eventId                The ID of the event to remove from the organisational unit
+     * @param  {Function}           [callback]             Standard callback function
+     * @param  {Object}             [callback.err]         Error object containing the error code and error message
+     * @param  {Object}             [callback.response]    Object representing the removed event
      */
     var deleteOrgUnitEvent = exports.deleteOrgUnitEvent = function(orgUnitId, eventId, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!_.isNumber(eventId)) {
+        } else if (!_.isArray(eventId) && !_.isNumber(eventId)) {
             return callback({'code': 400, 'msg': 'A valid eventId should be provided'});
         }
 

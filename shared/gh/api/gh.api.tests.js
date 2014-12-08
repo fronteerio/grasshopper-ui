@@ -77,11 +77,21 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
         return _.sample(_orgunits);
     };
 
+    /**
+     * Return a random series of a random organisational unit
+     *
+     * @type {Object}    Object representing an event series in an organisational unit
+     */
     var getRandomSeries = exports.getRandomSeries = function() {
         var testOrgUnit = getRandomOrgUnit();
         return _.sample(testOrgUnit.Series);
     };
 
+    /**
+     * Get a random event from a random series
+     *
+     * @type {Object}    Object representing an event in an event serie
+     */
     var getRandomEvent = exports.getRandomEvent = function(callback) {
         var randomSeries = getRandomSeries();
         seriesAPI.getSeriesEvents(randomSeries.id, 1, 0, false, function(err, data) {
