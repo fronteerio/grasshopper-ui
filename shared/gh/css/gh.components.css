@@ -134,7 +134,7 @@
 .gh-toolbar-label {
     display: inline-block;
     text-align: center;
-    width: 100px;
+    min-width: 100px;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
@@ -189,13 +189,18 @@
     position: absolute;
 }
 
+.fc-ltr .fc-basic-view .fc-day-number,
+.fc-ltr .fc-basic-view .fc-today.fc-day-number {
+    padding: 8px 8px 8px 11px;
+}
+
 .fc-ltr .fc-basic-view .fc-day-number {
-    padding: 5px;
     text-align: left;
 }
 
 .fc-ltr .fc-basic-view .fc-today.fc-day-number {
-    padding: 2px 5px 5px 5px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .fc-slats .fc-minor td {
