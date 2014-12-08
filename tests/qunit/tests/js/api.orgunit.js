@@ -555,46 +555,55 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the addOrgUnitSeries functionality
     QUnit.asyncTest('addOrgUnitSeries', function(assert) {
-        expect(8);
+        expect(9);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
         var testSeries = testAPI.getRandomSeries();
 
-        // Verify that an error is thrown when no callback was provided
-        assert.throws(function() {
-            gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, null);
-        }, 'Verify that an error is thrown when no callback was provided');
+        testAPI.getRandomEvent(function(err, testEvent) {
+            // Verify that an error is thrown when no callback was provided
+            assert.throws(function() {
+                gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, null);
+            }, 'Verify that an error is thrown when no callback was provided');
 
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, 'not_a_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, 'not_a_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
 
-        // Verify that an error is thrown when no orgUnitId was provided
-        gh.api.orgunitAPI.addOrgUnitSeries(null, null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
+            // Verify that an error is thrown when no orgUnitId was provided
+            gh.api.orgunitAPI.addOrgUnitSeries(null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
 
-            // Verify that an error is thrown when an invalid orgUnitId was provided
-            gh.api.orgunitAPI.addOrgUnitSeries('invalid_orgunitid', null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
+                // Verify that an error is thrown when an invalid orgUnitId was provided
+                gh.api.orgunitAPI.addOrgUnitSeries('invalid_orgunitid', null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                // Verify that an error is thrown when no serieId was provided
-                gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no serieId was provided');
+                    // Verify that an error is thrown when no serieId was provided
+                    gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when no serieId was provided');
 
-                    // Verify that an error is thrown when an invalid serieId was provided
-                    gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, 'invalid_eventid', function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid serieId was provided');
-
-                        // Verify that an error is thrown when an event series that doesn't exist is being added to the organisational unit
-                        gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, 99999999, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an event series that doesn\'t exist is being added to the organisational unit');
+                        // Verify that an error is thrown when an invalid serieId was provided
+                        gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, 'invalid_eventid', function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid serieId was provided');
 
                             // Verify that an event series can be added to an organisational unit
-                            gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
-                                assert.ok(!err, 'Verify that an event series can be added to an organisational unit');
+                            var body = {'code': 200, 'msg': 'OK'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testEvent.id, function(err, data) {
+                                    assert.ok(!err, 'Verify that an event series can be added to an organisational unit');
 
-                                QUnit.start();
+                                    // Verify that the error is handled when the event could not be successfully added to the organisational unit
+                                    body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
+                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testEvent.id, function(err, data) {
+                                            assert.ok(err, 'Verify that the error is handled when the event series could not be successfully added to the organisational unit');
+                                            assert.ok(!data, 'Verify that no data returns when the event series could not be successfully added to the organisational unit');
+
+                                            QUnit.start();
+                                        });
+                                    });
+                                });
                             });
                         });
                     });
