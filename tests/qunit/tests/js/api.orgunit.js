@@ -24,7 +24,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getOrgUnits functionality
     QUnit.asyncTest('getOrgUnits', function(assert) {
-        expect(10);
+        expect(9);
 
         var testApp = testAPI.getRandomApp();
 
@@ -38,40 +38,35 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             gh.api.orgunitAPI.getOrgUnits(testApp.id, null, null, null, 'not_a_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-        // Verify that an error is thrown when no appId was provided
-        gh.api.orgunitAPI.getOrgUnits(null, null, null, null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no app id was provided');
+        // Verify that an error is thrown when an invalid appId was provided
+        gh.api.orgunitAPI.getOrgUnits('invalid_appid', null, null, null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
 
-            // Verify that an error is thrown when an invalid appId was provided
-            gh.api.orgunitAPI.getOrgUnits('invalid_appid', null, null, null, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
+            // Verify that an error is thrown when an invalid includeSeries was provided
+            gh.api.orgunitAPI.getOrgUnits(testApp.id, 'invalid_includeSeries', null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid includeSeries was provided');
 
-                // Verify that an error is thrown when an invalid includeSeries was provided
-                gh.api.orgunitAPI.getOrgUnits(testApp.id, 'invalid_includeSeries', null, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid includeSeries was provided');
+                // Verify that an error is thrown when an invalid parentId was provided
+                gh.api.orgunitAPI.getOrgUnits(testApp.id, null, 'invalid_parentid', null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid parent id was provided');
 
-                    // Verify that an error is thrown when an invalid parentId was provided
-                    gh.api.orgunitAPI.getOrgUnits(testApp.id, null, 'invalid_parentid', null, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid parent id was provided');
+                    // Verify that an error is thrown when an invalid type was provided
+                    gh.api.orgunitAPI.getOrgUnits(testApp.id, null, 1, 123, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid type was provided');
 
-                        // Verify that an error is thrown when an invalid type was provided
-                        gh.api.orgunitAPI.getOrgUnits(testApp.id, null, 1, 123, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid type was provided');
+                        // Verify that organisational units can be successfully retrieved
+                        gh.api.orgunitAPI.getOrgUnits(testApp.id, false, null, null, function(err, data) {
+                            assert.ok(!err, 'Verify that organistation units can be successfully retrieved');
 
-                            // Verify that organisational units can be successfully retrieved
-                            gh.api.orgunitAPI.getOrgUnits(testApp.id, false, null, null, function(err, data) {
-                                assert.ok(!err, 'Verify that organistation units can be successfully retrieved');
-
-                                // Verify that the error is handled when the organisational units can't be successfully retrieved
-                                var body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.orgunitAPI.getOrgUnits(testApp.id, false, null, null, function(err, data) {
-                                        assert.ok(err, 'Verify that the error is handled when the organisational units can\'t be successfully retrieved');
-                                        assert.ok(!data, 'Verify that no data returns when the organisational units can\'t be successfully retrieved');
-                                    });
-
-                                    QUnit.start();
+                            // Verify that the error is handled when the organisational units can't be successfully retrieved
+                            var body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.api.utilAPI.mockRequest('GET', '/api/orgunit', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.orgunitAPI.getOrgUnits(testApp.id, false, null, null, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when the organisational units can\'t be successfully retrieved');
+                                    assert.ok(!data, 'Verify that no data returns when the organisational units can\'t be successfully retrieved');
                                 });
+
+                                QUnit.start();
                             });
                         });
                     });

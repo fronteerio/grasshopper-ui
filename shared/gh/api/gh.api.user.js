@@ -344,9 +344,9 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid app id should be provided'});
         } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
-        } else if (email && !_.isBoolean(email)) {
+        } else if (email && !_.isString(email)) {
             return callback({'code': 400, 'msg': 'A valid value for email should be provided'});
-        } else if (emailPreference && !_.isBoolean(emailPreference)) {
+        } else if (emailPreference && !_.isString(emailPreference)) {
             return callback({'code': 400, 'msg': 'A valid value for emailPreference should be provided'});
         }
 

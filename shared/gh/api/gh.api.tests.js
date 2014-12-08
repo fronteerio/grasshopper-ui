@@ -306,7 +306,6 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
                     
                     // Fetch all the organisational units and series
                     fetchOrgUnitsForTenants(function() {
-                        // console.log(_orgunits);
                         QUnit.start();
                     });
                 });

@@ -41,6 +41,11 @@ module.exports = function(callback) {
         setUpTreeStructure(callback);
     });
 
+    /**
+     * Set up a slimmed down organisational unit tree structure for testing
+     *
+     * @param {Function}    callback    Standard callback function
+     */
     var setUpTreeStructure = function(callback) {
         // Fake it till you make it
         var admin = {
@@ -89,9 +94,10 @@ module.exports = function(callback) {
     /**
      * Recursively create the organizational units for a set of nodes.
      *
-     * @param  {Node[]}             nodes               A set of nodes to create
-     * @param  {OrgUnit|Serie}      [parent]            The parent under which the nodes should be created
-     * @param  {Function}           callback            Standard callback function
+     * @param  {Node[]}           nodes                A set of nodes to create
+     * @param  {OrgUnit|Serie}    [parent]             The parent under which the nodes should be created
+     * @param  {Function}         callback             Standard callback function
+     * @param  {Object}           callback.response    Object representing the created item (one of `course`, `subject`, `part`, `module`, `serie` or `event`)
      */
     var createNodes = function(ctx, nodes, parent, callback) {
         if (_.isEmpty(nodes)) {
@@ -116,9 +122,10 @@ module.exports = function(callback) {
     /**
      * Create an organizational unit
      *
-     * @param  {Node}               node            The node to create
-     * @param  {OrgUnit|Serie}      [parent]        The parent under which the node should be created
-     * @param  {Function}           callback        Standard callback function
+     * @param  {Node}             node                 The node to create
+     * @param  {OrgUnit|Serie}    [parent]             The parent under which the node should be created
+     * @param  {Function}         callback             Standard callback function
+     * @param  {Object}           callback.response    Object representing the created item (one of `course`, `subject`, `part`, `module`, `serie` or `event`)
      */
     var createNode = function(ctx, node, parent, callback) {
         if (node.type === 'course' || node.type === 'subject' || node.type === 'part' || node.type === 'module') {
@@ -133,10 +140,11 @@ module.exports = function(callback) {
     /**
      * Create an organisational unit
      *
-     * @param  {Context}    ctx             Standard context object containing the current user and the current application
-     * @param  {Node}       node            The node to create
-     * @param  {OrgUnit}    parent          The parent under which the organisational unit should be created
-     * @param  {Function}   callback        Standard callback function
+     * @param  {Context}     ctx                  Standard context object containing the current user and the current application
+     * @param  {Node}        node                 The node to create
+     * @param  {OrgUnit}     parent               The parent under which the organisational unit should be created
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.response    Object representing the created organisational unit
      */
     var createOrgUnit = function(ctx, node, parent, callback) {
         var parentId = null;
@@ -164,10 +172,11 @@ module.exports = function(callback) {
     /**
      * Create a serie
      *
-     * @param  {Context}    ctx             Standard context object containing the current user and the current application
-     * @param  {Node}       node            The node to create
-     * @param  {OrgUnit     parent          The organisational unit under which the serie should be created
-     * @param  {Function}   callback        Standard callback function
+     * @param  {Context}     ctx                  Standard context object containing the current user and the current application
+     * @param  {Node}        node                 The node to create
+     * @param  {OrgUnit      parent               The organisational unit under which the serie should be created
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.response    Object representing the created serie
      */
     var createSerie = function(ctx, node, parent, callback) {
         SeriesAPI.createSerie(ctx, appId, node.name.substring(0, 255), null, parent.GroupId, function(err, serie) {
@@ -192,10 +201,11 @@ module.exports = function(callback) {
     /**
      * Create an event
      *
-     * @param  {Context}    ctx             Standard context object containing the current user and the current application
-     * @param  {Node}       node            The node to create
-     * @param  {Serie}      parent          The serie under which the event should be created
-     * @param  {Function}   callback        Standard callback function
+     * @param  {Context}     ctx                  Standard context object containing the current user and the current application
+     * @param  {Node}        node                 The node to create
+     * @param  {Serie}       parent               The serie under which the event should be created
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.response    Object representing the created event
      */
     var createEvent = function(ctx, node, parent, callback) {
         // TT's data isn't always correct

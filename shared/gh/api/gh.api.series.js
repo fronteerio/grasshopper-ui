@@ -284,7 +284,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid limit should be provided'});
         } else if (offset && !_.isNumber(offset)) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
-        } else if (upcoming && !_.isNumber(upcoming)) {
+        } else if (upcoming && !_.isBoolean(upcoming)) {
             return callback({'code': 400, 'msg': 'A valid upcoming should be provided'});
         }
 

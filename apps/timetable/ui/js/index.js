@@ -137,7 +137,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
      * access in the templates
      */
     var getTripos = function() {
-        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, false, null, ['course', 'subject', 'part'], function(err, data) {
+        var appId = gh.data.me && gh.data.me.AppId ? gh.data.me.AppId : null;
+        gh.api.orgunitAPI.getOrgUnits(appId, false, null, ['course', 'subject', 'part'], function(err, data) {
             triposData.courses = _.filter(data.results, function(course) {
                 return course.type === 'course';
             });
@@ -203,9 +204,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         setUpCalendar();
 
         // If the user isn't logged in, the page shouldn't be fully initialised
-        if (gh.data.me) {
-            getTripos();
-        }
+        getTripos();
     };
 
     initIndex();
