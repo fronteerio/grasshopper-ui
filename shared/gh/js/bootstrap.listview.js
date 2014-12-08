@@ -23,13 +23,11 @@ define(['gh.core'], function(gh) {
      * @param  {Number}    [parentId]    The ID of the parent of the event
      * @param  {Number}    [eventId]     The ID of the event to get
      * @return {Event[]}                 Array of events matching the IDs
-     * @api private
+     * @private
      */
     var getEventById = function(parentId, eventId) {
         // Filter out the parent from the Array
-        var parentByID = _.find(modules, function(par) {
-            return par.id === parentId;
-        });
+        var parentByID = getParentModuleById(parentId);
 
         // Filter out the event from the parent
         var eventByID = _.find(parentByID.events, function(ev) {
@@ -43,13 +41,26 @@ define(['gh.core'], function(gh) {
      *
      * @param  {Number}    parentId    The ID of the parent to get events for
      * @return {Event[]}               Array of events inside of the parent matching the ID
+     * @private
      */
     var getEventsById = function(parentId) {
         // Filter out the parent from the Array
-        var parentByID = _.find(modules, function(par) {
+        var parentByID = getParentModuleById(parentId);
+
+        return parentByID.events;
+    };
+
+    /**
+     * Return an event's parent module
+     *
+     * @param  {Number}    parentId    The ID of the parent of the event
+     * @return {Module}                The event's parent module
+     * @private
+     */
+    var getParentModuleById = function(parentId) {
+        return _.find(modules, function(par) {
             return par.id === parentId;
         });
-        return parentByID.events;
     };
 
     /**
@@ -80,7 +91,9 @@ define(['gh.core'], function(gh) {
         $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
         // Get the events to add to the calendar
-        var eventsToAdd = getEventsById($list.data('id'));
+        var parentId = $list.data('id');
+        var eventsToAdd = getEventsById(parentId);
+        var parentModule = getParentModuleById(parentId);
         $(document).trigger('gh.listview.addallevents', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
@@ -90,7 +103,8 @@ define(['gh.core'], function(gh) {
                 // shouldn't be handled in here as they are custom to the app
                 gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
             },
-            'events': eventsToAdd
+            'events': eventsToAdd,
+            'parent': parentModule.displayName
         }]);
     });
 
@@ -152,7 +166,10 @@ define(['gh.core'], function(gh) {
         }
 
         // Get the events to add to the calendar
-        var eventsToAdd = getEventById($(this).closest('ul').closest('li').data('id'), $(this).closest('li').data('id'));
+        var eventId = $(this).closest('li').data('id');
+        var parentId = $(this).closest('ul').closest('li').data('id');
+        var eventsToAdd = getEventById(parentId, eventId);
+        var parentModule = getParentModuleById(parentId);
         $(document).trigger('gh.listview.addevent', [{
             'callback': function() {
                 // TODO: Implement the API calls that hook into this
@@ -162,7 +179,8 @@ define(['gh.core'], function(gh) {
                 // shouldn't be handled in here as they are custom to the app
                 gh.api.utilAPI.notification('Event added.', 'The event was successfully added to your calendar.');
             },
-            'events': eventsToAdd
+            'events': eventsToAdd,
+            'parent': parentModule.displayName
         }]);
     });
 

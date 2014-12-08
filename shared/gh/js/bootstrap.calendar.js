@@ -223,7 +223,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 'location': ev.location,
                 'start': ev.start,
                 'end': ev.end,
-                'organisers': ev.organisers
+                'organisers': ev.organisers,
+                'parent': data.parent
             }, true);
         });
         data.callback();
