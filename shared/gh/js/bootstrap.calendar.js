@@ -203,47 +203,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
 
-    //////////////
-    //  EVENTS  //
-    //////////////
-
-    /**
-     * Add an Array of events to the calendar
-     *
-     * @param {Event}      ev      Standard event object
-     * @param {Event[]}    data    Data object containing the events to add to the calendar
-     * @private
-     */
-    var addEventsToCalendar = function(ev, data) {
-        $.each(data.events, function(index, ev) {
-            calendar.fullCalendar('removeEvents', ev.id);
-            calendar.fullCalendar('renderEvent', {
-                'id': ev.id,
-                'title': ev.displayName,
-                'location': ev.location,
-                'start': ev.start,
-                'end': ev.end,
-                'organisers': ev.organisers
-            }, true);
-        });
-        data.callback();
-    };
-
-    /**
-     * Remove an Array of events from the calendar
-     *
-     * @param  {Event}      ev      Standard event object
-     * @param  {Event[]}    data    Data object containing the events to remove from the calendar
-     * @private
-     */
-    var removeEventsFromCalendar = function(ev, data) {
-        $.each(data.events, function(index, ev) {
-            calendar.fullCalendar('removeEvents', ev.id);
-        });
-        data.callback();
-    };
-
-
     ///////////////
     //  ACTIONS  //
     ///////////////
@@ -431,22 +390,16 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
         // Change the calendar's view
         $('#gh-calendar-toolbar-views button').on('click', changeView);
-        // Add the event to the calendar
-        $(document).on('gh.listview.addevent', addEventsToCalendar);
-        // Add the event to the calendar
-        $(document).on('gh.listview.addallevents', addEventsToCalendar);
-        // Remove the event from the calendar
-        $(document).on('gh.listview.removeevent', removeEventsFromCalendar);
-        // Remove the events from the calendar
-        $(document).on('gh.listview.removeallevents', removeEventsFromCalendar);
     };
 
-    /**
-     * Initialize the calendar
-     *
-     * @private
-     */
-    var initCalendar = function() {
+     /**
+      * Initialise FullCalendar on the page and bind event handlers for navigating it
+      *
+      * @param  {Event}       ev        Standard event object
+      * @param  {Object[]}    events    An Array of events to add to the calendar on initialisation
+      * @private
+      */
+    var initCalendar = function(ev, events) {
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
             'header': false,
@@ -465,6 +418,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:15:00',
+            'events': events,
             'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
                     'data': data

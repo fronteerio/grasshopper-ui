@@ -1,10 +1,9 @@
 <% isChild = (typeof isChild === 'undefined') ? false : isChild; %>
 
 <% _.each(data, function(d) { %>
-
     <% var subscribedAll = true; %>
-    <% if (!isChild && d.events) { %>
-        <% _.each(d.events, function(ev) { %>
+    <% if (!isChild && d.Series) { %>
+        <% _.each(d.Series, function(ev) { %>
             <% if (!ev.subscribed) { %>
                 <% subscribedAll = false; %>
             <% } %>
@@ -20,10 +19,12 @@
             <% } %>
                     <div class="gh-list-description">
                         <% if (isChild) { %>
-                            <p><strong><%= d.displayName %></strong></p>
+                            <p><%= d.displayName %></p>
                             <p><%= d.notes %></p>
                             <p><%= d.location %></p>
-                            <p><%= d.organisers[0].organiser.user.displayName %></p>
+                            <% if (d.organisers && d.organisers.length) { %>
+                                <p><%= d.organisers.toString() %></p>
+                            <% } %>
                         <% } else { %>
                             <p><%= d.displayName %></p>
                         <% } %>
@@ -43,10 +44,10 @@
                 <% } %>
             </div>
         </div>
-        <% if (d.events) { %>
+        <% if (d.Series) { %>
             <ul class="list-group hide">
                 <%= _.partial('list-group-item', {
-                    'data': d.events,
+                    'data': d.Series,
                     'isChild': true
                 }) %>
             </ul>

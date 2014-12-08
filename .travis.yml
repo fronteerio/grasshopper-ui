@@ -80,7 +80,7 @@ before_install:
   - cd ~/build/CUL-DigitalServices
   - git clone --branch master --depth=1 git://github.com/CUL-DigitalServices/grasshopper.git ./grasshopper
   - cd ./grasshopper
-  - npm install --production
+  - npm install
 
   # Configure postgres
   - echo 'Creating database'
