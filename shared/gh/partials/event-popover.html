@@ -1,10 +1,10 @@
 <div class="popover fade" role="tooltip" data-id="<%= data.id %>">
-    <h3 class="gh-popover-title"><%= data.title %></h3>
+    <h3 class="gh-popover-title"><%= data.displayName %></h3>
     <p class="gh-popover-time"><%= moment.utc(data.start).format('dddd h:mma') %></p>
     <p class="gh-popover-location"><%= data.location %></p>
     <p class="gh-popover-organiser">
         <% _.each(data.organisers, function(org) { %>
-            <%= org.organiser.user.displayName %>
+            <%= org %>
         <% }); %>
     </p>
     <small class="gh-popover-belongs">Belongs to <%= data.parent %></small>

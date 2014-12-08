@@ -23,7 +23,7 @@ var log = require(ghModules + 'gh-core/lib/logger').logger('before-tests');
 var TestsUtil = require(ghModules + 'gh-tests/lib/util');
 
 require('./beforeTests.js')(function() {
-    // Start the CasperJS tests
+    // Start the tests
     var testRunner = childProcess.spawn(__dirname + '/runTests.sh', [argv.t], {
         'detached': true
     });
