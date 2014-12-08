@@ -416,7 +416,7 @@ define(['exports'], function(exports) {
      * Remove an event from an organisational unit
      *
      * @param  {Number}             orgUnitId              The ID of the organisational unit to remove an event from
-     * @param  {String[]|String}    eventId                The ID of the event to remove from the organisational unit
+     * @param  {Number[]|Number}    eventId                The ID of the event to remove from the organisational unit
      * @param  {Function}           [callback]             Standard callback function
      * @param  {Object}             [callback.err]         Error object containing the error code and error message
      * @param  {Object}             [callback.response]    Object representing the removed event
