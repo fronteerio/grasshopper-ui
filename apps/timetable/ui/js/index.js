@@ -65,6 +65,12 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         var partId = parseInt(data.selected, 10);
 
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, data) {
+            // Sort the data before displaying it
+            data.results.sort(sortByDisplayName);
+            $.each(data.results, function(i, module) {
+                module.Series.sort(sortByDisplayName);
+            });
+
             // Render the series in the sidebar
             gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
                 'data': data.results
@@ -151,6 +157,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
                 return part.type === 'part';
             });
 
+            // Sort the data before displaying it
+            triposData.courses.sort(sortByDisplayName);
+            triposData.subjects.sort(sortByDisplayName);
+            triposData.parts.sort(sortByDisplayName);
+
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
         });
@@ -177,6 +188,21 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         });
 
         return false;
+    };
+
+    /**
+     * Sort given objects based on the displayName property.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     */
+    var sortByDisplayName = function(a, b) {
+        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
+            return -1;
+        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
+            return 1;
+        }
+        return 0;
     };
 
 
