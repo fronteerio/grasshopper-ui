@@ -115,24 +115,33 @@ define(['exports'], function(exports) {
      * Get the calendar for a user
      *
      * @param  {Number}      userId               The ID of the user to get the calendar for
-     * @param  {String}      from                 The timestamp (ISO 8601) from which to get the calendar for the user
-     * @param  {String}      to                   The timestamp (ISO 8601) until which to get the calendar for the user
+     * @param  {String}      start                The timestamp (ISO 8601) from which to get the calendar for the user
+     * @param  {String}      end                  The timestamp (ISO 8601) until which to get the calendar for the user
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested user calendar
      */
-    var getUserCalendar = exports.getUserCalendar = function(userId, from, to, callback) {
+    var getUserCalendar = exports.getUserCalendar = function(userId, start, end, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!_.isString(from)) {
-            return callback({'code': 400, 'msg': 'A valid value for from should be provided'});
-        } else  if (!_.isString(to)) {
-            return callback({'code': 400, 'msg': 'A valid value for to should be provided'});
+        } else if (!_.isString(start)) {
+            return callback({'code': 400, 'msg': 'A valid value for start should be provided'});
+        } else  if (!_.isString(end)) {
+            return callback({'code': 400, 'msg': 'A valid value for end should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/calendar?start=' + start + '&end=' + end,
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
