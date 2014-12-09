@@ -136,7 +136,6 @@ define(['gh.core'], function(gh) {
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
                 $(document).trigger('gh.calendar.refresh', [{
                     'callback': function() {
-
                         // Show a success notification
                         gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
                     },
@@ -182,7 +181,6 @@ define(['gh.core'], function(gh) {
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
                 $(document).trigger('gh.calendar.refresh', [{
                     'callback': function() {
-
                         // Show a success notification
                         gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.');
                     },

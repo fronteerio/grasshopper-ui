@@ -155,17 +155,25 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     /**
      * Refresh the calendar
      *
-     * @param  {Event[]}    events    The user's subscribed events
+     * @param  {Event}       evt             The dispatched event
+     * @param  {Event[]}     evt.events      The user's subscribed events
+     * @param  {Function}    evt.callback    Standard callback function
      * @private
      */
-    var refreshCalendar = function(ev, data) {
+    var refreshCalendar = function(ev, evt) {
         // Remove the existing events
         calendar.fullCalendar('removeEvents');
 
         // Add the user's events
-        _.each(data.events, function(evt) {
+        _.each(evt.events, function(evt) {
+            // @see http://fullcalendar.io/docs/event_rendering/renderEvent
+            // If the last parameter ('stick') is set on true, the event will be permanently
+            // fixed to the calendar.
             calendar.fullCalendar('renderEvent', evt, true);
         });
+
+        // Invoke the callback function
+        evt.callback();
     };
 
     /**
