@@ -255,6 +255,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             $('#gh-subheader-part').val(state.part);
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
+        } else {
+            // Remove any modules and event series from the sidebar when no part is selected
+            // so no inaccurate information is presented to the user
+            $('#gh-modules-container').empty();
         }
     };
 
