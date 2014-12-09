@@ -1,0 +1,2200 @@
+{
+    "name": "Timetable",
+    "type": "root",
+    "nodes": {
+        "5": {
+            "id": "5",
+            "name": "Natural Sciences Tripos",
+            "type": "course",
+            "nodes": {
+                "117": {
+                    "id": "117",
+                    "name": "Biology of Cells",
+                    "type": "subject",
+                    "nodes": {
+                        "106-136": {
+                            "id": "106-136",
+                            "name": "Part IA",
+                            "type": "part",
+                            "nodes": {
+                                "487": {
+                                    "id": "487",
+                                    "name": "Practicals",
+                                    "type": "module",
+                                    "nodes": {
+                                        "5875": {
+                                            "id": "5875",
+                                            "name": "Practicals - Monday Group",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "49794": {
+                                                    "id": "49794",
+                                                    "name": "PCR",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-23T11:00:00+00:00",
+                                                    "end": "2015-02-23T17:00:00+00:00"
+                                                },
+                                                "49797": {
+                                                    "id": "49797",
+                                                    "name": "Numerical biological exercises",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-12-01T11:00:00+00:00",
+                                                    "end": "2014-12-01T17:00:00+00:00"
+                                                },
+                                                "49803": {
+                                                    "id": "49803",
+                                                    "name": "Macromolecules I",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-10T11:00:00+00:00",
+                                                    "end": "2014-11-10T17:00:00+00:00"
+                                                },
+                                                "49806": {
+                                                    "id": "49806",
+                                                    "name": "Exploring DNA",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-02T11:00:00+00:00",
+                                                    "end": "2015-03-02T17:00:00+00:00"
+                                                },
+                                                "53497": {
+                                                    "id": "53497",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-13T11:00:00+01:00",
+                                                    "end": "2014-10-13T17:00:00+01:00"
+                                                },
+                                                "53498": {
+                                                    "id": "53498",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-20T11:00:00+01:00",
+                                                    "end": "2014-10-20T17:00:00+01:00"
+                                                },
+                                                "53510": {
+                                                    "id": "53510",
+                                                    "name": "Quantifying DNA and protein",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-27T11:00:00+00:00",
+                                                    "end": "2014-10-27T17:00:00+00:00"
+                                                },
+                                                "53511": {
+                                                    "id": "53511",
+                                                    "name": "3D Modelling of molecular structures",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-03T11:00:00+00:00",
+                                                    "end": "2014-11-03T17:00:00+00:00"
+                                                },
+                                                "53512": {
+                                                    "id": "53512",
+                                                    "name": "Determining whether a new herbicide inhibits photosystem I or II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-24T11:00:00+00:00",
+                                                    "end": "2014-11-24T17:00:00+00:00"
+                                                },
+                                                "53517": {
+                                                    "id": "53517",
+                                                    "name": "Macromolecules II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-17T11:00:00+00:00",
+                                                    "end": "2014-11-17T17:00:00+00:00"
+                                                },
+                                                "53541": {
+                                                    "id": "53541",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-26T11:00:00+00:00",
+                                                    "end": "2015-01-26T17:00:00+00:00"
+                                                },
+                                                "53542": {
+                                                    "id": "53542",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-02T11:00:00+00:00",
+                                                    "end": "2015-02-02T17:00:00+00:00"
+                                                },
+                                                "53543": {
+                                                    "id": "53543",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-09T11:00:00+00:00",
+                                                    "end": "2015-02-09T17:00:00+00:00"
+                                                },
+                                                "53544": {
+                                                    "id": "53544",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-16T11:00:00+00:00",
+                                                    "end": "2015-02-16T17:00:00+00:00"
+                                                },
+                                                "85083": {
+                                                    "id": "85083",
+                                                    "name": "Chromosones, meiosis and mitosis",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-04T11:00:00+01:00",
+                                                    "end": "2015-05-04T17:00:00+01:00"
+                                                },
+                                                "85084": {
+                                                    "id": "85084",
+                                                    "name": "Development of Animals and Plants",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-27T11:00:00+01:00",
+                                                    "end": "2015-04-27T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "5876": {
+                                            "id": "5876",
+                                            "name": "Practicals - Wednesday Group",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "49795": {
+                                                    "id": "49795",
+                                                    "name": "PCR",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-25T11:00:00+00:00",
+                                                    "end": "2015-02-25T17:00:00+00:00"
+                                                },
+                                                "49798": {
+                                                    "id": "49798",
+                                                    "name": "Numerical biological exercises",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-12-03T11:00:00+00:00",
+                                                    "end": "2014-12-03T17:00:00+00:00"
+                                                },
+                                                "49804": {
+                                                    "id": "49804",
+                                                    "name": "Macromolecules I",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-12T11:00:00+00:00",
+                                                    "end": "2014-11-12T17:00:00+00:00"
+                                                },
+                                                "49807": {
+                                                    "id": "49807",
+                                                    "name": "Exploring DNA",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-04T11:00:00+00:00",
+                                                    "end": "2015-03-04T17:00:00+00:00"
+                                                },
+                                                "53499": {
+                                                    "id": "53499",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-15T11:00:00+01:00",
+                                                    "end": "2014-10-15T17:00:00+01:00"
+                                                },
+                                                "53500": {
+                                                    "id": "53500",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-22T11:00:00+01:00",
+                                                    "end": "2014-10-22T17:00:00+01:00"
+                                                },
+                                                "53513": {
+                                                    "id": "53513",
+                                                    "name": "Quantifying DNA and protein",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-29T11:00:00+00:00",
+                                                    "end": "2014-10-29T17:00:00+00:00"
+                                                },
+                                                "53514": {
+                                                    "id": "53514",
+                                                    "name": "3D Modelling of molecular structures",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-05T11:00:00+00:00",
+                                                    "end": "2014-11-05T17:00:00+00:00"
+                                                },
+                                                "53515": {
+                                                    "id": "53515",
+                                                    "name": "Determining whether a new herbicide inhibits photosystem I or II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-26T11:00:00+00:00",
+                                                    "end": "2014-11-26T17:00:00+00:00"
+                                                },
+                                                "53516": {
+                                                    "id": "53516",
+                                                    "name": "Macromolecules II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-19T11:00:00+00:00",
+                                                    "end": "2014-11-19T17:00:00+00:00"
+                                                },
+                                                "53545": {
+                                                    "id": "53545",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-28T11:00:00+00:00",
+                                                    "end": "2015-01-28T17:00:00+00:00"
+                                                },
+                                                "53546": {
+                                                    "id": "53546",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-04T11:00:00+00:00",
+                                                    "end": "2015-02-04T17:00:00+00:00"
+                                                },
+                                                "53547": {
+                                                    "id": "53547",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-11T11:00:00+00:00",
+                                                    "end": "2015-02-11T17:00:00+00:00"
+                                                },
+                                                "53548": {
+                                                    "id": "53548",
+                                                    "name": "Analysis of a genetic cross",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-18T11:00:00+00:00",
+                                                    "end": "2015-02-18T17:00:00+00:00"
+                                                },
+                                                "85085": {
+                                                    "id": "85085",
+                                                    "name": "Chromosones, meiosis and mitosis",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-06T11:00:00+01:00",
+                                                    "end": "2015-05-06T17:00:00+01:00"
+                                                },
+                                                "85086": {
+                                                    "id": "85086",
+                                                    "name": "Development of Animals and Plants",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-29T11:00:00+01:00",
+                                                    "end": "2015-04-29T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "5877": {
+                                            "id": "5877",
+                                            "name": "Practicals - Friday Group",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "49793": {
+                                                    "id": "49793",
+                                                    "name": "PCR",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-20T11:00:00+00:00",
+                                                    "end": "2015-02-20T17:00:00+00:00"
+                                                },
+                                                "49796": {
+                                                    "id": "49796",
+                                                    "name": "Numerical biological exercises",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-28T11:00:00+00:00",
+                                                    "end": "2014-11-28T17:00:00+00:00"
+                                                },
+                                                "49802": {
+                                                    "id": "49802",
+                                                    "name": "Macromolecules I",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-07T11:00:00+00:00",
+                                                    "end": "2014-11-07T17:00:00+00:00"
+                                                },
+                                                "49805": {
+                                                    "id": "49805",
+                                                    "name": "Exploring DNA",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-27T11:00:00+00:00",
+                                                    "end": "2015-02-27T17:00:00+00:00"
+                                                },
+                                                "53491": {
+                                                    "id": "53491",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-10T11:00:00+01:00",
+                                                    "end": "2014-10-10T17:00:00+01:00"
+                                                },
+                                                "53492": {
+                                                    "id": "53492",
+                                                    "name": "Introduction to cell structure and microscopy",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-17T11:00:00+01:00",
+                                                    "end": "2014-10-17T17:00:00+01:00"
+                                                },
+                                                "53507": {
+                                                    "id": "53507",
+                                                    "name": "Quantifying DNA and protein",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-24T11:00:00+01:00",
+                                                    "end": "2014-10-24T17:00:00+01:00"
+                                                },
+                                                "53508": {
+                                                    "id": "53508",
+                                                    "name": "3D Modelling of molecular structures",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-31T11:00:00+00:00",
+                                                    "end": "2014-10-31T17:00:00+00:00"
+                                                },
+                                                "53509": {
+                                                    "id": "53509",
+                                                    "name": "Determining whether a new herbicide inhibits photosystem I or II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-21T11:00:00+00:00",
+                                                    "end": "2014-11-21T17:00:00+00:00"
+                                                },
+                                                "53518": {
+                                                    "id": "53518",
+                                                    "name": "Macromolecules II",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-14T11:00:00+00:00",
+                                                    "end": "2014-11-14T17:00:00+00:00"
+                                                },
+                                                "53537": {
+                                                    "id": "53537",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-23T11:00:00+00:00",
+                                                    "end": "2015-01-23T17:00:00+00:00"
+                                                },
+                                                "53538": {
+                                                    "id": "53538",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-30T11:00:00+00:00",
+                                                    "end": "2015-01-30T17:00:00+00:00"
+                                                },
+                                                "53539": {
+                                                    "id": "53539",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-06T11:00:00+00:00",
+                                                    "end": "2015-02-06T17:00:00+00:00"
+                                                },
+                                                "53540": {
+                                                    "id": "53540",
+                                                    "name": "Analysis of a genetic cross.",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-13T11:00:00+00:00",
+                                                    "end": "2015-02-13T17:00:00+00:00"
+                                                },
+                                                "85081": {
+                                                    "id": "85081",
+                                                    "name": "Chromosones, meiosis and mitosis",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-08T11:00:00+01:00",
+                                                    "end": "2015-05-08T17:00:00+01:00"
+                                                },
+                                                "85082": {
+                                                    "id": "85082",
+                                                    "name": "Development of Animals and Plants",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-24T11:00:00+01:00",
+                                                    "end": "2015-04-24T17:00:00+01:00"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "488": {
+                                    "id": "488",
+                                    "name": "Lectures",
+                                    "type": "module",
+                                    "nodes": {
+                                        "1234": {
+                                            "id": "1234",
+                                            "name": "The Living Cell",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53477": {
+                                                    "id": "53477",
+                                                    "name": "The Living Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-10T10:00:00+01:00",
+                                                    "end": "2014-10-10T11:00:00+01:00"
+                                                },
+                                                "53478": {
+                                                    "id": "53478",
+                                                    "name": "The Living Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-13T10:00:00+01:00",
+                                                    "end": "2014-10-13T11:00:00+01:00"
+                                                },
+                                                "53479": {
+                                                    "id": "53479",
+                                                    "name": "The Living Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-15T10:00:00+01:00",
+                                                    "end": "2014-10-15T11:00:00+01:00"
+                                                },
+                                                "53480": {
+                                                    "id": "53480",
+                                                    "name": "The Living Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-17T10:00:00+01:00",
+                                                    "end": "2014-10-17T11:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "1235": {
+                                            "id": "1235",
+                                            "name": "Macromolecules in The Cell",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53451": {
+                                                    "id": "53451",
+                                                    "name": "Macromolecules in The Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-20T10:00:00+01:00",
+                                                    "end": "2014-10-20T11:00:00+01:00"
+                                                },
+                                                "53452": {
+                                                    "id": "53452",
+                                                    "name": "Macromolecules in The Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-22T10:00:00+01:00",
+                                                    "end": "2014-10-22T11:00:00+01:00"
+                                                },
+                                                "53453": {
+                                                    "id": "53453",
+                                                    "name": "Macromolecules in The Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-24T10:00:00+01:00",
+                                                    "end": "2014-10-24T11:00:00+01:00"
+                                                },
+                                                "53454": {
+                                                    "id": "53454",
+                                                    "name": "Macromolecules in The Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-27T10:00:00+00:00",
+                                                    "end": "2014-10-27T11:00:00+00:00"
+                                                },
+                                                "53455": {
+                                                    "id": "53455",
+                                                    "name": "Macromolecules in The Cell",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-29T10:00:00+00:00",
+                                                    "end": "2014-10-29T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1236": {
+                                            "id": "1236",
+                                            "name": "Membranes: Molecular Superstructures",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53456": {
+                                                    "id": "53456",
+                                                    "name": "Membranes: Molecular Superstructures",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-10-31T10:00:00+00:00",
+                                                    "end": "2014-10-31T11:00:00+00:00"
+                                                },
+                                                "53457": {
+                                                    "id": "53457",
+                                                    "name": "Membranes: Molecular Superstructures",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-03T10:00:00+00:00",
+                                                    "end": "2014-11-03T11:00:00+00:00"
+                                                },
+                                                "53458": {
+                                                    "id": "53458",
+                                                    "name": "Membranes: Molecular Superstructures",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-05T10:00:00+00:00",
+                                                    "end": "2014-11-05T11:00:00+00:00"
+                                                },
+                                                "53459": {
+                                                    "id": "53459",
+                                                    "name": "Membranes: Molecular Superstructures",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-07T10:00:00+00:00",
+                                                    "end": "2014-11-07T11:00:00+00:00"
+                                                },
+                                                "53460": {
+                                                    "id": "53460",
+                                                    "name": "Membranes: Molecular Superstructures",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-10T10:00:00+00:00",
+                                                    "end": "2014-11-10T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1237": {
+                                            "id": "1237",
+                                            "name": "The Chemistry of Life I",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53461": {
+                                                    "id": "53461",
+                                                    "name": "The Chemistry of Life I",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-12T10:00:00+00:00",
+                                                    "end": "2014-11-12T11:00:00+00:00"
+                                                },
+                                                "53462": {
+                                                    "id": "53462",
+                                                    "name": "The Chemistry of Life I",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-14T10:00:00+00:00",
+                                                    "end": "2014-11-14T11:00:00+00:00"
+                                                },
+                                                "53463": {
+                                                    "id": "53463",
+                                                    "name": "The Chemistry of Life I",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-17T10:00:00+00:00",
+                                                    "end": "2014-11-17T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1238": {
+                                            "id": "1238",
+                                            "name": "The Chemistry of Life II",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53464": {
+                                                    "id": "53464",
+                                                    "name": "The Chemistry of Life II",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-19T10:00:00+00:00",
+                                                    "end": "2014-11-19T11:00:00+00:00"
+                                                },
+                                                "53465": {
+                                                    "id": "53465",
+                                                    "name": "The Chemistry of Life II",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-21T10:00:00+00:00",
+                                                    "end": "2014-11-21T11:00:00+00:00"
+                                                },
+                                                "53466": {
+                                                    "id": "53466",
+                                                    "name": "The Chemistry of Life II",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-24T10:00:00+00:00",
+                                                    "end": "2014-11-24T11:00:00+00:00"
+                                                },
+                                                "53467": {
+                                                    "id": "53467",
+                                                    "name": "The Chemistry of Life II",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-26T10:00:00+00:00",
+                                                    "end": "2014-11-26T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1239": {
+                                            "id": "1239",
+                                            "name": "The Chemistry of Life III",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53468": {
+                                                    "id": "53468",
+                                                    "name": "The Chemistry of Life III",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-11-28T10:00:00+00:00",
+                                                    "end": "2014-11-28T11:00:00+00:00"
+                                                },
+                                                "53469": {
+                                                    "id": "53469",
+                                                    "name": "The Chemistry of Life III",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-12-01T10:00:00+00:00",
+                                                    "end": "2014-12-01T11:00:00+00:00"
+                                                },
+                                                "53470": {
+                                                    "id": "53470",
+                                                    "name": "The Chemistry of Life III",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2014-12-03T10:00:00+00:00",
+                                                    "end": "2014-12-03T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1247": {
+                                            "id": "1247",
+                                            "name": "Hunting the Gene",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53436": {
+                                                    "id": "53436",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-16T10:00:00+00:00",
+                                                    "end": "2015-01-16T11:00:00+00:00"
+                                                },
+                                                "53437": {
+                                                    "id": "53437",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-19T10:00:00+00:00",
+                                                    "end": "2015-01-19T11:00:00+00:00"
+                                                },
+                                                "53438": {
+                                                    "id": "53438",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-21T10:00:00+00:00",
+                                                    "end": "2015-01-21T11:00:00+00:00"
+                                                },
+                                                "53439": {
+                                                    "id": "53439",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-23T10:00:00+00:00",
+                                                    "end": "2015-01-23T11:00:00+00:00"
+                                                },
+                                                "53440": {
+                                                    "id": "53440",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-26T10:00:00+00:00",
+                                                    "end": "2015-01-26T11:00:00+00:00"
+                                                },
+                                                "53441": {
+                                                    "id": "53441",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-28T10:00:00+00:00",
+                                                    "end": "2015-01-28T11:00:00+00:00"
+                                                },
+                                                "53442": {
+                                                    "id": "53442",
+                                                    "name": "Hunting the Gene",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-01-30T10:00:00+00:00",
+                                                    "end": "2015-01-30T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1248": {
+                                            "id": "1248",
+                                            "name": "Genes in Action",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53424": {
+                                                    "id": "53424",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-02T10:00:00+00:00",
+                                                    "end": "2015-02-02T11:00:00+00:00"
+                                                },
+                                                "53425": {
+                                                    "id": "53425",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-04T10:00:00+00:00",
+                                                    "end": "2015-02-04T11:00:00+00:00"
+                                                },
+                                                "53426": {
+                                                    "id": "53426",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-06T10:00:00+00:00",
+                                                    "end": "2015-02-06T11:00:00+00:00"
+                                                },
+                                                "53427": {
+                                                    "id": "53427",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-09T10:00:00+00:00",
+                                                    "end": "2015-02-09T11:00:00+00:00"
+                                                },
+                                                "53428": {
+                                                    "id": "53428",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-11T10:00:00+00:00",
+                                                    "end": "2015-02-11T11:00:00+00:00"
+                                                },
+                                                "53429": {
+                                                    "id": "53429",
+                                                    "name": "Genes in Action",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-13T10:00:00+00:00",
+                                                    "end": "2015-02-13T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1249": {
+                                            "id": "1249",
+                                            "name": "The Genetic Revolution",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53471": {
+                                                    "id": "53471",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-16T10:00:00+00:00",
+                                                    "end": "2015-02-16T11:00:00+00:00"
+                                                },
+                                                "53472": {
+                                                    "id": "53472",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-18T10:00:00+00:00",
+                                                    "end": "2015-02-18T11:00:00+00:00"
+                                                },
+                                                "53473": {
+                                                    "id": "53473",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-20T10:00:00+00:00",
+                                                    "end": "2015-02-20T11:00:00+00:00"
+                                                },
+                                                "53474": {
+                                                    "id": "53474",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-23T10:00:00+00:00",
+                                                    "end": "2015-02-23T11:00:00+00:00"
+                                                },
+                                                "53476": {
+                                                    "id": "53476",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-27T10:00:00+00:00",
+                                                    "end": "2015-02-27T11:00:00+00:00"
+                                                },
+                                                "84157": {
+                                                    "id": "84157",
+                                                    "name": "The Genetic Revolution",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-03-02T10:00:00+00:00",
+                                                    "end": "2015-03-02T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1250": {
+                                            "id": "1250",
+                                            "name": "Cell Proliferation",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53361": {
+                                                    "id": "53361",
+                                                    "name": "Cell Proliferation",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-03-04T10:00:00+00:00",
+                                                    "end": "2015-03-04T11:00:00+00:00"
+                                                },
+                                                "53362": {
+                                                    "id": "53362",
+                                                    "name": "Cell Proliferation",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-03-06T10:00:00+00:00",
+                                                    "end": "2015-03-06T11:00:00+00:00"
+                                                },
+                                                "53363": {
+                                                    "id": "53363",
+                                                    "name": "Cell Proliferation",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-03-09T10:00:00+00:00",
+                                                    "end": "2015-03-09T11:00:00+00:00"
+                                                },
+                                                "53364": {
+                                                    "id": "53364",
+                                                    "name": "Cell Proliferation",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-03-11T10:00:00+00:00",
+                                                    "end": "2015-03-11T11:00:00+00:00"
+                                                },
+                                                "84156": {
+                                                    "id": "84156",
+                                                    "name": "Cell Proliferation",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-02-25T10:00:00+00:00",
+                                                    "end": "2015-02-25T11:00:00+00:00"
+                                                }
+                                            }
+                                        },
+                                        "1254": {
+                                            "id": "1254",
+                                            "name": "Development",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "53396": {
+                                                    "id": "53396",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-04-24T10:00:00+01:00",
+                                                    "end": "2015-04-24T11:00:00+01:00"
+                                                },
+                                                "53397": {
+                                                    "id": "53397",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-04-27T10:00:00+01:00",
+                                                    "end": "2015-04-27T11:00:00+01:00"
+                                                },
+                                                "53398": {
+                                                    "id": "53398",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-04-29T10:00:00+01:00",
+                                                    "end": "2015-04-29T11:00:00+01:00"
+                                                },
+                                                "53399": {
+                                                    "id": "53399",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-01T10:00:00+01:00",
+                                                    "end": "2015-05-01T11:00:00+01:00"
+                                                },
+                                                "53400": {
+                                                    "id": "53400",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-04T10:00:00+01:00",
+                                                    "end": "2015-05-04T11:00:00+01:00"
+                                                },
+                                                "53401": {
+                                                    "id": "53401",
+                                                    "name": "Development",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-06T10:00:00+01:00",
+                                                    "end": "2015-05-06T11:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "1255": {
+                                            "id": "1255",
+                                            "name": "Cell Signalling",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "56783": {
+                                                    "id": "56783",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-08T10:00:00+01:00",
+                                                    "end": "2015-05-08T11:00:00+01:00"
+                                                },
+                                                "56784": {
+                                                    "id": "56784",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-11T10:00:00+01:00",
+                                                    "end": "2015-05-11T11:00:00+01:00"
+                                                },
+                                                "56785": {
+                                                    "id": "56785",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-13T10:00:00+01:00",
+                                                    "end": "2015-05-13T11:00:00+01:00"
+                                                },
+                                                "56786": {
+                                                    "id": "56786",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-15T10:00:00+01:00",
+                                                    "end": "2015-05-15T11:00:00+01:00"
+                                                },
+                                                "56787": {
+                                                    "id": "56787",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-18T10:00:00+01:00",
+                                                    "end": "2015-05-18T11:00:00+01:00"
+                                                },
+                                                "56788": {
+                                                    "id": "56788",
+                                                    "name": "Cell Signalling",
+                                                    "type": "event",
+                                                    "event-type": "lecture",
+                                                    "start": "2015-05-20T10:00:00+01:00",
+                                                    "end": "2015-05-20T11:00:00+01:00"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "118": {
+                    "id": "118",
+                    "name": "Chemistry",
+                    "type": "subject",
+                    "nodes": {
+                        "106-137": {
+                            "id": "106-137",
+                            "name": "Part IA",
+                            "type": "part",
+                            "nodes": {
+                                "200": {
+                                    "id": "200",
+                                    "name": "Practicals",
+                                    "type": "module",
+                                    "nodes": {
+                                        "187": {
+                                            "id": "187",
+                                            "name": "Practical: Odd Thursdays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "2424": {
+                                                    "id": "2424",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-09T11:00:00+01:00",
+                                                    "end": "2014-10-09T13:00:00+01:00"
+                                                },
+                                                "2425": {
+                                                    "id": "2425",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-23T11:00:00+01:00",
+                                                    "end": "2014-10-23T13:00:00+01:00"
+                                                },
+                                                "2426": {
+                                                    "id": "2426",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-06T11:00:00+00:00",
+                                                    "end": "2014-11-06T13:00:00+00:00"
+                                                },
+                                                "2427": {
+                                                    "id": "2427",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-20T11:00:00+00:00",
+                                                    "end": "2014-11-20T13:00:00+00:00"
+                                                },
+                                                "2428": {
+                                                    "id": "2428",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-09T14:00:00+01:00",
+                                                    "end": "2014-10-09T17:00:00+01:00"
+                                                },
+                                                "2429": {
+                                                    "id": "2429",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-23T14:00:00+01:00",
+                                                    "end": "2014-10-23T17:00:00+01:00"
+                                                },
+                                                "2430": {
+                                                    "id": "2430",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-06T14:00:00+00:00",
+                                                    "end": "2014-11-06T17:00:00+00:00"
+                                                },
+                                                "2431": {
+                                                    "id": "2431",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-20T14:00:00+00:00",
+                                                    "end": "2014-11-20T17:00:00+00:00"
+                                                },
+                                                "2432": {
+                                                    "id": "2432",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-15T11:00:00+00:00",
+                                                    "end": "2015-01-15T13:00:00+00:00"
+                                                },
+                                                "2433": {
+                                                    "id": "2433",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-29T11:00:00+00:00",
+                                                    "end": "2015-01-29T13:00:00+00:00"
+                                                },
+                                                "2434": {
+                                                    "id": "2434",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-12T11:00:00+00:00",
+                                                    "end": "2015-02-12T13:00:00+00:00"
+                                                },
+                                                "2435": {
+                                                    "id": "2435",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-26T11:00:00+00:00",
+                                                    "end": "2015-02-26T13:00:00+00:00"
+                                                },
+                                                "2436": {
+                                                    "id": "2436",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-15T14:00:00+00:00",
+                                                    "end": "2015-01-15T17:00:00+00:00"
+                                                },
+                                                "2437": {
+                                                    "id": "2437",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-29T14:00:00+00:00",
+                                                    "end": "2015-01-29T17:00:00+00:00"
+                                                },
+                                                "2438": {
+                                                    "id": "2438",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-12T14:00:00+00:00",
+                                                    "end": "2015-02-12T17:00:00+00:00"
+                                                },
+                                                "2439": {
+                                                    "id": "2439",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-26T14:00:00+00:00",
+                                                    "end": "2015-02-26T17:00:00+00:00"
+                                                },
+                                                "2440": {
+                                                    "id": "2440",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-23T11:00:00+01:00",
+                                                    "end": "2015-04-23T13:00:00+01:00"
+                                                },
+                                                "2441": {
+                                                    "id": "2441",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-07T11:00:00+01:00",
+                                                    "end": "2015-05-07T13:00:00+01:00"
+                                                },
+                                                "2442": {
+                                                    "id": "2442",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-23T14:00:00+01:00",
+                                                    "end": "2015-04-23T17:00:00+01:00"
+                                                },
+                                                "2443": {
+                                                    "id": "2443",
+                                                    "name": "Practical: Odd Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-07T14:00:00+01:00",
+                                                    "end": "2015-05-07T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "188": {
+                                            "id": "188",
+                                            "name": "Practical: Even Thursdays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "2444": {
+                                                    "id": "2444",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-16T11:00:00+01:00",
+                                                    "end": "2014-10-16T13:00:00+01:00"
+                                                },
+                                                "2445": {
+                                                    "id": "2445",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-30T11:00:00+00:00",
+                                                    "end": "2014-10-30T13:00:00+00:00"
+                                                },
+                                                "2446": {
+                                                    "id": "2446",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-13T11:00:00+00:00",
+                                                    "end": "2014-11-13T13:00:00+00:00"
+                                                },
+                                                "2447": {
+                                                    "id": "2447",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-27T11:00:00+00:00",
+                                                    "end": "2014-11-27T13:00:00+00:00"
+                                                },
+                                                "2448": {
+                                                    "id": "2448",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-16T14:00:00+01:00",
+                                                    "end": "2014-10-16T17:00:00+01:00"
+                                                },
+                                                "2449": {
+                                                    "id": "2449",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-30T14:00:00+00:00",
+                                                    "end": "2014-10-30T17:00:00+00:00"
+                                                },
+                                                "2450": {
+                                                    "id": "2450",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-13T14:00:00+00:00",
+                                                    "end": "2014-11-13T17:00:00+00:00"
+                                                },
+                                                "2451": {
+                                                    "id": "2451",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-27T14:00:00+00:00",
+                                                    "end": "2014-11-27T17:00:00+00:00"
+                                                },
+                                                "2452": {
+                                                    "id": "2452",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-22T11:00:00+00:00",
+                                                    "end": "2015-01-22T13:00:00+00:00"
+                                                },
+                                                "2453": {
+                                                    "id": "2453",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-05T11:00:00+00:00",
+                                                    "end": "2015-02-05T13:00:00+00:00"
+                                                },
+                                                "2454": {
+                                                    "id": "2454",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-19T11:00:00+00:00",
+                                                    "end": "2015-02-19T13:00:00+00:00"
+                                                },
+                                                "2455": {
+                                                    "id": "2455",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-05T11:00:00+00:00",
+                                                    "end": "2015-03-05T13:00:00+00:00"
+                                                },
+                                                "2456": {
+                                                    "id": "2456",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-22T14:00:00+00:00",
+                                                    "end": "2015-01-22T17:00:00+00:00"
+                                                },
+                                                "2457": {
+                                                    "id": "2457",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-05T14:00:00+00:00",
+                                                    "end": "2015-02-05T17:00:00+00:00"
+                                                },
+                                                "2458": {
+                                                    "id": "2458",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-19T14:00:00+00:00",
+                                                    "end": "2015-02-19T17:00:00+00:00"
+                                                },
+                                                "2459": {
+                                                    "id": "2459",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-05T14:00:00+00:00",
+                                                    "end": "2015-03-05T17:00:00+00:00"
+                                                },
+                                                "2460": {
+                                                    "id": "2460",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-30T11:00:00+01:00",
+                                                    "end": "2015-04-30T13:00:00+01:00"
+                                                },
+                                                "2461": {
+                                                    "id": "2461",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-14T11:00:00+01:00",
+                                                    "end": "2015-05-14T13:00:00+01:00"
+                                                },
+                                                "2462": {
+                                                    "id": "2462",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-30T14:00:00+01:00",
+                                                    "end": "2015-04-30T17:00:00+01:00"
+                                                },
+                                                "2463": {
+                                                    "id": "2463",
+                                                    "name": "Practical: Even Thursdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-14T14:00:00+01:00",
+                                                    "end": "2015-05-14T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "6370": {
+                                            "id": "6370",
+                                            "name": "Practical: Odd Fridays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "59135": {
+                                                    "id": "59135",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-10T11:00:00+01:00",
+                                                    "end": "2014-10-10T13:00:00+01:00"
+                                                },
+                                                "59136": {
+                                                    "id": "59136",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-24T11:00:00+01:00",
+                                                    "end": "2014-10-24T13:00:00+01:00"
+                                                },
+                                                "59137": {
+                                                    "id": "59137",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-07T11:00:00+00:00",
+                                                    "end": "2014-11-07T13:00:00+00:00"
+                                                },
+                                                "59138": {
+                                                    "id": "59138",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-21T11:00:00+00:00",
+                                                    "end": "2014-11-21T13:00:00+00:00"
+                                                },
+                                                "59139": {
+                                                    "id": "59139",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-16T11:00:00+00:00",
+                                                    "end": "2015-01-16T13:00:00+00:00"
+                                                },
+                                                "59140": {
+                                                    "id": "59140",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-30T11:00:00+00:00",
+                                                    "end": "2015-01-30T13:00:00+00:00"
+                                                },
+                                                "59141": {
+                                                    "id": "59141",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-13T11:00:00+00:00",
+                                                    "end": "2015-02-13T13:00:00+00:00"
+                                                },
+                                                "59142": {
+                                                    "id": "59142",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-27T11:00:00+00:00",
+                                                    "end": "2015-02-27T13:00:00+00:00"
+                                                },
+                                                "59143": {
+                                                    "id": "59143",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-24T11:00:00+01:00",
+                                                    "end": "2015-04-24T13:00:00+01:00"
+                                                },
+                                                "59144": {
+                                                    "id": "59144",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-08T11:00:00+01:00",
+                                                    "end": "2015-05-08T13:00:00+01:00"
+                                                },
+                                                "59145": {
+                                                    "id": "59145",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-10T14:00:00+01:00",
+                                                    "end": "2014-10-10T17:00:00+01:00"
+                                                },
+                                                "59146": {
+                                                    "id": "59146",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-24T14:00:00+01:00",
+                                                    "end": "2014-10-24T17:00:00+01:00"
+                                                },
+                                                "59147": {
+                                                    "id": "59147",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-07T14:00:00+00:00",
+                                                    "end": "2014-11-07T17:00:00+00:00"
+                                                },
+                                                "59148": {
+                                                    "id": "59148",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-21T14:00:00+00:00",
+                                                    "end": "2014-11-21T17:00:00+00:00"
+                                                },
+                                                "59149": {
+                                                    "id": "59149",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-16T14:00:00+00:00",
+                                                    "end": "2015-01-16T17:00:00+00:00"
+                                                },
+                                                "59150": {
+                                                    "id": "59150",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-30T14:00:00+00:00",
+                                                    "end": "2015-01-30T17:00:00+00:00"
+                                                },
+                                                "59151": {
+                                                    "id": "59151",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-13T14:00:00+00:00",
+                                                    "end": "2015-02-13T17:00:00+00:00"
+                                                },
+                                                "59152": {
+                                                    "id": "59152",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-27T14:00:00+00:00",
+                                                    "end": "2015-02-27T17:00:00+00:00"
+                                                },
+                                                "59153": {
+                                                    "id": "59153",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-24T14:00:00+01:00",
+                                                    "end": "2015-04-24T17:00:00+01:00"
+                                                },
+                                                "59154": {
+                                                    "id": "59154",
+                                                    "name": "Practical: Odd Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-08T14:00:00+01:00",
+                                                    "end": "2015-05-08T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "6371": {
+                                            "id": "6371",
+                                            "name": "Practical: Odd Mondays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "59206": {
+                                                    "id": "59206",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-13T11:00:00+01:00",
+                                                    "end": "2014-10-13T13:00:00+01:00"
+                                                },
+                                                "59207": {
+                                                    "id": "59207",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-13T14:00:00+01:00",
+                                                    "end": "2014-10-13T17:00:00+01:00"
+                                                },
+                                                "59208": {
+                                                    "id": "59208",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-27T11:00:00+00:00",
+                                                    "end": "2014-10-27T13:00:00+00:00"
+                                                },
+                                                "59209": {
+                                                    "id": "59209",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-27T14:00:00+00:00",
+                                                    "end": "2014-10-27T17:00:00+00:00"
+                                                },
+                                                "59210": {
+                                                    "id": "59210",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-10T11:00:00+00:00",
+                                                    "end": "2014-11-10T13:00:00+00:00"
+                                                },
+                                                "59211": {
+                                                    "id": "59211",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-10T14:00:00+00:00",
+                                                    "end": "2014-11-10T17:00:00+00:00"
+                                                },
+                                                "59212": {
+                                                    "id": "59212",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-24T11:00:00+00:00",
+                                                    "end": "2014-11-24T13:00:00+00:00"
+                                                },
+                                                "59213": {
+                                                    "id": "59213",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-24T14:00:00+00:00",
+                                                    "end": "2014-11-24T17:00:00+00:00"
+                                                },
+                                                "59214": {
+                                                    "id": "59214",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-19T11:00:00+00:00",
+                                                    "end": "2015-01-19T13:00:00+00:00"
+                                                },
+                                                "59215": {
+                                                    "id": "59215",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-19T14:00:00+00:00",
+                                                    "end": "2015-01-19T17:00:00+00:00"
+                                                },
+                                                "59216": {
+                                                    "id": "59216",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-02T11:00:00+00:00",
+                                                    "end": "2015-02-02T13:00:00+00:00"
+                                                },
+                                                "59217": {
+                                                    "id": "59217",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-02T14:00:00+00:00",
+                                                    "end": "2015-02-02T17:00:00+00:00"
+                                                },
+                                                "59218": {
+                                                    "id": "59218",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-16T11:00:00+00:00",
+                                                    "end": "2015-02-16T13:00:00+00:00"
+                                                },
+                                                "59219": {
+                                                    "id": "59219",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-16T14:00:00+00:00",
+                                                    "end": "2015-02-16T17:00:00+00:00"
+                                                },
+                                                "59220": {
+                                                    "id": "59220",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-02T11:00:00+00:00",
+                                                    "end": "2015-03-02T13:00:00+00:00"
+                                                },
+                                                "59221": {
+                                                    "id": "59221",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-02T14:00:00+00:00",
+                                                    "end": "2015-03-02T17:00:00+00:00"
+                                                },
+                                                "59222": {
+                                                    "id": "59222",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-27T11:00:00+01:00",
+                                                    "end": "2015-04-27T13:00:00+01:00"
+                                                },
+                                                "59223": {
+                                                    "id": "59223",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-27T14:00:00+01:00",
+                                                    "end": "2015-04-27T17:00:00+01:00"
+                                                },
+                                                "59224": {
+                                                    "id": "59224",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-11T11:00:00+01:00",
+                                                    "end": "2015-05-11T13:00:00+01:00"
+                                                },
+                                                "59225": {
+                                                    "id": "59225",
+                                                    "name": "Practical: Odd Mondays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-11T14:00:00+01:00",
+                                                    "end": "2015-05-11T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "6372": {
+                                            "id": "6372",
+                                            "name": "Practical: Odd Tuesdays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "59185": {
+                                                    "id": "59185",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-14T11:00:00+01:00",
+                                                    "end": "2014-10-14T13:00:00+01:00"
+                                                },
+                                                "59186": {
+                                                    "id": "59186",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-28T11:00:00+00:00",
+                                                    "end": "2014-10-28T13:00:00+00:00"
+                                                },
+                                                "59187": {
+                                                    "id": "59187",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-11T11:00:00+00:00",
+                                                    "end": "2014-11-11T13:00:00+00:00"
+                                                },
+                                                "59188": {
+                                                    "id": "59188",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-25T11:00:00+00:00",
+                                                    "end": "2014-11-25T13:00:00+00:00"
+                                                },
+                                                "59189": {
+                                                    "id": "59189",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-20T11:00:00+00:00",
+                                                    "end": "2015-01-20T13:00:00+00:00"
+                                                },
+                                                "59190": {
+                                                    "id": "59190",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-03T11:00:00+00:00",
+                                                    "end": "2015-02-03T13:00:00+00:00"
+                                                },
+                                                "59191": {
+                                                    "id": "59191",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-17T11:00:00+00:00",
+                                                    "end": "2015-02-17T13:00:00+00:00"
+                                                },
+                                                "59192": {
+                                                    "id": "59192",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-03T11:00:00+00:00",
+                                                    "end": "2015-03-03T13:00:00+00:00"
+                                                },
+                                                "59193": {
+                                                    "id": "59193",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-28T11:00:00+01:00",
+                                                    "end": "2015-04-28T13:00:00+01:00"
+                                                },
+                                                "59194": {
+                                                    "id": "59194",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-12T11:00:00+01:00",
+                                                    "end": "2015-05-12T13:00:00+01:00"
+                                                },
+                                                "59195": {
+                                                    "id": "59195",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-14T14:00:00+01:00",
+                                                    "end": "2014-10-14T17:00:00+01:00"
+                                                },
+                                                "59196": {
+                                                    "id": "59196",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-28T14:00:00+00:00",
+                                                    "end": "2014-10-28T17:00:00+00:00"
+                                                },
+                                                "59197": {
+                                                    "id": "59197",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-11T14:00:00+00:00",
+                                                    "end": "2014-11-11T17:00:00+00:00"
+                                                },
+                                                "59198": {
+                                                    "id": "59198",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-25T14:00:00+00:00",
+                                                    "end": "2014-11-25T17:00:00+00:00"
+                                                },
+                                                "59199": {
+                                                    "id": "59199",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-20T14:00:00+00:00",
+                                                    "end": "2015-01-20T17:00:00+00:00"
+                                                },
+                                                "59200": {
+                                                    "id": "59200",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-03T14:00:00+00:00",
+                                                    "end": "2015-02-03T17:00:00+00:00"
+                                                },
+                                                "59201": {
+                                                    "id": "59201",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-17T14:00:00+00:00",
+                                                    "end": "2015-02-17T17:00:00+00:00"
+                                                },
+                                                "59202": {
+                                                    "id": "59202",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-03T14:00:00+00:00",
+                                                    "end": "2015-03-03T17:00:00+00:00"
+                                                },
+                                                "59203": {
+                                                    "id": "59203",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-28T14:00:00+01:00",
+                                                    "end": "2015-04-28T17:00:00+01:00"
+                                                },
+                                                "59204": {
+                                                    "id": "59204",
+                                                    "name": "Practical: Odd Tuesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-12T14:00:00+01:00",
+                                                    "end": "2015-05-12T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "6373": {
+                                            "id": "6373",
+                                            "name": "Practical: Odd Wednesdays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "59226": {
+                                                    "id": "59226",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-15T11:00:00+01:00",
+                                                    "end": "2014-10-15T13:00:00+01:00"
+                                                },
+                                                "59227": {
+                                                    "id": "59227",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-29T11:00:00+00:00",
+                                                    "end": "2014-10-29T13:00:00+00:00"
+                                                },
+                                                "59228": {
+                                                    "id": "59228",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-12T11:00:00+00:00",
+                                                    "end": "2014-11-12T13:00:00+00:00"
+                                                },
+                                                "59229": {
+                                                    "id": "59229",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-26T11:00:00+00:00",
+                                                    "end": "2014-11-26T13:00:00+00:00"
+                                                },
+                                                "59230": {
+                                                    "id": "59230",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-21T11:00:00+00:00",
+                                                    "end": "2015-01-21T13:00:00+00:00"
+                                                },
+                                                "59231": {
+                                                    "id": "59231",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-04T11:00:00+00:00",
+                                                    "end": "2015-02-04T13:00:00+00:00"
+                                                },
+                                                "59232": {
+                                                    "id": "59232",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-18T11:00:00+00:00",
+                                                    "end": "2015-02-18T13:00:00+00:00"
+                                                },
+                                                "59233": {
+                                                    "id": "59233",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-04T11:00:00+00:00",
+                                                    "end": "2015-03-04T13:00:00+00:00"
+                                                },
+                                                "59234": {
+                                                    "id": "59234",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-29T11:00:00+01:00",
+                                                    "end": "2015-04-29T13:00:00+01:00"
+                                                },
+                                                "59235": {
+                                                    "id": "59235",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-13T11:00:00+01:00",
+                                                    "end": "2015-05-13T13:00:00+01:00"
+                                                },
+                                                "59236": {
+                                                    "id": "59236",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-15T14:00:00+01:00",
+                                                    "end": "2014-10-15T17:00:00+01:00"
+                                                },
+                                                "59237": {
+                                                    "id": "59237",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-29T14:00:00+00:00",
+                                                    "end": "2014-10-29T17:00:00+00:00"
+                                                },
+                                                "59238": {
+                                                    "id": "59238",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-12T14:00:00+00:00",
+                                                    "end": "2014-11-12T17:00:00+00:00"
+                                                },
+                                                "59239": {
+                                                    "id": "59239",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-26T14:00:00+00:00",
+                                                    "end": "2014-11-26T17:00:00+00:00"
+                                                },
+                                                "59240": {
+                                                    "id": "59240",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-21T14:00:00+00:00",
+                                                    "end": "2015-01-21T17:00:00+00:00"
+                                                },
+                                                "59241": {
+                                                    "id": "59241",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-04T14:00:00+00:00",
+                                                    "end": "2015-02-04T17:00:00+00:00"
+                                                },
+                                                "59242": {
+                                                    "id": "59242",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-18T14:00:00+00:00",
+                                                    "end": "2015-02-18T17:00:00+00:00"
+                                                },
+                                                "59243": {
+                                                    "id": "59243",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-04T14:00:00+00:00",
+                                                    "end": "2015-03-04T17:00:00+00:00"
+                                                },
+                                                "59244": {
+                                                    "id": "59244",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-04-29T14:00:00+01:00",
+                                                    "end": "2015-04-29T17:00:00+01:00"
+                                                },
+                                                "59245": {
+                                                    "id": "59245",
+                                                    "name": "Practical: Odd Wednesdays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-13T14:00:00+01:00",
+                                                    "end": "2015-05-13T17:00:00+01:00"
+                                                }
+                                            }
+                                        },
+                                        "6374": {
+                                            "id": "6374",
+                                            "name": "Practical: Even Fridays",
+                                            "type": "serie",
+                                            "nodes": {
+                                                "59247": {
+                                                    "id": "59247",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-17T11:00:00+01:00",
+                                                    "end": "2014-10-17T13:00:00+01:00"
+                                                },
+                                                "59248": {
+                                                    "id": "59248",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-31T11:00:00+00:00",
+                                                    "end": "2014-10-31T13:00:00+00:00"
+                                                },
+                                                "59249": {
+                                                    "id": "59249",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-14T11:00:00+00:00",
+                                                    "end": "2014-11-14T13:00:00+00:00"
+                                                },
+                                                "59250": {
+                                                    "id": "59250",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-28T11:00:00+00:00",
+                                                    "end": "2014-11-28T13:00:00+00:00"
+                                                },
+                                                "59251": {
+                                                    "id": "59251",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-23T11:00:00+00:00",
+                                                    "end": "2015-01-23T13:00:00+00:00"
+                                                },
+                                                "59252": {
+                                                    "id": "59252",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-06T11:00:00+00:00",
+                                                    "end": "2015-02-06T13:00:00+00:00"
+                                                },
+                                                "59253": {
+                                                    "id": "59253",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-20T11:00:00+00:00",
+                                                    "end": "2015-02-20T13:00:00+00:00"
+                                                },
+                                                "59254": {
+                                                    "id": "59254",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-06T11:00:00+00:00",
+                                                    "end": "2015-03-06T13:00:00+00:00"
+                                                },
+                                                "59255": {
+                                                    "id": "59255",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-01T11:00:00+01:00",
+                                                    "end": "2015-05-01T13:00:00+01:00"
+                                                },
+                                                "59256": {
+                                                    "id": "59256",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-15T11:00:00+01:00",
+                                                    "end": "2015-05-15T13:00:00+01:00"
+                                                },
+                                                "59257": {
+                                                    "id": "59257",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-17T14:00:00+01:00",
+                                                    "end": "2014-10-17T17:00:00+01:00"
+                                                },
+                                                "59258": {
+                                                    "id": "59258",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-10-31T14:00:00+00:00",
+                                                    "end": "2014-10-31T17:00:00+00:00"
+                                                },
+                                                "59259": {
+                                                    "id": "59259",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-14T14:00:00+00:00",
+                                                    "end": "2014-11-14T17:00:00+00:00"
+                                                },
+                                                "59260": {
+                                                    "id": "59260",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2014-11-28T14:00:00+00:00",
+                                                    "end": "2014-11-28T17:00:00+00:00"
+                                                },
+                                                "59261": {
+                                                    "id": "59261",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-01-23T14:00:00+00:00",
+                                                    "end": "2015-01-23T17:00:00+00:00"
+                                                },
+                                                "59262": {
+                                                    "id": "59262",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-06T14:00:00+00:00",
+                                                    "end": "2015-02-06T17:00:00+00:00"
+                                                },
+                                                "59263": {
+                                                    "id": "59263",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-02-20T14:00:00+00:00",
+                                                    "end": "2015-02-20T17:00:00+00:00"
+                                                },
+                                                "59264": {
+                                                    "id": "59264",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-03-06T14:00:00+00:00",
+                                                    "end": "2015-03-06T17:00:00+00:00"
+                                                },
+                                                "59265": {
+                                                    "id": "59265",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-01T14:00:00+01:00",
+                                                    "end": "2015-05-01T17:00:00+01:00"
+                                                },
+                                                "59266": {
+                                                    "id": "59266",
+                                                    "name": "Practical: Even Fridays",
+                                                    "type": "event",
+                                                    "event-type": "practical",
+                                                    "start": "2015-05-15T14:00:00+01:00",
+                                                    "end": "2015-05-15T17:00:00+01:00"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

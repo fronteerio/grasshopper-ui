@@ -13,10 +13,11 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], function(exports, appAPI, authenticationAPI, tenantAPI) {
+define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant'], function(exports, appAPI, authenticationAPI, orgunitAPI, seriesAPI, tenantAPI) {
 
     // Cache the test tenants and apps
     var _apps = null;
+    var _orgunits = null;
     var _tenants = null;
 
     // Application types
@@ -65,6 +66,37 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
      */
     var getRandomApp = exports.getRandomApp = function() {
         return _.sample(_apps);
+    };
+
+    /**
+     * Return a random organisational unit
+     *
+     * @return {Object}    Object representing an organisational unit
+     */
+    var getRandomOrgUnit = exports.getRandomOrgUnit = function() {
+        return _.sample(_orgunits);
+    };
+
+    /**
+     * Return a random series of a random organisational unit
+     *
+     * @return {Object}    Object representing an event series in an organisational unit
+     */
+    var getRandomSeries = exports.getRandomSeries = function() {
+        var testOrgUnit = getRandomOrgUnit();
+        return _.sample(testOrgUnit.Series);
+    };
+
+    /**
+     * Get a random event from a random series
+     *
+     * @return {Object}    Object representing an event in an event serie
+     */
+    var getRandomEvent = exports.getRandomEvent = function(callback) {
+        var randomSeries = getRandomSeries();
+        seriesAPI.getSeriesEvents(randomSeries.id, 1, 0, false, function(err, data) {
+            callback(err, _.sample(data.results));
+        });
     };
 
     /**
@@ -193,6 +225,50 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
         _fetchAppsForTenant();
     };
 
+    var fetchOrgUnitsForTenants = function(callback) {
+        // Set a default callback function in case no callback function has been provided
+        callback = callback || function() {};
+
+        // Collect the appIds
+        var appIds = _.map(_apps, function(app) { return app.id; });
+
+        /**
+         * Fetches the organisational units for each app
+         *
+         * @private
+         */
+        var _fetchOrgUnitsForApp = function() {
+
+            // Get the first app
+            var appId = appIds.shift();
+
+            // Fetch the orgunits for the app
+            orgunitAPI.getOrgUnits(appId, true, null, null, function(err, orgunits) {
+                if (err) {
+                    return QUnit.stop();
+                }
+
+                // Only cache the orgunits if they have series
+                orgunits = _.filter(orgunits.results, function(orgunit) {
+                    return orgunit.Series.length;
+                });
+
+                _orgunits = _.union(_orgunits, orgunits);
+
+                // Stop the loop if all the orgunits for all the apps have been retrieved and cached
+                if (!appIds.length) {
+                    return callback();
+                }
+
+                // Continue the loop
+                return _fetchOrgUnitsForApp();
+            });
+        };
+
+        // Start fetching the orgunits
+        _fetchOrgUnitsForApp();
+    };
+
     /**
      * Fire an event that indicates the end of the module tests
      *
@@ -237,7 +313,11 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.tenant'], func
 
                 // Fetch all the apps
                 fetchAppsForTenants(function() {
-                    QUnit.start();
+                    
+                    // Fetch all the organisational units and series
+                    fetchOrgUnitsForTenants(function() {
+                        QUnit.start();
+                    });
                 });
             });
         });
