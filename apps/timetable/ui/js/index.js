@@ -144,6 +144,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         // Show the subheader tripos picker
         $('#gh-subheader-tripos').show();
 
+        // Destroy the field if it's been initialised previously
+        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpModules);
+
         // Initialise the Chosen plugin on the tripos picker
         $('#gh-subheader-tripos').chosen({
             'no_results_text': 'No matches for'
@@ -231,10 +234,20 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         state = $.bbq.getState() || {};
 
         // If the URL shows a preselected tripos, select that tripos automatically
-        if (state.tripos) {
+        if (state.tripos && !_.isEmpty(state.tripos)) {
             $('#gh-subheader-tripos').val(state.tripos);
             $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
             $('#gh-subheader-tripos').trigger('chosen:updated');
+        } else {
+            // There is no state for the tripos, make sure it's reset
+            setUpTriposPicker();
+            // There can't be a part because there is no tripos
+            if ($('#gh_subheader_part_chosen').length) {
+                // Destroy the field if it's been initialised previously
+                $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
+                // Show the subheader part picker
+                $('#gh-subheader-part').hide();
+            }
         }
 
         // If the URL shows a preselected part, select that part automatically
