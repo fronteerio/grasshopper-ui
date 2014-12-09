@@ -158,12 +158,8 @@
     font-weight: 600;
 }
 
-.fc table {
-    border-collapse: inherit;
-}
-
-.fc-month-view .fc-week table {
-    border-collapse: collapse;
+#gh-calendar-container .fc-widget-header .fc-row > table {
+    border-collapse: initial;
 }
 
 .fc-row.fc-widget-header thead tr th,
