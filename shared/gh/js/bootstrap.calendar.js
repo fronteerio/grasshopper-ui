@@ -153,6 +153,22 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
+     * Refresh the calendar
+     *
+     * @param  {Event[]}    events    The user's subscribed events
+     * @private
+     */
+    var refreshCalendar = function(ev, data) {
+        // Remove the existing events
+        calendar.fullCalendar('removeEvents');
+
+        // Add the user's events
+        _.each(data.events, function(evt) {
+            calendar.fullCalendar('renderEvent', evt, true);
+        });
+    };
+
+    /**
      * Highlight the header of the current day by adding a class
      *
      * @private
@@ -203,9 +219,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
 
-    ///////////////
-    //  ACTIONS  //
-    ///////////////
+    //////////////
+    //  EVENTS  //
+    //////////////
 
     /**
      * Export the calendar
@@ -390,6 +406,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
         // Change the calendar's view
         $('#gh-calendar-toolbar-views button').on('click', changeView);
+        // Refresh the calendar
+        $(document).on('gh.calendar.refresh', refreshCalendar);
     };
 
      /**
@@ -400,6 +418,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
       * @private
       */
     var initCalendar = function(ev, events) {
+
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
             'header': false,

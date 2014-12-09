@@ -84,8 +84,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         var body = {'code': 400, 'msg': 'Bad Request'};
                         gh.api.utilAPI.mockRequest('POST', '/api/auth/login', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                             });
 
                             QUnit.start();

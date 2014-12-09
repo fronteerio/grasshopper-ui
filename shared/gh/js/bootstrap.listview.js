@@ -112,9 +112,6 @@ define(['gh.core'], function(gh) {
                 return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
-            // Show a success notification
-            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
-
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
@@ -134,6 +131,18 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-remove');
             }
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
+                    },
+                    'events': events
+                }]);
+            });
         });
     });
 
@@ -153,8 +162,6 @@ define(['gh.core'], function(gh) {
                 return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
             }
 
-            // Show a success notification
-            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.');
 
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
@@ -170,6 +177,18 @@ define(['gh.core'], function(gh) {
             $parentList.find('.gh-list-action .btn').first().removeClass('gh-remove-all-from-calendar').addClass('gh-add-all-to-calendar');
             // Change the icon of the parent's list item button
             $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-plus');
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.');
+                    },
+                    'events': events
+                }]);
+            });
         });
     });
 });

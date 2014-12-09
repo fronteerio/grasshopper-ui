@@ -42,8 +42,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 var body = {'code': 400, 'msg': 'Bad Request'};
                 gh.api.utilAPI.mockRequest('GET', '/api/apps?tenantId=' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.appAPI.getApps(tenant.id, function(err, data) {
-                        assert.ok(err);
-                        assert.ok(!data);
+                        assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                        assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                     });
 
                     QUnit.start();
@@ -85,8 +85,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 var body = {'code': 400, 'msg': 'Bad Request'};
                 gh.api.utilAPI.mockRequest('GET', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.appAPI.getApp(app.id, function(err, data) {
-                        assert.ok(err);
-                        assert.ok(!data);
+                        assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                        assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                     });
 
                     QUnit.start();
@@ -128,8 +128,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         var body = {'code': 400, 'msg': 'Bad Request'};
                         gh.api.utilAPI.mockRequest('GET', '/api/apps/' + app.id + '/admins?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.appAPI.getAppAdmins(app.id, 0, 0, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                             });
 
                             QUnit.start();
@@ -183,8 +183,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             var body = {'code': 400, 'msg': 'Bad Request'};
                             gh.api.utilAPI.mockRequest('POST', '/api/apps', 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.appAPI.createApp(displayName, host, tenant.id, types.TIMETABLE, function(err, data) {
-                                    assert.ok(err);
-                                    assert.ok(!data);
+                                    assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                    assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                                 });
 
                                 QUnit.start();
@@ -245,8 +245,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             var body = {'code': 400, 'msg': 'Bad Request'};
                             gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.appAPI.updateApp(app.id, displayName, enabled, host, function(err, data) {
-                                    assert.ok(err);
-                                    assert.ok(!data);
+                                    assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                    assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                                 });
 
                                 QUnit.start();
@@ -316,8 +316,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                     var body = {'code': 400, 'msg': 'Bad Request'};
                                     gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id + '/admins', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.appAPI.updateAppAdmins(app.id, adminUpdates, function(err) {
-                                            assert.ok(err);
-                                            assert.ok(!data);
+                                            assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                            assert.ok(!data, 'Verify that no data is returned when an error is thrown');
                                         });
 
                                         QUnit.start();
