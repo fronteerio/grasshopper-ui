@@ -138,7 +138,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getMe functionality
     QUnit.asyncTest('getMe', function(assert) {
-        expect(2);
+        expect(5);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -149,17 +149,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 gh.api.userAPI.getMe();
             }, 'Verify that an error is thrown when an invalid callback was provided');
 
-            // Verify that users can be retrieved without errors
-            gh.api.userAPI.getMe(function(err, data) {
+            // Verify that the me feed can be successfully retrieved
+            // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+            var body = {'code': 200, 'msg': 'OK'};
+            gh.api.utilAPI.mockRequest('GET', '/api/me', 200, {'Content-Type': 'application/json'}, body, function() {
+                gh.api.userAPI.getMe(function(err, data) {
+                    assert.ok(!err, 'Verify that the me feed can be successfully retrieved');
 
-                /**
-                 * TODO: wait for back-end implementation
-                 *
-                assert.ok(!err, 'Verify that the current can be retrieved without errors');
-                assert.ok(data, 'Verify that the current user is returned');
-                 */
+                    // Verify that the error is handled when the calendar can't be retrieved
+                    body = {'code': 400, 'msg': 'Bad Request'};
+                    gh.api.utilAPI.mockRequest('GET', '/api/me', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.userAPI.getMe(function(err, data) {
+                            assert.ok(err, 'Verify that the error is handled when the me feed can\'t be successfully retrieved');
+                            assert.ok(!data, 'Verify that no data returns when the me feed can\'t be successfully retrieved');
 
-                QUnit.start();
+                            QUnit.start();
+                        });
+                    });
+                });
             });
         });
     });
