@@ -431,7 +431,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'handleWindowResize': false,
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
-            'slotDuration': '00:15:00',
+            'slotDuration': '00:30:00',
             'events': events,
             'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
