@@ -261,21 +261,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     //  TEMPLATES  //
     /////////////////
 
-    // Add a template to the page
-    $('body').append('<script id="qunit-template" type="text/template">Hi, <%= name %></script>');
-    // Create the data to use in the template
-    var templateData = {
-        'name': 'Mathieu'
-    };
-    // Add a target container to the page
-    $('body').append('<div id="qunit-template-target" style="display: none;"></div>');
-
     // Test the 'renderTemplate' functionality
     QUnit.test('renderTemplate', function(assert) {
+        // Add a template to the page
+        $('body').append('<script id="qunit-template" type="text/template">Hi, <%= name %></script>');
+        // Create the data to use in the template
+        var templateData = {
+            'name': 'Mathieu'
+        };
+        // Add a target container to the page
+        $('body').append('<div id="qunit-template-target" style="display: none;"></div>');
+
         // Verify that a template needs to be provided
         assert.throws(function() {
             gh.api.utilAPI.renderTemplate(null, templateData, $('#qunit-template-target'));
         }, 'Verify that a template needs to be provided');
+
+        // Verify that template data is optional
+        assert.ok(gh.api.utilAPI.renderTemplate($('#qunit-template'), null, $('#qunit-template-target')), 'Verify that template data is optional');
 
         // Verify that the template renders in the target container
         gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
@@ -284,6 +287,21 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         // Verify that the rendered HTML is returned when no target is specified
         var returnedHTML = gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData);
         assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
+    });
+
+    QUnit.test('renderTemplate - Partials', function(assert) {
+        // Verify that a partial can be used to render a template
+        // Add a template to the page
+        $('body').append('<script id="qunit-template-partial" type="text/template"><%= _.partial(\'calendar\', {\'data\': data}) %></script>');
+        // Create the data to use in the template
+        var data = {
+            'data': null
+        };
+        // Add a target container to the page
+        $('body').append('<div id="qunit-template-partial-target" style="display: none;"></div>');
+        // Verify that the template renders in the target container
+        gh.api.utilAPI.renderTemplate($('#qunit-template-partial'), data, $('#qunit-template-partial-target'));
+        assert.ok($('#qunit-template-partial-target').html(), 'Verify the template partial HTML is rendered in the target container');
     });
 
     testAPI.init();

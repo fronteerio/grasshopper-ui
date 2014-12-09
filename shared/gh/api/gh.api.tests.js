@@ -41,16 +41,6 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     };
 
     /**
-     * Return an app by its id
-     *
-     * @param  {Number}    appId    The application id
-     * @return {Object}             Object representing an application
-     */
-    var getAppById = exports.getAppById = function(appId) {
-        return _.find(_apps, {'id': appId});
-    };
-
-    /**
      * Return the test apps
      *
      * @return {Object[]}    The test apps
@@ -112,37 +102,6 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     };
 
     /**
-     * Return a tenant and its applications by its id
-     *
-     * @param  {Number}    tenantId    The tenant id
-     * @return {Object}                Object representing a tenant
-     */
-    var getTenantById = exports.getTenantById = function(tenantId) {
-        var tenants = _.cloneDeep(_tenants);
-        return _.find(tenants, function(tenant) {
-
-            // Add the tenant's applications
-            if (tenant.id === tenantId) {
-                return _.extend(tenant, {'apps': _.filter(_apps, {'TenantId': tenant.id})});
-            }
-        });
-    };
-
-    /**
-     * Return the test tenants
-     *
-     * @return {Object[]}    The test tenants
-     */
-    var getTenants = exports.getTenants = function() {
-        var tenants = _.cloneDeep(_tenants);
-        return _.map(tenants, function(tenant) {
-
-            // Add the tenants' applications
-            return _.extend(tenant, {'apps': _.filter(_apps, {'TenantId': tenant.id})});
-        });
-    };
-
-    /**
      * Returns the test application types
      */
     var getTypes = exports.getTypes = function() {
@@ -157,16 +116,13 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     /**
      * Fetches all the tenants
      *
-     * @param  {Function}    [callback]    Standard callback function
+     * @param  {Function}    callback    Standard callback function
      * @private
      */
     var fetchTenants = function(callback) {
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
         // Fetch all the tenants
         tenantAPI.getTenants(function(err, tenants) {
+            /* istanbul ignore if */
             if (err) {
                 QUnit.stop();
             }
@@ -181,14 +137,10 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     /**
      * Fetch all the applications for the tenants
      *
-     * @param  {Function}    [callback]    Standard callback function
+     * @param  {Function}    callback    Standard callback function
      * @private
      */
     var fetchAppsForTenants = function(callback) {
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
         // Collect the tenantIds
         var tenantIds = _.map(_tenants, function(tenant) { return tenant.id; });
 
@@ -204,6 +156,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
 
             // Fetch the apps for the tenant
             appAPI.getApps(tenantId, function(err, apps) {
+                /* istanbul ignore if */
                 if (err) {
                     return QUnit.stop();
                 }
@@ -225,10 +178,12 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
         _fetchAppsForTenant();
     };
 
+    /**
+     * Fetch all organisational units for tenants
+     *
+     * @param  {Function}    callback    Standard callback function
+     */
     var fetchOrgUnitsForTenants = function(callback) {
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
         // Collect the appIds
         var appIds = _.map(_apps, function(app) { return app.id; });
 
@@ -244,6 +199,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
 
             // Fetch the orgunits for the app
             orgunitAPI.getOrgUnits(appId, true, null, null, function(err, orgunits) {
+                /* istanbul ignore if */
                 if (err) {
                     return QUnit.stop();
                 }
@@ -304,6 +260,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
 
         // Login with the global administrator
         authenticationAPI.login('administrator', 'administrator', function(err, data) {
+            /* istanbul ignore if */
             if (err) {
                 QUnit.stop();
             }
