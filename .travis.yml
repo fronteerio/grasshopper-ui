@@ -31,14 +31,14 @@ before_install:
   - cd /usr/local/lib
 
   # Get Apache HTTP-server 2.4
-  - sudo wget http://lib.gblearn.com/apache/httpd-2.4.10.tar.gz -q
+  - sudo wget http://archive.apache.org/dist/httpd/httpd-2.4.10.tar.gz -q
   - sudo tar xfz httpd-2.4.10.tar.gz
   - cd httpd-2.4.10/srclib/
 
   # Download dependencies
-  - sudo wget http://lib.gblearn.com/apache/apr/apr-1.5.1.tar.gz -q
-  - sudo wget http://lib.gblearn.com/apache/apr/apr-util-1.5.3.tar.gz -q
-  - sudo wget http://lib.gblearn.com/apache/pcre/pcre-8.34.tar.gz -q
+  - sudo wget https://archive.apache.org/dist/apr/apr-1.5.1.tar.gz -q
+  - sudo wget https://archive.apache.org/dist/apr/apr-util-1.5.3.tar.gz -q
+  - sudo wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.34.tar.gz -q
 
   # Install and configure APR
   - echo 'Installing APR'
