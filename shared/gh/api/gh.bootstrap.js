@@ -72,8 +72,10 @@ require(['gh.core'], function() {
     // Find the script that has specified both the data-main (which loaded this bootstrap script) and a data-loadmodule attribute. The
     // data-loadmodule attribute tells us which script they wish to load *after* the core APIs have been properly bootstrapped.
     var $mainScript = $('script[data-main][data-loadmodule]');
+    /* istanbul ignore else */
     if ($mainScript.length > 0) {
         var loadModule = $mainScript.attr('data-loadmodule');
+        /* istanbul ignore else */
         if (loadModule) {
             // Require the module they specified in the data-loadmodule attribute
             require([loadModule]);
