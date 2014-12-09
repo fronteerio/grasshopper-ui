@@ -161,7 +161,6 @@ define(['gh.core'], function(gh) {
                 return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
             }
 
-
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
