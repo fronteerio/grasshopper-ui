@@ -92,7 +92,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var setUpPartPicker = function(ev, data) {
         // Push the selected tripos in the URL
-        state['tripos'] = data.selected;
+        state = {
+            'tripos': data.selected,
+            'part': $.bbq.getState()['part']
+        };
         $.bbq.pushState(state);
 
         // Get the parts associated to the selected tripos
@@ -116,13 +119,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             'no_results_text': 'No matches for',
             'disable_search_threshold': 10
         }).on('change', setUpModules);
-
-        // If the URL shows a preselected part, select that part automatically
-        if (state.part) {
-            $('#gh-subheader-part').val(state.part);
-            $('#gh-subheader-part').trigger('change', {'selected': state.part});
-            $('#gh-subheader-part').trigger('chosen:updated');
-        }
     };
 
     /**
@@ -153,30 +149,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             'no_results_text': 'No matches for'
         }).change(setUpPartPicker);
 
-        // If the URL shows a preselected tripos, select that tripos automatically
-        if (state.tripos) {
-            $('#gh-subheader-tripos').val(state.tripos);
-            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
-            $('#gh-subheader-tripos').trigger('chosen:updated');
-        }
-
         // Show the descriptive text on the left hand side
         $('#gh-content-description p').show();
-
-        // When the tripos is changed the part state value won't be accurate anymore and
-        // we need to delete it from the state. We can't do this in `setUpPartPicker` as
-        // this only needs to happen when the value changes by manually changing it
-        $('#gh-subheader-tripos').on('change', function(ev, data) {
-            // Create the new state, existing only of the tripos
-            state = {
-                'tripos': data.selected
-            };
-            // Remove the state from the url
-            $.bbq.removeState('part');
-            // Remove any modules and event series from the sidebar after selecting
-            // so no inaccurate information is represented
-            $('#gh-modules-container').empty();
-        });
     };
 
     /**
@@ -205,6 +179,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
+
+            // Run the hashchange logic to put the right selections in place
+            handleHashChange();
         });
     };
 
@@ -246,6 +223,28 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         return 0;
     };
 
+    /**
+     * Handle the hashchange event by applying state values to the pickers. Can also be
+     * used separate from the hashchange event to apply state values to the pickers
+     */
+    var handleHashChange = function() {
+        state = $.bbq.getState() || {};
+
+        // If the URL shows a preselected tripos, select that tripos automatically
+        if (state.tripos) {
+            $('#gh-subheader-tripos').val(state.tripos);
+            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
+            $('#gh-subheader-tripos').trigger('chosen:updated');
+        }
+
+        // If the URL shows a preselected part, select that part automatically
+        if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
+            $('#gh-subheader-part').val(state.part);
+            $('#gh-subheader-part').trigger('change', {'selected': state.part});
+            $('#gh-subheader-part').trigger('chosen:updated');
+        }
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -260,6 +259,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         $(document).on('gh.calendar.ready', function() {
             setUpCalendar();
         });
+
+        $(window).on('hashchange', handleHashChange);
     };
 
     /**
