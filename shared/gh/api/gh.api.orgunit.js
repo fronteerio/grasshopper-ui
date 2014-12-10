@@ -216,7 +216,7 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.response    Object representing the calendar for an organisational unit
      */
     var getOrgUnitCalendar = exports.getOrgUnitCalendar = function(orgUnitId, from, to, callback) {
-        if (callback && !_.isFunction(callback)) {
+        if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
