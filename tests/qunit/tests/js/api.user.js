@@ -319,24 +319,24 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
             // Verify that an error is thrown when an invalid user id was provided
-            gh.api.userAPI.getUserUpcoming(null, null, null, function(err, data) {
+            gh.api.userAPI.getUserUpcoming(null, 0, 0, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
                 // Verify that an error is thrown when an invalid value for 'limit' was provided
-                gh.api.userAPI.getUserUpcoming(user.id, 'invalid_limit', null, function(err, data) {
+                gh.api.userAPI.getUserUpcoming(user.id, 'invalid_limit', 0, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
 
                     // Verify that an error is thrown when an invalid value for 'offset' was provided
-                    gh.api.userAPI.getUserUpcoming(user.id, null, 'invalid_offset', function(err, data) {
+                    gh.api.userAPI.getUserUpcoming(user.id, 0, 'invalid_offset', function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when an invalid value for offset was provided');
 
                         // Verify that an error is thrown when an invalid callback was provided
                         assert.throws(function() {
-                            gh.api.userAPI.getUserUpcoming(user.id, null, null);
+                            gh.api.userAPI.getUserUpcoming(user.id, 0, 0);
                         }, 'Verify that an error is thrown when an invalid callback was provided');
 
                         // Verify that the terms and conditions can be retrieved without errors
-                        gh.api.userAPI.getUserUpcoming(user.id, null, null, function(err, data) {
+                        gh.api.userAPI.getUserUpcoming(user.id, 0, 0, function(err, data) {
 
                             /**
                              * Wait for back-end implementation
@@ -435,11 +435,11 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         };
 
         // Verify that an error is thrown when no app id was provided
-        gh.api.userAPI.createUser(null, null, user.email, user.password, null, null, null, null, function(err, data) {
+        gh.api.userAPI.createUser(null, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
             assert.ok(err, 'Verify that an error is thrown when no app id was provided');
 
             // Verify that an error is thrown when an invalid app id was provided
-            gh.api.userAPI.createUser(999999, null, user.email, user.password, null, null, null, null, function(err, data) {
+            gh.api.userAPI.createUser(999999, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
 
                 // Verify that an error is thrown when an invalid value for 'displayName' was provided
@@ -572,7 +572,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
             // Verify that an error is thrown when an invalid value for 'userId' was provided
-            gh.api.userAPI.updateUser(null, null, null, null, null, function(err, data) {
+            gh.api.userAPI.updateUser(null, user.AppId, null, null, null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
                 // Verify that an error is thrown when no value for 'appId' was provided
@@ -629,7 +629,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             assert.ok(!err, 'Verify that users can be created without retrieving an error');
 
             // Verify that an error is thrown when an invalid value for 'userId' was provided
-            gh.api.userAPI.updateAdminStatus(null, null, function(err, data) {
+            gh.api.userAPI.updateAdminStatus(null, true, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
                 // Verify that an error is thrown when an invalid value for 'isAdmin' was provided

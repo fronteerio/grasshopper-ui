@@ -286,7 +286,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                     var administrator = _.find(data.rows, {'id': user.id});
 
                     // Verify that an error is thrown when an invalid appId was provided
-                    gh.api.appAPI.updateAppAdmins(null, null, function(err, data) {
+                    gh.api.appAPI.updateAppAdmins(null, {}, function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
 
                         // Verify that an error is thrown when an invalid value for administrators was provided
