@@ -53,7 +53,7 @@ define(['gh.core'], function(gh) {
             // Add `gh-list-group-item-added` to all children of the list item
             $list.find('li').addClass('gh-list-group-item-added');
             // Change the icon of all button of the list item
-            $list.find('i').removeClass('fa-plus').addClass('fa-remove');
+            $list.find('i').removeClass('fa-plus').removeClass('fa-minus').addClass('fa-remove');
             // Toggle the class from add-all to remove-all
             $this.toggleClass('gh-add-all-to-calendar gh-remove-all-from-calendar');
             // Toggle the children's class from add to remove
@@ -123,17 +123,23 @@ define(['gh.core'], function(gh) {
             // Toggle the event's button icon
             $this.find('i').toggleClass('fa-plus fa-remove');
 
-            // Only change the parent's styles if all events have been subscribed to
+            // Change the parent's style if one or more events have been subscribed to
             var events = $this.closest('ul').find('li').length;
             var addedEvents = $this.closest('ul').find('li.gh-list-group-item-added').length;
+
+            // Fetch the list's parent
+            var $parentList = $this.closest('ul').closest('li');
+
             if (events === addedEvents) {
-                var $parentList = $this.closest('ul').closest('li');
                 // Remove the parent's 'gh-list-group-item-added' class
                 $parentList.addClass('gh-list-group-item-added');
                 // Remove the parent's 'remove-all' class and change it to 'add-all'
                 $parentList.find('.gh-list-action .btn').first().removeClass('gh-add-all-to-calendar').addClass('gh-remove-all-from-calendar');
                 // Change the icon of the parent's list item button
-                $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-remove');
+                $parentList.find('.gh-list-action .btn i').first().removeClass('fa-minus').addClass('fa-remove');
+            } else if (addedEvents > 0 && addedEvents < events) {
+                // Change the icon of the parent's list item button
+                $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-minus');
             }
         });
     });
@@ -165,13 +171,25 @@ define(['gh.core'], function(gh) {
             // Toggle the event's button icon
             $this.find('i').toggleClass('fa-plus fa-remove');
 
+            // Change the parent's style if one or more events have been subscribed to
+            var events = $this.closest('ul').find('li').length;
+            var addedEvents = $this.closest('ul').find('li.gh-list-group-item-added').length;
+
+            // Fetch the list's parent
             var $parentList = $this.closest('ul').closest('li');
+
             // Remove the parent's 'gh-list-group-item-added' class
             $parentList.removeClass('gh-list-group-item-added');
             // Remove the parent's 'remove-all' class and change it to 'add-all'
             $parentList.find('.gh-list-action .btn').first().removeClass('gh-remove-all-from-calendar').addClass('gh-add-all-to-calendar');
-            // Change the icon of the parent's list item button
-            $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-plus');
+
+            if (addedEvents === 0) {
+                // Change the icon of the parent's list item button
+                $parentList.find('.gh-list-action .btn i').first().removeClass('fa-minus').addClass('fa-plus');
+            } else if (addedEvents > 0 && addedEvents < events) {
+                // Change the icon of the parent's list item button
+                $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-minus');
+            }
         });
     });
 });
