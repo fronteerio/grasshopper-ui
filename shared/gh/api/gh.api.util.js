@@ -170,12 +170,17 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * @param  {String}    [title]    The notification title
      * @param  {String}    message    The notification message that will be shown underneath the title
      * @param  {String}    [type]     The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
+     * @param  {String}    [id]       Unique identifier for the notification, in case a notification can be triggered twice due to some reason. If a second notification with the same id is triggered it will be ignored
      * @throws {Error}                Error thrown when no message has been provided
      * @return {Boolean}              Returns true when the notification has been shown
      */
-    var notification = exports.notification = function(title, message, type) {
+    var notification = exports.notification = function(title, message, type, id) {
         if (!message) {
             throw new Error('A valid notification message should be provided');
+        }
+
+        if (id && $('#' + id).length) {
+            return false;
         }
 
         // Check if the notifications container has already been created.
@@ -189,7 +194,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
 
         // If a title has been provided, we wrap it in an h4 and prepend it to the message
         if (title) {
-            message = '<h4>' + title + '</h4>' + message;
+            message = '<h4 id="' + id + '">' + title + '</h4>' + message;
         }
 
         // Show the actual notification

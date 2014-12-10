@@ -254,6 +254,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
         // Verify that a notification can be triggered with a title and a message
         assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');
+
+        // Verify that a notification can be triggered with a title, a message and an ID
+        assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification can be triggered with a title, a message and an ID');
+
+        // Verify that a notification with the same ID can't be triggered
+        assert.ok(!gh.api.utilAPI.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification with the same ID can\'t be triggered');
+
+        // Verify that a notification with the same ID won't be shown twice
+        assert.ok($('#test-message').length === 1, 'Verify that a notification with the same ID won\'t be shown twice');
     });
 
 
