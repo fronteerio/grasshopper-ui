@@ -46,7 +46,7 @@ define(['gh.core'], function(gh) {
             // }
 
             // Show a success notification
-            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
+            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
 
             // Add `gh-list-group-item-added` to the list item
             $list.addClass('gh-list-group-item-added');
@@ -80,7 +80,7 @@ define(['gh.core'], function(gh) {
             // }
 
             // Show a success notification
-            gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.');
+            gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
 
             // Remove `gh-list-group-item-added` from the list item
             $list.removeClass('gh-list-group-item-added');
@@ -114,7 +114,7 @@ define(['gh.core'], function(gh) {
             // }
 
             // Show a success notification
-            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
+            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
 
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
@@ -162,7 +162,7 @@ define(['gh.core'], function(gh) {
             // }
 
             // Show a success notification
-            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.');
+            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
 
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
