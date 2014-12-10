@@ -48,6 +48,7 @@
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
+    padding: 8px 12px;
 }
 
 .btn i {
@@ -76,6 +77,7 @@
 /* Default buttons */
 #gh-calendar-toolbar .btn-default {
     height: 100%;
+    padding: 12px;
 }
 
 /* Primary toolbar */
@@ -93,7 +95,7 @@
 
 /* Secondary toolbar */
 #gh-calendar-toolbar .gh-toolbar-secondary {
-    font-weight: 800;
+    font-weight: 600;
     padding-top: 40px;
     position: relative;
 }
@@ -129,6 +131,7 @@
 
 #gh-calendar-toolbar .gh-toolbar-secondary #gh-btn-calendar-today {
     border: none;
+    padding: 8px 12px;
 }
 
 .gh-toolbar-label {
@@ -378,6 +381,7 @@ tbody tr:last-child > td.fc-widget-content {
     display: table-cell;
     overflow: auto;
     padding-right: 7px;
+    padding-top: 18px;
     width: 230px;
 }
 
@@ -409,7 +413,7 @@ tbody tr:last-child > td.fc-widget-content {
 /**********/
 
 .chosen-container {
-    font-size: 14px;
+    font-size: 15px;
     margin-right: 20px;
 }
 
