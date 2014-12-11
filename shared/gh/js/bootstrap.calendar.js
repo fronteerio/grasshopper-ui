@@ -433,7 +433,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
       * @private
       */
     var initCalendar = function(ev, events) {
-
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
             'header': false,
@@ -452,7 +451,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:30:00',
-            'events': events,
+            'events': events.results,
             'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
                     'data': data
