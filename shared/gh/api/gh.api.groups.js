@@ -65,7 +65,7 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(id)) {
             return callback({'code': 400, 'msg': 'A valid group ID should be provided'});
-        } else if (!_.isObject(body)) {
+        } else if ($.isEmptyObject(body)) {
             return callback({'code': 400, 'msg': 'A valid value for body should be provided'});
         }
 
