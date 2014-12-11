@@ -41,7 +41,7 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
         var initGH = function(callback) {
             // Load the me feed
             userAPI.getMe(function(err, me) {
-                /* istanbul ignore if */
+                /* istanbul ignore else */
                 if (!err) {
                     gh.data.me = me;
                 } else {
