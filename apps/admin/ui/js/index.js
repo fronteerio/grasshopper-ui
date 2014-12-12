@@ -22,6 +22,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Render the header
+     *
+     * @private
      */
     var renderHeader = function() {
         gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
@@ -33,6 +35,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * Render tenant admin functionality
      *
      * @param  {Object[]}    tenants    The tenants and apps to render
+     * @private
      */
     var renderTenants = function(tenants) {
         gh.api.utilAPI.renderTemplate($('#gh-tenants-template'), {
@@ -67,6 +70,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Get tenant data and app data for those tenants and render them
+     *
+     * @private
      */
     var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
@@ -99,6 +104,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Submit the tenant form to create tenants, create apps or update apps
+     *
+     * @private
      */
     var submitTenantForm = function() {
         var $submitButton = $(this);
@@ -153,6 +160,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Add bindings to various elements on the page
+     *
+     * @private
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
@@ -161,6 +170,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Initialise the page
+     *
+     * @private
      */
     var initIndex = function() {
         addBinding();
