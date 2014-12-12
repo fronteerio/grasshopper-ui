@@ -41,9 +41,21 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         gh.api.utilAPI.renderTemplate($('#gh-tenants-template'), {
             'gh': gh,
             'tenants': tenants
-        }, $('#gh-main'));
+        }, $('#gh-tenants-container'));
     };
 
+    /**
+     * Render admin user functionality
+     *
+     * @param  {Object[]}    administrators    The administrator users to render
+     * @private
+     */
+    var renderAdmins = function(administrators) {
+        gh.api.utilAPI.renderTemplate($('#gh-administrators-template'), {
+            'gh': gh,
+            'administrators': administrators
+        }, $('#gh-administrators-container'));
+    };
 
     /////////////////
     //  UTILITIES  //
@@ -103,6 +115,17 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
+     * Get administrator users and render them
+     *
+     * @private
+     */
+    var getAdminUserData = function() {
+        gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
+            renderAdmins(administrators.rows);
+        });
+    };
+
+    /**
      * Submit the tenant form to create tenants, create apps or update apps
      *
      * @private
@@ -153,6 +176,44 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         }
     };
 
+    /**
+     * Submit the administrator form to create or update administrator users
+     *
+     * @private
+     */
+    var submitAdministratorForm = function() {
+        var $submitButton = $(this);
+        var $form = $(this).closest('form');
+
+        var createAdmin = $submitButton.hasClass('gh-create-admin');
+        var updateAdmin = $submitButton.hasClass('gh-update-admin');
+
+        if (createAdmin) {
+            var newAdminDisplayName = $('#gh-admin-displayname-new').val();
+            var newAdminUserName = $('#gh-admin-username-new').val();
+            var newAdminPassword = $('#gh-admin-password-new').val();
+
+            gh.api.adminAPI.createAdmin(newAdminUserName, newAdminDisplayName, newAdminPassword, function(err, administrator) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Administrator not created.', 'The administrator could not be successfully created.', 'error');
+                }
+                getAdminUserData();
+                gh.api.utilAPI.notification('Administrator created.', 'The administrator was successfully created.', 'success');
+            });
+        } else if (updateAdmin) {
+            var adminId = parseInt($submitButton.data('adminid'), 10);
+            var updateAdminDisplayName = $('#gh-admin-displayname-' + adminId).val();
+
+            gh.api.adminAPI.updateAdmin(adminId, updateAdminDisplayName, function(err, administrator) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Administrator not updated.', 'The administrator could not be successfully updated.', 'error');
+                }
+                getAdminUserData();
+                gh.api.utilAPI.notification('Administrator updated.', 'The administrator was successfully updated.', 'success');
+            });
+        }
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -165,7 +226,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-        $('body').on('click', '#gh-create-app-form button', submitTenantForm);
+        $('body').on('click', '#gh-tenants-apps-form button', submitTenantForm);
+        $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
     };
 
     /**
@@ -178,6 +240,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         renderHeader();
         if (gh.data && gh.data.me) {
             getTenantData();
+            getAdminUserData();
         }
     };
 
