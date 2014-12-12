@@ -32,7 +32,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the setEventPicture functionality
 
-    // Test the cropEventPicture functionality
+    // Test the cropPicture functionality
 
     // Test the deleteEvent functionality
 
