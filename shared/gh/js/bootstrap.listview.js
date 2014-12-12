@@ -141,6 +141,17 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-minus');
             }
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
+                    },
+                    'events': events.results
+                }]);
+            });
         });
     });
 
@@ -190,6 +201,17 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-minus');
             }
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
+                    },
+                    'events': events.results
+                }]);
+            });
         });
     });
 });

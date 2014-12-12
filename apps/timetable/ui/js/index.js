@@ -49,10 +49,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         if (!gh.data.me) {
             $(document).trigger('gh.calendar.init');
         } else {
-            gh.api.seriesAPI.getSeriesCalendar(1, '2014-01-12', '2014-12-12', function(err, data) {
-                $(document).trigger('gh.calendar.init', {
-                    'events': data.results
-                });
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, data) {
+                $(document).trigger('gh.calendar.init', data);
             });
         }
     };

@@ -173,7 +173,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the getUserCalender functionality
     QUnit.asyncTest('getUserCalender', function(assert) {
-        expect(7);
+        expect(11);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -205,16 +205,20 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                 }, 'Verify that an error is thrown when an invalid callback was provided');
 
                                 // Verify that a calendar can be retrieved without errors
-                                gh.api.userAPI.getUserCalendar(user.id, '2013-10-01', '2014-07-31', function(err, data) {
-
-                                    /**
-                                     * Wait for back-end implementation
-                                     *
+                                gh.api.userAPI.getUserCalendar(user.id, '2010-01-01', '2015-12-31', function(err, data) {
                                     assert.ok(!err, 'Verify that a calendar can be retrieved without errors');
                                     assert.ok(data, 'Verify that a calendar is returned');
-                                     */
 
-                                    QUnit.start();
+                                    // Mock an error from the back-end
+                                    var body = {'code': 400, 'msg': 'Bad Request'};
+                                    gh.api.utilAPI.mockRequest('GET', '/api/users/' + user.id + '?start=2010-01-01&end=2015-12-31', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.userAPI.getUserCalendar(user.id, '2010-01-01', '2015-12-31', function(err, data) {
+                                            assert.ok(err, 'Verify that the error is handled when the user\'s calendar can\'t be successfully retrieved');
+                                            assert.ok(!data, 'Verify that no data returns when the user\'s calendar can\'t be successfully retrieved');
+                                        });
+
+                                        QUnit.start();
+                                    });
                                 });
                             });
                         });
@@ -484,8 +488,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                                                 var body = {'code': 400, 'msg': 'Bad Request'};
                                                 gh.api.utilAPI.mockRequest('POST', '/api/users', 400, {'Content-Type': 'application/json'}, body, function() {
                                                     gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
-                                                        assert.ok(err);
-                                                        assert.ok(!data);
+                                                        assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully created');
+                                                        assert.ok(!data, 'Verify that no data returns when the user can\'t be successfully created');
                                                     });
 
                                                     QUnit.start();
