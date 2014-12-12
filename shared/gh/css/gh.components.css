@@ -289,6 +289,16 @@ tbody tr:last-child > td.fc-widget-content {
     border-bottom-width: 0;
 }
 
+/* Calendar 'more' popover */
+.fc-more-popover .fc-header .fc-close {
+    padding: 1px;
+}
+
+.fc-more-popover .fc-header .fc-title {
+    font-size: 13px;
+    padding: 3px 3px 0;
+}
+
 
 /*********/
 /* LISTS */
