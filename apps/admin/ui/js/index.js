@@ -29,6 +29,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         }, $('#gh-header'));
     };
 
+    /**
+     * Render tenant admin functionality
+     *
+     * @param  {Object[]}    tenants    The tenants and apps to render
+     */
     var renderTenants = function(tenants) {
         gh.api.utilAPI.renderTemplate($('#gh-tenants-template'), {
             'gh': gh,
@@ -45,6 +50,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * Log in using the local authentication strategy
      *
      * @return {Boolean}     Return false to avoid default form behaviour
+     * @private
      */
     var doLogin = function() {
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
@@ -59,6 +65,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         return false;
     };
 
+    /**
+     * Get tenant data and app data for those tenants and render them
+     */
     var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
 
@@ -68,7 +77,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             var getApps = function(tenantId, callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     // Sort the apps by host
-                    apps.sort(sortByHost);
+                    apps.sort(gh.api.utilAPI.sortByHost);
                     // Cache the apps on the tenants object
                     tenants[done].apps = apps;
 
@@ -82,13 +91,16 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             };
 
             getApps(tenants[done].id, function(tenants) {
-                tenants.sort(sortByDisplayName);
+                tenants.sort(gh.api.utilAPI.sortByDisplayName);
                 renderTenants(tenants);
             });
         });
     };
 
-    var submitAppForm = function(ev) {
+    /**
+     * Submit the tenant form to create tenants, create apps or update apps
+     */
+    var submitTenantForm = function() {
         var $submitButton = $(this);
         var $form = $(this).closest('form');
 
@@ -134,36 +146,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         }
     };
 
-    /**
-     * Sort given objects based on the host property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByDisplayName = function(a, b) {
-        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
-            return -1;
-        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
-            return 1;
-        }
-        return 0;
-    };
-
-    /**
-     * Sort given objects based on the displayName property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByHost = function(a, b) {
-        if (a.host.toLowerCase() < b.host.toLowerCase()){
-            return -1;
-        } else if (a.host.toLowerCase() > b.host.toLowerCase()) {
-            return 1;
-        }
-        return 0;
-    };
-
 
     //////////////////////
     //  INITIALISATION  //
@@ -174,7 +156,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-        $('body').on('click', '#gh-create-app-form button', submitAppForm);
+        $('body').on('click', '#gh-create-app-form button', submitTenantForm);
     };
 
     /**
@@ -183,7 +165,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var initIndex = function() {
         addBinding();
         renderHeader();
-        getTenantData();
+        if (gh.data && gh.data.me) {
+            getTenantData();
+        }
     };
 
     initIndex();

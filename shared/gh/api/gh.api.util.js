@@ -155,6 +155,36 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         server.restore();
     };
 
+    /**
+     * Sort given objects based on the displayName property.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     */
+    var sortByDisplayName = exports.sortByDisplayName = function(a, b) {
+        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
+            return -1;
+        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
+            return 1;
+        }
+        return 0;
+    };
+
+    /**
+     * Sort given objects based on the host property.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     */
+    var sortByHost = exports.sortByHost = function(a, b) {
+        if (a.host.toLowerCase() < b.host.toLowerCase()){
+            return -1;
+        } else if (a.host.toLowerCase() > b.host.toLowerCase()) {
+            return 1;
+        }
+        return 0;
+    };
+
 
     ///////////////////
     // NOTIFICATIONS //
