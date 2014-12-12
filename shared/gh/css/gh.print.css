@@ -23,3 +23,12 @@
     border: 1px solid #127077;
     border-left-width: 5px;
 }
+
+/* Make sure month view prints a full page */
+.fc-day-grid-container {
+    height: 800px !important;
+}
+
+.fc-basic-view tbody .fc-row {
+    height: 9em !important;
+}
