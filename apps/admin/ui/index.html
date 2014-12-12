@@ -41,16 +41,16 @@
 
     <script id="gh-tenants-template" type="text/template">
         <div id="gh-tenants-container">
-            <h1>Tenants and Apps</h1>
-            <h2>Create a new tenant</h2>            
-            <div id="gh-create-tenant-new-container" class="panel panel-default">
-                <div class="panel-heading">
-                    <input id="gh-app-tenant-new" type="text" placeholder="New tenant name"/>
-                    <button type="button" class="btn btn-primary gh-create-tenant">Create tenant</button>
-                </div>
-            </div>
-            <h2>Tenants in the system</h2>
             <form id="gh-create-app-form">
+                <h1>Tenants and Apps</h1>
+                <h2>Create a new tenant</h2>            
+                <div id="gh-create-tenant-new-container" class="panel panel-default">
+                    <div class="panel-heading">
+                        <input id="gh-app-tenant-new" type="text" placeholder="New tenant name"/>
+                        <button type="button" class="btn btn-primary gh-create-tenant">Create tenant</button>
+                    </div>
+                </div>
+                <h2>Tenants in the system</h2>
                 <% _.each(tenants, function(tenant) { %>
                     <div class="panel panel-default">
                         <div class="panel-heading">
