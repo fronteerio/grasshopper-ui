@@ -75,8 +75,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             var body = {'code': 400, 'msg': 'Bad Request'};
                             gh.api.utilAPI.mockRequest('GET', '/api/admins?limit=1&offset=1', 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.adminAPI.getAdmins(1, 1, function(err, data) {
-                                    assert.ok(err);
-                                    assert.ok(!data);
+                                    assert.ok(err, 'Verify that the error is handled when the global admins can\'t be successfully retrieved');
+                                    assert.ok(!data, 'Verify that no data returns when the global admins can\'t be successfully retrieved');
                                 });
 
                                 QUnit.start();
@@ -126,8 +126,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         var body = {'code': 400, 'msg': 'Bad Request'};
                         gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully created');
+                                assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully created');
                             });
 
                             QUnit.start();
@@ -174,8 +174,8 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                         var body = {'code': 400, 'msg': 'Bad Request'};
                         gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
-                                assert.ok(err);
-                                assert.ok(!data);
+                                assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully updated');
+                                assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully updated');
                             });
 
                             QUnit.start();

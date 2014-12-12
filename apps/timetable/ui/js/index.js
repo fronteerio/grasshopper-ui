@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], function(gh) {
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery-bbq'], function(gh) {
 
     var triposData = {
         'courses': [],
@@ -21,6 +21,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         'parts': [],
         'modules': []
     };
+
+    var state = $.bbq.getState() || {};
 
 
     /////////////////
@@ -47,10 +49,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         if (!gh.data.me) {
             $(document).trigger('gh.calendar.init');
         } else {
-            gh.api.seriesAPI.getSeriesCalendar(1, '2014-01-12', '2014-12-12', function(err, data) {
-                $(document).trigger('gh.calendar.init', {
-                    'events': data.results
-                });
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, data) {
+                $(document).trigger('gh.calendar.init', data);
             });
         }
     };
@@ -62,18 +62,22 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
      * @param  {Object}    data    Data object describing the selected part to fetch modules for
      */
     var setUpModules = function(ev, data) {
+        // Push the selected tripos in the URL
+        state['part'] = data.selected;
+        $.bbq.pushState(state);
+
         var partId = parseInt(data.selected, 10);
 
-        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, data) {
+        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
             // Sort the data before displaying it
-            data.results.sort(sortByDisplayName);
-            $.each(data.results, function(i, module) {
+            modules.results.sort(sortByDisplayName);
+            $.each(modules.results, function(i, module) {
                 module.Series.sort(sortByDisplayName);
             });
 
             // Render the series in the sidebar
             gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
-                'data': data.results
+                'data': modules.results
             }, $('#gh-modules-container'));
         });
     };
@@ -85,10 +89,18 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
      * @param  {Object}    data    Data object describing the selected tripos to fetch parts for
      */
     var setUpPartPicker = function(ev, data) {
+        // Push the selected tripos in the URL
+        state = {
+            'tripos': data.selected,
+            'part': $.bbq.getState()['part']
+        };
+        $.bbq.pushState(state);
+
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
             return parseInt(data.selected, 10) === part.ParentId;
         });
+
         // Render the results in the part picker
         gh.api.utilAPI.renderTemplate($('#gh-subheader-part-template'), {
             'data': parts
@@ -98,12 +110,13 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         $('#gh-subheader-part').show();
 
         // Destroy the field if it's been initialised previously
-        $('#gh-subheader-part').chosen('destroy');
+        $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
+
         // Initialise the Chosen plugin on the part picker
         $('#gh-subheader-part').chosen({
             'no_results_text': 'No matches for',
             'disable_search_threshold': 10
-        }).change(setUpModules);
+        }).on('change', setUpModules);
     };
 
     /**
@@ -128,6 +141,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
 
         // Show the subheader tripos picker
         $('#gh-subheader-tripos').show();
+
+        // Destroy the field if it's been initialised previously
+        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpModules);
 
         // Initialise the Chosen plugin on the tripos picker
         $('#gh-subheader-tripos').chosen({
@@ -164,6 +180,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
 
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
+
+            // Run the hashchange logic to put the right selections in place
+            handleHashChange();
         });
     };
 
@@ -205,6 +224,42 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         return 0;
     };
 
+    /**
+     * Handle the hashchange event by applying state values to the pickers. Can also be
+     * used separate from the hashchange event to apply state values to the pickers
+     */
+    var handleHashChange = function() {
+        state = $.bbq.getState() || {};
+
+        // If the URL shows a preselected tripos, select that tripos automatically
+        if (state.tripos && !_.isEmpty(state.tripos)) {
+            $('#gh-subheader-tripos').val(state.tripos);
+            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
+            $('#gh-subheader-tripos').trigger('chosen:updated');
+        } else {
+            // There is no state for the tripos, make sure it's reset
+            setUpTriposPicker();
+            // There can't be a part because there is no tripos
+            if ($('#gh_subheader_part_chosen').length) {
+                // Destroy the field if it's been initialised previously
+                $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
+                // Show the subheader part picker
+                $('#gh-subheader-part').hide();
+            }
+        }
+
+        // If the URL shows a preselected part, select that part automatically
+        if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
+            $('#gh-subheader-part').val(state.part);
+            $('#gh-subheader-part').trigger('change', {'selected': state.part});
+            $('#gh-subheader-part').trigger('chosen:updated');
+        } else {
+            // Remove any modules and event series from the sidebar when no part is selected
+            // so no inaccurate information is presented to the user
+            $('#gh-modules-container').empty();
+        }
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -219,6 +274,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         $(document).on('gh.calendar.ready', function() {
             setUpCalendar();
         });
+
+        $(window).on('hashchange', handleHashChange);
     };
 
     /**
@@ -228,8 +285,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen'], functi
         addBinding();
         renderHeader();
         setUpCalendar();
-
-        // If the user isn't logged in, the page shouldn't be fully initialised
         getTripos();
     };
 
