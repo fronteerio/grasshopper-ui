@@ -237,6 +237,56 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         });
     });
 
+    // Test the 'sortByDisplayName' functionality
+    QUnit.test('sortByDisplayName', function(assert) {
+        var testArr = [{
+            'displayName': 'ZZZ'
+        }, {
+            'displayName': '1234'
+        }, {
+            'displayName': 'aaa'
+        }, {
+            'displayName': 'a1z2'
+        }, {
+            'displayName': 'aaa'
+        }];
+
+        testArr.sort(gh.api.utilAPI.sortByDisplayName);
+
+        var sorted1 = testArr[0].displayName === '1234';
+        var sorted2 = testArr[1].displayName === 'a1z2';
+        var sorted3 = testArr[2].displayName === 'aaa';
+        var sorted4 = testArr[3].displayName === 'aaa';
+        var sorted5 = testArr[4].displayName === 'ZZZ';
+
+        assert.ok(sorted1 && sorted2 && sorted3 && sorted4 && sorted5, 'Verify that the Array of objects is properly sorted on the displayName property');
+    });
+
+    // Test the 'sortByHost' functionality
+    QUnit.test('sortByHost', function(assert) {
+        var testArr = [{
+            'host': 'ZZZ'
+        }, {
+            'host': '1234'
+        }, {
+            'host': 'aaa'
+        }, {
+            'host': 'a1z2'
+        }, {
+            'host': 'aaa'
+        }];
+
+        testArr.sort(gh.api.utilAPI.sortByHost);
+
+        var sorted1 = testArr[0].host === '1234';
+        var sorted2 = testArr[1].host === 'a1z2';
+        var sorted3 = testArr[2].host === 'aaa';
+        var sorted4 = testArr[3].host === 'aaa';
+        var sorted5 = testArr[4].host === 'ZZZ';
+
+        assert.ok(sorted1 && sorted2 && sorted3 && sorted4 && sorted5, 'Verify that the Array of objects is properly sorted on the host property');
+    });
+
 
     ///////////////////
     // NOTIFICATIONS //

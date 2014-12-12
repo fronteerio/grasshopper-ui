@@ -1,0 +1,55 @@
+main h1 {
+    margin-bottom: 20px;
+}
+
+main h2 {
+    margin: 30px 0 12px;
+}
+
+#gh-tenants-container {
+    margin: 20px;
+}
+
+#gh-tenants-container th {
+    font-weight: 600;
+}
+
+#gh-tenants-container th,
+#gh-tenants-container td {
+    text-align: center;
+    vertical-align: middle;
+    border-top: none;
+}
+
+#gh-tenants-container td:first-child {
+    padding-left: 15px;
+}
+
+#gh-tenants-container input[type="text"] {
+    width: 100%;
+    font-weight: 200;
+    padding: 4px 7px 0;
+    line-height: 1.7;
+}
+
+.panel {
+    border-radius: 0;
+}
+
+.panel .panel-heading h2 {
+    margin: 0;
+}
+
+.panel#gh-create-tenant-new-container .panel-heading input {
+    margin-right: 12px;
+    width: 250px;
+}
+
+.panel .panel-body {
+    padding: 0;
+}
+
+#gh-create-app-form,
+#gh-create-app-form table {
+    margin-bottom: 0 !important;
+}
