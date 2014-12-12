@@ -12,7 +12,6 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-/* istanbul ignore next */
 define(['exports'], function(exports) {
 
     /**
@@ -54,12 +53,12 @@ define(['exports'], function(exports) {
      * @param  {String}      [notes]             The notes for the event
      * @param  {String[]}    [organiserOther]    The name(s) of the unrecognised user(s) that organise the event. If no organisers are added, the current user will be added as the organiser
      * @param  {Number[]}    [organiserUsers]    The id(s) of the recognised user(s) that organise the event
-     * @param  {Number[]}    [serieId]           The id(s) of the serie(s) that the event belongs to
+     * @param  {Number[]}    [seriesId]          The id(s) of the serie(s) that the event belongs to
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
-     */
-    var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, serieId, callback) {
+     *
+    var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isString(displayName)) {
@@ -76,11 +75,11 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'location\' should be provided'});
         } else if (notes && !_.isString(notes)) {
             return callback({'code': 400, 'msg': 'A valid value for \'notes\' should be provided'});
-        } else if (organiserOther && (!_.isString(organiserOther) || !_.isArray(organiserOther))) {
+        } else if (organiserOther && (!_.isString(organiserOther) && !_.isArray(organiserOther))) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserOther\' should be provided'});
-        } else if (organiserUsers && (!_.isNumber(organiserUsers) || !_.isArray(organiserUsers))) {
+        } else if (organiserUsers && (!_.isNumber(organiserUsers) && !_.isArray(organiserUsers))) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserUsers\' should be provided'});
-        } else if (seriesId && (!_.isNumber(seriesId) || !_.isArray(seriesId))) {
+        } else if (seriesId && (!_.isNumber(seriesId) && !_.isArray(seriesId))) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
         }
 
@@ -97,7 +96,7 @@ define(['exports'], function(exports) {
                 'notes': notes,
                 'organiserOther': organiserOther,
                 'organiserUsers': organiserUsers,
-                'serie': serieId
+                'serie': seriesId
             },
             'success': function(data) {
                 return callback(null, data);
@@ -107,6 +106,7 @@ define(['exports'], function(exports) {
             }
         });
     };
+    */
 
     /**
      * Create a new event in an app
@@ -145,11 +145,11 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'location\' should be provided'});
         } else if (notes && !_.isString(notes)) {
             return callback({'code': 400, 'msg': 'A valid value for \'notes\' should be provided'});
-        } else if (organiserOther && (!_.isString(organiserOther) || !_.isArray(organiserOther))) {
+        } else if (organiserOther && (!_.isString(organiserOther) && !_.isArray(organiserOther))) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserOther\' should be provided'});
-        } else if (organiserUsers && (!_.isNumber(organiserUsers) || !_.isArray(organiserUsers))) {
+        } else if (organiserUsers && (!_.isNumber(organiserUsers) && !_.isArray(organiserUsers))) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserUsers\' should be provided'});
-        } else if (seriesId && (!_.isNumber(seriesId) || !_.isArray(seriesId))) {
+        } else if (seriesId && (!_.isNumber(seriesId) && !_.isArray(seriesId))) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
         }
 
