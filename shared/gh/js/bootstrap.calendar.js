@@ -386,6 +386,49 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
 
     ///////////////
+    //  POPOVER  //
+    ///////////////
+
+    /**
+     * Calculate the position of the popover window
+     *
+     * @param  {Object}    $trigger    A jQuery object representing the trigger
+     * @return {String}                The popover's position
+     * @private
+     */
+    var calculatePopoverPosition = function($trigger) {
+        // Get the calendar's width
+        var calendarWidth = $trigger.closest('table').width();
+        // Get the event's offset
+        var eventOffset = $trigger.offset().left - 360;
+        // Get the event's width
+        var eventWidth = $trigger.closest('.fc-event-container').width();
+        // Get the popover's width
+        var popoverWidth = $('.popover').width();
+
+        // Set the position to left if there is not enough space to show the popover
+        var position = 'right';
+        if (calendarWidth - (eventOffset + eventWidth) < popoverWidth) {
+            position = 'left';
+        }
+
+        return position;
+    };
+
+    /**
+     * Hide the popovers on resize
+     *
+     * @param  {Object}    $trigger    A jQuery object representing the trigger
+     * @private
+     */
+    var hidePopoverOnResize = function($trigger) {
+        $(window).one('resize', function() {
+            $trigger.trigger('click');
+        });
+    };
+
+
+    ///////////////
     //  BINDING  //
     ///////////////
 
@@ -477,13 +520,16 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                     'content': $content.html(),
                     'global_close': true,
                     'html': true,
-                    'placement': 'right',
+                    'placement': calculatePopoverPosition($trigger),
                     'title': '',
                     'onHidden': function() {
                         $trigger.removeClass('highlighted');
                     },
                     'onShown': function() {
                         $trigger.addClass('highlighted');
+
+                        // Hide the popover on resize
+                        hidePopoverOnResize($trigger);
                     }
                 };
 
