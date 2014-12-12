@@ -2,6 +2,10 @@ main h1 {
     margin-bottom: 20px;
 }
 
+main h2 {
+    margin: 30px 0 12px;
+}
+
 #gh-tenants-container {
     margin: 20px;
 }
@@ -30,6 +34,15 @@ main h1 {
 
 .panel {
     border-radius: 0;
+}
+
+.panel .panel-heading h2 {
+    margin: 0;
+}
+
+.panel#gh-create-tenant-new-container .panel-heading input {
+    margin-right: 12px;
+    width: 250px;
 }
 
 .panel .panel-body {

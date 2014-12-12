@@ -29,7 +29,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         }, $('#gh-header'));
     };
 
-    var renderAdminData = function(tenants) {
+    var renderTenants = function(tenants) {
         gh.api.utilAPI.renderTemplate($('#gh-tenants-template'), {
             'gh': gh,
             'tenants': tenants
@@ -59,7 +59,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         return false;
     };
 
-    var getAdminData = function() {
+    var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
 
             var todo = tenants.length;
@@ -67,7 +67,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
             var getApps = function(tenantId, callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
+                    // Sort the apps by host
+                    apps.sort(sortByHost);
+                    // Cache the apps on the tenants object
                     tenants[done].apps = apps;
+
                     done++;
                     if (done === todo) {
                         callback(tenants);
@@ -78,8 +82,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             };
 
             getApps(tenants[done].id, function(tenants) {
-                console.log(tenants);
-                renderAdminData(tenants);
+                tenants.sort(sortByDisplayName);
+                renderTenants(tenants);
             });
         });
     };
@@ -87,32 +91,77 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var submitAppForm = function(ev) {
         var $submitButton = $(this);
         var $form = $(this).closest('form');
+
         var createApp = $submitButton.hasClass('gh-create-app');
+        var updateApp = $submitButton.hasClass('gh-update-app');
+        var createTenant = $submitButton.hasClass('gh-create-tenant');
 
         var tenantId = parseInt($submitButton.data('tenantid'), 10);
-        var appId = parseInt($submitButton.data('appid'), 10);
-        var displayName = $('#gh-app-displayname-' + appId).val();
-        var enabled = $('#gh-app-enabled-' + appId).is(':checked');
-        var host = $('#gh-app-host-' + appId).val();
 
         if (createApp) {
-            displayName = $('.gh-app-displayname-new').val();
-            enabled = $('.gh-app-enabled-new').is(':checked');
-            host = $('.gh-app-host-new').val();
-            gh.api.appAPI.createApp(displayName, host, tenantId, 'timetable', function(err, data) {
+            var newAppDisplayName = $('.gh-app-displayname-new-' + tenantId).val();
+            var newAppHost = $('.gh-app-host-new-' + tenantId).val();
+            // Create a new app
+            gh.api.appAPI.createApp(newAppDisplayName, newAppHost, tenantId, 'timetable', function(err, data) {
                 if (err) {
-                    return gh.api.utilAPI.notification('App not created.', 'The app could not be  successfully created.', 'error');
+                    return gh.api.utilAPI.notification('App not created.', 'The app could not be successfully created.', 'error');
                 }
+                getTenantData();
                 gh.api.utilAPI.notification('App created.', 'The app was successfully created.', 'success');
             });
-        } else {
-            gh.api.appAPI.updateApp(appId, displayName, enabled, host, function(err, data) {
+        } else if (updateApp) {
+            var appId = parseInt($submitButton.data('appid'), 10);
+            var updatedAppDisplayName = $('#gh-app-displayname-' + appId).val();
+            var updatedAppEnabled = $('#gh-app-enabled-' + appId).is(':checked');
+            var updatedAppHost = $('#gh-app-host-' + appId).val();
+            // Update the app
+            gh.api.appAPI.updateApp(appId, updatedAppDisplayName, updatedAppEnabled, updatedAppHost, function(err, data) {
                 if (err) {
-                    return gh.api.utilAPI.notification('App not updated.', 'The app could not be  successfully updated.', 'error');
+                    return gh.api.utilAPI.notification('App not updated.', 'The app could not be successfully updated.', 'error');
                 }
+                getTenantData();
                 gh.api.utilAPI.notification('App updated.', 'The app was successfully updated.', 'success');
             });
+        } else if (createTenant) {
+            var newTenantDisplayName = $('#gh-app-tenant-new').val();
+            gh.api.tenantAPI.createTenant(newTenantDisplayName, function(err, data) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Tenant not created.', 'The tenant could not be successfully created.', 'error');
+                }
+                getTenantData();
+                gh.api.utilAPI.notification('Tenant updated.', 'The tenant was successfully updated.', 'success');
+            });
         }
+    };
+
+    /**
+     * Sort given objects based on the host property.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     */
+    var sortByDisplayName = function(a, b) {
+        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
+            return -1;
+        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
+            return 1;
+        }
+        return 0;
+    };
+
+    /**
+     * Sort given objects based on the displayName property.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     */
+    var sortByHost = function(a, b) {
+        if (a.host.toLowerCase() < b.host.toLowerCase()){
+            return -1;
+        } else if (a.host.toLowerCase() > b.host.toLowerCase()) {
+            return 1;
+        }
+        return 0;
     };
 
 
@@ -134,7 +183,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var initIndex = function() {
         addBinding();
         renderHeader();
-        getAdminData();
+        getTenantData();
     };
 
     initIndex();
