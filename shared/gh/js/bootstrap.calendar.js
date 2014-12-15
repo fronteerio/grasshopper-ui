@@ -68,6 +68,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Track the week change in GA
+        gh.api.utilAPI.registerTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
     };
 
     /**
@@ -91,7 +93,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             } else {
                 term = getPreviousTerm(currentTerm);
             }
-
         // This gets called when you are inbetween terms
         } else {
             if (action === 'next') {
@@ -110,6 +111,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Track the term change in GA
+        gh.api.utilAPI.registerTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
     };
 
     /**
@@ -135,6 +138,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+
+        // Track the view change in GA
+        gh.api.utilAPI.registerTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
     };
 
     /**
@@ -150,6 +156,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Track the today click in GA
+        gh.api.utilAPI.registerTrackingEvent('calendar', 'view', 'Navigate to today');
     };
 
     /**
@@ -247,6 +255,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var printCalendar = function() {
+        // Track the print event in GA
+        gh.api.utilAPI.registerTrackingEvent('export', 'print', 'Print the calendar');
         return window.print();
     };
 
@@ -530,6 +540,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
                         // Hide the popover on resize
                         hidePopoverOnResize($trigger);
+
+                        // Track the event details lookup in GA
+                        gh.api.utilAPI.registerTrackingEvent('event', 'view', 'View event details', eventId);
                     }
                 };
 
