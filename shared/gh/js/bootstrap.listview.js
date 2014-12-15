@@ -58,6 +58,9 @@ define(['gh.core'], function(gh) {
             $this.toggleClass('gh-add-all-to-calendar gh-remove-all-from-calendar');
             // Toggle the children's class from add to remove
             $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
+
+            // Track the subscription in GA
+            gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
         });
     });
 
@@ -93,6 +96,8 @@ define(['gh.core'], function(gh) {
             // Toggle the children's class from remove to add
             $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
 
+            // Track the subscription in GA
+            gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
         });
     });
 
@@ -141,6 +146,9 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-minus');
             }
+
+            // Track the subscription in GA
+            gh.api.utilAPI.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
             // Fetch the user's events
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
@@ -201,6 +209,9 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-minus');
             }
+
+            // Track the subscription in GA
+            gh.api.utilAPI.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Fetch the user's events
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
