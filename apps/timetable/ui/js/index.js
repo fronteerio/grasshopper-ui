@@ -50,6 +50,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             $(document).trigger('gh.calendar.init');
         } else {
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, data) {
+                if (err) {
+                    // TODO: handle error
+                }
+
                 $(document).trigger('gh.calendar.init', data);
             });
         }
@@ -72,6 +76,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         gh.api.utilAPI.sendTrackingEvent('picker', 'change', 'Part picker', partId);
 
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
+            if (err) {
+                // TODO: handle error
+            }
+
             // Sort the data before displaying it
             modules.results.sort(gh.api.utilAPI.sortByDisplayName);
             $.each(modules.results, function(i, module) {
@@ -169,6 +177,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var getTripos = function() {
         var appId = gh.data.me && gh.data.me.AppId ? gh.data.me.AppId : null;
         gh.api.orgunitAPI.getOrgUnits(appId, false, null, ['course', 'subject', 'part'], function(err, data) {
+            if (err) {
+                // TODO: handle error
+            }
+
             triposData.courses = _.filter(data.results, function(course) {
                 return course.type === 'course';
             });
@@ -210,11 +222,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             if (!err) {
                 window.location = '/';
             } else {
-                // Show an error to the user
+                gh.api.utilAPI.notification('Login failed', 'Logging in into the application failed', 'error');
             }
-        });
 
-        return false;
+            return false;
+        });
     };
 
     /**

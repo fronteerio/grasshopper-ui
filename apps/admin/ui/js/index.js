@@ -73,7 +73,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             if (!err) {
                 window.location = '/';
             } else {
-                // Show an error to the user
+                gh.api.utilAPI.notification('Login failed', 'Logging in into the application failed', 'error');
             }
         });
 
@@ -87,12 +87,19 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
+            if (err) {
+                // TODO: handle error
+            }
 
             var todo = tenants.length;
             var done = 0;
 
             var getApps = function(tenantId, callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
+                    if (err) {
+                        // TODO: handle error
+                    }
+
                     // Sort the apps by host
                     apps.sort(gh.api.utilAPI.sortByHost);
                     // Cache the apps on the tenants object
@@ -128,6 +135,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var getAdminUserData = function() {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
+            if (err) {
+                // TODO: handle error
+            }
+
             renderAdmins(administrators.rows);
         });
     };

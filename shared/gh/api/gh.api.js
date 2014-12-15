@@ -44,8 +44,12 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 /* istanbul ignore else */
                 if (!err) {
                     gh.data.me = me;
+
                 } else {
-                    // throw new Error('The /me feed could not be loaded - ' + err.code + ': ' + err.msg);
+                    // Intercept 503 status indicating that the server is down
+                    if (err.code === 503) {
+                        gh.api.utilAPI.redirect().unavailable();
+                    }
                 }
 
                 utilAPI.cachePartials(function() {
