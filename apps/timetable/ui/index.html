@@ -73,14 +73,12 @@
         <% if (!gh.data.me || gh.data.me.anon) { %>
         <form id="gh-signin-form" class="form-inline pull-right" role="form">
             <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only" for="gh-signin-email">Email address</label>
-                    <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter email" required>
-                </div>
-                <div class="form-group">
-                    <label class="sr-only" for="gh-signin-password">Password</label>
-                    <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Password" required>
-                </div>
+                <label class="sr-only" for="gh-signin-email">Email address</label>
+                <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="gh-signin-password">Password</label>
+                <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Password" required>
             </div>
             <button type="submit" id="gh-signin" class="btn btn-default gh-btn-secondary">
                 <i class="fa fa-sign-in"></i>Sign in
