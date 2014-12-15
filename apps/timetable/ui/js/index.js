@@ -69,7 +69,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         $.bbq.pushState(state);
 
         // Track the part picker change in GA
-        gh.api.utilAPI.registerTrackingEvent('picker', 'change', 'Part picker', partId);
+        gh.api.utilAPI.sendTrackingEvent('picker', 'change', 'Part picker', partId);
 
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
             // Sort the data before displaying it
@@ -102,7 +102,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         $.bbq.pushState(state);
 
         // Track the tripos picker change in GA
-        gh.api.utilAPI.registerTrackingEvent('picker', 'change', 'Tripos picker', triposId);
+        gh.api.utilAPI.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {

@@ -60,7 +60,7 @@ define(['gh.core'], function(gh) {
             $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
             // Track the subscription in GA
-            gh.api.utilAPI.registerTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
+            gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
         });
     });
 
@@ -97,7 +97,7 @@ define(['gh.core'], function(gh) {
             $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
 
             // Track the subscription in GA
-            gh.api.utilAPI.registerTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
+            gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
         });
     });
 
@@ -148,7 +148,7 @@ define(['gh.core'], function(gh) {
             }
 
             // Track the subscription in GA
-            gh.api.utilAPI.registerTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
+            gh.api.utilAPI.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
             // Fetch the user's events
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
@@ -211,7 +211,7 @@ define(['gh.core'], function(gh) {
             }
 
             // Track the subscription in GA
-            gh.api.utilAPI.registerTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
+            gh.api.utilAPI.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Fetch the user's events
             gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {

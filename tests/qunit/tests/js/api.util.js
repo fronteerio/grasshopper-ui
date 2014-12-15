@@ -288,6 +288,37 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     });
 
 
+    //////////////////////
+    // GOOGLE ANALYTICS //
+    //////////////////////
+
+    // Test the `sendTrackingEvent` functionality
+    QUnit.test('sendTrackingEvent', function(assert) {
+        // Verify that an error is thrown when no category was provided
+        assert.throws(function() {
+            gh.api.utilAPI.sendTrackingEvent(null, 'action', 'label', 1);
+        }, 'Verify that an error is thrown when no category was provided');
+
+        // Verify that an error is thrown when no action was provided
+        assert.throws(function() {
+            gh.api.utilAPI.sendTrackingEvent('category', null, 'label', 1);
+        }, 'Verify that an error is thrown when no action was provided');
+
+        // Verify that an error is thrown when no label was provided
+        assert.throws(function() {
+            gh.api.utilAPI.sendTrackingEvent('category', 'action', null, 1);
+        }, 'Verify that an error is thrown when no label was provided');
+
+        // Verify that an error is thrown when an invalid `value` was provided
+        assert.throws(function() {
+            gh.api.utilAPI.sendTrackingEvent('category', 'action', 'label', 'invalid_value');
+        }, 'Verify that an error is thrown when an invalid `value` was provided');
+
+        // Verify that GA tracking succeeds with correct values
+        assert.ok(gh.api.utilAPI.sendTrackingEvent('category', 'action', 'label', 1), 'Verify that GA tracking succeeds with correct values');
+    });
+
+
     ///////////////////
     // NOTIFICATIONS //
     ///////////////////
