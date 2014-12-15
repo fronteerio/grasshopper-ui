@@ -95,10 +95,17 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 });
             };
 
-            getApps(tenants[done].id, function(tenants) {
-                tenants.sort(gh.api.utilAPI.sortByDisplayName);
-                renderTenants(tenants);
-            });
+            // If there are no tenants yet we can start rendering
+            if (todo === 0) {
+                renderTenants([]);
+
+            // Otherwise we get the apps for each tenant
+            } else {
+                getApps(tenants[done].id, function(tenants) {
+                    tenants.sort(gh.api.utilAPI.sortByDisplayName);
+                    renderTenants(tenants);
+                });
+            }
         });
     };
 
