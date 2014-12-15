@@ -80,7 +80,9 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     /**
      * Get a random event from a random series
      *
-     * @return {Object}    Object representing an event in an event serie
+     * @param  {Function}    callback            Standard callback function
+     * @param  {Error}       callback.err        Error object containing the error code and error message
+     * @param  {Event}       callback.response   Object representing an event in an event serie
      */
     var getRandomEvent = exports.getRandomEvent = function(callback) {
         var randomSeries = getRandomSeries();
@@ -270,7 +272,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
 
                 // Fetch all the apps
                 fetchAppsForTenants(function() {
-                    
+
                     // Fetch all the organisational units and series
                     fetchOrgUnitsForTenants(function() {
                         QUnit.start();

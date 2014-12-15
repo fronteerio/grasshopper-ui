@@ -16,17 +16,16 @@
 require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     module('Series API');
 
-    QUnit.test('init', function(assert) {
-        assert.ok(true);
-    });
-
     // Test the `addSeriesEvents` functionality
     QUnit.asyncTest('addSeriesEvents', function(assert) {
-        expect(9);
+        expect(10);
 
         var testSeries = testAPI.getRandomSeries();
 
+        // Fetch a random event
         testAPI.getRandomEvent(function(err, testEvent) {
+            assert.ok(!err, 'Verify that a random event is returned without errors');
+
             // Verify that an error is thrown when no callback was provided
             assert.throws(function() {
                 gh.api.seriesAPI.addSeriesEvents(testSeries.id, testEvent.id);
@@ -264,11 +263,14 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the `deleteSeriesEvents` functionality
     QUnit.asyncTest('deleteSeriesEvents', function(assert) {
-        expect(9);
+        expect(10);
 
         var testSeries = testAPI.getRandomSeries();
 
+        // Fetch a random event
         testAPI.getRandomEvent(function(err, testEvent) {
+            assert.ok(!err, 'Verify that a random event is returned without errors');
+
             // Verify that an error is thrown when an invalid callback was provided
             assert.throws(function() {
                 gh.api.seriesAPI.deleteSeriesEvents(testSeries.id, testEvent.id, 'not_a_callback');
