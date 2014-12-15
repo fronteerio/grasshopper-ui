@@ -6,30 +6,31 @@ main h2 {
     margin: 30px 0 12px;
 }
 
-#gh-tenants-container {
+.gh-administration-container {
     margin: 20px;
 }
 
-#gh-tenants-container th {
+.gh-administration-container th {
     font-weight: 600;
 }
 
-#gh-tenants-container th,
-#gh-tenants-container td {
+.gh-administration-container th,
+.gh-administration-container td {
+    border-top: none;
     text-align: center;
     vertical-align: middle;
-    border-top: none;
 }
 
-#gh-tenants-container td:first-child {
+.gh-administration-container td:first-child {
     padding-left: 15px;
 }
 
-#gh-tenants-container input[type="text"] {
-    width: 100%;
+.gh-administration-container input[type="text"],
+.gh-administration-container input[type="password"] {
     font-weight: 200;
-    padding: 4px 7px 0;
     line-height: 1.7;
+    padding: 4px 7px 0;
+    width: 100%;
 }
 
 .panel {
@@ -40,7 +41,11 @@ main h2 {
     margin: 0;
 }
 
-.panel#gh-create-tenant-new-container .panel-heading input {
+.panel.gh-administration-new-container {
+    border-bottom: none;
+}
+
+.panel.gh-administration-new-container .panel-heading input {
     margin-right: 12px;
     width: 250px;
 }
@@ -49,7 +54,6 @@ main h2 {
     padding: 0;
 }
 
-#gh-create-app-form,
-#gh-create-app-form table {
+form, table {
     margin-bottom: 0 !important;
 }

@@ -38,17 +38,20 @@
                 <div id="gh-header"></div>
                 <div id="gh-subheader"></div>
             </div>
-            <main id="gh-main"><!-- --></main>
+            <main id="gh-main">
+                <div id="gh-tenants-container"><!-- --></div>
+                <div id="gh-administrators-container"><!-- --></div>
+            </main>
         </div>
         <div class="clearfix"></div>
     </div>
 
     <script id="gh-tenants-template" type="text/template">
-        <div id="gh-tenants-container">
-            <form id="gh-create-app-form">
+        <div class="gh-administration-container">
+            <form id="gh-tenants-apps-form">
                 <h1>Tenants and Apps</h1>
-                <h2>Create a new tenant</h2>            
-                <div id="gh-create-tenant-new-container" class="panel panel-default">
+                <h2>Create a new tenant</h2>
+                <div id="gh-create-tenant-new-container" class="panel panel-default gh-administration-new-container">
                     <div class="panel-heading">
                         <input id="gh-app-tenant-new" type="text" placeholder="New tenant name"/>
                         <button type="button" class="btn btn-primary gh-create-tenant">Create tenant</button>
@@ -83,7 +86,7 @@
                                                 <input id="gh-app-enabled-<%= app.id %>" type="checkbox"<% if (app.enabled) { %> checked=true<% } %>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary gh-update-app" data-appId="<%= app.id %>">Update app</button>
+                                                <button type="button" class="btn btn-primary gh-update-app" data-appid="<%= app.id %>">Update app</button>
                                             </td>
                                         </tr>
                                     <% }); %>
@@ -98,7 +101,7 @@
                                             <input type="checkbox" checked=true disabled=true%>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary gh-create-app" data-tenantId="<%= tenant.id %>">Create app</button>
+                                            <button type="button" class="btn btn-primary gh-create-app" data-tenantid="<%= tenant.id %>">Create app</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -106,6 +109,63 @@
                         </div>
                     </div>
                 <% }); %>
+            </form>
+        </div>
+    </script>
+
+    <script id="gh-administrators-template" type="text/template">
+        <div class="gh-administration-container">
+            <form id="gh-administrators-form">
+                <h1>Users</h1>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2>Administrators in the system</h2>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Administrator name</th>
+                                    <th>Administrator username</th>
+                                    <th>Administrator password</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% _.each(administrators, function(admin) { %>
+                                    <tr>
+                                        <td>
+                                            <input id="gh-admin-displayname-<%= admin.id %>" type="text" placeholder="Administrator name" value="<%= admin.displayName %>" />
+                                        </td>
+                                        <td>
+                                            <input id="gh-admin-username-<%= admin.id %>" type="text" placeholder="Administrator username" value="<%= admin.username %>" disabled=true/>
+                                        </td>
+                                        <td>
+                                            <input id="gh-admin-password-<%= admin.id %>" type="password" placeholder="Administrator password" value="<%= admin.password %>" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary gh-update-admin" data-adminid="<%= admin.id %>">Update administrator</button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                                <tr>
+                                    <td>
+                                        <input id="gh-admin-displayname-new" type="text" placeholder="New administrator name" />
+                                    </td>
+                                    <td>
+                                        <input id="gh-admin-username-new" type="text" placeholder="New administrator username" />
+                                    </td>
+                                    <td>
+                                        <input id="gh-admin-password-new" type="password" placeholder="New administrator password" />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary gh-create-admin">Create administrator</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </form>
         </div>
     </script>
