@@ -51,11 +51,11 @@
         <option value=""></option>
         <%_.each(data.courses, function(course) { %>
             <% if (course.subjects.length === 0) { %>
-                <option value="<%= course.id %>"><%= course.displayName %></option>
+                <option value="<%- course.id %>"><%- course.displayName %></option>
             <% } else { %>
-                <optgroup label="<%= course.displayName %>">
+                <optgroup label="<%- course.displayName %>">
                     <%_.each(course.subjects, function(subject) { %>
-                        <option value="<%= subject.id %>"><%= subject.displayName %></option>
+                        <option value="<%- subject.id %>"><%- subject.displayName %></option>
                     <% }); %>
                 </optgroup>
             <% } %>
@@ -65,7 +65,7 @@
     <script id="gh-subheader-part-template" type="text/template">
         <option value=""></option>
         <%_.each(data, function(part) { %>
-            <option value="<%= part.id %>"><%= part.displayName %></option>
+            <option value="<%- part.id %>"><%- part.displayName %></option>
         <% }); %>
     </script>
 
@@ -96,7 +96,7 @@
 
     <script id="gh-modules-template" type="text/template">
         <div id="gh-result-summary">
-            <p>Found <%= data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %></p>
+            <p>Found <%- data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %></p>
         </div>
         <ul id="gh-modules-list" class="list-group">
             <%= _.partial('list-group-item', {'data': data}) %>
