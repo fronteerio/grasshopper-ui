@@ -36,6 +36,10 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         var app = testAPI.getRandomApp();
         // Create a random user
         testAPI.createTestUser(app.id, false, function(err, user) {
+            if (err) {
+                throw new Error('The test user could not be created successfully');
+            }
+
             opts = _.extend({
                 'displayName': gh.api.utilAPI.generateRandomString(true),
                 'start': '2014-12-31',
