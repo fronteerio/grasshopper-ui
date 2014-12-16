@@ -31,6 +31,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Render the header
+     *
+     * @private
      */
     var renderHeader = function() {
         gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
@@ -39,7 +41,20 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
+     * Render the login modal
+     *
+     * @private
+     */
+    var renderLoginModal = function() {
+         gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
+            'gh': gh
+        }, $('#gh-modal'));
+    };
+
+    /**
      * Render the calendar view
+     *
+     * @private
      */
     var setUpCalendar = function() {
         gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
@@ -64,6 +79,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      *
      * @param  {Event}     ev      Standard jQuery event
      * @param  {Object}    data    Data object describing the selected part to fetch modules for
+     * @private
      */
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
@@ -98,6 +114,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      *
      * @param  {Event}     ev      Standard jQuery event
      * @param  {Object}    data    Data object describing the selected tripos to fetch parts for
+     * @private
      */
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
@@ -137,6 +154,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Set up the Tripos picker in the subheader
+     *
+     * @private
      */
     var setUpTriposPicker = function() {
         var triposPickerData = {
@@ -171,8 +190,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Get the tripos structure from the REST API and filter it down for easy
-     * access in the templates
+     * Get the tripos structure from the REST API and filter it down for easy access in the templates
+     *
+     * @private
      */
     var getTripos = function() {
         var appId = gh.data.me && gh.data.me.AppId ? gh.data.me.AppId : null;
@@ -214,24 +234,34 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     /**
      * Log in using the local authentication strategy
      *
-     * @return {Boolean}     Return false to avoid default form behaviour
+     * @param  {Event}    ev    The jQuery event
+     * @private
      */
-    var doLogin = function() {
+    var doLogin = function(ev) {
+
+        // Prevent the form from being submitted
+        ev.preventDefault();
+
+        // Collect and submit the form data
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
         gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
             if (!err) {
+                var state = $.param($.bbq.getState());
+                if (state) {
+                    return window.location.reload();
+                }
                 window.location = '/';
             } else {
                 gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
-
-            return false;
         });
     };
 
     /**
      * Handle the hashchange event by applying state values to the pickers. Can also be
      * used separate from the hashchange event to apply state values to the pickers
+     *
+     * @private
      */
     var handleHashChange = function() {
         state = $.bbq.getState() || {};
@@ -272,9 +302,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Add bindings to various elements on the page
+     *
+     * @private
      */
     var addBinding = function() {
-        $('body').on('submit', '#gh-signin-form', doLogin);
+        $('body').on('submit', '.gh-signin-form', doLogin);
 
         $(document).on('gh.calendar.ready', function() {
             setUpCalendar();
@@ -285,10 +317,13 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Initialise the page
+     *
+     * @private
      */
     var initIndex = function() {
         addBinding();
         renderHeader();
+        renderLoginModal();
         setUpCalendar();
         getTripos();
     };

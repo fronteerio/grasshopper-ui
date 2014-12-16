@@ -47,6 +47,8 @@
         <div class="clearfix"></div>
     </div>
 
+    <div id="gh-modal"><!-- --></div>
+
     <script id="gh-subheader-picker-template" type="text/template">
         <option value=""></option>
         <%_.each(data.courses, function(course) { %>
@@ -71,19 +73,9 @@
 
     <script id="gh-header-template" type="text/template">
         <% if (!gh.data.me || gh.data.me.anon) { %>
-        <form id="gh-signin-form" class="form-inline pull-right" role="form">
-            <div class="form-group">
-                <label class="sr-only" for="gh-signin-email">Email address</label>
-                <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter email" required>
-            </div>
-            <div class="form-group">
-                <label class="sr-only" for="gh-signin-password">Password</label>
-                <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Password" required>
-            </div>
-            <button type="submit" id="gh-signin" class="btn btn-default gh-btn-secondary">
-                <i class="fa fa-sign-in"></i>Sign in
-            </button>
-        </form>
+            <form class="gh-signin-form form-inline pull-right" role="form">
+                <%= _.partial('login-form') %>
+            </form>
         <% } else { %>
             <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
                 <button type="submit" class="btn btn-default gh-btn-secondary">
@@ -92,6 +84,10 @@
             </form>
         <% } %>
         <h1>My timetable</h1>
+    </script>
+
+    <script id="gh-modal-template" type="text/template">
+        <%= _.partial('login-modal', {'data': null}) %>
     </script>
 
     <script id="gh-modules-template" type="text/template">

@@ -31,6 +31,10 @@ define(['gh.core'], function(gh) {
      * Add all events in the module to the calendar
      */
     $('body').on('click', '.gh-add-all-to-calendar', function() {
+        if (!gh.data.me) {
+            return $('#gh-modal-login').modal();
+        }
+
         var $list = $(this).closest('li');
         var $this = $(this);
 
@@ -68,6 +72,10 @@ define(['gh.core'], function(gh) {
      * Remove all events in the module from the calendar
      */
     $('body').on('click', '.gh-remove-all-from-calendar', function() {
+        if (!gh.data.me) {
+            return $('#gh-modal-login').modal();
+        }
+
         var $list = $(this).closest('li');
         var $this = $(this);
 
@@ -105,6 +113,10 @@ define(['gh.core'], function(gh) {
      * Add a single event to the calendar
      */
     $('body').on('click', '.gh-add-to-calendar', function() {
+        if (!gh.data.me) {
+            return $('#gh-modal-login').modal();
+        }
+
         var $this = $(this);
 
         // Get the seriesId to subscribe to
@@ -167,6 +179,10 @@ define(['gh.core'], function(gh) {
      * Remove a single event from the calendar
      */
     $('body').on('click', '.gh-remove-from-calendar', function() {
+        if (!gh.data.me) {
+            return $('#gh-modal-login').modal();
+        }
+
         var $this = $(this);
 
         // Get the seriesId to unsubscribe from
