@@ -8,7 +8,7 @@
         <% subscribedAll = (numSubscribed === d.Series.length) %>
         <% subscribedSome = (numSubscribed && numSubscribed < d.Series.length) %>
     <% } %>
-    <li class="list-group-item <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%= d.id %>">
+    <li class="list-group-item <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%- d.id %>">
         <div class="gh-list-group-item-container">
             <% if (!isChild) { %>
                 <button class="btn btn-link gh-toggle-list">
@@ -18,14 +18,14 @@
             <% } %>
                     <div class="gh-list-description">
                         <% if (isChild) { %>
-                            <p><%= d.displayName %></p>
-                            <p><%= d.notes %></p>
-                            <p><%= d.location %></p>
+                            <p><%- d.displayName %></p>
+                            <p><%- d.notes %></p>
+                            <p><%- d.location %></p>
                             <% if (d.organisers && d.organisers.length) { %>
-                                <p><%= d.organisers.toString() %></p>
+                                <p><%- d.organisers.toString() %></p>
                             <% } %>
                         <% } else { %>
-                            <p><%= d.displayName %></p>
+                            <p><%- d.displayName %></p>
                         <% } %>
                     </div>
             <% if (!isChild) { %>

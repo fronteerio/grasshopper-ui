@@ -354,7 +354,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     // Test the 'renderTemplate' functionality
     QUnit.test('renderTemplate', function(assert) {
         // Add a template to the page
-        $('body').append('<script id="qunit-template" type="text/template">Hi, <%= name %></script>');
+        $('body').append('<script id="qunit-template" type="text/template">Hi, <%- name %></script>');
         // Create the data to use in the template
         var templateData = {
             'name': 'Mathieu'
