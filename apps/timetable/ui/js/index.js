@@ -234,19 +234,26 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     /**
      * Log in using the local authentication strategy
      *
-     * @return {Boolean}     Return false to avoid default form behaviour
+     * @param  {Event}    ev    The jQuery event
      * @private
      */
-    var doLogin = function() {
+    var doLogin = function(ev) {
+
+        // Prevent the form from being submitted
+        ev.preventDefault();
+
+        // Collect and submit the form data
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
         gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
             if (!err) {
+                var state = $.param($.bbq.getState());
+                if (state) {
+                    return window.location.reload();
+                }
                 window.location = '/';
             } else {
                 gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
-
-            return false;
         });
     };
 
@@ -299,7 +306,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * @private
      */
     var addBinding = function() {
-        $('body').on('submit', '#gh-signin-form', doLogin);
+        $('body').on('submit', '.gh-signin-form', doLogin);
 
         $(document).on('gh.calendar.ready', function() {
             setUpCalendar();
