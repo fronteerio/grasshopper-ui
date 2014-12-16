@@ -20,6 +20,7 @@ module.exports = function(callback) {
     var ghRoot = __dirname + '/../../grasshopper/';
     var ghModules = ghRoot + 'node_modules/';
 
+    var AdminsDAO = require(ghModules + 'gh-admins/lib/internal/dao');
     var AppsAPI = require(ghModules + 'gh-apps');
     var Context = require(ghModules + 'gh-context').Context;
     var EventsAPI = require(ghModules + 'gh-events');
@@ -47,45 +48,43 @@ module.exports = function(callback) {
      * @param {Function}    callback    Standard callback function
      */
     var setUpTreeStructure = function(callback) {
-        // Fake it till you make it
-        var admin = {
-            'id': 1,
-            'isAdmin': true,
-            'AppId': appId,
-            'canAdmin': function() {
-                return true;
-            }
-        };
-        var ctx = new Context(null, admin);
-
-        // Get the app
-        AppsAPI.getApp(ctx, appId, function(err, app) {
+        // Get a global administrator
+        AdminsDAO.getGlobalAdminByUsername('administrator', function(err, globalAdmin) {
             if (err) {
-                console.error('err: ' + JSON.stringify(err), 'Failed to get the provided app');
+                console.log('err: ' + JSON.stringify(err) + ' - Failed to get the global administrator');
                 process.exit(1);
             }
 
-            ctx = new Context(app, admin);
-
-            console.log('- Reading file ' + file);
-            fs.readFile(file, function(err, tree) {
+            // Get the app
+            var ctx = new Context(null, globalAdmin);
+            AppsAPI.getApp(ctx, appId, function(err, app) {
                 if (err) {
-                    console.error('err: ' + JSON.stringify(err) + ' - file: ' +  JSON.stringify(file), 'Failed to read file');
+                    console.error('err: ' + JSON.stringify(err), 'Failed to get the provided app');
                     process.exit(1);
                 }
 
-                // Parse the tree
-                console.log('- Parsing tree');
-                tree = JSON.parse(tree);
+                ctx = new Context(app, globalAdmin);
 
-                // Persist it
-                console.log('- Starting to persist the organizational tree, this is going to take a while');
-                var courses = _.values(tree.nodes);
-                createNodes(ctx, courses, null, function() {
+                console.log('- Reading file ' + file);
+                fs.readFile(file, function(err, tree) {
+                    if (err) {
+                        console.error('err: ' + JSON.stringify(err) + ' - file: ' +  JSON.stringify(file), 'Failed to read file');
+                        process.exit(1);
+                    }
 
-                    // All done, execute the callback
-                    console.log('- The organizational tree has been succesfully imported');
-                    callback();
+                    // Parse the tree
+                    console.log('- Parsing tree');
+                    tree = JSON.parse(tree);
+
+                    // Persist it
+                    console.log('- Starting to persist the organizational tree, this is going to take a while');
+                    var courses = _.values(tree.nodes);
+                    createNodes(ctx, courses, null, function() {
+
+                        // All done, execute the callback
+                        console.log('- The organizational tree has been succesfully imported');
+                        callback();
+                    });
                 });
             });
         });
