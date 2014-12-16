@@ -268,6 +268,19 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     ////////////
 
     /**
+     * Convert start and end times of an event to GMT+0 for display in the calendar
+     *
+     * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
+     * @private
+     */
+    var fixDatesToGMT = function(events) {
+        _.each(events, function(ev) {
+            ev.start = (new Date(ev.start)).getTime() - ((new Date(ev.start)).getTimezoneOffset() * 60000);
+            ev.end = (new Date(ev.end)).getTime() - ((new Date(ev.end)).getTimezoneOffset() * 60000);
+        });
+    };
+
+    /**
      * Return the current academic week number if the current date is within a term
      *
      * @return {Number}    The academic week number
@@ -478,18 +491,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $(document).on('gh.calendar.refresh', refreshCalendar);
         // Resize the calendar
         $(window).on('resize', setCalendarHeight);
-    };
-
-    /**
-     * Convert start and end times of an event to GMT+0 for display in the calendar
-     *
-     * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
-     */
-    var fixDatesToGMT = function(events) {
-        _.each(events, function(ev) {
-            ev.start = (new Date(ev.start)).getTime() - ((new Date(ev.start)).getTimezoneOffset() * 60000);
-            ev.end = (new Date(ev.end)).getTime() - ((new Date(ev.end)).getTimezoneOffset() * 60000);
-        });
     };
 
      /**
