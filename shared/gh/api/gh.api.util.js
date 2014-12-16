@@ -336,13 +336,15 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         require(['text!gh/partials/calendar.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
-                 'text!gh/partials/list-group-item.html'], function(calendar, eventItem, eventPopover, listGroupItem) {
+                 'text!gh/partials/list-group-item.html',
+                 'text!gh/partials/login-modal.html'], function(calendar, eventItem, eventPopover, listGroupItem, loginModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('calendar', calendar);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);
             _.declarePartial('list-group-item', listGroupItem);
+            _.declarePartial('login-modal', loginModal);
 
             callback();
         });

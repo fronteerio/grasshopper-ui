@@ -47,6 +47,8 @@
         <div class="clearfix"></div>
     </div>
 
+    <div id="gh-modal"><!-- --></div>
+
     <script id="gh-subheader-picker-template" type="text/template">
         <option value=""></option>
         <%_.each(data.courses, function(course) { %>
@@ -92,6 +94,10 @@
             </form>
         <% } %>
         <h1>My timetable</h1>
+    </script>
+
+    <script id="gh-modal-template" type="text/template">
+        <%= _.partial('login-modal', {'data': null}) %>
     </script>
 
     <script id="gh-modules-template" type="text/template">
