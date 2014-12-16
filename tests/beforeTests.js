@@ -63,7 +63,7 @@ module.exports = function(callback) {
                     process.exit(1);
                 }
 
-                ctx = new Context(null, globalAdmin);
+                ctx = new Context(app, globalAdmin);
 
                 console.log('- Reading file ' + file);
                 fs.readFile(file, function(err, tree) {

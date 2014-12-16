@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant'], function(exports, appAPI, authenticationAPI, orgunitAPI, seriesAPI, tenantAPI) {
+define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'], function(exports, appAPI, authenticationAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI, utilAPI) {
 
     // Cache the test tenants and apps
     var _apps = null;
@@ -225,6 +225,19 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
 
         // Start fetching the orgunits
         _fetchOrgUnitsForApp();
+    };
+
+    /**
+     * Create a test user
+     *
+     * @param  {Number}      appId                The ID of the app to create the user in
+     * @param  {Boolean}     isAdmin              Whether or not the user is an administrator
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The created user
+     */
+    var createTestUser = exports.createTestUser = function(appId, isAdmin, callback) {
+        userAPI.createUser(appId, utilAPI.generateRandomString() + ' user', utilAPI.generateRandomString(true) + '@test.com', 'testtest', 'immediate', isAdmin, null, null, callback);
     };
 
     /**
