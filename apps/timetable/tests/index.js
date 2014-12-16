@@ -24,7 +24,7 @@ casper.test.begin('Page - Timetable Index', function(test) {
             test.assertExists('#gh-left-container #gh-header-logo img', 'Verify the header hero has the Cambridge University logo');
             test.assertExists('#gh-right-container #gh-header h1', 'Verify the header has a header h1');
             test.assertSelectorHasText('#gh-right-container #gh-header h1', 'My timetable', 'Verify the header has the text \'My timetable\'');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form', 'Verify the header has a login form');
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form', 'Verify the header has a login form');
         });
     };
 
@@ -33,18 +33,18 @@ casper.test.begin('Page - Timetable Index', function(test) {
      */
     var verifyLogInForm = function() {
         casper.echo('# Verify the timetable login form', 'INFO');
-        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-email"]', 'Verify the login form has an email label');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-email', 'Verify the login form has an email field');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-password"]', 'Verify the login form has a password label');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-password', 'Verify the login form has a password field');
-            test.assertExists('#gh-right-container #gh-header #gh-signin-form button[type="submit"]', 'Verify the login form has a submit button');
+        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form label[for="gh-signin-email"]', 'Verify the login form has an email label');
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form input#gh-signin-email', 'Verify the login form has an email field');
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form label[for="gh-signin-password"]', 'Verify the login form has a password label');
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form input#gh-signin-password', 'Verify the login form has a password field');
+            test.assertExists('#gh-right-container #gh-header .gh-signin-form button[type="submit"]', 'Verify the login form has a submit button');
         });
     };
 
     var verifyLogIn = function() {
         casper.echo('# Verify the timetable login functionality', 'INFO');
-        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
 
         });
     };
