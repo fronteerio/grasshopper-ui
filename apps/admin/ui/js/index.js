@@ -73,7 +73,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             if (!err) {
                 window.location = '/';
             } else {
-                gh.api.utilAPI.notification('Login failed', 'Logging in into the application failed', 'error');
+                gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
         });
 
@@ -88,7 +88,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
             if (err) {
-                // TODO: handle error
+                gh.api.utilAPI.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
             }
 
             var todo = tenants.length;
@@ -97,7 +97,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             var getApps = function(tenantId, callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     if (err) {
-                        // TODO: handle error
+                        gh.api.utilAPI.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
                     }
 
                     // Sort the apps by host
@@ -136,7 +136,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var getAdminUserData = function() {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
             if (err) {
-                // TODO: handle error
+                gh.api.utilAPI.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
             }
 
             renderAdmins(administrators.rows);
