@@ -328,6 +328,12 @@ tbody .fc-sun {
     background-color: transparent;
 }
 
+/* Export calendar */
+
+#gh-calendar-view.gh-export-enabled #gh-export-container {
+    background: #171717;
+}
+
 
 /***********/
 /* POPOVER */

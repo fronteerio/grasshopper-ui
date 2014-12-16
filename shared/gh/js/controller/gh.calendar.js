@@ -303,6 +303,32 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var exportCalendar = function() {
+        // Get the width of the calendar
+        var calendarWidth = $('#gh-calendar-container').width();
+
+        // Get the calendar components to move aside to make room for the export container
+        var $calendarComponents = $('#gh-calendar-container, .gh-toolbar-secondary');
+
+
+        if ($('#gh-calendar-view').hasClass('gh-export-enabled')) {
+            $calendarComponents.css({
+                'width': 'inherit',
+            });
+        } else {
+            $calendarComponents.css({
+                'width': calendarWidth + 'px',
+            });
+        }
+
+        // Toggle the `export-enabled` class on the calendar view to move the components aside
+        $('#gh-calendar-view').toggleClass('gh-export-enabled');
+
+        // Show the export container
+        $('#gh-export-container').show();
+
+
+
+
         return false;
 
         /**

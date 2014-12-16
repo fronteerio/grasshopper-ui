@@ -304,6 +304,22 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 3px 3px 0;
 }
 
+/* Export calendar */
+
+#gh-calendar-view.gh-export-enabled #gh-calendar-container,
+#gh-calendar-view.gh-export-enabled .gh-toolbar-secondary {
+    right: 350px;
+    position: absolute;
+}
+
+#gh-calendar-view.gh-export-enabled #gh-export-container {
+    height: 100%;
+    position: absolute;
+    right: 30px;
+    top: 259px;
+    width: 320px;
+}
+
 
 /**************/
 /* LIST GROUP */
