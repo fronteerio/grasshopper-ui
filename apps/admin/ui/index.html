@@ -61,7 +61,7 @@
                 <% _.each(tenants, function(tenant) { %>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h2><%= tenant.displayName %></h2>
+                            <h2><%- tenant.displayName %></h2>
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped">
@@ -77,31 +77,31 @@
                                     <% _.each(tenant.apps, function(app) { %>
                                         <tr>
                                             <td>
-                                                <input id="gh-app-displayname-<%= app.id %>" type="text" placeholder="App name" value="<%= app.displayName %>" />
+                                                <input id="gh-app-displayname-<%- app.id %>" type="text" placeholder="App name" value="<%- app.displayName %>" />
                                             </td>
                                             <td>
-                                                <input id="gh-app-host-<%= app.id %>" type="text" placeholder="App host" value="<%= app.host %>" />
+                                                <input id="gh-app-host-<%- app.id %>" type="text" placeholder="App host" value="<%- app.host %>" />
                                             </td>
                                             <td>
-                                                <input id="gh-app-enabled-<%= app.id %>" type="checkbox"<% if (app.enabled) { %> checked=true<% } %>
+                                                <input id="gh-app-enabled-<%- app.id %>" type="checkbox"<% if (app.enabled) { %> checked=true<% } %>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-primary gh-update-app" data-appid="<%= app.id %>">Update app</button>
+                                                <button type="button" class="btn btn-primary gh-update-app" data-appid="<%- app.id %>">Update app</button>
                                             </td>
                                         </tr>
                                     <% }); %>
                                     <tr>
                                         <td>
-                                            <input class="gh-app-displayname-new-<%= tenant.id %>" type="text" placeholder="New app name"/>
+                                            <input class="gh-app-displayname-new-<%- tenant.id %>" type="text" placeholder="New app name"/>
                                         </td>
                                         <td>
-                                            <input class="gh-app-host-new-<%= tenant.id %>" type="text" placeholder="New app host"/>
+                                            <input class="gh-app-host-new-<%- tenant.id %>" type="text" placeholder="New app host"/>
                                         </td>
                                         <td>
                                             <input type="checkbox" checked=true disabled=true%>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary gh-create-app" data-tenantid="<%= tenant.id %>">Create app</button>
+                                            <button type="button" class="btn btn-primary gh-create-app" data-tenantid="<%- tenant.id %>">Create app</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -135,16 +135,16 @@
                                 <% _.each(administrators, function(admin) { %>
                                     <tr>
                                         <td>
-                                            <input id="gh-admin-displayname-<%= admin.id %>" type="text" placeholder="Administrator name" value="<%= admin.displayName %>" />
+                                            <input id="gh-admin-displayname-<%- admin.id %>" type="text" placeholder="Administrator name" value="<%- admin.displayName %>" />
                                         </td>
                                         <td>
-                                            <input id="gh-admin-username-<%= admin.id %>" type="text" placeholder="Administrator username" value="<%= admin.username %>" disabled=true/>
+                                            <input id="gh-admin-username-<%- admin.id %>" type="text" placeholder="Administrator username" value="<%- admin.username %>" disabled=true/>
                                         </td>
                                         <td>
-                                            <input id="gh-admin-password-<%= admin.id %>" type="password" placeholder="Administrator password" value="<%= admin.password %>" />
+                                            <input id="gh-admin-password-<%- admin.id %>" type="password" placeholder="Administrator password" value="<%- admin.password %>" />
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary gh-update-admin" data-adminid="<%= admin.id %>">Update administrator</button>
+                                            <button type="button" class="btn btn-primary gh-update-admin" data-adminid="<%- admin.id %>">Update administrator</button>
                                         </td>
                                     </tr>
                                 <% }); %>
