@@ -305,6 +305,39 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     };
 
 
+    ///////////////
+    // REDIRECTS //
+    ///////////////
+
+    /**
+     * All functionality related to redirecting users to error pages, etc.
+     */
+    /* istanbul ignore next */
+    var redirect = exports.redirect = function() {
+
+        /**
+         * Redirect the current user to the 404 page. This can be used when the user requests a page or entity
+         * that cannot be found.
+         */
+        var notfound = function() {
+            window.location = '/notfound';
+        };
+
+        /**
+         * Redirect the current user to the 503 page. This can be used when the user requests a page on a tenant
+         * that is currently not available
+         */
+        var unavailable = function() {
+            window.location = '/unavailable';
+        };
+
+        return {
+            'notfound': notfound,
+            'unavailable': unavailable
+        };
+    };
+
+
     /////////////////
     //  TEMPLATES  //
     /////////////////

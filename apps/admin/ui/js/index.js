@@ -73,7 +73,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             if (!err) {
                 window.location = '/';
             } else {
-                // Show an error to the user
+                gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
         });
 
@@ -87,12 +87,19 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var getTenantData = function() {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
+            if (err) {
+                gh.api.utilAPI.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
+            }
 
             var todo = tenants.length;
             var done = 0;
 
             var getApps = function(tenantId, callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
+                    if (err) {
+                        gh.api.utilAPI.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
+                    }
+
                     // Sort the apps by host
                     apps.sort(gh.api.utilAPI.sortByHost);
                     // Cache the apps on the tenants object
@@ -128,6 +135,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var getAdminUserData = function() {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
+            if (err) {
+                gh.api.utilAPI.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
+            }
+
             renderAdmins(administrators.rows);
         });
     };

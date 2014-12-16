@@ -34,25 +34,31 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
         // Fetch a random test app
         var app = testAPI.getRandomApp();
-
-        opts = _.extend({
-            'displayName': gh.api.utilAPI.generateRandomString(true),
-            'start': '2014-12-31',
-            'end': '2015-01-01',
-            'description': null,
-            'group': null,
-            'location': null,
-            'notes': null,
-            'organiserOther': null,
-            'organiserUsers': null,
-            'serie': null
-        }, opts);
-
-        gh.api.eventAPI.createEventByApp(app.id, opts.displayName, opts.start, opts.end, opts.description, opts.group, opts.location, opts.notes, opts.organiserOther, opts.organiserUsers, opts.serie, function(err, data) {
+        // Create a random user
+        testAPI.createTestUser(app.id, false, function(err, user) {
             if (err) {
-                return callback(err);
+                throw new Error('The test user could not be created successfully');
             }
-            return callback(null, data);
+
+            opts = _.extend({
+                'displayName': gh.api.utilAPI.generateRandomString(true),
+                'start': '2014-12-31',
+                'end': '2015-01-01',
+                'description': null,
+                'group': null,
+                'location': null,
+                'notes': null,
+                'organiserOther': null,
+                'organiserUsers': [user.id],
+                'serie': null
+            }, opts);
+
+            gh.api.eventAPI.createEventByApp(app.id, opts.displayName, opts.start, opts.end, opts.description, opts.group, opts.location, opts.notes, opts.organiserOther, opts.organiserUsers, opts.serie, function(err, data) {
+                if (err) {
+                    return callback(err);
+                }
+                return callback(null, data);
+            });
         });
     };
 
