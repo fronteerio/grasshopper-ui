@@ -487,15 +487,21 @@ define(['exports'], function(exports) {
      * Subscribe to an event series
      *
      * @param  {Number}      serieId                The ID of the series to subscribe to
+     * @param  {Number}      [userId]               The ID of the user that should be subscribed. Defaults to the current user
+     * @param  {Number}      [context]              The ID of the organisational unit to which the serie belongs
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the subscribed to event series
      */
-    var subscribeSeries = exports.subscribeSeries = function(serieId, callback) {
+    var subscribeSeries = exports.subscribeSeries = function(serieId, userId, context, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
+        } else if (userId && !_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid userId should be provided'});
+        } else if (context && !_.isNumber(context)) {
+            return callback({'code': 400, 'msg': 'A valid context should be provided'});
         }
 
         // Set a default callback function in case no callback function has been provided
@@ -504,6 +510,10 @@ define(['exports'], function(exports) {
         $.ajax({
             'url': '/api/series/' + serieId + '/subscribe',
             'type': 'POST',
+            'data': {
+                'userId': userId,
+                'context': context
+            },
             'success': function(data) {
                 return callback(null, data);
             },

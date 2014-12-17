@@ -26,7 +26,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     QUnit.asyncTest('getOrgUnits', function(assert) {
         expect(9);
 
-        var testApp = testAPI.getRandomApp();
+        var testApp = testAPI.getTestApp();
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
@@ -81,7 +81,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     QUnit.asyncTest('getOrgUnit', function(assert) {
         expect(8);
 
-        var testApp = testAPI.getRandomApp();
+        var testApp = testAPI.getTestApp();
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {

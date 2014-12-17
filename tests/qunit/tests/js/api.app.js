@@ -57,7 +57,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(14);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Verify that an error is thrown when an invalid appId was provided
         gh.api.appAPI.getApp(null, function(err, data) {
@@ -100,7 +100,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(8);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Verify that an error is thrown when an invalid appId was provided
         gh.api.appAPI.getAppAdmins(null, 0, 0, function(err, data) {
@@ -201,7 +201,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(17);
 
         // Fetch a random app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         var displayName = gh.api.utilAPI.generateRandomString(true);
         var enabled = !app.enabled;
@@ -263,7 +263,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(12);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Login with the global administrator
         gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {

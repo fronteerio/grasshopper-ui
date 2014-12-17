@@ -82,7 +82,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     QUnit.asyncTest('createSeries', function(assert) {
         expect(11);
 
-        var testApp = testAPI.getRandomApp();
+        var testApp = testAPI.getTestApp();
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -779,41 +779,53 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the `subscribeSeries` functionality
     QUnit.asyncTest('subscribeSeries', function(assert) {
-        expect(7);
+        expect(9);
 
-        var testSeries = testAPI.getRandomSeries();
+        // Fetch a random test app
+        var app = testAPI.getTestApp();
+        // Fetch a random series within that app
+        var testSeries = testAPI.getRandomSeries(app.id);
 
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.seriesAPI.subscribeSeries(testSeries.id, 'not_a_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+        // Create a random user
+        testAPI.createTestUser(app.id, false, function(err, user) {
+            if (err) {
+                throw new Error('The test user could not be created successfully');
+            }
 
-        // Verify that an error is thrown when no serieId was provided
-        gh.api.seriesAPI.subscribeSeries(null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no serie id was provided');
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.seriesAPI.subscribeSeries(testSeries.id, null, null, 'not_a_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
 
-            // Verify that an error is thrown when an invalid serieId was provided
-            gh.api.seriesAPI.subscribeSeries('invalid_serie_id', function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
+            // Verify that an error is thrown when no serieId was provided
+            gh.api.seriesAPI.subscribeSeries(null, null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when no serie id was provided');
 
-                // Verify that a default callback is set when none is provided and no error is thrown
-                assert.equal(null, gh.api.seriesAPI.subscribeSeries(testSeries.id), 'Verify that a default callback is set when none is provided and no error is thrown');
+                // Verify that an error is thrown when an invalid serieId was provided
+                gh.api.seriesAPI.subscribeSeries('invalid_serie_id', null, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
 
-                // Verify that an event series can be successfully subscribed to
-                // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-                var body = {'code': 200, 'msg': 'OK'};
-                gh.api.utilAPI.mockRequest('POST', '/api/series/' + testSeries.id + '/subscribe', 200, {'Content-Type': 'application/json'}, body, function() {
-                    gh.api.seriesAPI.subscribeSeries(testSeries.id, function(err, data) {
-                        assert.ok(!err, 'Verify that an event series can be successfully subscribed to');
+                    // Verify that an error is thrown when an invalid userId was provided
+                    gh.api.seriesAPI.subscribeSeries(testSeries.id, 'invalid_userid', null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid user id was provided');
 
-                        // Verify that the error is handled
-                        body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/series/' + testSeries.id + '/subscribe', 400, {'Content-Type': 'application/json'}, body, function() {
-                            gh.api.seriesAPI.subscribeSeries(testSeries.id, function(err, data) {
-                                assert.ok(err, 'Verify that the error is handled when the event series can\'t be successfully subscribed to');
-                                assert.ok(!data, 'Verify that no data returns when the event series can\'t be successfully subscribed to');
+                        // Verify that an error is thrown when an invalid context was provided
+                        gh.api.seriesAPI.subscribeSeries(testSeries.id, null, 'invalid_contextid', function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid context was provided');
 
-                                QUnit.start();
+                            // Verify that a default callback is set when none is provided and no error is thrown
+                            assert.equal(null, gh.api.seriesAPI.subscribeSeries(testSeries.id), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                            gh.api.seriesAPI.subscribeSeries(testSeries.id, user.id, testSeries.parentId, function(err, data) {
+                                console.log(JSON.stringify(err));
+                                assert.ok(!err, 'Verify that an event series can be successfully subscribed to');
+
+                                gh.api.seriesAPI.subscribeSeries(99999999999, null, null, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when the event series can\'t be successfully subscribed to');
+                                    assert.ok(!data, 'Verify that no data returns when the event series can\'t be successfully subscribed to');
+
+                                    QUnit.start();
+                                });
                             });
                         });
                     });

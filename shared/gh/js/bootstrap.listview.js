@@ -123,12 +123,12 @@ define(['gh.core'], function(gh) {
         var seriesId = $this.closest('li').data('id');
 
         // Subscribe to the series
-        gh.api.seriesAPI.subscribeSeries(seriesId, function(err, data) {
-            // TODO: Enable error handling when the API endpoint has been implemented
-            // if (err) {
-            //     // Show a failure notification
-            //     return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
-            // }
+        var moduleId = $this.closest('ul').closest('li').data('id');
+        gh.api.seriesAPI.subscribeSeries(seriesId, null, moduleId, function(err, data) {
+            if (err) {
+                // Show a failure notification
+                return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+            }
 
             // Show a success notification
             gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
@@ -190,11 +190,10 @@ define(['gh.core'], function(gh) {
 
         // Subscribe to the series
         gh.api.seriesAPI.unsubscribeSeries(seriesId, function(err, data) {
-            // TODO: Enable error handling when the API endpoint has been implemented
-            // if (err) {
-            //     // Show a failure notification
-            //     return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
-            // }
+            if (err) {
+                // Show a failure notification
+                return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
+            }
 
             // Show a success notification
             gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');

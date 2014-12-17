@@ -26,6 +26,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     // Set the default view
     var currentView = 'agendaWeek';
 
+    // Object used to cache the triposData received on initialisation
+    var triposData = null;
+
     // The start and end dates for the terms
     // TODO: make this configurable in the admin UI
     var terms = [
@@ -173,6 +176,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         calendar.fullCalendar('removeEvents');
         // Manipulate the dates so they always display in GMT+0
         fixDatesToGMT(evt.events);
+        // Get the event context
+        getEventContext(evt.events);
         // Replace the calendar's events
         calendar.fullCalendar('addEventSource', evt.events);
         // Invoke the callback function
@@ -337,6 +342,39 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
+     * Get the context (course - subject / part) that goes with each event to be
+     * rendered on the calendar and put it on the event object
+     *
+     * @param  {Object[]}    events    An Array of events to grab the context for
+     * @private
+     */
+    var getEventContext = function(events) {
+        // Loop over all events
+        _.each(events, function(ev) {
+            // Grab the part associated to the event
+            var partParent = _.find(triposData.parts, function(part) {
+                return ev.context.ParentId === part.id;
+            });
+            // Grab the subject associated to the event. Note that this might
+            // not always be present
+            var subjectParent = _.find(triposData.subjects, function(subject) {
+                return partParent.ParentId === subject.id;
+            });
+            // Grab the course associated to the event
+            var courseParent = _.find(triposData.courses, function(course) {
+                if (subjectParent) {
+                    return subjectParent.ParentId === course.id;
+                }
+                return partParent.ParentId === course.id;
+            });
+            // Put the course, subject and part on the event object
+            ev.context.part = partParent;
+            ev.context.subject = subjectParent;
+            ev.context.course = courseParent;
+        });
+    };
+
+    /**
      * Return a term by its name
      *
      * @param  {String}    name    The name of the term
@@ -496,17 +534,24 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      /**
       * Initialise FullCalendar on the page and bind event handlers for navigating it
       *
-      * @param  {Event}       ev        Standard event object
-      * @param  {Object[]}    events    An Array of events to add to the calendar on initialisation
+      * @param  {Event}       ev                         Standard event object
+      * @param  {Object}      calendarData               The data associated to the calendar to render
+      * @param  {Object[]}    calendarData.triposData    An Array of tripos data
+      * @param  {Object[]}    calendarData.events        An Array of events to add to the calendar on initialisation
       * @private
       */
-    var initCalendar = function(ev, events) {
+    var initCalendar = function(ev, calendarData) {
+        // Cache the triposData for later use
+        triposData = calendarData.triposData;
 
         // Create an empty array if there are no events yet
-        events = events && events.results ? events.results : [];
+        calendarData.events = calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(events);
+        fixDatesToGMT(calendarData.events);
+
+        // Get the event context
+        getEventContext(calendarData.events);
 
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
@@ -526,7 +571,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:30:00',
-            'events': events,
+            'events': calendarData.events,
             'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
                     'data': data

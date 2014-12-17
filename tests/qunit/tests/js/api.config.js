@@ -85,7 +85,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
 
                 // Fetch a random test app
-                var app = testAPI.getRandomApp();
+                var app = testAPI.getTestApp();
 
                 // Verify that an error is thrown when no callback was provided
                 assert.throws(function() {
@@ -152,7 +152,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(4);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Verify that an error is thrown when no appId was provided
         gh.api.configAPI.updateConfigByApp(null, {'key1': 'val1'}, function(err) {
@@ -202,7 +202,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 assert.ok(err, 'Verify that an error is thrown when invalid configuration values were provided');
 
                 // Fetch a random test app
-                var app = testAPI.getRandomApp();
+                var app = testAPI.getTestApp();
 
                 // Verify that an error is thrown when an invalid callback was provided
                 assert.throws(function() {
@@ -232,7 +232,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(4);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Verify that an error is thrown when no appId was provided
         gh.api.configAPI.clearConfigByApp(null, ['key1', 'key2'], function(err) {

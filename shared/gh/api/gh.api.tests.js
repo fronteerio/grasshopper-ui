@@ -50,12 +50,14 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
     };
 
     /**
-     * Return a random application
+     * Return the primary test application
      *
      * @return {Object}    Object representing an application
      */
-    var getRandomApp = exports.getRandomApp = function() {
-        return _.sample(_apps);
+    var getTestApp = exports.getTestApp = function() {
+        return _.find(_apps, function(app) {
+            return app.id === 1;
+        });
     };
 
     /**
