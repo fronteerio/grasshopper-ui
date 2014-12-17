@@ -270,6 +270,73 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
 
 
     ///////////////////
+    // LOCAL STORAGE //
+    ///////////////////
+
+    /**
+     * All the functionality related to local storage
+     *
+     * @return  {Object}    Object containing the local storage functionality
+     */
+    var localDataStorage = exports.localDataStorage = function() {
+
+        /**
+         * Return a value from the local storage
+         *
+         * @param  {String}                 key    The key of the value that needs to be retrieved from the local storage
+         * @return {Object|Array|String}           The requested value
+         */
+        var get = function(key) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            }
+
+            // Return an entry from the local storage
+            return localStorage.getItem(key);
+        };
+
+        /**
+         * Remove a local value
+         *
+         * @param  {String}     key      The key of the entry that needs to be stored
+         * @return {undefined}
+         */
+        var remove = function(key) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            }
+
+            // Remove the entry from the local storage
+            return localStorage.removeItem(key);
+        };
+
+        /**
+         * Store a value in the local storage
+         *
+         * @param  {String}                 key      The key of the entry that needs to be stored
+         * @param  {Object|Array|String}    value    The value of the key that needs to be stored
+         * @return {undefined}
+         */
+        var store = function(key, value) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            } else if (_.isEmpty(value)) {
+                throw new Error('An invalid value was provided');
+            }
+
+            // Add the entry to the local storage
+            return localStorage.setItem(key, value);
+        };
+
+        return {
+            'get': get,
+            'remove': remove,
+            'store': store
+        };
+    };
+
+
+    ///////////////////
     // NOTIFICATIONS //
     ///////////////////
 
