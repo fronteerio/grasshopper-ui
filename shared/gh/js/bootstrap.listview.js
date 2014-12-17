@@ -63,7 +63,8 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
 
             // Fetch the user's events
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+            var range = gh.api.utilAPI.getCalendarDateRange();
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                 $(document).trigger('gh.calendar.refresh', [{
                     'callback': function() {
                         // Show a success notification
@@ -111,7 +112,8 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
             // Fetch the user's events
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+            var range = gh.api.utilAPI.getCalendarDateRange();
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                 $(document).trigger('gh.calendar.refresh', [{
                     'callback': function() {
                         // Show a success notification
