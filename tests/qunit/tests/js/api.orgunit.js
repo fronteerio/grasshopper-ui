@@ -825,7 +825,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the subscribeOrgUnit functionality
     QUnit.asyncTest('subscribeOrgUnit', function(assert) {
-        expect(8);
+        expect(7);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -835,36 +835,29 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         // Verify that an error is thrown when no orgUnitId was provided
-        gh.api.orgunitAPI.subscribeOrgUnit(null, function(err, data) {
+        gh.api.orgunitAPI.subscribeOrgUnit(null, function(err) {
             assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
 
             // Verify that an error is thrown when an invalid orgUnitId was provided
-            gh.api.orgunitAPI.subscribeOrgUnit('invalid_orgunit_id', function(err, data) {
+            gh.api.orgunitAPI.subscribeOrgUnit('invalid_orgunit_id', function(err) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
                 // Verify that an error is thrown when an orgunit that doesn't exist is being subscribed to
-                gh.api.orgunitAPI.subscribeOrgUnit(99999999, function(err, data) {
+                gh.api.orgunitAPI.subscribeOrgUnit(99999999, function(err) {
                     assert.ok(err, 'Verify that an error is thrown when an orgunit that doesn\'t exist is being subscribed to');
 
                     // Verify that a default callback is set when none is provided and no error is thrown
                     assert.equal(null, gh.api.orgunitAPI.subscribeOrgUnit(99999999, null), 'Verify that a default callback is set when none is provided and no error is thrown');
 
                     // Verify that an organisational unit can be successfully subscribed to
-                    var body = {'code': 200, 'msg': 'OK'};
-                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/subscribe', 200, {'Content-Type': 'application/json'}, body, function() {
-                        gh.api.orgunitAPI.subscribeOrgUnit(testOrgUnit.id, function(err, data) {
-                            assert.ok(!err, 'Verify that an organisational unit can be successfully subscribed to');
+                    gh.api.orgunitAPI.subscribeOrgUnit(testOrgUnit.id, function(err) {
+                        assert.ok(!err, 'Verify that an organisational unit can be successfully subscribed to');
 
-                            // Verify that the error is handled when an an organisational unit cannot be successfully subscribed to
-                            body = {'code': 400, 'msg': 'Bad request'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/subscribe', 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.orgunitAPI.subscribeOrgUnit(testOrgUnit.id, function(err, data) {
-                                    assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully subscribed to');
-                                    assert.ok(!data, 'Verify that no data returns when an an organisational unit cannot be successfully subscribed to');
+                        // Verify that the error is handled when an an organisational unit cannot be successfully subscribed to
+                        gh.api.orgunitAPI.subscribeOrgUnit(99999999, function(err) {
+                            assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully subscribed to');
 
-                                    QUnit.start();
-                                });
-                            });
+                            QUnit.start();
                         });
                     });
                 });
@@ -874,7 +867,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
     // Test the unsubscribeOrgUnit functionality
     QUnit.asyncTest('unsubscribeOrgUnit', function(assert) {
-        expect(8);
+        expect(7);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -884,36 +877,29 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         // Verify that an error is thrown when no orgUnitId was provided
-        gh.api.orgunitAPI.unsubscribeOrgUnit(null, function(err, data) {
+        gh.api.orgunitAPI.unsubscribeOrgUnit(null, function(err) {
             assert.ok(err, 'Verify that an error is thrown when no orgUnitId was provided');
 
             // Verify that an error is thrown when an invalid orgUnitId was provided
-            gh.api.orgunitAPI.unsubscribeOrgUnit('invalid_orgunit_id', function(err, data) {
+            gh.api.orgunitAPI.unsubscribeOrgUnit('invalid_orgunit_id', function(err) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
                 // Verify that an error is thrown when an orgunit that doesn't exist is being subscribed to
-                gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, function(err, data) {
+                gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, function(err) {
                     assert.ok(err, 'Verify that an error is thrown when an orgunit that doesn\'t exist is being subscribed to');
 
                     // Verify that a default callback is set when none is provided and no error is thrown
                     assert.equal(null, gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, null), 'Verify that a default callback is set when none is provided and no error is thrown');
 
                     // Verify that an organisational unit can be successfully unsubscribed from
-                    var body = {'code': 200, 'msg': 'OK'};
-                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/unsubscribe', 200, {'Content-Type': 'application/json'}, body, function() {
-                        gh.api.orgunitAPI.unsubscribeOrgUnit(testOrgUnit.id, function(err, data) {
-                            assert.ok(!err, 'Verify that an organisational unit can be successfully unsubscribed from');
+                    gh.api.orgunitAPI.unsubscribeOrgUnit(testOrgUnit.id, function(err) {
+                        assert.ok(!err, 'Verify that an organisational unit can be successfully unsubscribed from');
 
-                            // Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from
-                            body = {'code': 400, 'msg': 'Bad request'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/unsubscribe', 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.orgunitAPI.unsubscribeOrgUnit(testOrgUnit.id, function(err, data) {
-                                    assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from');
-                                    assert.ok(!data, 'Verify that no data returns when an an organisational unit cannot be successfully unsubscribed from');
+                        // Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from
+                        gh.api.orgunitAPI.unsubscribeOrgUnit(99999999, function(err) {
+                            assert.ok(err, 'Verify that the error is handled when an an organisational unit cannot be successfully unsubscribed from');
 
-                                    QUnit.start();
-                                });
-                            });
+                            QUnit.start();
                         });
                     });
                 });

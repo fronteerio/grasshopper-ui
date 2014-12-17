@@ -78,7 +78,7 @@ before_install:
   # Install Grasshopper
   - echo 'Installing Grasshopper'
   - cd ~/build/CUL-DigitalServices
-  - git clone --branch master --depth=1 git://github.com/CUL-DigitalServices/grasshopper.git ./grasshopper
+  - git clone --branch calendar-context --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
   - cd ./grasshopper
   - npm install
 
