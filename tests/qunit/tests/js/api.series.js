@@ -817,7 +817,6 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                             assert.equal(null, gh.api.seriesAPI.subscribeSeries(testSeries.id), 'Verify that a default callback is set when none is provided and no error is thrown');
 
                             gh.api.seriesAPI.subscribeSeries(testSeries.id, user.id, testSeries.parentId, function(err, data) {
-                                console.log(JSON.stringify(err));
                                 assert.ok(!err, 'Verify that an event series can be successfully subscribed to');
 
                                 gh.api.seriesAPI.subscribeSeries(99999999999, null, null, function(err, data) {

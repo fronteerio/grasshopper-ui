@@ -43,14 +43,10 @@ define(['gh.core'], function(gh) {
 
         // Subscribe to the module
         gh.api.orgunitAPI.subscribeOrgUnit(moduleId, function(err, data) {
-            // TODO: Enable error handling when the API endpoint has been implemented
-            // if (err) {
-            //     // Show a failure notification
-            //     return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
-            // }
-
-            // Show a success notification
-            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+            if (err) {
+                // Show a failure notification
+                return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+            }
 
             // Add `gh-list-group-item-added` to the list item
             $list.addClass('gh-list-group-item-added');
@@ -65,6 +61,17 @@ define(['gh.core'], function(gh) {
 
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                    },
+                    'events': events.results
+                }]);
+            });
         });
     });
 
@@ -84,14 +91,10 @@ define(['gh.core'], function(gh) {
 
         // Unsubscribe from the module
         gh.api.orgunitAPI.unsubscribeOrgUnit(moduleId, function(err, data) {
-            // TODO: Enable error handling when the API endpoint has been implemented
-            // if (err) {
-            //     // Show a failure notification
-            //     return gh.api.utilAPI.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
-            // }
-
-            // Show a success notification
-            gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
+            if (err) {
+                // Show a failure notification
+                return gh.api.utilAPI.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
+            }
 
             // Remove `gh-list-group-item-added` from the list item
             $list.removeClass('gh-list-group-item-added');
@@ -106,6 +109,17 @@ define(['gh.core'], function(gh) {
 
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
+
+            // Fetch the user's events
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, events) {
+                $(document).trigger('gh.calendar.refresh', [{
+                    'callback': function() {
+                        // Show a success notification
+                        gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
+                    },
+                    'events': events.results
+                }]);
+            });
         });
     });
 
