@@ -198,7 +198,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         var appId = gh.data.me && gh.data.me.AppId ? gh.data.me.AppId : null;
         gh.api.orgunitAPI.getOrgUnits(appId, false, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
-                gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
             }
 
             triposData.courses = _.filter(data.results, function(course) {
