@@ -108,6 +108,14 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 module.Series.sort(gh.api.utilAPI.sortByDisplayName);
             });
 
+            // Decorate the modules with their collapsed status
+            if (Storage) {
+                var collapsedIds = _.compact(JSON.parse(gh.api.utilAPI.localDataStorage().get('collapsed')));
+                _.each(modules.results, function(module) {
+                    module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
+                });
+            }
+
             // Render the series in the sidebar
             gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
                 'data': modules.results

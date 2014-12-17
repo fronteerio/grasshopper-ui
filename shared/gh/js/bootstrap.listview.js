@@ -18,6 +18,40 @@ define(['gh.core'], function(gh) {
     var modules = null;
 
     /**
+     * Update the list's collapsed status in the local storage
+     *
+     * @param  {Number}     id           The id of the list
+     * @param  {Boolean}    collapsed    Whether or not the list is collapsed
+     * @private
+     */
+    var updateListCollapsedStatus = function(id, collapsed) {
+        // Create a new key in the local storage if it doesn't exist yet
+        if (!gh.api.utilAPI.localDataStorage().get('collapsed')) {
+            gh.api.utilAPI.localDataStorage().store('collapsed', JSON.stringify([]));
+        }
+
+        // Fetch and parse the collapse listIds from the local storage
+        var collapsedIds = JSON.parse(gh.api.utilAPI.localDataStorage().get('collapsed'));
+
+        // Add the listId to the local storage if collapsed
+        if (collapsed) {
+            collapsedIds.push(id);
+
+        // Remove the listId from the local storage if not collapsed
+        } else {
+            _.remove(collapsedIds, function(listId) { return listId === id; });
+        }
+
+        // Store the collapsed listIds
+        gh.api.utilAPI.localDataStorage().store('collapsed', JSON.stringify(_.compact(collapsedIds)));
+    };
+
+
+    /////////////
+    // BINDING //
+    /////////////
+
+    /**
      * Toggle a list item's children's visibility and update the icon classes
      */
     $('body').on('click', '.gh-toggle-list', function() {
@@ -25,6 +59,8 @@ define(['gh.core'], function(gh) {
         $(this).closest('.list-group-item').toggleClass('gh-list-group-item-open');
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
+        // Update the list's collapsed status in the local storage
+        updateListCollapsedStatus($(this).closest('.list-group-item').attr('data-id'), $(this).closest('.list-group-item').hasClass('gh-list-group-item-open'));
     });
 
     /**

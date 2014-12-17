@@ -320,8 +320,6 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         var store = function(key, value) {
             if (!_.isString(key)) {
                 throw new Error('An invalid value for \'key\' was provided');
-            } else if (_.isEmpty(value)) {
-                throw new Error('An invalid value was provided');
             }
 
             // Add the entry to the local storage
