@@ -64,6 +64,20 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         assert.strictEqual(convertedDate, '2014-11-28T10:50:49.000Z', 'Verify that the date is converted correctly');
     });
 
+    // Test the 'getCalendarDateRange' functionality
+    QUnit.test('getCalendarDateRange', function(assert) {
+        // Get the current year to base calculations off of
+        var currentYear = new Date().getFullYear();
+        var expectedStart = (currentYear - 1) + '-01-01';
+        var expectedEnd = (currentYear + 1) + '-12-31';
+
+        // Verify that the calendar's start date is calculated correctly
+        assert.strictEqual(gh.api.utilAPI.getCalendarDateRange().start, expectedStart, 'Verify that the calendar\'s start date is calculated correctly');
+
+        // Verify that the calendar's end date is calculated correctly
+        assert.strictEqual(gh.api.utilAPI.getCalendarDateRange().end, expectedEnd, 'Verify that the calendar\'s end date is calculated correctly');
+    });
+
     // Test the 'isDateInRange' functionality
     QUnit.test('isDateInRange', function(assert) {
 
