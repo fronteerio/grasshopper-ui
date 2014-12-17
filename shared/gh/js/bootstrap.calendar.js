@@ -351,26 +351,29 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var getEventContext = function(events) {
         // Loop over all events
         _.each(events, function(ev) {
-            // Grab the part associated to the event
-            var partParent = _.find(triposData.parts, function(part) {
-                return ev.context.ParentId === part.id;
-            });
-            // Grab the subject associated to the event. Note that this might
-            // not always be present
-            var subjectParent = _.find(triposData.subjects, function(subject) {
-                return partParent.ParentId === subject.id;
-            });
-            // Grab the course associated to the event
-            var courseParent = _.find(triposData.courses, function(course) {
-                if (subjectParent) {
-                    return subjectParent.ParentId === course.id;
-                }
-                return partParent.ParentId === course.id;
-            });
-            // Put the course, subject and part on the event object
-            ev.context.part = partParent;
-            ev.context.subject = subjectParent;
-            ev.context.course = courseParent;
+            // Only grab extra context if the necessary data is available on the event
+            if (ev.context) {
+                // Grab the part associated to the event
+                var partParent = _.find(triposData.parts, function(part) {
+                    return ev.context.ParentId === part.id;
+                });
+                // Grab the subject associated to the event. Note that this might
+                // not always be present
+                var subjectParent = _.find(triposData.subjects, function(subject) {
+                    return partParent.ParentId === subject.id;
+                });
+                // Grab the course associated to the event
+                var courseParent = _.find(triposData.courses, function(course) {
+                    if (subjectParent) {
+                        return subjectParent.ParentId === course.id;
+                    }
+                    return partParent.ParentId === course.id;
+                });
+                // Put the course, subject and part on the event object
+                ev.context.part = partParent;
+                ev.context.subject = subjectParent;
+                ev.context.course = courseParent;
+            }
         });
     };
 
@@ -541,17 +544,18 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
       * @private
       */
     var initCalendar = function(ev, calendarData) {
-        // Cache the triposData for later use
-        triposData = calendarData.triposData;
-
         // Create an empty array if there are no events yet
-        calendarData.events = calendarData.events && calendarData.events.results ? calendarData.events.results : [];
+        var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(calendarData.events);
+        fixDatesToGMT(events);
 
-        // Get the event context
-        getEventContext(calendarData.events);
+        if (calendarData && calendarData.triposData) {
+            // Cache the triposData for later use
+            triposData = calendarData.triposData;
+            // Get the event context
+            getEventContext(calendarData.events);
+        }
 
         // Initialize the calendar object
         calendar = $('#gh-calendar-container').fullCalendar({
@@ -571,7 +575,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'maxTime': '20:00:00',
             'minTime': '07:00:00',
             'slotDuration': '00:30:00',
-            'events': calendarData.events,
+            'events': events,
             'eventRender': function(data) {
                 return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
                     'data': data
