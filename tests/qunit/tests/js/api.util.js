@@ -180,10 +180,10 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         assert.strictEqual(gh.api.utilAPI.generateRandomString().length, 10, 'Verify that the returned string has exactly 10 characters');
 
         // Verify that the returned string does not contain any uppercase characters when lowercase is specified
-        assert.ok((/^[a-z]*$/).test(gh.api.utilAPI.generateRandomString(true)));
+        assert.ok((/^[a-z0-9]*$/).test(gh.api.utilAPI.generateRandomString(true)));
 
         // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
-        assert.ok((/[A-Z]/g).test(gh.api.utilAPI.generateRandomString()));
+        assert.ok((/[A-Z0-9]/g).test(gh.api.utilAPI.generateRandomString()));
     });
 
     // Test the 'mockRequest' functionality
