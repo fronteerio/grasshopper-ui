@@ -95,7 +95,7 @@ require(['jquery','lodash'], function($, _) {
         tests = [];
 
         // Reset the total scores
-        totalScore = 0
+        totalScore = 0;
         totalScoreFailed = 0;
         totalScorePassed = 0;
 
