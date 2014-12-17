@@ -129,6 +129,9 @@ module.exports = function(grunt) {
                 'grunt.js',
                 'apps/**/*.js',
                 'shared/gh/**/*.js',
+                'tests/casperjs/**/*.js',
+                'tests/qunit/js/app.js',
+                'tests/qunit/tests/js/*.js'
             ]
         },
         'qunit': {
