@@ -33,7 +33,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     var createRandomEvent = function(opts, callback) {
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
         // Create a random user
         testAPI.createTestUser(app.id, false, function(err, user) {
             if (err) {
@@ -119,7 +119,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         expect(21);
 
         // Fetch a random test app
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {

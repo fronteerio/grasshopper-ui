@@ -32,7 +32,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 return callback(err);
             }
 
-            var appId = testAPI.getRandomApp().id;
+            var appId = testAPI.getTestApp().id;
             var user = {
                 'displayName': gh.api.utilAPI.generateRandomString(),
                 'email': gh.api.utilAPI.generateRandomString(),
@@ -53,7 +53,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     QUnit.asyncTest('getUsers', function(assert) {
         expect(6);
 
-        var app = testAPI.getRandomApp();
+        var app = testAPI.getTestApp();
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -431,7 +431,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     QUnit.asyncTest('createUser', function(assert) {
         expect(14);
 
-        var appId = testAPI.getRandomApp().id;
+        var appId = testAPI.getTestApp().id;
         var user = {
             'displayName': gh.api.utilAPI.generateRandomString(),
             'email': gh.api.utilAPI.generateRandomString(),

@@ -346,6 +346,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * rendered on the calendar and put it on the event object
      *
      * @param  {Object[]}    events    An Array of events to grab the context for
+     * @private
      */
     var getEventContext = function(events) {
         // Loop over all events

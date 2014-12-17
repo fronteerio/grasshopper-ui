@@ -32,7 +32,7 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
                 return callback(err);
             }
 
-            var appId = testAPI.getRandomApp().id;
+            var appId = testAPI.getTestApp().id;
             var displayName = gh.api.utilAPI.generateRandomString();
             var email = gh.api.utilAPI.generateRandomString() + '@' + gh.api.utilAPI.generateRandomString() + '.com';
             var password = gh.api.utilAPI.generateRandomString();
