@@ -130,9 +130,6 @@ define(['gh.core'], function(gh) {
                 return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
-            // Show a success notification
-            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
-
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
@@ -167,7 +164,7 @@ define(['gh.core'], function(gh) {
                 $(document).trigger('gh.calendar.refresh', [{
                     'callback': function() {
                         // Show a success notification
-                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.');
+                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
                     },
                     'events': events.results
                 }]);
@@ -194,9 +191,6 @@ define(['gh.core'], function(gh) {
                 // Show a failure notification
                 return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
             }
-
-            // Show a success notification
-            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
 
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
