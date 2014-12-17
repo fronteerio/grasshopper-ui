@@ -15,10 +15,39 @@
 
 define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery-bbq'], function(gh) {
 
+    // Get the current page, strip out slashes etc
+    var currentPage = window.location.pathname.split('/')[1];
+
 
     /////////////////
     //  RENDERING  //
     /////////////////
+
+    /**
+     * Render admin user functionality and show the container
+     *
+     * @param  {Object[]}    administrators    The administrator users to render
+     * @private
+     */
+    var renderAdmins = function(administrators) {
+        gh.api.utilAPI.renderTemplate($('#gh-administrators-template'), {
+            'gh': gh,
+            'administrators': administrators
+        }, $('#gh-administrators-container'));
+        $('#gh-administrators-container').show();
+    };
+
+    /**
+     * Render configuration functionality and show the container
+     * @private
+     */
+    var renderConfig = function(tenants) {
+        gh.api.utilAPI.renderTemplate($('#gh-configuration-template'), {
+            'gh': gh,
+            'tenants': tenants
+        }, $('#gh-configuration-container'));
+        $('#gh-configuration-container').show();
+    };
 
     /**
      * Render the header
@@ -32,7 +61,17 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Render tenant admin functionality
+     * Render the admin navigation
+     */
+    var renderNavigation = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-navigation-template'), {
+            'gh': gh,
+            'currentPage': currentPage
+        }, $('#gh-navigation-container'));
+    };
+
+    /**
+     * Render tenant admin functionality and show the container
      *
      * @param  {Object[]}    tenants    The tenants and apps to render
      * @private
@@ -42,20 +81,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             'gh': gh,
             'tenants': tenants
         }, $('#gh-tenants-container'));
+        $('#gh-tenants-container').show();
     };
 
-    /**
-     * Render admin user functionality
-     *
-     * @param  {Object[]}    administrators    The administrator users to render
-     * @private
-     */
-    var renderAdmins = function(administrators) {
-        gh.api.utilAPI.renderTemplate($('#gh-administrators-template'), {
-            'gh': gh,
-            'administrators': administrators
-        }, $('#gh-administrators-container'));
-    };
 
     /////////////////
     //  UTILITIES  //
@@ -88,11 +116,107 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
+     * Get the configuration data for an app
+     *
+     * @return {[type]} [description]
+     * @private
+     */
+    var getConfigData = function(tenants, callback) {
+        var tenantsToDo = tenants.length;
+        var tenantsDone = 0;
+
+        var appsToDo = 0;
+        var appsDone = 0;
+
+        /**
+         * Retrieves the configuration for an application
+         *
+         * @param  {Number}      appId        The ID of the application to retrieve the configuration for
+         * @param  {Function}    _callback    Standard callback function
+         * @private
+         */
+        var getAppConfig = function(appId, _callback) {
+            $.ajax({
+                'url': '/api/config',
+                'type': 'GET',
+                'data': {
+                    'app': appId
+                },
+                'success': function(data) {
+                    return _callback(data);
+                },
+                'error': function(jqXHR, textStatus) {
+                    return _callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+                }
+            });
+        };
+
+        var getConfigForApps = function(apps, _callback) {
+            getAppConfig(apps[appsDone].id, function(_config) {
+                // Remove unwanted properties from the configuration object
+                delete _config.createdAt;
+                delete _config.updatedAt;
+                // Cache the configuration on the app object
+                apps[appsDone].config = _config;
+
+                appsDone++;
+                // Don't try and fetch the next app's config if none are left in this tenant
+                if (appsDone === appsToDo) {
+                    tenantsDone++;
+                    if (tenantsDone === tenantsToDo) {
+                        _callback();
+                    } else {
+                        getAppsInTenant(tenants[tenantsDone], _callback);
+                    }
+                // If there are other apps in the tenant, fetch the next one's config
+                } else {
+                    getConfigForApps(apps, _callback);
+                }
+            });
+        };
+
+        /**
+         * Recursive function that goes through a tenant's apps and retrieves the config for them
+         *
+         * @param  {Object}      tenant       The tenant to iterate over its apps
+         * @param  {Function}    _callback    Standard callback function
+         * @private
+         */
+        var getAppsInTenant = function(tenant, _callback) {
+            // If there are no apps we can skip this tenant
+            if (tenant.apps.length === 0) {
+                tenantsDone++;
+                // If no other tenants are left, execute the callback
+                if (tenantsDone === tenantsToDo) {
+                    _callback();
+                // If there are other tenants, iterate over the next one's apps
+                } else {
+                    getAppsInTenant(tenants[tenantsDone], _callback);
+                }
+            } else {
+                appsToDo = tenant.apps.length;
+                appsDone = 0;
+                getConfigForApps(tenant.apps, _callback);
+            }
+        };
+
+        // If there are no tenants yet we can start rendering
+        if (tenantsToDo === 0) {
+            callback([]);
+        // Otherwise we get the config for each app in the tenants
+        } else {
+            getAppsInTenant(tenants[tenantsDone], function() {
+                callback(tenants);
+            });
+        }
+    };
+
+    /**
      * Get tenant data and app data for those tenants and render them
      *
      * @private
      */
-    var getTenantData = function() {
+    var getTenantData = function(callback) {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
             if (err) {
                 gh.api.utilAPI.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
@@ -101,7 +225,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             var todo = tenants.length;
             var done = 0;
 
-            var getApps = function(tenantId, callback) {
+            var getApps = function(tenantId, _callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     if (err) {
                         gh.api.utilAPI.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
@@ -114,22 +238,21 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
                     done++;
                     if (done === todo) {
-                        callback(tenants);
+                        _callback(tenants);
                     } else {
-                        getApps(tenants[done].id, callback);
+                        getApps(tenants[done].id, _callback);
                     }
                 });
             };
 
             // If there are no tenants yet we can start rendering
             if (todo === 0) {
-                renderTenants([]);
-
+                callback([]);
             // Otherwise we get the apps for each tenant
             } else {
                 getApps(tenants[done].id, function(tenants) {
                     tenants.sort(gh.api.utilAPI.sortByDisplayName);
-                    renderTenants(tenants);
+                    callback(tenants);
                 });
             }
         });
@@ -140,13 +263,13 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      *
      * @private
      */
-    var getAdminUserData = function() {
+    var getAdminUserData = function(callback) {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
             if (err) {
                 gh.api.utilAPI.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
             }
 
-            renderAdmins(administrators.rows);
+            callback(administrators.rows);
         });
     };
 
@@ -173,7 +296,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 if (err) {
                     return gh.api.utilAPI.notification('App not created.', 'The app could not be successfully created.', 'error');
                 }
-                getTenantData();
+                setUpTenants();
                 gh.api.utilAPI.notification('App created.', 'The app was successfully created.', 'success');
             });
         } else if (updateApp) {
@@ -186,7 +309,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 if (err) {
                     return gh.api.utilAPI.notification('App not updated.', 'The app could not be successfully updated.', 'error');
                 }
-                getTenantData();
+                setUpTenants();
                 gh.api.utilAPI.notification('App updated.', 'The app was successfully updated.', 'success');
             });
         } else if (createTenant) {
@@ -195,7 +318,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 if (err) {
                     return gh.api.utilAPI.notification('Tenant not created.', 'The tenant could not be successfully created.', 'error');
                 }
-                getTenantData();
+                setUpTenants();
                 gh.api.utilAPI.notification('Tenant updated.', 'The tenant was successfully updated.', 'success');
             });
         }
@@ -222,7 +345,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 if (err) {
                     return gh.api.utilAPI.notification('Administrator not created.', 'The administrator could not be successfully created.', 'error');
                 }
-                getAdminUserData();
+                setUpUsers();
                 gh.api.utilAPI.notification('Administrator created.', 'The administrator was successfully created.', 'success');
             });
         } else if (updateAdmin) {
@@ -233,10 +356,62 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 if (err) {
                     return gh.api.utilAPI.notification('Administrator not updated.', 'The administrator could not be successfully updated.', 'error');
                 }
-                getAdminUserData();
+                setUpUsers();
                 gh.api.utilAPI.notification('Administrator updated.', 'The administrator was successfully updated.', 'success');
             });
         }
+    };
+
+    var submitConfigurationForm = function() {
+        var $form = $(this);
+        var data = _.object(_.map($form.serializeArray(), _.values));
+        data.app = $form.data('appid');
+
+        // Standards say that unchecked checkboxes shouldn't be sent over to the server. Too bad, we need to add them
+        // in explicitely as config values might have changed.
+        _.each($('[type="checkbox"]:not(:checked)', $form), function(chk) {
+            data[$(chk).attr('name')] = $(chk).is(':checked');
+        });
+
+        $.ajax({
+            'url': '/api/config',
+            'type': 'POST',
+            'data': data,
+            'success': function(data) {
+                console.log(data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return console.log({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+        
+        return false;
+    };
+
+    var setUpConfig = function() {
+        getTenantData(function(tenants) {
+            getConfigData(tenants, function(tenants) {
+                renderConfig(tenants);
+            });
+        });
+    };
+
+    /**
+     * Set up the tenants page
+     */
+    var setUpTenants = function() {
+        getTenantData(function(tenants) {
+            renderTenants(tenants);
+        });
+    };
+
+    /**
+     * Set up the users page
+     */
+    var setUpUsers = function() {
+        getAdminUserData(function(administrators) {
+            renderAdmins(administrators);
+        });
     };
 
 
@@ -253,6 +428,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         $('body').on('submit', '.gh-signin-form', doLogin);
         $('body').on('click', '#gh-tenants-apps-form button', submitTenantForm);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
+        $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
     };
 
     /**
@@ -263,9 +439,21 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var initIndex = function() {
         addBinding();
         renderHeader();
+        // Determine which page to load based on the login state and
+        // page the user's on
         if (gh.data && gh.data.me) {
-            getTenantData();
-            getAdminUserData();
+            // Show the right content, depending on the page the user's on
+            if (currentPage === 'configuration') {
+                setUpConfig();
+            } else if (currentPage === 'tenants') {
+                setUpTenants();
+            } else if (currentPage === 'users') {
+                setUpUsers();
+            } else {
+                currentPage = 'tenants';
+                setUpTenants();
+            }
+            renderNavigation();
         }
     };
 

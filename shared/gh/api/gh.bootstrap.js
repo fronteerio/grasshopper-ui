@@ -30,6 +30,7 @@ requirejs.config({
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
         'sinon': 'vendor/js/sinon-1.12.1',
+        'jquery.serializeobject': 'vendor/js/jquery.serializeobject',
         'text': 'vendor/js/require.text',
 
         // GH API modules

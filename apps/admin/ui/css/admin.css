@@ -33,14 +33,6 @@ main h2 {
     width: 100%;
 }
 
-.panel {
-    border-radius: 0;
-}
-
-.panel .panel-heading h2 {
-    margin: 0;
-}
-
 .panel.gh-administration-new-container {
     border-bottom: none;
 }
