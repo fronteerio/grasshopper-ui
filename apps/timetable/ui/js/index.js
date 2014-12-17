@@ -69,7 +69,12 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                     gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
                 }
 
-                $(document).trigger('gh.calendar.init', data);
+                var calendarData = {
+                    'triposData': triposData,
+                    'events': data
+                };
+
+                $(document).trigger('gh.calendar.init', calendarData);
             });
         }
     };
