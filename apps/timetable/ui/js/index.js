@@ -64,7 +64,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         if (!gh.data.me) {
             $(document).trigger('gh.calendar.init');
         } else {
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, '2010-01-01', '2015-12-31', function(err, data) {
+            var range = gh.api.utilAPI.getCalendarDateRange();
+            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
                 if (err) {
                     gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
                 }

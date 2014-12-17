@@ -47,6 +47,26 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     };
 
     /**
+     * Get the date range the calendar should be displaying. The range starts on January 1st of the
+     * previous year and ends December 31st of the next year.
+     *
+     * @return {Object}     Object containg start and end date that form the range of the calendar
+     */
+    var getCalendarDateRange = exports.getCalendarDateRange = function() {
+        // Get the current year to base calculations off of
+        var currentYear = new Date().getFullYear();
+
+        // Create the range object to return
+        var range = {
+            'start': (currentYear - 1) + '-01-01',
+            'end': (currentYear + 1) + '-12-31'
+        };
+
+        // Return the range object
+        return range;
+    };
+
+    /**
      * Determine whether or not a given date is in the range of 2 dates
      *
      * @param  {Number}    date         The date in UNIX format
