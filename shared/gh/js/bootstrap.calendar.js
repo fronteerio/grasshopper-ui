@@ -554,7 +554,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             // Cache the triposData for later use
             triposData = calendarData.triposData;
             // Get the event context
-            getEventContext(calendarData.events);
+            getEventContext(events);
         }
 
         // Initialize the calendar object
