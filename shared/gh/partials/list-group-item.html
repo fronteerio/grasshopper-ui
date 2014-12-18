@@ -8,12 +8,12 @@
         <% subscribedAll = (numSubscribed === d.Series.length) %>
         <% subscribedSome = (numSubscribed && numSubscribed < d.Series.length) %>
     <% } %>
-    <li class="list-group-item <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%- d.id %>">
+    <li class="list-group-item <% if (d.collapsed) { %>gh-list-group-item-open<% } %> <% if (d.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%- d.id %>">
         <div class="gh-list-group-item-container">
             <% if (!isChild) { %>
                 <button class="btn btn-link gh-toggle-list">
                     <div class="gh-list-icon">
-                        <i class="fa fa-caret-right"></i>
+                        <i class="fa <% if (d.collapsed) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>"></i>
                     </div>
             <% } %>
                     <div class="gh-list-description">

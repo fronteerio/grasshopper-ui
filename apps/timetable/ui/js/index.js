@@ -108,10 +108,25 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 module.Series.sort(gh.api.utilAPI.sortByDisplayName);
             });
 
+            // Decorate the modules with their collapsed status if LocalStorage is supported
+            if (Storage) {
+                var collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('collapsed'));
+                _.each(modules.results, function(module) {
+                    module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
+                });
+            }
+
             // Render the series in the sidebar
             gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
                 'data': modules.results
             }, $('#gh-modules-container'));
+
+            // Clear local storage
+            gh.api.utilAPI.localDataStorage().remove('collapsed');
+
+            // Add the current collapsed module(s) back to the local storage
+            var collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
+            gh.api.utilAPI.localDataStorage().store('collapsed', collapsedIds);
         });
     };
 
