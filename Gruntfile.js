@@ -195,9 +195,10 @@ module.exports = function(grunt) {
                     'skipPragmas': false,
                     'skipModuleInsertion': false,
                     'modules': [{
-                        'name': 'gh.core'
+                        'name': 'gh.core',
+                        'exclude': ['jquery']
                     }],
-                    'fileExclusionRegExp': /^(\.|apache|etc|node_modules|tools)/,
+                    'fileExclusionRegExp': /^(\.|apache|etc|node_modules|tests|tools)/,
                     'logLevel': 2
                 }
             }
@@ -237,7 +238,7 @@ module.exports = function(grunt) {
                                 '<%= target %>/optimized/shared',
                                 '<%= target %>/optimized/tests'
                             ],
-                            'includeExts': ['html']
+                            'includeExts': ['html', 'css']
                         })
                     },
 
@@ -246,7 +247,8 @@ module.exports = function(grunt) {
                         'files': _hashFiles({
                             'directories': [
                                 '<%= target %>/optimized/shared/gh/**'
-                            ]
+                            ],
+                            'excludeExts': ['html']
                         }),
                         'references': _replacementReferences({
                             'directories': [

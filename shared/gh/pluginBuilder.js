@@ -14,23 +14,9 @@
  */
 
 define([], function() {
-    /**
-     * Function that checks whether the server is available by checking a
-     * valid response from the me feed. If it is responding, it redirects
-     * to the me page. We're not using the APIs as loading those would
-     * result in an infinite loop to the `/unavailable` page
-     */
-    var checkServerAvailable = function () {
-        $.ajax({
-            'url': '/api/me',
-            'success': function() {
-                window.location = '/';
-            }
-        });
+    return {
+        'load': function(name, parentRequire, load, config) {
+            load({});
+        }
     };
-
-    checkServerAvailable();
-
-    // Re-check every minute to see if the server has come back online
-    setInterval(checkServerAvailable, 60000);
 });
