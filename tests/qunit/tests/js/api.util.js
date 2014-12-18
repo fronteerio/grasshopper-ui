@@ -180,10 +180,10 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         assert.strictEqual(gh.api.utilAPI.generateRandomString().length, 10, 'Verify that the returned string has exactly 10 characters');
 
         // Verify that the returned string does not contain any uppercase characters when lowercase is specified
-        assert.ok((/^[a-z]*$/).test(gh.api.utilAPI.generateRandomString(true)));
+        assert.ok((/^[a-z0-9]*$/).test(gh.api.utilAPI.generateRandomString(true)));
 
         // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
-        assert.ok((/[A-Z]/g).test(gh.api.utilAPI.generateRandomString()));
+        assert.ok((/[A-Z0-9]/g).test(gh.api.utilAPI.generateRandomString()));
     });
 
     // Test the 'mockRequest' functionality
@@ -330,6 +330,70 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
 
         // Verify that GA tracking succeeds with correct values
         assert.ok(gh.api.utilAPI.sendTrackingEvent('category', 'action', 'label', 1), 'Verify that GA tracking succeeds with correct values');
+    });
+
+
+    ///////////////////
+    // LOCAL STORAGE //
+    ///////////////////
+
+    // Test the 'get' functionality
+    QUnit.test('get', function(assert) {
+
+        // Stora a local test value
+        gh.api.utilAPI.localDataStorage().store('foo', 'bar');
+
+        // Verify that an error is thrown when no key was provided
+        assert.throws(function() {
+            gh.api.utilAPI.localDataStorage().get();
+        });
+
+        // Verify that an error is thrown when an invalid key was provided
+        assert.throws(function() {
+            gh.api.utilAPI.localDataStorage().get({'invalid': 'value'});
+        });
+
+        // Verify that a value can be retrieved successfully
+        assert.strictEqual('bar', gh.api.utilAPI.localDataStorage().get('foo'));
+    });
+
+    // Test the 'remove' functionality
+    QUnit.test('remove', function(assert) {
+
+        // Stora a local test value
+        gh.api.utilAPI.localDataStorage().store('some_crazy_key', 'some_crazy_value');
+
+        // Verify that an error is thrown when no key was provided
+        assert.throws(function() {
+            gh.api.utilAPI.localDataStorage().remove();
+        }, 'Verify that an error is thrown when no key was provided');
+
+        // Verify that an error is thrown when an invalid value for key was provided
+        assert.throws(function() {
+            gh.api.utilAPI.localDataStorage().remove({'invalid': 'value'});
+        }, 'Verify that an error is thrown when an invalid value for \'key\' was provided');
+
+        // Verify that an entry can be removed without errors
+        assert.ok('undefined', gh.api.utilAPI.localDataStorage().remove('some_crazy_key'), 'Verify that an entry can be removed without errors');
+    });
+
+    // Test the 'store' functionality
+    QUnit.test('store', function(assert) {
+
+        // Verify that an error is thrown when no key was provided
+        assert.throws(function() {
+            gh.api.utilAPI.localDataStorage().store(null, 'bar');
+        }, 'Verify that an error is thrown when no key was provided');
+
+        // Verify that an error is thrown when an invalid value was provided
+        assert.throws(function() {
+            var foo = {};
+            foo.bar = foo;
+            gh.api.utilAPI.localDataStorage().store('some_key', foo);
+        }, 'Verify that an error is thrown when an invalid value was provided');
+
+        // Verify that a value can be stored locally
+        assert.ok('undefined', gh.api.utilAPI.localDataStorage().store('some_key', 'bar'), 'Verify that a value can be stored locally');
     });
 
 

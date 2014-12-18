@@ -65,17 +65,15 @@ var mainUtil = (function() {
      *
      * @param  {Boolean}    toLowerCase    Whether or not the string should be returned lowercase
      * @return {String}                    Random 10 character sequence of upper and lowercase letters
+     * @private
      */
     var generateRandomString = function(toLowerCase) {
-        if (!_.isEmpty(toLowerCase) && !_.isBoolean(toLowerCase)) {
+        if (toLowerCase && !_.isBoolean(toLowerCase)) {
             throw new Error('An invalid value for toLowerCase has been provided');
         }
 
-        var rndString = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        for (var i = 0; i < 10; i++) {
-            rndString += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
+        // Generate a random string
+        var rndString = _.sample('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 10).join('');
         if (toLowerCase) {
             rndString = rndString.toLowerCase();
         }

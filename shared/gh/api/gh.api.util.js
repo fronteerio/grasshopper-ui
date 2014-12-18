@@ -125,11 +125,8 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             throw new Error('An invalid value for toLowerCase has been provided');
         }
 
-        var rndString = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        for (var i = 0; i < 10; i++) {
-            rndString += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
+        // Generate a random string
+        var rndString = _.sample('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 10).join('');
         if (toLowerCase) {
             rndString = rndString.toLowerCase();
         }
@@ -266,6 +263,75 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         }
 
         return true;
+    };
+
+
+    ///////////////////
+    // LOCAL STORAGE //
+    ///////////////////
+
+    /**
+     * All the functionality related to local storage
+     *
+     * @return  {Object}    Object containing the local storage functionality
+     */
+    var localDataStorage = exports.localDataStorage = function() {
+
+        /**
+         * Return a value from the local storage
+         *
+         * @param  {String}                 key    The key of the value that needs to be retrieved from the local storage
+         * @return {Object|Array|String}           The requested value
+         */
+        var get = function(key) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            }
+
+            // Return an entry from the local storage
+            return JSON.parse(localStorage.getItem(key));
+        };
+
+        /**
+         * Remove a local value
+         *
+         * @param  {String}     key      The key of the entry that needs to be stored
+         * @return {undefined}
+         */
+        var remove = function(key) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            }
+
+            // Remove the entry from the local storage
+            return localStorage.removeItem(key);
+        };
+
+        /**
+         * Store a value in the local storage
+         *
+         * @param  {String}                 key      The key of the entry that needs to be stored
+         * @param  {Object|Array|String}    value    The value of the key that needs to be stored
+         * @return {undefined}
+         */
+        var store = function(key, value) {
+            if (!_.isString(key)) {
+                throw new Error('An invalid value for \'key\' was provided');
+            }
+
+            // Add the entry to the local storage
+            try {
+                return localStorage.setItem(key, JSON.stringify(value));
+            } catch(err) {
+                throw new Error('An invalid value was provided');
+            }
+        };
+
+        return {
+            'get': get,
+            'remove': remove,
+            'store': store
+        };
     };
 
 
