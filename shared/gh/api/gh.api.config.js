@@ -78,7 +78,7 @@ define(['exports'], function(exports) {
             'type': 'POST',
             'data': configValues,
             'success': function(data) {
-                return callback(null);
+                return callback();
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});

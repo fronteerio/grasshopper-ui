@@ -64,7 +64,6 @@
                                 </div>
                                 <div id="<%= randomId %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
-                                        <% console.log(app) %>
                                         <form role="form" class="gh-configuration-form" data-appid="<%= app.id %>">
                                             <% _.each(app.config, function(value, option) { %>
                                                 <% if (typeof value === 'boolean') { %>

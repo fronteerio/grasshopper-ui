@@ -422,8 +422,8 @@ tbody tr:last-child > td.fc-widget-content {
 /* NAVIGATION PILL */
 /*******************/
 
-.nav-pills {
-    margin-top: 2px;
+.nav-stacked > li + li {
+    margin-top: 0;
 }
 
 .nav-pills > li > a {

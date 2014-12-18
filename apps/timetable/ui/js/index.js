@@ -109,8 +109,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             });
 
             // Decorate the modules with their collapsed status if LocalStorage is supported
+            var collapsedIds = [];
             if (Storage) {
-                var collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('collapsed'));
+                collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('collapsed'));
                 _.each(modules.results, function(module) {
                     module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
                 });
@@ -125,7 +126,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             gh.api.utilAPI.localDataStorage().remove('collapsed');
 
             // Add the current collapsed module(s) back to the local storage
-            var collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
+            collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
             gh.api.utilAPI.localDataStorage().store('collapsed', collapsedIds);
         });
     };

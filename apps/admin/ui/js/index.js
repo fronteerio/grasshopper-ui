@@ -119,13 +119,12 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Get the configuration data for an app
+     * Get the configuration data for all apps in all tenants
      *
-     * @return {[type]} [description]
+     * @param  {Object[]}    tenants    The tenants and apps to fetch configuration for
      * @private
      */
     var getConfigData = function(tenants, callback) {
-        var tenantsToDo = tenants.length;
         var tenantsDone = 0;
 
         var appsToDo = 0;
@@ -148,22 +147,24 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 // Remove unwanted properties from the configuration object
                 delete config.createdAt;
                 delete config.updatedAt;
+
                 // Cache the configuration on the app object
                 apps[appsDone].config = config;
 
-                appsDone++;
-                // Don't try and fetch the next app's config if none are left in this tenant
-                if (appsDone === appsToDo) {
-                    tenantsDone++;
-                    if (tenantsDone === tenantsToDo) {
-                        _callback();
-                    } else {
-                        getAppsInTenant(tenants[tenantsDone], _callback);
-                    }
                 // If there are other apps in the tenant, fetch the next one's config
-                } else {
-                    getConfigForApps(apps, _callback);
+                appsDone++;
+                if (appsDone !== appsToDo) {
+                    return getConfigForApps(apps, _callback);
                 }
+
+                // There are no other apps. If there are no other tenants call back
+                tenantsDone++;
+                if (tenantsDone === tenants.length) {
+                    return _callback();
+                }
+
+                // There are no other apps. There are other tenants so go and get the app configs for those
+                getAppsInTenant(tenants[tenantsDone], _callback);
             });
         };
 
@@ -177,30 +178,31 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         var getAppsInTenant = function(tenant, _callback) {
             // If there are no apps we can skip this tenant
             if (tenant.apps.length === 0) {
-                tenantsDone++;
                 // If no other tenants are left, execute the callback
-                if (tenantsDone === tenantsToDo) {
-                    _callback();
-                // If there are other tenants, iterate over the next one's apps
-                } else {
-                    getAppsInTenant(tenants[tenantsDone], _callback);
+                tenantsDone++;
+                if (tenantsDone === tenants.length) {
+                    return _callback();
                 }
-            } else {
-                appsToDo = tenant.apps.length;
-                appsDone = 0;
-                getConfigForApps(tenant.apps, _callback);
+
+                // There are other tenants, iterate over the next one's apps
+                return getAppsInTenant(tenants[tenantsDone], _callback);
             }
+
+            // There are apps, got retrieve their configuration
+            appsToDo = tenant.apps.length;
+            appsDone = 0;
+            getConfigForApps(tenant.apps, _callback);
         };
 
         // If there are no tenants yet we can start rendering
-        if (tenantsToDo === 0) {
-            callback([]);
-        // Otherwise we get the config for each app in the tenants
-        } else {
-            getAppsInTenant(tenants[tenantsDone], function() {
-                callback(tenants);
-            });
+        if (tenants.length === 0) {
+            return callback([]);
         }
+
+        // There are tenants. Go retrieve their apps
+        getAppsInTenant(tenants[tenantsDone], function() {
+            callback(tenants);
+        });
     };
 
     /**
