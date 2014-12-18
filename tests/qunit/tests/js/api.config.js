@@ -16,96 +16,36 @@
 require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
     module('Config API');
 
-    // Test the getConfigSchema functionality
-    QUnit.asyncTest('getConfigSchema', function(assert) {
-        expect(2);
 
-        // Verify that an error is thrown when no callback was provided
-        assert.throws(function() {
-            gh.api.configAPI.getConfigSchema();
-        }, 'Verify that an error is thrown when no callback was provided');
-
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.configAPI.getConfigSchema('invalid_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
-
-        // Verify that the config schema can be retrieved without errors
-        gh.api.configAPI.getConfigSchema(function(err, data) {
-
-            /*
-             * TODO: wait for back-end implementation
-             *
-            assert.ok(!err, 'Verify that the config schema can be retrieved without errors');
-            assert.ok(data, 'Verify that the config schema is returned');
-            */
-
-            QUnit.start();
-        });
-    });
-
-    // Test the getConfig functionality
+    // Test the `getConfig` functionality
     QUnit.asyncTest('getConfig', function(assert) {
-        expect(2);
+        expect(7);
+
+        var testApp = testAPI.getTestApp();
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
-            gh.api.configAPI.getConfig();
+            gh.api.configAPI.getConfig(testApp.id);
         }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.api.configAPI.getConfig('invalid_callback');
+            gh.api.configAPI.getConfig(testApp.id, 'invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-        // Verify that the configurations can be retrieved without errors
-        gh.api.configAPI.getConfig(function(err, data) {
+        // Verify that an error is thrown when an invalid appId was provided
+        gh.api.configAPI.getConfig('invalid_appid', function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
 
-            /*
-             * TODO: wait for back-end implementation
-             *
-            assert.ok(!err. 'Verify that the configurations can be retrieved without errors');
-            assert.ok(data, 'Verify that the configurations are returned');
-            */
+            // Verify that the configuration can be retrieved without errors
+            gh.api.configAPI.getConfig(testApp.id, function(err, data) {
+                assert.ok(!err, 'Verify that the configuration can be retrieved without errors');
+                assert.ok(data, 'Verify that the configuration are returned');
 
-            QUnit.start();
-        });
-    });
-
-    // Test the getConfigByApp functionality
-    QUnit.asyncTest('getConfigByApp', function(assert) {
-        expect(4);
-
-        // Verify that an error is thrown when no appId was provided
-        gh.api.configAPI.getConfigByApp(null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no appId was provided');
-
-            // Verify that an error is thrown when an invalid appId was provided
-            gh.api.configAPI.getConfigByApp('invalid_app_id', function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
-
-                // Fetch a random test app
-                var app = testAPI.getTestApp();
-
-                // Verify that an error is thrown when no callback was provided
-                assert.throws(function() {
-                    gh.api.configAPI.getConfigByApp(app.id);
-                }, 'Verify that an error is thrown when no callback was provided');
-
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.configAPI.getConfigByApp(app.id, 'invalid_callback');
-                }, 'Verify that an error is thrown when an invalid callback was provided');
-
-                // Verify that the configurations can be retrieved without errors
-                gh.api.configAPI.getConfigByApp(app.id, function(err, data) {
-
-                    /*
-                     * TODO: wait for back-end implementation
-                     *
-                    assert.ok(!err. 'Verify that the configurations can be retrieved without errors');
-                    assert.ok(data, 'Verify that the configurations are returned');
-                    */
+                // Verify that the getting configuration for a non-existing app fails
+                gh.api.configAPI.getConfig(999999999, function(err, data) {
+                    assert.ok(err, 'Verify that the getting configuration for a non-existing app fails');
+                    assert.ok(!data, 'Verify that the getting configuration for a non-existing app returns no data');
 
                     QUnit.start();
                 });
@@ -113,157 +53,48 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         });
     });
 
-    // Test the updateConfig functionality
+    // Test the `updateConfig` functionality
     QUnit.asyncTest('updateConfig', function(assert) {
-        expect(3);
+        expect(8);
 
-        // Verify that an error is thrown when no configValues were provided
-        gh.api.configAPI.updateConfig(null, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no configValues are provided');
+        var testApp = testAPI.getTestApp();
 
-            // Verify that an error is thrown when invalid configValues were provided
-            gh.api.configAPI.updateConfig('invalid_configuration_values', function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when invalid configValues are provided');
+        // Verify that an error is thrown when an invalid callback was provided
+        assert.throws(function() {
+            gh.api.configAPI.updateConfig(testApp.id, {'key1': 'val1'}, 'invalid_callback');
+        }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.configAPI.updateConfig({'key1': 'val1'}, 'invalid_callback');
-                }, 'Verify that an error is thrown when an invalid callback was provided');
+        // Invoke the funtionality without callback
+        assert.equal(null, gh.api.configAPI.updateConfig(testApp.id, {'key1': 'val1'}), 'Verify that a default callback is set when none is provided and no error is thrown');
 
-                gh.api.configAPI.updateConfig({'key1': 'val1'}, function(err) {
-
-                    /*
-                     * TODO: wait for back-end implementation
-                     *
-                    assert.ok(!err. 'Verify that the configurations can be updated without errors');
-                     */
-
-                    // Invoke the funtionality without callback
-                    gh.api.configAPI.updateConfig({'key1': 'val1'});
-
-                    QUnit.start();
-                });
-            });
-        });
-    });
-
-    // Test the updateConfigByApp functionality
-    QUnit.asyncTest('updateConfigByApp', function(assert) {
-        expect(4);
-
-        // Fetch a random test app
-        var app = testAPI.getTestApp();
-
-        // Verify that an error is thrown when no appId was provided
-        gh.api.configAPI.updateConfigByApp(null, {'key1': 'val1'}, function(err) {
-            assert.ok(err, 'Verify that an error is thrown when no appId was provided');
+        // Verify that an error is thrown when an invalid appId was provided
+        gh.api.configAPI.updateConfig('invalid_appid', {'key1': 'val1'}, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
 
             // Verify that an error is thrown when no configValues were provided
-            gh.api.configAPI.updateConfigByApp(app.id, null, function(err) {
-                assert.ok(err, 'Verify that an error is thrown when no configValues were provided');
+            gh.api.configAPI.updateConfig(testApp.id, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when no configValues are provided');
 
                 // Verify that an error is thrown when invalid configValues were provided
-                gh.api.configAPI.updateConfigByApp(app.id, 'invalid_configuration_values', function(err) {
-                    assert.ok(err, 'Verify that an error is thrown when invalid configValues were provided');
+                gh.api.configAPI.updateConfig(testApp.id, 'invalid_configuration_values', function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when invalid configValues are provided');
 
-                    // Verify that an error is thrown when an invalid callback was provided
-                    assert.throws(function() {
-                        gh.api.configAPI.updateConfigByApp(app.id, {'key1': 'val1'}, 'invalid_callback');
-                    }, 'Verify that an error is thrown when an invalid callback was provided');
+                    // Since config in the backend is using hardcoded values which might change over time,
+                    // we just mock the request here to have consistent succeeding tests
+                    var body = {'code': 200, 'msg': 'OK'};
+                    gh.api.utilAPI.mockRequest('POST', '/api/config', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.configAPI.updateConfig(testApp.id, {'key1': 'val1'}, function(err, data) {
+                            assert.ok(!err, 'Verify that the config can be successfully updated');
 
-                    gh.api.configAPI.updateConfigByApp(app.id, {'key1': 'val1'}, function(err) {
-
-                        /*
-                         * TODO: wait for back-end implementation
-                         *
-                        assert.ok(!err. 'Verify that the configurations can be updated without errors');
-                         */
-
-                        // Invoke the funtionality without callback
-                        gh.api.configAPI.updateConfigByApp(app.id, {'key1': 'val1'});
-
-                        QUnit.start();
-                    });
-                });
-            });
-        });
-    });
-
-    // Test the clearConfig functionality
-    QUnit.asyncTest('clearConfig', function(assert) {
-        expect(3);
-
-        // Verify that an error is thrown when no configuration values were provided
-        gh.api.configAPI.clearConfig(null, function(err) {
-            assert.ok(err, 'Verify that an error is thrown when no configuration values were provided');
-
-            // Verify that an error is thrown when invalid configuration values were provided
-            gh.api.configAPI.clearConfig('invalid_configuration_values', function(err) {
-                assert.ok(err, 'Verify that an error is thrown when invalid configuration values were provided');
-
-                // Fetch a random test app
-                var app = testAPI.getTestApp();
-
-                // Verify that an error is thrown when an invalid callback was provided
-                assert.throws(function() {
-                    gh.api.configAPI.clearConfig(['key1', 'key2'], 'invalid_callback');
-                }, 'Verify that an error is thrown when an invalid callback was provided');
-
-                // Verify that the configurations can be cleared without errors
-                gh.api.configAPI.clearConfig(['key1', 'key2'], function(err) {
-
-                    /*
-                     * TODO: wait for back-end implementation
-                     *
-                    assert.ok(!err. 'Verify that the configurations can be cleared without errors');
-                     */
-
-                    // Invoke the funtionality without callback
-                    gh.api.configAPI.clearConfig(['key1', 'key2']);
-
-                    QUnit.start();
-                });
-            });
-        });
-    });
-
-    // Test the clearConfigByApp functionality
-    QUnit.asyncTest('clearConfigByApp', function(assert) {
-        expect(4);
-
-        // Fetch a random test app
-        var app = testAPI.getTestApp();
-
-        // Verify that an error is thrown when no appId was provided
-        gh.api.configAPI.clearConfigByApp(null, ['key1', 'key2'], function(err) {
-            assert.ok(err, 'Verify that an error is thrown when no appId was provided');
-
-            // Verify that an error is thrown when no configuration values were provided
-            gh.api.configAPI.clearConfigByApp(app.id, null, function(err) {
-                assert.ok(err, 'Verify that an error is thrown when no configuration values were provided');
-
-                // Verify that an error is thrown when invalid configuration values were provided
-                gh.api.configAPI.clearConfigByApp(app.id, 'invalid_configuration_values', function(err) {
-                    assert.ok(err, 'Verify that an error is thrown when invalid configuration values were provided');
-
-                    // Verify that an error is thrown when an invalid callback function was provided
-                    assert.throws(function() {
-                        gh.api.configAPI.clearConfigByApp(app.id, ['key1', 'key2'], 'invalid_callback');
-                    }, 'Verify that an error is thrown when an invalid callback was provided');
-
-                    // Verify that the configurations can be cleared without errors
-                    gh.api.configAPI.clearConfigByApp(app.id, ['key1', 'key2'], function(err) {
-
-                        /*
-                         * TODO: wait for back-end implementation
-                         *
-                        assert.ok(!err. 'Verify that the configurations can be cleared without errors');
-                         */
-
-                        // Invoke the funtionality without callback
-                        gh.api.configAPI.clearConfigByApp(app.id, ['key1', 'key2']);
-
-                        QUnit.start();
+                            body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.api.utilAPI.mockRequest('POST', '/api/config', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.configAPI.updateConfig(testApp.id, {'key1': 'val1'}, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when the config can\'t be successfully updated');
+                                    assert.ok(!data, 'Verify that no data returns when the config can\'t be successfully updated');
+                                    QUnit.start();
+                                });
+                            });
+                        });
                     });
                 });
             });

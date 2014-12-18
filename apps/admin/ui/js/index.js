@@ -39,6 +39,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Render configuration functionality and show the container
+     *
      * @private
      */
     var renderConfig = function(tenants) {
@@ -62,6 +63,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Render the admin navigation
+     *
+     * @private
      */
     var renderNavigation = function() {
         gh.api.utilAPI.renderTemplate($('#gh-navigation-template'), {
@@ -129,35 +132,24 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         var appsDone = 0;
 
         /**
-         * Retrieves the configuration for an application
+         * Recursive function that retrieves configuration for the provided apps and caches it
+         * on the app object
          *
-         * @param  {Number}      appId        The ID of the application to retrieve the configuration for
+         * @param  {Object[]}    apps         Array op applications to retrieve the configuration for
          * @param  {Function}    _callback    Standard callback function
          * @private
          */
-        var getAppConfig = function(appId, _callback) {
-            $.ajax({
-                'url': '/api/config',
-                'type': 'GET',
-                'data': {
-                    'app': appId
-                },
-                'success': function(data) {
-                    return _callback(data);
-                },
-                'error': function(jqXHR, textStatus) {
-                    return _callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-                }
-            });
-        };
-
         var getConfigForApps = function(apps, _callback) {
-            getAppConfig(apps[appsDone].id, function(_config) {
+            gh.api.configAPI.getConfig(apps[appsDone].id, function(err, config) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Configuration not retrieved.', 'The configuration could not be successfully retrieved.', 'error');
+                }
+
                 // Remove unwanted properties from the configuration object
-                delete _config.createdAt;
-                delete _config.updatedAt;
+                delete config.createdAt;
+                delete config.updatedAt;
                 // Cache the configuration on the app object
-                apps[appsDone].config = _config;
+                apps[appsDone].config = config;
 
                 appsDone++;
                 // Don't try and fetch the next app's config if none are left in this tenant
@@ -362,32 +354,40 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         }
     };
 
+    /**
+     * Submit the configuration form and save the values
+     *
+     * @return {Boolean}    Avoid default form submit behaviour
+     * @private
+     */
     var submitConfigurationForm = function() {
         var $form = $(this);
-        var data = _.object(_.map($form.serializeArray(), _.values));
-        data.app = $form.data('appid');
+
+        // Serialise the form values into an object that can be sent to the server
+        var configValues = _.object(_.map($form.serializeArray(), _.values));
 
         // Standards say that unchecked checkboxes shouldn't be sent over to the server. Too bad, we need to add them
         // in explicitely as config values might have changed.
         _.each($('[type="checkbox"]:not(:checked)', $form), function(chk) {
-            data[$(chk).attr('name')] = $(chk).is(':checked');
+            configValues[$(chk).attr('name')] = $(chk).is(':checked');
         });
 
-        $.ajax({
-            'url': '/api/config',
-            'type': 'POST',
-            'data': data,
-            'success': function(data) {
-                console.log(data);
-            },
-            'error': function(jqXHR, textStatus) {
-                return console.log({'code': jqXHR.status, 'msg': jqXHR.responseText});
+        // Update the configuration
+        gh.api.configAPI.updateConfig($form.data('appid'), configValues, function(err) {
+            if (err) {
+                return gh.api.utilAPI.notification('Configuration not updated.', 'The configuration could not be successfully updated.', 'error');
             }
+            return gh.api.utilAPI.notification('Configuration updated.', 'The configuration was successfully updated.', 'success');
         });
         
         return false;
     };
 
+    /**
+     * Set up the configuration page
+     *
+     * @private
+     */
     var setUpConfig = function() {
         getTenantData(function(tenants) {
             getConfigData(tenants, function(tenants) {
@@ -398,6 +398,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Set up the tenants page
+     *
+     * @private
      */
     var setUpTenants = function() {
         getTenantData(function(tenants) {
@@ -407,6 +409,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
     /**
      * Set up the users page
+     *
+     * @private
      */
     var setUpUsers = function() {
         getAdminUserData(function(administrators) {
