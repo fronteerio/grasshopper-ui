@@ -26,10 +26,7 @@ define(['gh.core'], function(gh) {
      */
     var updateListCollapsedStatus = function(id, collapsed) {
         // Fetch and parse the collapse listIds from the local storage
-        var collapsedIds = [];
-        if (gh.api.utilAPI.localDataStorage().get('collapsed')) {
-            collapsedIds = gh.api.utilAPI.localDataStorage().get('collapsed');
-        }
+        var collapsedIds = gh.api.utilAPI.localDataStorage().get('collapsed') || [];
 
         // Add the listId to the local storage if collapsed
         if (collapsed) {
