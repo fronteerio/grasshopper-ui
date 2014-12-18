@@ -246,7 +246,8 @@ module.exports = function(grunt) {
                     {
                         'files': _hashFiles({
                             'directories': [
-                                '<%= target %>/optimized/shared/gh/**'
+                                '<%= target %>/optimized/shared/gh/**',
+                                '<%= target %>/optimized/apps'
                             ],
                             'excludeExts': ['html']
                         }),
