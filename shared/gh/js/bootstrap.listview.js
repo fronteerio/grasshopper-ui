@@ -25,13 +25,11 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var updateListCollapsedStatus = function(id, collapsed) {
-        // Create a new key in the local storage if it doesn't exist yet
-        if (!gh.api.utilAPI.localDataStorage().get('collapsed')) {
-            gh.api.utilAPI.localDataStorage().store('collapsed', JSON.stringify([]));
-        }
-
         // Fetch and parse the collapse listIds from the local storage
-        var collapsedIds = JSON.parse(gh.api.utilAPI.localDataStorage().get('collapsed'));
+        var collapsedIds = [];
+        if (gh.api.utilAPI.localDataStorage().get('collapsed')) {
+            collapsedIds = gh.api.utilAPI.localDataStorage().get('collapsed');
+        }
 
         // Add the listId to the local storage if collapsed
         if (collapsed) {
@@ -43,7 +41,7 @@ define(['gh.core'], function(gh) {
         }
 
         // Store the collapsed listIds
-        gh.api.utilAPI.localDataStorage().store('collapsed', JSON.stringify(_.compact(collapsedIds)));
+        gh.api.utilAPI.localDataStorage().store('collapsed', _.compact(collapsedIds));
     };
 
 

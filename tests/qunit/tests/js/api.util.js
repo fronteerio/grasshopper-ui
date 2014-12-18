@@ -385,8 +385,15 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
             gh.api.utilAPI.localDataStorage().store(null, 'bar');
         }, 'Verify that an error is thrown when no key was provided');
 
+        // Verify that an error is thrown when an invalid value was provided
+        assert.throws(function() {
+            var foo = {};
+            foo.bar = foo;
+            gh.api.utilAPI.localDataStorage().store('some_key', foo);
+        }, 'Verify that an error is thrown when an invalid value was provided');
+
         // Verify that a value can be stored locally
-        assert.ok('undefined', gh.api.utilAPI.localDataStorage().store('foo', 'bar'), 'Verify that a value can be stored locally');
+        assert.ok('undefined', gh.api.utilAPI.localDataStorage().store('some_key', 'bar'), 'Verify that a value can be stored locally');
     });
 
 

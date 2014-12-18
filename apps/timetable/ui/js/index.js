@@ -108,9 +108,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
                 module.Series.sort(gh.api.utilAPI.sortByDisplayName);
             });
 
-            // Decorate the modules with their collapsed status
+            // Decorate the modules with their collapsed status if LocalStorage is supported
             if (Storage) {
-                var collapsedIds = _.compact(JSON.parse(gh.api.utilAPI.localDataStorage().get('collapsed')));
+                var collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('collapsed'));
                 _.each(modules.results, function(module) {
                     module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
                 });

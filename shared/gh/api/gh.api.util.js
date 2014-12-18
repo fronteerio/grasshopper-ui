@@ -292,7 +292,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             }
 
             // Return an entry from the local storage
-            return localStorage.getItem(key);
+            return JSON.parse(localStorage.getItem(key));
         };
 
         /**
@@ -323,7 +323,11 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             }
 
             // Add the entry to the local storage
-            return localStorage.setItem(key, value);
+            try {
+                return localStorage.setItem(key, JSON.stringify(value));
+            } catch(err) {
+                throw new Error('An invalid value was provided');
+            }
         };
 
         return {
