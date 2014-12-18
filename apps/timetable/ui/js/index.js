@@ -120,6 +120,13 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
                 'data': modules.results
             }, $('#gh-modules-container'));
+
+            // Clear local storage
+            gh.api.utilAPI.localDataStorage().remove('collapsed');
+
+            // Add the current collapsed module(s) back to the local storage
+            var collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
+            gh.api.utilAPI.localDataStorage().store('collapsed', collapsedIds);
         });
     };
 
