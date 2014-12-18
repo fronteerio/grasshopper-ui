@@ -103,6 +103,8 @@ script:
   - grunt test
 
 after_success:
+  # Run a release build
+  - grunt
   # Package and upload to Amazon S3
   - ./etc/scripts/travis-upload.sh
 
