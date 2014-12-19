@@ -164,9 +164,9 @@ h1, h2, h3, h4, h5 {
     border-color: #2A2A2A;
 }
 
-/*********/
-/* LISTS */
-/*********/
+/**************/
+/* LIST GROUP */
+/**************/
 
 .list-group .list-group-item {
     background-color: #07525D;
@@ -210,6 +210,28 @@ h1, h2, h3, h4, h5 {
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
     background-color: #07525D;
+}
+
+
+/*******************/
+/* NAVIGATION PILL */
+/*******************/
+
+.nav-pills > li > a {
+    background-color: transparent;
+    color: #FFF;
+}
+
+.nav-pills > li > a:hover,
+.nav-pills > li > a:focus {
+    background-color: #DDD;
+    color: #171717;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: #127077;
 }
 
 
