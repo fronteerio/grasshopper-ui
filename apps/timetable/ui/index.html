@@ -1,112 +1,112 @@
 <html>
-<head>
-    <title>My timetable</title>
+    <head>
+        <title>My timetable</title>
 
-    <meta name="viewport" content="width=device-width">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <!-- .cam.ac.uk domain Typekit inclusion -->
-    <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!-- .cam.ac.uk domain Typekit inclusion -->
+        <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-    <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
-    <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
-    <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
-    <link rel="stylesheet" href="/shared/vendor/css/fullcalendar.css">
-    <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
-    <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
-    <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
-    <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
-</head>
-<body>
-    <div id="gh-page-container">
-        <div id="gh-left-container">
-            <div id="gh-meta-container">
-                <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
-                    <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
-                </a>
-                <div id="gh-content-description">
-                    <p style="display: none;">Select your course and part to view available modules</p>
+        <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+        <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
+        <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
+        <link rel="stylesheet" href="/shared/vendor/css/fullcalendar.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
+        <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
+    </head>
+    <body>
+        <div id="gh-page-container">
+            <div id="gh-left-container">
+                <div id="gh-meta-container">
+                    <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                        <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+                    </a>
+                    <div id="gh-content-description">
+                        <p style="display: none;">Select your course and part to view available modules</p>
+                    </div>
                 </div>
+                <div id="gh-modules-container"><!-- --></div>
             </div>
-            <div id="gh-modules-container"><!-- --></div>
-        </div>
-        <div id="gh-right-container">
-            <div id="gh-header-container">
-                <div id="gh-header"></div>
-                <div id="gh-subheader">
-                    <form class="row form-horizontal">
-                        <select id="gh-subheader-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="display: none; width: 350px;" tabindex="-1"><!-- --></select>
-                        <select id="gh-subheader-part" class="chosen-select" data-placeholder="Choose a part/paper" style="display: none; width: 350px;" tabindex="-1"><!-- --></select>
-                    </form>
+            <div id="gh-right-container">
+                <div id="gh-header-container">
+                    <div id="gh-header"></div>
+                    <div id="gh-subheader">
+                        <form class="row form-horizontal">
+                            <select id="gh-subheader-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="display: none; width: 350px;" tabindex="-1"><!-- --></select>
+                            <select id="gh-subheader-part" class="chosen-select" data-placeholder="Choose a part/paper" style="display: none; width: 350px;" tabindex="-1"><!-- --></select>
+                        </form>
+                    </div>
                 </div>
+                <main id="gh-main"><!-- --></main>
             </div>
-            <main id="gh-main"><!-- --></main>
+            <div class="clearfix"></div>
         </div>
-        <div class="clearfix"></div>
-    </div>
 
-    <div id="gh-modal"><!-- --></div>
+        <div id="gh-modal"><!-- --></div>
 
-    <script id="gh-subheader-picker-template" type="text/template">
-        <option value=""></option>
-        <%_.each(data.courses, function(course) { %>
-            <% if (course.subjects.length === 0) { %>
-                <option value="<%- course.id %>"><%- course.displayName %></option>
+        <script id="gh-subheader-picker-template" type="text/template">
+            <option value=""></option>
+            <%_.each(data.courses, function(course) { %>
+                <% if (course.subjects.length === 0) { %>
+                    <option value="<%- course.id %>"><%- course.displayName %></option>
+                <% } else { %>
+                    <optgroup label="<%- course.displayName %>">
+                        <%_.each(course.subjects, function(subject) { %>
+                            <option value="<%- subject.id %>"><%- subject.displayName %></option>
+                        <% }); %>
+                    </optgroup>
+                <% } %>
+            <% }); %>
+        </script>
+
+        <script id="gh-subheader-part-template" type="text/template">
+            <option value=""></option>
+            <%_.each(data, function(part) { %>
+                <option value="<%- part.id %>"><%- part.displayName %></option>
+            <% }); %>
+        </script>
+
+        <script id="gh-header-template" type="text/template">
+            <% if (!gh.data.me || gh.data.me.anon) { %>
+                <form class="gh-signin-form form-inline pull-right" role="form">
+                    <%= _.partial('login-form') %>
+                </form>
             <% } else { %>
-                <optgroup label="<%- course.displayName %>">
-                    <%_.each(course.subjects, function(subject) { %>
-                        <option value="<%- subject.id %>"><%- subject.displayName %></option>
-                    <% }); %>
-                </optgroup>
+                <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
+                    <button type="submit" class="btn btn-default gh-btn-secondary">
+                        <i class="fa fa-sign-out"></i>Sign out
+                    </button>
+                </form>
             <% } %>
-        <% }); %>
-    </script>
+            <h1>My timetable</h1>
+        </script>
 
-    <script id="gh-subheader-part-template" type="text/template">
-        <option value=""></option>
-        <%_.each(data, function(part) { %>
-            <option value="<%- part.id %>"><%- part.displayName %></option>
-        <% }); %>
-    </script>
+        <script id="gh-modal-template" type="text/template">
+            <%= _.partial('login-modal', {'data': null}) %>
+        </script>
 
-    <script id="gh-header-template" type="text/template">
-        <% if (!gh.data.me || gh.data.me.anon) { %>
-            <form class="gh-signin-form form-inline pull-right" role="form">
-                <%= _.partial('login-form') %>
-            </form>
-        <% } else { %>
-            <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
-                <button type="submit" class="btn btn-default gh-btn-secondary">
-                    <i class="fa fa-sign-out"></i>Sign out
-                </button>
-            </form>
-        <% } %>
-        <h1>My timetable</h1>
-    </script>
+        <script id="gh-modules-template" type="text/template">
+            <div id="gh-result-summary">
+                <p>Found <%- data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %></p>
+            </div>
+            <ul id="gh-modules-list" class="list-group">
+                <%= _.partial('list-group-item', {'data': data}) %>
+            </ul>
+        </script>
 
-    <script id="gh-modal-template" type="text/template">
-        <%= _.partial('login-modal', {'data': null}) %>
-    </script>
+        <script id="gh-calendar-template" type="text/template">
+            <%= _.partial('calendar', {'data': data}) %>
+        </script>
 
-    <script id="gh-modules-template" type="text/template">
-        <div id="gh-result-summary">
-            <p>Found <%- data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %></p>
-        </div>
-        <ul id="gh-modules-list" class="list-group">
-            <%= _.partial('list-group-item', {'data': data}) %>
-        </ul>
-    </script>
+        <script id="gh-event-template" type="text/template">
+            <%= _.partial('event', {'data': data}) %>
+        </script>
 
-    <script id="gh-calendar-template" type="text/template">
-        <%= _.partial('calendar', {'data': data}) %>
-    </script>
-
-    <script id="gh-event-template" type="text/template">
-        <%= _.partial('event', {'data': data}) %>
-    </script>
-
-    <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="js/index.js" src="/shared/vendor/js/require.js"></script>
-</body>
+        <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="js/index.js" src="/shared/vendor/js/require.js"></script>
+    </body>
 </html>

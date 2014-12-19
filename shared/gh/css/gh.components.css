@@ -300,9 +300,9 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 
-/*********/
-/* LISTS */
-/*********/
+/**************/
+/* LIST GROUP */
+/**************/
 
 .list-group {
     margin: 0;
@@ -417,6 +417,54 @@ tbody tr:last-child > td.fc-widget-content {
     width: 210px;
 }
 
+
+/*******************/
+/* NAVIGATION PILL */
+/*******************/
+
+.nav-stacked > li + li {
+    margin-top: 0;
+}
+
+.nav-pills > li > a {
+    border-radius: 0;
+    font-weight: 200;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    cursor: default;
+    font-weight: 400;
+}
+
+
+/*********/
+/* PANEL */
+/*********/
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+    padding: 10px 20px 20px;
+}
+
+.panel,
+.panel-group .panel,
+.panel-heading {
+    border-radius: 0;
+}
+
+.panel-group,
+.panel .panel-heading h2 {
+    margin: 0;
+}
+
+.panel-group .panel {
+    border-bottom: none;
+}
+
+.panel-group:last-child .panel {
+    border-bottom: 1px solid #DDD;
+}
 
 /**********/
 /* CHOSEN */

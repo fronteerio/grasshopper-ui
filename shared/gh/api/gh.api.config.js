@@ -16,61 +16,44 @@
 define(['exports'], function(exports) {
 
     /**
-     * Get the configuration schema
+     * Get the configuration for an app
      *
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The configuration schema
-     */
-    var getConfigSchema = exports.getConfigSchema = function(callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        }
-
-        return callback();
-    };
-
-    /**
-     * Get the configuration for the current app
-     *
+     * @param  {Number}      [appId]              The ID of the app you wish to retrieve configuration for. Defaults to the current app
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The configuration for the current app
      */
-    var getConfig = exports.getConfig = function(callback) {
+    var getConfig = exports.getConfig = function(appId, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
-        }
-
-        return callback();
-    };
-
-    /**
-     * Get the configuration for an app
-     *
-     * @param  {Number}      appId                The ID of the app to get the configuration for
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The configuration for the specified app
-     */
-    var getConfigByApp = exports.getConfigByApp = function(appId, callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(appId)) {
+        } else if (appId && !_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/config',
+            'type': 'GET',
+            'data': {
+                'app': appId
+            },
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
-     * Update a configuration value for the current app
+     * Update configuration values for an app
      *
+     * @param  {Number}      [appId]           The ID of the app you wish to update configuration for. Defaults to the current app
      * @param  {Object}      configValues      The configuration value(s) to update. e.g., {'key1': value1, 'key2': value2}
      * @param  {Function}    [callback]        Standard callback function
      * @param  {Object}      [callback.err]    Error object containing the error code and error message
      */
-    var updateConfig = exports.updateConfig = function(configValues, callback) {
+    var updateConfig = exports.updateConfig = function(appId, configValues, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         }
@@ -78,82 +61,28 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
-        if (!_.isObject(configValues)) {
-            return callback({'code': 400, 'msg': 'A valid value for configValues should be provided'});
-        }
-
-        return callback();
-    };
-
-    /**
-     * Update a configuration value for an app
-     *
-     * @param  {Number}      appId             The ID of the app to update the configuration value(s) for
-     * @param  {Object}      configValues      The configuration value(s) to update. e.g., {'key1': value1, 'key2': value2}
-     * @param  {Function}    [callback]        Standard callback function
-     * @param  {Object}      [callback.err]    Error object containing the error code and error message
-     */
-    var updateConfigByApp = exports.updateConfigByApp = function(appId, configValues, callback) {
-        if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        }
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
-        if (!_.isNumber(appId)) {
+        if (appId && !_.isNumber(appId)) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         } else if (!_.isObject(configValues)) {
             return callback({'code': 400, 'msg': 'A valid value for configValues should be provided'});
         }
 
-        return callback();
-    };
-
-    /**
-     * Clear a configuration value for the current app
-     *
-     * @param  {String[]}    configFields      Name(s) of the configuration element(s) to clear. e.g., ['key1', 'key2']
-     * @param  {Function}    [callback]        Standard callback function
-     * @param  {Object}      [callback.err]    Error object containing the error code and error message
-     */
-    var clearConfig = exports.clearConfig = function(configFields, callback) {
-        if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
+        // Add the appId to the configValues
+        /* istanbul ignore else */
+        if (appId) {
+            configValues.app = appId;
         }
 
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
-        if (!_.isArray(configFields)) {
-            return callback({'code': 400, 'msg': 'A valid value for configFields should be provided'});
-        }
-
-        return callback();
-    };
-
-    /**
-     * Clear a configuration value for an app
-     *
-     * @param  {Number}      appId             The ID of the app to clear the configuration value for
-     * @param  {String[]}    configFields      Name(s) of the configuration element(s) to clear. e.g., ['key1', 'key2']
-     * @param  {Function}    [callback]        Standard callback function
-     * @param  {Object}      [callback.err]    Error object containing the error code and error message
-     */
-    var clearConfigByApp = exports.clearConfigByApp = function(appId, configFields, callback) {
-        if (callback && !_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        }
-
-        // Set a default callback function in case no callback function has been provided
-        callback = callback || function() {};
-
-        if (!_.isNumber(appId)) {
-            return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
-        } else if (!_.isArray(configFields)) {
-            return callback({'code': 400, 'msg': 'A valid value for configFields should be provided'});
-        }
-
-        return callback();
+        $.ajax({
+            'url': '/api/config',
+            'type': 'POST',
+            'data': configValues,
+            'success': function(data) {
+                return callback();
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 });

@@ -48,6 +48,11 @@ select.form-control {
     height: 45px;
 }
 
+label {
+    font-weight: 600;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
@@ -89,6 +94,7 @@ select.form-control {
     z-index: 3;
 }
 
+#gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
     height: 100%;
     overflow: auto;
