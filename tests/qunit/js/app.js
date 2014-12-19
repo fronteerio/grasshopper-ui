@@ -1,7 +1,7 @@
 requirejs.config({
     'baseUrl': '/shared/',
     'paths': {
-        'jquery': 'vendor/js/jquery-2.1.1',
+        'jquery': 'empty:',
         'lodash': 'vendor/js/lodash'
     }
 });

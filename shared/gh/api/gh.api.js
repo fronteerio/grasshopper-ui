@@ -60,6 +60,7 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
         };
 
         return {
+            'pluginBuilder': 'pluginBuilder',
             /*!
              * Invoked when the module has been loaded, which can trigger initialization in a chained manner.
              */

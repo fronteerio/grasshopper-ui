@@ -19,13 +19,15 @@
 requirejs.config({
     'baseUrl': '/shared/',
     'paths': {
+        // jQuery module is managed by require-jquery variation of require.js
+        'jquery': 'empty:',
+
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
         'bootstrap-notify': 'vendor/js/bootstrap-notify',
         'clickover': 'vendor/js/bootstrapx-clickover',
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
-        'jquery': 'vendor/js/jquery-2.1.1',
         'jquery-bbq': 'vendor/js/jquery-bbq',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
@@ -49,11 +51,13 @@ requirejs.config({
         'gh.api.util': 'gh/api/gh.api.util',
         'gh.bootstrap': 'gh/api/gh.bootstrap',
         'gh.core': 'gh/api/gh.core',
+        'pluginBuilder': 'gh/pluginBuilder',
 
         // GH Plugins
         'bootstrap.calendar': 'gh/js/bootstrap.calendar',
         'bootstrap.listview': 'gh/js/bootstrap.listview'
     },
+    'priority': ['jquery', 'lodash'],
     'shim' : {
         'bootstrap' : {
             'deps': ['jquery', 'fullcalendar'],
