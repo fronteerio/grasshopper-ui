@@ -1,0 +1,84 @@
+/*!
+ * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/**********/
+/* CHOSEN */
+/**********/
+
+.chosen-container .chosen-results li.highlighted {
+    background-color: #92308A;
+}
+
+
+/***********/
+/* BUTTONS */
+/***********/
+
+.btn-default.gh-btn-primary {
+    background-color: #92308A;
+    border-color: #92308A;
+    color: #FFF;
+}
+
+
+/**********/
+/* LAYOUT */
+/**********/
+
+.gh-tripos-help {
+    color: #FFF;
+}
+
+#gh-page-container #gh-right-container #gh-subheader,
+#gh-page-container #gh-left-container #gh-content-description {
+    background-color: #412F5B;
+}
+
+#gh-main-tripos .gh-video {
+    background-color: #CCC;
+}
+
+.gh-show-video,
+.gh-show-video:hover,
+#gh-main-tripos .gh-video .gh-video-info,
+#gh-main-tripos .gh-video .gh-hide-video i,
+#gh-main-tripos > .gh-row-part > .gh-part p,
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit,
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft {
+    color: #FFF;
+}
+
+#gh-main-tripos .gh-video .gh-play-video {
+    background-color: #FFF;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part,
+#gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
+    background-color: #632F6F;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part:nth-child(even),
+#gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part {
+    background-color: #92308A;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part p.gh-part-editing {
+    border: 1px solid #FFF;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit {
+    background-color: #171717;
+}

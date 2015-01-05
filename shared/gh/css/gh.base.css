@@ -148,6 +148,10 @@ label {
     height: 100px;
 }
 
+#gh-page-container #gh-right-container #gh-subheader {
+    position: relative;
+}
+
 #gh-page-container #gh-left-container #gh-content-description {
     width: 320px;
 }

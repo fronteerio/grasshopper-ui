@@ -1,0 +1,184 @@
+/*!
+ * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*********/
+/* LOGIN */
+/*********/
+
+#gh-login-form {
+    padding: 0 0 50px 50px;
+    width: 50%;
+}
+
+#gh-login-form h2,
+#gh-login-form label {
+    font-weight: 200;
+}
+
+#gh-login-form h2 {
+    font-size: 23px;
+    margin-bottom: 35px;
+}
+
+#gh-login-form label {
+    color: #CCC;
+    font-size: 14px;
+}
+
+#gh-login-form input.form-control {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border-width: 0;
+    height: 45px;
+    line-height: 45px;
+    width: 50%;
+}
+
+
+/**********/
+/* LAYOUT */
+/**********/
+
+#gh-main {
+    margin-bottom: 0;
+}
+
+#gh-help {
+    font-weight: 400;
+    padding: 35px 50px;
+}
+
+.gh-tripos-help {
+    display: table-cell;
+    font-size: 24px;
+    height: 415px;
+    padding: 45px;
+    vertical-align: middle;
+}
+
+.gh-academic-year-select {
+    display: table-cell;
+    font-size: 18px;
+    font-weight: 400;
+    height: 100px;
+    line-height: 40px;
+    padding-left: 30px;
+    vertical-align: middle;
+}
+
+.gh-show-video {
+    display: block;
+    font-size: 16px;
+    margin-top: -8px;
+    position: absolute;
+    right: 43px;
+    text-decoration: none;
+    top: 50%;
+}
+
+.gh-show-video:hover {
+    text-decoration: none;
+}
+
+#gh-main-tripos .gh-video {
+    height: 415px;
+    position: relative;
+}
+
+#gh-main-tripos .gh-video .gh-video-info {
+    display: block;
+    font-size: 33px;
+    left: 50%;
+    line-height: 34px;
+    margin-left: -200px;
+    margin-top: -45px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 400px;
+}
+
+#gh-main-tripos .gh-video .gh-play-video {
+    font-size: 17px;
+    left: 50%;
+    margin-left: -70px;
+    margin-top: 45px;
+    position: absolute;
+    top: 50%;
+    width: 140px;
+}
+
+#gh-main-tripos .gh-video .gh-hide-video {
+    background: none;
+    height: 40px;
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 10px;
+    width: 40px;
+}
+
+#gh-main-tripos .gh-video .gh-hide-video i {
+    font-size: 20px;
+    font-weight: 200;
+    text-align: center;
+}
+
+#gh-main-tripos > .gh-row-part {
+    margin: 0;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part {
+    height: 320px;
+    padding: 40px;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part p.gh-part-editing {
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part p.gh-part-tripos {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part p.gh-part-part {
+    font-size: 33px;
+    font-weight: 600;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit,
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft {
+    bottom: 40px;
+    display: block;
+    font-size: 17px;
+    position: absolute;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit {
+    padding: 8px 20px;
+}
+
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft {
+    height: 42px;
+    line-height: 42px;
+    right: 60px;
+}

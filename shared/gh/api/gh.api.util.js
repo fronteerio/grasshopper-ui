@@ -457,7 +457,11 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
                  'text!gh/partials/event-popover.html',
                  'text!gh/partials/list-group-item.html',
                  'text!gh/partials/login-form.html',
-                 'text!gh/partials/login-modal.html'], function(calendar, eventItem, eventPopover, listGroupItem, loginForm, loginModal) {
+                 'text!gh/partials/login-modal.html',
+                 'text!gh/partials/modules.html',
+                 'text!gh/partials/subheader-part.html',
+                 'text!gh/partials/subheader-picker.html',
+                 'text!gh/partials/subheader-pickers.html'], function(calendar, eventItem, eventPopover, listGroupItem, loginForm, loginModal, modules, subheaderPart, subheaderPicker, subheaderPickers) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('calendar', calendar);
@@ -466,6 +470,10 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             _.declarePartial('list-group-item', listGroupItem);
             _.declarePartial('login-form', loginForm);
             _.declarePartial('login-modal', loginModal);
+            _.declarePartial('modules', modules);
+            _.declarePartial('subheader-part', subheaderPart);
+            _.declarePartial('subheader-picker', subheaderPicker);
+            _.declarePartial('subheader-pickers', subheaderPickers);
 
             callback();
         });
