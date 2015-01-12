@@ -216,7 +216,8 @@ module.exports = function(callback) {
             console.error('node: ' + JSON.stringify(node), 'Impossible start/end dates');
         }
         var opts = {
-            'group': parent.GroupId
+            'group': parent.GroupId,
+            'series': [parent.id]
         };
         EventsAPI.createEvent(ctx, appId, node.name.substring(0, 255), start, end, opts, function(err, event) {
             if (err) {
@@ -224,17 +225,7 @@ module.exports = function(callback) {
                 console.error('err: ' + JSON.stringify(err), 'Failed to create event');
                 process.exit(1);
             }
-
-            parent.addEvents(event).complete(function(err) {
-                if (err) {
-                    console.error(err);
-                    console.error("DisplayName: '%s'", node.name);
-                    console.error('err: ' + JSON.stringify(err), 'Failed to add event to serie');
-                    process.exit(1);
-                }
-
-                return callback(event);
-            });
+            return callback(event);
         });
     };
 };
