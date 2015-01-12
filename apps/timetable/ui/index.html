@@ -94,9 +94,11 @@
             <div id="gh-result-summary">
                 <p>Found <%- data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %></p>
             </div>
-            <ul id="gh-modules-list" class="list-group">
-                <%= _.partial('list-group-item', {'data': data}) %>
-            </ul>
+            <div id="gh-modules-list-container">
+                <ul id="gh-modules-list" class="list-group">
+                    <%= _.partial('list-group-item', {'data': data}) %>
+                </ul>
+            </div>
         </script>
 
         <script id="gh-calendar-template" type="text/template">
