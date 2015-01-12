@@ -324,8 +324,8 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .gh-list-group-item-container .gh-toggle-list {
     font-weight: 200;
+    max-width: 270px;
     padding: 0;
-    width: 270px;
 }
 
 .list-group .list-group-item .gh-list-group-item-container .gh-toggle-list:focus,

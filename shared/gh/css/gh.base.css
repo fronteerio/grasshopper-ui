@@ -97,7 +97,7 @@ label {
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
     height: 100%;
-    overflow: auto;
+    padding-bottom: 45px;
     padding-top: 215px;
 }
 
@@ -110,6 +110,19 @@ label {
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     margin: 0;
     padding: 12px 39px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    overflow: hidden;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
+    overflow-y: auto;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-modules-list {
+    height: 100%;
+    width: 320px;
 }
 
 /* Main page right hand side (content) container */
