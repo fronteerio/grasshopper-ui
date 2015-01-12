@@ -17,15 +17,15 @@
                     </div>
             <% } %>
                     <div class="gh-list-description">
+                        <p><%- d.displayName %></p>
                         <% if (isChild) { %>
-                            <p><%- d.displayName %></p>
-                            <p><%- d.notes %></p>
-                            <p><%- d.location %></p>
-                            <% if (d.organisers && d.organisers.length) { %>
-                                <p><%- d.organisers.toString() %></p>
+                            <p><%- d.metadata.pattern %></p>
+                            <% if (d.metadata.locations && d.metadata.locations.length) { %>
+                                <p><%- d.metadata.locations.join(', ') %></p>
                             <% } %>
-                        <% } else { %>
-                            <p><%- d.displayName %></p>
+                            <% if (d.metadata.organisers && d.metadata.organisers.length) { %>
+                                <p><%- d.metadata.organisers.join(', ') %></p>
+                            <% } %>
                         <% } %>
                     </div>
             <% if (!isChild) { %>
