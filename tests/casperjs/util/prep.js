@@ -15,17 +15,26 @@
 
 casper.test.begin('Prepare environment for tests', function(test) {
 
-    // Override default waitTimeout before test fails
+    // Override default timeouts
     casper.options.waitTimeout = configAPI.waitTimeout;
 
     // Set the default size of the viewport
     casper.options.viewportSize = {'width': 1200, 'height': 800};
+
+    // Don't hide any errors
+    casper.options.silentErrors = false;
+
+    // Replace the default passText, failText and warnText shown next to assertions in the terminal
+    test.options.passText = '✓';
+    test.options.failText = 'X';
+    test.options.warnText = '!';
 
     /**
      * Log any JavaScript errors in the page
      *
      * @param  {String}    msg    The error in the page
      */
+    casper.echo('✓ Enable logging of errors in the DOM', 'INFO');
     casper.on('page.error', function(msg) {
         casper.echo('JavaScript error caught in the page: ' + msg, 'COMMENT');
     });
@@ -35,6 +44,7 @@ casper.test.begin('Prepare environment for tests', function(test) {
      *
      * @param  {Object}    data    Data sent back from within the callback
      */
+    casper.echo('✓ Enable remote callbacks', 'INFO');
     casper.on('remote.callback', function(data) {
         if (data && data.cbId) {
             casper.emit(data.cbId + '.finished', data);
@@ -48,6 +58,7 @@ casper.test.begin('Prepare environment for tests', function(test) {
      *
      * @param  {Number}    waitTimeout    Default wait timeout, for wait* family functions.
      */
+    casper.echo('✓ Set the timeout to ' + configAPI.waitTimeout + 'ms', 'INFO');
     casper.options.onWaitTimeout = function(waitTimeout) {
         test.fail('Test timed out after ' + waitTimeout + ' ms');
         test.done();
