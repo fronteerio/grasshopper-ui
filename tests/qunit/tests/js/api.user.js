@@ -681,7 +681,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                     assert.ok(err, 'Verify that an error is thrown when an invalid value for emailPreference was provided');
 
                                     // Verify that a user can be updated without errors
-                                    gh.api.userAPI.updateUser(user.id, user.AppId, 'testdisplayname', 'display@name.com', 'no', function(err, data) {
+                                    gh.api.userAPI.updateUser(user.id, user.AppId, 'testdisplayname', gh.api.utilAPI.generateRandomString() + '@name.com', 'no', function(err, data) {
                                         assert.ok(!err, 'Verify that a user can be updated without errors');
                                         assert.strictEqual(data.displayName, 'testdisplayname', 'Verify that the user was updated successfully');
 
