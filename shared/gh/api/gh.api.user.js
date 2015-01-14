@@ -210,7 +210,7 @@ define(['exports'], function(exports) {
     /**
      * Reset the user calendar token
      *
-     * @param  {[type]}      userId               The ID of the user to reset the calendar token for
+     * @param  {Number}      userId               The ID of the user to reset the calendar token for
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user object
@@ -460,7 +460,7 @@ define(['exports'], function(exports) {
     /**
      * Change a user's local password
      *
-     * @param  {Number}      userId                     The ID of the user for which to change the local password
+     * @param  {Number}      userId                 The ID of the user for which to change the local password
      * @param  {String}      newPassword            The new password for the user
      * @param  {String}      [oldPassword]          The previous password for the user. This is only required when the current user is not an administrator
      * @param  {Function}    [callback]             Standard callback function
