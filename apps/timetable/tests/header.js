@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-casper.test.begin('Component - Header', function(test) {
+casper.test.begin('Student - Component - Header', function(test) {
 
     /**
      * Verify the page header
@@ -80,14 +80,12 @@ casper.test.begin('Component - Header', function(test) {
     casper.start(configAPI.tenantUI, function() {
         // Create a user to test with
         userAPI.createUsers(1, function(user1) {
-            casper.waitForSelector('body', function() {
-                casper.then(verifyHeader);
-                casper.then(verifyLogInForm);
-                casper.then(function() {
-                    verifyLogIn(user1);
-                });
-                casper.then(verifyLogOut);
+            casper.then(verifyHeader);
+            casper.then(verifyLogInForm);
+            casper.then(function() {
+                verifyLogIn(user1);
             });
+            casper.then(verifyLogOut);
         });
     });
 
