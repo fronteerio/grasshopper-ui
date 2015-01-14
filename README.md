@@ -66,3 +66,18 @@ The grunt `configApache` task will do two things:
 This allows you to generate special apache configurations PER application. This way
 the global admin application can serve a different set of HTML files than the `timetable`
 application.
+
+
+## Testing
+
+The UI uses QUnit and Istanbul to provide functional tests and code coverage. CasperJS is used to take a more visual approach to testing by spinning up a headless webkit browser and clicking around while making assertions. Note that the CasperJS framework is in place but tests have not been written yet. Linting tests are available for JavaScript and CSS and comply to the standard of code we set for our projects ([Code styleguide](https://raw.githubusercontent.com/airbnb/javascript/master/README.md))
+
+All tests can be run in the terminal by executing `grunt test`.
+
+Notes:
+ - `grunt test` will spin up a server for you. Grasshopper should be cloned into a sibling directory of the grasshopper-ui directory
+ - `grunt test` will run on a separate `grasshoppertest` database and populate it with test data. This data is destroyed after the tests finish.
+ - Running the tests in the UI will not use a separate test database.
+ - Running the tests in the UI should be done through the admin application as the tests assume administration level permissions (e.g. http://your.admin.app/qunit).
+ - Code coverage reports are available in `grasshopper-ui/coverage/` in the lcov or html format. Note that the coverage report will only be generated when running the full test suite with `grunt test`.
+
