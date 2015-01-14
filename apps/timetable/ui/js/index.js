@@ -61,7 +61,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             'data': null
         }, $('#gh-main'));
 
-        if (!gh.data.me) {
+        if (gh.data.me.anon) {
             $(document).trigger('gh.calendar.init');
         } else {
             var range = gh.api.utilAPI.getCalendarDateRange();
