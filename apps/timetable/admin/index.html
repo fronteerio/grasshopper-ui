@@ -47,7 +47,7 @@
 
         <script id="gh-header-template" type="text/template">
             <h1>Timetable Administration</h1>
-            <% if (gh.data.me) { %>
+            <% if (!gh.data.me.anon) { %>
                 <form id="gh-signout-form" class="form-inline pull-right" role="form">
                     <button type="submit" class="btn btn-default gh-btn-secondary">
                         <i class="fa fa-sign-out"></i>Sign out
@@ -69,8 +69,8 @@
         </script>
 
         <script id="gh-login-template" type="text/template">
-            <div id="gh-login-form" class="pull-left">
-                <form class="gh-signin-form" role="form">
+            <div id="gh-login-form" class="col col-xs-6 pull-left">
+                <form id="gh-signin-form" role="form">
                     <h2>Sign in</h2>
                     <div class="form-group">
                         <label for="gh-signin-email">Email address</label>
@@ -112,31 +112,31 @@
                     <button class="btn gh-play-video"><i class="fa fa-youtube-play"></i>Play video</button>
                 </div>
                 <div class="row gh-row-part">
-                    <div class="col-md-4 gh-part">
+                    <div class="col-xs-4 gh-part">
                         <p class="gh-part-editing">Mary Wellingtion is editing</p>
                         <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
                         <p class="gh-part-part">Part IA</p>
                         <button class="btn btn-default pull-left gh-part-edit">Edit</button>
                         <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
                     </div>
-                    <div class="col-md-4 gh-part">
+                    <div class="col-xs-4 gh-part">
                         <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
                         <p class="gh-part-part">Part IB</p>
                         <button class="btn btn-default pull-left gh-part-edit">Edit</button>
                     </div>
-                    <div class="col-md-4 gh-part">
+                    <div class="col-xs-4 gh-part">
                         <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
                         <p class="gh-part-part">Part II</p>
                         <button class="btn btn-default pull-left gh-part-edit">Edit</button>
                     </div>
                 </div>
                 <div class="row gh-row-part">
-                    <div class="col-md-4 gh-part">
+                    <div class="col-xs-4 gh-part">
                         <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
                         <p class="gh-part-part">Part IA</p>
                         <button class="btn btn-default pull-left gh-part-edit">Edit</button>
                     </div>
-                    <div class="col-md-4 gh-part">
+                    <div class="col-xs-4 gh-part">
                         <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
                         <p class="gh-part-part">Part IB</p>
                         <button class="btn btn-default pull-left gh-part-edit">Edit</button>

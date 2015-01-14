@@ -485,7 +485,6 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * @param  {Element|String}    $template    jQuery element representing the HTML element that contains the template or jQuery selector for the template container
      * @param  {Object}            [data]       JSON object representing the values used to process the template
      * @param  {Element|String}    [$target]    jQuery element representing the HTML element in which the template output should be put, or jQuery selector for the output container
-     *
      * @return {String}                         The rendered HTML
      * @throws {Error}                          Error thrown when no template has been provided
      */
@@ -511,6 +510,59 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
 
         // Always return the rendered HTML string
         return compiled;
+    };
+
+
+    ////////////////
+    //  TRIPOSES  //
+    ////////////////
+
+    /**
+     * Return the tripos structure
+     *
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The tripos structure
+     */
+    /* istanbul ignore next */
+    var getTriposStructure = exports.getTriposStructure = function(callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('An invalid value for callback was provided');
+        }
+
+        var core = require('gh.core');
+        var appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
+        require('gh.api.orgunit').getOrgUnits(null, false, null, ['course', 'subject', 'part'], function(err, data) {
+            if (err) {
+                return callback(err);
+            }
+
+            var triposData = {
+                'courses': [],
+                'subjects': [],
+                'parts': [],
+                'modules': []
+            };
+
+            triposData.courses = _.filter(data.results, function(course) {
+                return course.type === 'course';
+            });
+
+            triposData.subjects = _.filter(data.results, function(subject) {
+                return subject.type === 'subject';
+            });
+
+            triposData.parts = _.filter(data.results, function(part) {
+                return part.type === 'part';
+            });
+
+            // Sort the data before displaying it
+            triposData.courses.sort(sortByDisplayName);
+            triposData.subjects.sort(sortByDisplayName);
+            triposData.parts.sort(sortByDisplayName);
+
+            return callback(null, triposData);
+        });
     };
 
     // Initialise Google Analytics

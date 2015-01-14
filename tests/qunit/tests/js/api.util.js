@@ -472,5 +472,26 @@ require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
         assert.ok($('#qunit-template-partial-target').html(), 'Verify the template partial HTML is rendered in the target container');
     });
 
+
+    ////////////////
+    //  TRIPOSES  //
+    ////////////////
+
+    QUnit.asyncTest('getTriposStructure', function(assert) {
+        expect(2);
+
+        // Verify that an error is thrown when no callback was provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTriposStructure();
+        }, 'Verify that an error is thrown when no callback was provided');
+
+        // Verify that an error is thrown when an invalid callback was provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTriposStructure('invalid_callback');
+        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+        QUnit.start();
+    });
+
     testAPI.init();
 });

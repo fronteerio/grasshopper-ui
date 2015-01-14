@@ -20,7 +20,10 @@
 
 #gh-login-form {
     padding: 0 0 50px 50px;
-    width: 50%;
+}
+
+#gh-login-form > form {
+    min-width: inherit !important;
 }
 
 #gh-login-form h2,
@@ -40,12 +43,11 @@
 
 #gh-login-form input.form-control {
     -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
     border-width: 0;
     height: 45px;
     line-height: 45px;
-    width: 50%;
 }
 
 

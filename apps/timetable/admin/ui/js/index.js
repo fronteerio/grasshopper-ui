@@ -15,12 +15,8 @@
 
 define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
 
-    var triposData = {
-        'courses': [],
-        'subjects': [],
-        'parts': [],
-        'modules': []
-    };
+    // Cache the tripos data
+    var triposData = {};
 
 
     /////////////////
@@ -33,28 +29,15 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clicko
      * @private
      */
     var getTripos = function() {
-        var appId = gh.data.me && gh.data.me.AppId ? gh.data.me.AppId : null;
-        gh.api.orgunitAPI.getOrgUnits(appId, false, null, ['course', 'subject', 'part'], function(err, data) {
+
+        // Fetch the triposes
+        gh.api.utilAPI.getTriposStructure(function(err, data) {
             if (err) {
                 return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
             }
 
-            triposData.courses = _.filter(data.results, function(course) {
-                return course.type === 'course';
-            });
-
-            triposData.subjects = _.filter(data.results, function(subject) {
-                return subject.type === 'subject';
-            });
-
-            triposData.parts = _.filter(data.results, function(part) {
-                return part.type === 'part';
-            });
-
-            // Sort the data before displaying it
-            triposData.courses.sort(gh.api.utilAPI.sortByDisplayName);
-            triposData.subjects.sort(gh.api.utilAPI.sortByDisplayName);
-            triposData.parts.sort(gh.api.utilAPI.sortByDisplayName);
+            // Cache the tripos data
+            triposData = data;
 
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
@@ -360,7 +343,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clicko
         $('body').on('click', '.gh-play-video', playVideo);
 
         // Login and logout
-        $('body').on('submit', '.gh-signin-form', doLogin);
+        $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
     };
 
@@ -374,7 +357,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clicko
         renderHeader();
 
         // Display the login form if the user is not authenticated
-        if (!gh.data || !gh.data.me) {
+        if (gh.data.me && gh.data.me.anon) {
 
             // Display the help link
             renderHelp();
@@ -382,7 +365,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clicko
             // Render the login form
             renderLoginForm();
 
-            // Show the year selector on the left hand side
+            // Hide the current academic year on the left hand side
             $('#gh-content-description p').hide();
 
         } else {
@@ -399,10 +382,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clicko
             // Show the tripos help info
             showTriposHelp();
 
-            // Initialize the video
+            // Initialise the video
             initVideo();
 
-            // Show the year selector on the left hand side
+            // Show the current academic year on the left hand side
             $('#gh-content-description p').show();
         }
     };
