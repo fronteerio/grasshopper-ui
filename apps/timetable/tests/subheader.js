@@ -27,7 +27,7 @@ casper.test.begin('Component - Subheader', function(test) {
                 // Open the tripos picker
                 casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
                 // Verify that the tripos picker opens and a selection can be made
-                casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
+                casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
                     test.assertVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', 'Verify that the tripos picker opens after clicking the input');
                     // Click the first item and verify that the part picker becomes available
                     casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
@@ -40,7 +40,7 @@ casper.test.begin('Component - Subheader', function(test) {
                         // Open the part picker
                         casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
                         // Verify that the part picker opens and a selection can be made
-                        casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
+                        casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
                             test.assertVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', 'Verify that the part picker opens after clicking the input');
                             // Click the first item
                             casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
