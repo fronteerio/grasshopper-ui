@@ -78,11 +78,12 @@ define(['exports'], function(exports) {
      * @param  {Number}      appId                The ID of the app to retrieve the users for
      * @param  {Number}      [limit]              The maximum number of results to retrieve
      * @param  {Number}      [offset]             The paging number of the results to retrieve
+     * @param  {String}      [q]                  The string to query the users by
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The users for the requested tenant or app
      */
-    var getUsers = exports.getUsers = function(appId, limit, offset, callback) {
+    var getUsers = exports.getUsers = function(appId, limit, offset, q, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(appId)) {
@@ -91,16 +92,19 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
         } else if (offset && (!_.isNumber(offset))) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
+        } else if (q && (!_.isString(q))) {
+            return callback({'code': 400, 'msg': 'A valid value for query should be provided'});
         }
 
-        return callback();
-
-        /**
-         * TODO: wait for back-end implementation
-         *
         $.ajax({
             'url': '/api/users',
             'type': 'GET',
+            'data': {
+                'app': appId,
+                'limit': limit,
+                'offset': offset,
+                'q': q
+            },
             'success': function(data) {
                 return callback(null, data);
             },
@@ -108,7 +112,6 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
-        */
     };
 
     /**
@@ -148,42 +151,93 @@ define(['exports'], function(exports) {
      * Get the calendar for a user in iCal
      *
      * @param  {Number}      userId               The ID of the user to get the calendar for
-     * @param  {String}      [signature]          The access control signature
+     * @param  {String}      token                The access control token
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested user calendar in iCal format
      */
-    var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, signature, callback) {
+    var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, token, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (signature && !_.isString(signature)) {
-            return callback({'code': 400, 'msg': 'A valid value for signature should be provided'});
+        } else if (!_.isString(token)) {
+            return callback({'code': 400, 'msg': 'A valid value for token should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/' + token + '/calendar.ical',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
      * Get the calendar for a user in RSS
      *
      * @param  {Number}      userId               The ID of the user to get the calendar for
-     * @param  {String}      [signature]          The access control signature
+     * @param  {String}      token                The access control token
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested event series calendar in RSS format
      */
-    var getUserCalendarRss = exports.getUserCalendarRss = function(userId, signature, callback) {
+    var getUserCalendarRss = exports.getUserCalendarRss = function(userId, token, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (signature && !_.isString(signature)) {
-            return callback({'code': 400, 'msg': 'A valid value for signature should be provided'});
+        } else if (!_.isString(token)) {
+            return callback({'code': 400, 'msg': 'A valid value for token should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/' + token + '/calendar.rss',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
+
+    /**
+     * Reset the user calendar token
+     *
+     * @param  {Number}      userId               The ID of the user to reset the calendar token for
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The updated user object
+     */
+    var resetToken = exports.resetToken = function(userId, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        $.ajax({
+            'url': '/api/users/' + userId + '/token',
+            'type': 'POST',
+            'success': function(data) {
+                // If the updated user is the same as the cached user, update the cached user object calendar token
+                /* istanbul ignore if */
+                if (require('gh.core').data.me.id === data.id) {
+                    require('gh.core').data.me.calendarToken = data.calendarToken;
+                }
+
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
@@ -359,7 +413,27 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for emailPreference should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId,
+            'type': 'POST',
+            'data': {
+                'displayName': displayName,
+                'email': email,
+                'emailPreference': emailPreference
+            },
+            'success': function(data) {
+                // If the updated user is the same as the cached user, update the cached user object
+                /* istanbul ignore if */
+                if (require('gh.core').data.me.id === data.id) {
+                    require('gh.core').data.me = data;
+                }
+
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**
@@ -381,6 +455,48 @@ define(['exports'], function(exports) {
         }
 
         return callback();
+    };
+
+    /**
+     * Change a user's local password
+     *
+     * @param  {Number}      userId                 The ID of the user for which to change the local password
+     * @param  {String}      newPassword            The new password for the user
+     * @param  {String}      [oldPassword]          The previous password for the user. This is only required when the current user is not an administrator
+     * @param  {Function}    [callback]             Standard callback function
+     * @param  {Object}      [callback.err]         Error object containing the error code and error message
+     * @param  {Object}      [callback.response]    The updated user
+     */
+    var changePassword = exports.changePassword = function(userId, newPassword, oldPassword, callback) {
+        if (callback && !_.isFunction(callback)) {
+            throw new Error('A valid callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (!_.isString(newPassword)) {
+            return callback({'code': 400, 'msg': 'A valid new password should be provided'});
+        } else if (oldPassword && !_.isString(oldPassword)) {
+            return callback({'code': 400, 'msg': 'A valid old password should be provided'});
+        }
+
+        // Set a default callback function in case no callback function has been provided
+        callback = callback || function() {};
+
+        return callback();
+
+        // $.ajax({
+        //     'url': '/api/users/' + userId + '/password',
+        //     'type': 'POST',
+        //     'data': {
+        //         'newPassword': newPassword,
+        //         'oldPassword': oldPassword
+        //     },
+        //     'success': function(data) {
+        //         return callback(null, data);
+        //     },
+        //     'error': function(jqXHR, textStatus) {
+        //         return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+        //     }
+        // });
     };
 
     /**
