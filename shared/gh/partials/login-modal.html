@@ -1,13 +1,13 @@
-<div class="modal fade" id="gh-modal-login">
+<div class="modal fade" id="gh-modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Already have a timetable or want one?</h4>
+                <h4 class="modal-title" id="modal-title">Already have a timetable or want one?</h4>
             </div>
             <div class="modal-body">
                 <p>Sign-in to see your timetable and make changes</p>
-                <form class="gh-signin-form form-inline" role="form">
+                <form id="gh-signin-form" class="form-inline" role="form">
                     <%= _.partial('login-form') %>
                 </form>
             </div>

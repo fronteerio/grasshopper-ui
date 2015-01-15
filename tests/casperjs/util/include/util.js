@@ -68,14 +68,10 @@ var mainUtil = (function() {
      * @private
      */
     var generateRandomString = function(toLowerCase) {
-        if (toLowerCase && !_.isBoolean(toLowerCase)) {
-            throw new Error('An invalid value for toLowerCase has been provided');
-        }
-
-        // Generate a random string
-        var rndString = _.sample('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 10).join('');
-        if (toLowerCase) {
-            rndString = rndString.toLowerCase();
+        var rndString = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        for (var i = 0; i < 10; i++) {
+            rndString += possible.charAt(Math.floor(Math.random() * possible.length));
         }
         return rndString;
     };
