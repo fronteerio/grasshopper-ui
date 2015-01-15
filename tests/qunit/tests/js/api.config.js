@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'gh.api.tests', 'sinon'], function(gh, testAPI, sinon) {
+require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('Config API');
 
 
