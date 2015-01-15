@@ -308,7 +308,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view.gh-export-enabled #gh-calendar-container,
 #gh-calendar-view.gh-export-enabled .gh-toolbar-secondary {
-    right: 350px;
+    right: 530px;
     position: absolute;
 }
 
@@ -317,7 +317,7 @@ tbody tr:last-child > td.fc-widget-content {
     position: absolute;
     right: 30px;
     top: 259px;
-    width: 320px;
+    width: 500px;
 }
 
 

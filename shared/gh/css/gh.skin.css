@@ -330,8 +330,14 @@ tbody .fc-sun {
 
 /* Export calendar */
 
+#gh-calendar-view.gh-export-enabled #gh-btn-calendar-export {
+    background-color: #EEF2F0;
+    border-color: #EEF2F0;
+    color: #171717;
+}
+
 #gh-calendar-view.gh-export-enabled #gh-export-container {
-    background: #171717;
+    background: #EEF2F0;
 }
 
 
