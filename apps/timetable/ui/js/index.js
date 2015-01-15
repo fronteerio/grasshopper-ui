@@ -322,7 +322,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * @private
      */
     var addBinding = function() {
-        $('body').on('submit', '.gh-signin-form', doLogin);
+        $('body').on('submit', '#gh-signin-form', doLogin);
 
         $(document).on('gh.calendar.ready', function() {
             setUpCalendar();
