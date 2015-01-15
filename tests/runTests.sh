@@ -9,13 +9,6 @@ runLint() {
     LINTEXITCODE=$?
 }
 
-# Function to run the QUnit test suite
-QUNITEXITCODE=0
-runQunitTests() {
-    node_modules/.bin/grunt qunit
-    QUNITEXITCODE=$?
-}
-
 # Function to run the CasperJS test suite
 CASPEREXITCODE=0
 runCasperJSTests() {
@@ -23,17 +16,24 @@ runCasperJSTests() {
     CASPEREXITCODE=$?
 }
 
+# Function to run the QUnit test suite
+QUNITEXITCODE=0
+runQunitTests() {
+    node_modules/.bin/grunt qunit
+    QUNITEXITCODE=$?
+}
+
 # Lint the source code
 runLint
-# Run the QUnit tests, if required
-if [ $1 = "qunit" ] || [ $1 = "all" ]
-    then
-    runQunitTests
-fi
 # Run the CasperJS tests, if required
 if [ $1 = "casper" ]  || [ $1 = "all" ]
     then
     runCasperJSTests
+fi
+# Run the QUnit tests, if required
+if [ $1 = "qunit" ] || [ $1 = "all" ]
+    then
+    runQunitTests
 fi
 
 # Determine to end tests with failure or success exit code

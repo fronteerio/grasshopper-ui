@@ -21,25 +21,19 @@ casper.test.begin('Student - Component - Modules', function(test) {
     var openModules = function() {
         casper.waitForSelector('#gh-right-container #gh-header', function() {
             casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
-                // Wait a second to let all event handlers bind to the chosen container
-                casper.wait(1000, function() {
-                    // Open the tripos picker
-                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
-                    // Verify that the tripos picker opens and a selection can be made
-                    casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
-                        // Click the first item and verify that the part picker becomes available
-                        casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
-                        casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
-                            // Wait a second to let all event handlers bind to the chosen container
-                            casper.wait(1000, function() {
-                                // Open the part picker
-                                casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
-                                // Verify that the part picker opens and a selection can be made
-                                casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
-                                    // Click the first item
-                                    casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
-                                });
-                            });
+                // Open the tripos picker
+                casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
+                // Verify that the tripos picker opens and a selection can be made
+                casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
+                    // Click the first item and verify that the part picker becomes available
+                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
+                    casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
+                        // Open the part picker
+                        casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
+                        // Verify that the part picker opens and a selection can be made
+                        casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
+                            // Click the first item
+                            casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
                         });
                     });
                 });
@@ -53,27 +47,29 @@ casper.test.begin('Student - Component - Modules', function(test) {
     var verifyModules = function() {
         // Open modules in the sidebar
         openModules();
-        // Wait for the modules to be available before starting the test
-        casper.waitForSelector('#gh-left-container #gh-modules-list li', function() {
-            // Verify the result summary
-            test.assertExists('#gh-left-container #gh-result-summary', 'Verify that the result summary is shown');
-            var moduleCount = casper.evaluate(function() {
-                return $('#gh-left-container #gh-modules-list > li').length;
-            });
-            test.assertSelectorHasText('#gh-left-container #gh-result-summary', 'Found ' + moduleCount + ' modules', 'Verify that the result summary shows the correct number of modules found');
-            // Verify the module item
-            test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list', 'Verify that the module toggle is present');
-            test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list .gh-list-icon i', 'Verify that the module toggle icon is present');
-            test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-description p', 'Verify that the module title is present');
-            test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-action', 'Verify that the module actions are present');
-            test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-action button.gh-add-all-to-calendar', 'Verify that the default action for modules is \'Add all to calendar\'');
-            // Verify that clicking the button as anonymous triggers a login modal
-            casper.click('#gh-left-container #gh-modules-list > li:first-child .gh-list-action button.gh-add-all-to-calendar');
-            casper.waitUntilVisible('#gh-modal-login', function() {
-                test.assertVisible('#gh-modal-login', 'Verify that clicking the button as anonymous triggers a login modal');
-                casper.click('#gh-modal-login button[data-dismiss="modal"]');
-                casper.waitWhileVisible('#gh-modal-login', function() {
-                    test.assertNotVisible('#gh-modal-login', 'Verify that the modal was dismissed before continuing the test');
+        casper.then(function() {
+            // Wait for the modules to be available before starting the test
+            casper.waitForSelector('#gh-left-container #gh-modules-list li', function() {
+                // Verify the result summary
+                test.assertExists('#gh-left-container #gh-result-summary', 'Verify that the result summary is shown');
+                var moduleCount = casper.evaluate(function() {
+                    return $('#gh-left-container #gh-modules-list > li').length;
+                });
+                test.assertSelectorHasText('#gh-left-container #gh-result-summary', 'Found ' + moduleCount + ' modules', 'Verify that the result summary shows the correct number of modules found');
+                // Verify the module item
+                test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list', 'Verify that the module toggle is present');
+                test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list .gh-list-icon i', 'Verify that the module toggle icon is present');
+                test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-description p', 'Verify that the module title is present');
+                test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-action', 'Verify that the module actions are present');
+                test.assertExists('#gh-left-container #gh-modules-list > li:first-child .gh-list-action button.gh-add-all-to-calendar', 'Verify that the default action for modules is \'Add all to calendar\'');
+                // Verify that clicking the button as anonymous triggers a login modal
+                casper.click('#gh-left-container #gh-modules-list > li:first-child .gh-list-action button.gh-add-all-to-calendar');
+                casper.waitUntilVisible('#gh-modal-login', function() {
+                    test.assertVisible('#gh-modal-login', 'Verify that clicking the button as anonymous triggers a login modal');
+                    casper.click('#gh-modal-login button[data-dismiss="modal"]');
+                    casper.waitWhileVisible('#gh-modal-login', function() {
+                        test.assertNotVisible('#gh-modal-login', 'Verify that the modal was dismissed before continuing the test');
+                    });
                 });
             });
         });

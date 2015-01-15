@@ -19,7 +19,7 @@
 var configAPI = (function() {
     return {
         'adminUI': 'http://admin.grasshopper.com',
-        'tenantUI': 'http://2014.timetable.cam.ac.uk',
+        'tenantUI': 'http://2013.timetable.cam.ac.uk',
         'waitTimeout': 20000
     };
 })();

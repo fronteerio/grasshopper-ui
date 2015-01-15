@@ -24,36 +24,30 @@ casper.test.begin('Student - Component - Subheader', function(test) {
             test.assertSelectorHasText('#gh-left-container #gh-meta-container #gh-content-description', 'Select your course and part to view available modules', 'Verify that the subheader has the correct content description');
             casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
                 test.assertExists('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', 'Verify that the subheader has a tripos picker');
-                // Wait a second to let all event handlers bind to the chosen container
-                casper.wait(1000, function() {
-                    // Open the tripos picker
-                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
-                    // Verify that the tripos picker opens and a selection can be made
-                    casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
-                        test.assertVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', 'Verify that the tripos picker opens after clicking the input');
-                        // Wait a second to let all event handlers bind to the chosen container
-                        casper.wait(1000, function() {
-                            // Click the first item and verify that the part picker becomes available
-                            casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
-                            casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
-                                test.assertExists('#gh-subheader #gh_subheader_part_chosen.chosen-container', 'Verify that the part picker becomes available after selecting a tripos');
-                                // Verify that the url is updated to reflect the selected tripos
-                                test.assertEval(function() {
-                                    return !!$.bbq.getState().tripos;
-                                }, 'Verify that the url is updated to reflect the selected tripos');
-                                // Open the part picker
-                                casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
-                                // Verify that the part picker opens and a selection can be made
-                                casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
-                                    test.assertVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', 'Verify that the part picker opens after clicking the input');
-                                    // Click the first item
-                                    casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
-                                    // Verify that the url is updated to reflect the selected part
-                                    test.assertEval(function() {
-                                        return !!$.bbq.getState().part;
-                                    }, 'Verify that the url is updated to reflect the selected part');
-                                });
-                            });
+                // Open the tripos picker
+                casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
+                // Verify that the tripos picker opens and a selection can be made
+                casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
+                    test.assertVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', 'Verify that the tripos picker opens after clicking the input');
+                    // Click the first item and verify that the part picker becomes available
+                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
+                    casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
+                        test.assertExists('#gh-subheader #gh_subheader_part_chosen.chosen-container', 'Verify that the part picker becomes available after selecting a tripos');
+                        // Verify that the url is updated to reflect the selected tripos
+                        test.assertEval(function() {
+                            return !!$.bbq.getState().tripos;
+                        }, 'Verify that the url is updated to reflect the selected tripos');
+                        // Open the part picker
+                        casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
+                        // Verify that the part picker opens and a selection can be made
+                        casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
+                            test.assertVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', 'Verify that the part picker opens after clicking the input');
+                            // Click the first item
+                            casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
+                            // Verify that the url is updated to reflect the selected part
+                            test.assertEval(function() {
+                                return !!$.bbq.getState().part;
+                            }, 'Verify that the url is updated to reflect the selected part');
                         });
                     });
                 });
