@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <title>Timetable Administration</title>
+
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <!-- .cam.ac.uk domain Typekit inclusion -->
+        <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+        <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+        <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
+        <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
+        <link rel="stylesheet" href="/shared/vendor/css/fullcalendar.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
+        <link rel="stylesheet" href="/apps/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/admin/ui/css/skin.css">
+        <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
+    </head>
+    <body>
+        <div id="gh-page-container">
+            <div id="gh-left-container">
+                <div id="gh-meta-container">
+                    <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                        <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+                    </a>
+                    <div id="gh-content-description">
+                        <p class="gh-academic-year-select">2014 - 2015</p>
+                    </div>
+                </div>
+                <div id="gh-modules-container"><!-- --></div>
+            </div>
+            <div id="gh-right-container">
+                <div id="gh-header-container">
+                    <div id="gh-header"><!-- --></div>
+                    <div id="gh-subheader"><!-- --></div>
+                </div>
+                <main id="gh-main"><!-- --></main>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <script id="gh-header-template" type="text/template">
+            <h1>Timetable Administration</h1>
+            <% if (!gh.data.me.anon) { %>
+                <form id="gh-signout-form" class="form-inline pull-right" role="form">
+                    <button type="submit" class="btn btn-default gh-btn-secondary">
+                        <i class="fa fa-sign-out"></i>Sign out
+                    </button>
+                </form>
+
+            <!--/* TODO: Add else clause that shows a login button (Raven login) */-->
+            <% } %>
+        </script>
+
+        <script id="gh-help-template" type="text/template">
+            <div id="gh-help">
+                <p>Need help? Contact: <a href="mailto:tthelp@cam.ac.uk" title="tthelp@cam.ac.uk">tthelp@cam.ac.uk</a></p>
+            </div>
+        </script>
+
+        <script id="gh-tripos-help-template" type="text/template">
+            <p class="gh-tripos-help">To start editing timetables choose a tripos from the list above, or select from your list below</p>
+        </script>
+
+        <script id="gh-login-template" type="text/template">
+            <div id="gh-login-form" class="col-xs-6 pull-left">
+                <form id="gh-signin-form" role="form">
+                    <h2>Sign in</h2>
+                    <div class="form-group">
+                        <label for="gh-signin-email">Email address</label>
+                        <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gh-signin-password">Password</label>
+                        <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" id="gh-signin" class="btn btn-default gh-btn-primary">
+                        <i class="fa fa-sign-in"></i>Sign in
+                    </button>
+                </form>
+            </div>
+        </script>
+
+        <script id="gh-modules-template" type="text/template">
+            <%= _.partial('modules', {'data': data}) %>
+        </script>
+
+        <script id="gh-subheader-part-template" type="text/template">
+            <%= _.partial('subheader-part', {'data': data}) %>
+        </script>
+
+        <script id="gh-subheader-picker-template" type="text/template">
+            <%= _.partial('subheader-picker', {'data': data}) %>
+        </script>
+
+        <script id="gh-subheader-pickers-template" type="text/template">
+            <a class="pull-right gh-show-video" href="#" style="display: none;"><i class="fa fa-youtube-play"></i> Help video<a>
+            <%= _.partial('subheader-pickers') %>
+        </script>
+
+        <script id="gh-main-tripos-template" type="text/template">
+            <div id="gh-main-tripos">
+                <div class="gh-video">
+                    <button class="btn gh-hide-video"><i class="fa fa-remove"></i></button>
+                    <span class="gh-video-info">A quick look at how to use<br/>the new timetable system</span>
+                    <button class="btn gh-play-video"><i class="fa fa-youtube-play"></i>Play video</button>
+                </div>
+                <div class="row gh-row-part">
+                    <div class="col-xs-4 gh-part">
+                        <p class="gh-part-editing">Mary Wellingtion is editing</p>
+                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
+                        <p class="gh-part-part">Part IA</p>
+                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
+                        <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
+                    </div>
+                    <div class="col-xs-4 gh-part">
+                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
+                        <p class="gh-part-part">Part IB</p>
+                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
+                    </div>
+                    <div class="col-xs-4 gh-part">
+                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
+                        <p class="gh-part-part">Part II</p>
+                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
+                    </div>
+                </div>
+                <div class="row gh-row-part">
+                    <div class="col-xs-4 gh-part">
+                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
+                        <p class="gh-part-part">Part IA</p>
+                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
+                    </div>
+                    <div class="col-xs-4 gh-part">
+                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
+                        <p class="gh-part-part">Part IB</p>
+                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
+    </body>
+</html>

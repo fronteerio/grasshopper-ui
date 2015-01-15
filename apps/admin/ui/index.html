@@ -230,7 +230,7 @@
 
         <script id="gh-header-template" type="text/template">
             <% if (!gh.data.me || gh.data.me.anon) { %>
-                <form class="gh-signin-form form-inline pull-right" role="form">
+                <form id="gh-signin-form" class="form-inline pull-right" role="form">
                     <%= _.partial('login-form') %>
                 </form>
             <% } else { %>

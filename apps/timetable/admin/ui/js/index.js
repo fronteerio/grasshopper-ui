@@ -13,9 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery-bbq'], function(gh) {
-
-    var state = $.bbq.getState() || {};
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
 
     // Cache the tripos data
     var triposData = {};
@@ -24,6 +22,39 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     /////////////////
     //  RENDERING  //
     /////////////////
+
+    /**
+     * Get the tripos structure from the REST API and filter it down for easy access in the templates
+     *
+     * @private
+     */
+    var getTripos = function() {
+
+        // Fetch the triposes
+        gh.api.utilAPI.getTriposStructure(function(err, data) {
+            if (err) {
+                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+            }
+
+            // Cache the tripos data
+            triposData = data;
+
+            // Set up the tripos picker after all data has been retrieved
+            setUpTriposPicker();
+        });
+    };
+
+    /**
+     * Get the user's triposes
+     *
+     * @private
+     */
+    var getUserTripos = function() {
+        /* TODO: replace this by available parts for the admin */
+        gh.api.utilAPI.renderTemplate($('#gh-main-tripos-template'), {
+            'data': null
+        }, $('#gh-main'));
+    };
 
     /**
      * Render the header
@@ -37,14 +68,26 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Render the login modal
+     * Render the help section
      *
      * @private
      */
-    var renderLoginModal = function() {
-         gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
+    var renderHelp = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-help-template'), {
             'gh': gh
-        }, $('#gh-modal'));
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Render the login form
+     *
+     * @private
+     */
+    var renderLoginForm = function() {
+        $('#gh-subheader, #gh-content-description').height(350);
+        gh.api.utilAPI.renderTemplate($('#gh-login-template'), {
+            'gh': gh
+        }, $('#gh-subheader'));
     };
 
     /**
@@ -59,35 +102,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Render the calendar view
-     *
-     * @private
-     */
-    var setUpCalendar = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
-            'data': null
-        }, $('#gh-main'));
-
-        if (gh.data.me.anon) {
-            $(document).trigger('gh.calendar.init');
-        } else {
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
-                if (err) {
-                    gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
-                }
-
-                var calendarData = {
-                    'triposData': triposData,
-                    'events': data
-                };
-
-                $(document).trigger('gh.calendar.init', calendarData);
-            });
-        }
-    };
-
-    /**
      * Set up the modules of events in the sidebar
      *
      * @param  {Event}     ev      Standard jQuery event
@@ -95,14 +109,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * @private
      */
     var setUpModules = function(ev, data) {
+
+        // Hide the tripos help text
+        $('.gh-tripos-help').hide();
         var partId = parseInt(data.selected, 10);
-
-        // Push the selected tripos in the URL
-        state['part'] = partId;
-        $.bbq.pushState(state);
-
-        // Track the part picker change in GA
-        gh.api.utilAPI.sendTrackingEvent('picker', 'change', 'Part picker', partId);
 
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
             if (err) {
@@ -118,7 +128,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             // Decorate the modules with their collapsed status if LocalStorage is supported
             var collapsedIds = [];
             if (Storage) {
-                collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('collapsed'));
+                collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('admin.collapsed'));
                 _.each(modules.results, function(module) {
                     module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
                 });
@@ -130,11 +140,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             }, $('#gh-modules-container'));
 
             // Clear local storage
-            gh.api.utilAPI.localDataStorage().remove('collapsed');
+            gh.api.utilAPI.localDataStorage().remove('admin.collapsed');
 
             // Add the current collapsed module(s) back to the local storage
             collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
-            gh.api.utilAPI.localDataStorage().store('collapsed', collapsedIds);
+            gh.api.utilAPI.localDataStorage().store('admin.collapsed', collapsedIds);
         });
     };
 
@@ -147,16 +157,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      */
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
-
-        // Push the selected tripos in the URL
-        state = {
-            'tripos': triposId,
-            'part': $.bbq.getState()['part']
-        };
-        $.bbq.pushState(state);
-
-        // Track the tripos picker change in GA
-        gh.api.utilAPI.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
@@ -213,33 +213,18 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         $('#gh-subheader-tripos').chosen({
             'no_results_text': 'No matches for'
         }).change(setUpPartPicker);
-
-        // Show the descriptive text on the left hand side
-        $('#gh-content-description p').show();
     };
 
     /**
-     * Get the tripos structure from the REST API and filter it down for easy access in the templates
+     * Show the tripos help info
      *
      * @private
      */
-    var getTripos = function() {
-
-        // Fetch the triposes
-        gh.api.utilAPI.getTriposStructure(function(err, data) {
-            if (err) {
-                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
-            }
-
-            // Cache the tripos data
-            triposData = data;
-
-            // Set up the tripos picker after all data has been retrieved
-            setUpTriposPicker();
-
-            // Run the hashchange logic to put the right selections in place
-            handleHashChange();
-        });
+    var showTriposHelp = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-tripos-help-template'), {
+            'data': null
+        }, $('#gh-modules-container'));
+        $('.gh-tripos-help').show();
     };
 
 
@@ -262,11 +247,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
         gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
             if (!err) {
-                var state = $.param($.bbq.getState());
-                if (state) {
-                    return window.location.reload();
-                }
-                window.location = '/';
+                window.location = '/admin';
             } else {
                 gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
@@ -274,41 +255,74 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     };
 
     /**
-     * Handle the hashchange event by applying state values to the pickers. Can also be
-     * used separate from the hashchange event to apply state values to the pickers
+     * Log the current user out
+     *
+     * @param  {Event}    ev    The jQuery event
+     * @private
+     */
+    var doLogout = function(ev) {
+
+        // Prevent the form from being submitted
+        ev.preventDefault();
+
+        gh.api.authenticationAPI.logout(function(err) {
+            if (!err) {
+                window.location = '/admin';
+            } else {
+                gh.api.utilAPI.notification('Logout failed', 'Logging out of the application failed', 'error');
+            }
+        });
+    };
+
+
+    /////////////
+    //  VIDEO  //
+    /////////////
+
+    /**
+     * Initialise the video
      *
      * @private
      */
-    var handleHashChange = function() {
-        state = $.bbq.getState() || {};
-
-        // If the URL shows a preselected tripos, select that tripos automatically
-        if (state.tripos && !_.isEmpty(state.tripos)) {
-            $('#gh-subheader-tripos').val(state.tripos);
-            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
-            $('#gh-subheader-tripos').trigger('chosen:updated');
-        } else {
-            // There is no state for the tripos, make sure it's reset
-            setUpTriposPicker();
-            // There can't be a part because there is no tripos
-            if ($('#gh_subheader_part_chosen').length) {
-                // Destroy the field if it's been initialised previously
-                $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
-                // Show the subheader part picker
-                $('#gh-subheader-part').hide();
-            }
+    var initVideo = function() {
+        if (gh.api.utilAPI.localDataStorage().get('hideVideo')) {
+            return hideVideo();
         }
+        showVideo();
 
-        // If the URL shows a preselected part, select that part automatically
-        if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
-            $('#gh-subheader-part').val(state.part);
-            $('#gh-subheader-part').trigger('change', {'selected': state.part});
-            $('#gh-subheader-part').trigger('chosen:updated');
-        } else {
-            // Remove any modules and event series from the sidebar when no part is selected
-            // so no inaccurate information is presented to the user
-            $('#gh-modules-container').empty();
-        }
+        // Do not show the video the next time
+        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
+    };
+
+    /**
+     * Hide the help video
+     *
+     * @private
+     */
+    var hideVideo = function() {
+        $('.gh-video').hide();
+        $('.gh-show-video').show();
+        return false;
+    };
+
+    /**
+     * Show the help video
+     *
+     * @private
+     */
+    var showVideo = function() {
+        $('.gh-video').show();
+        $('.gh-show-video').hide();
+        return false;
+    };
+
+    /**
+     * Play the help video
+     *
+     * @private
+     */
+    var playVideo = function() {
+        return false;
     };
 
 
@@ -322,13 +336,15 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * @private
      */
     var addBinding = function() {
+
+        // Video events
+        $('body').on('click', '.gh-show-video', showVideo);
+        $('body').on('click', '.gh-hide-video', hideVideo);
+        $('body').on('click', '.gh-play-video', playVideo);
+
+        // Login and logout
         $('body').on('submit', '#gh-signin-form', doLogin);
-
-        $(document).on('gh.calendar.ready', function() {
-            setUpCalendar();
-        });
-
-        $(window).on('hashchange', handleHashChange);
+        $('body').on('submit', '#gh-signout-form', doLogout);
     };
 
     /**
@@ -339,10 +355,39 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     var initIndex = function() {
         addBinding();
         renderHeader();
-        renderPickers();
-        renderLoginModal();
-        setUpCalendar();
-        getTripos();
+
+        // Display the login form if the user is not authenticated
+        if (gh.data.me && gh.data.me.anon) {
+
+            // Display the help link
+            renderHelp();
+
+            // Render the login form
+            renderLoginForm();
+
+            // Hide the current academic year on the left hand side
+            $('#gh-content-description p').hide();
+
+        } else {
+
+            // Render the picker container
+            renderPickers();
+
+            // Fetch all the triposes
+            getTripos();
+
+            // Fetch the user's triposes
+            getUserTripos();
+
+            // Show the tripos help info
+            showTriposHelp();
+
+            // Initialise the video
+            initVideo();
+
+            // Show the current academic year on the left hand side
+            $('#gh-content-description p').show();
+        }
     };
 
     initIndex();

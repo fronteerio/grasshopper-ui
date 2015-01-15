@@ -112,6 +112,44 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     // Test the redirectToOriginatingApp functionality
 
 
+    /////////////
+    // GENERAL //
+    /////////////
+
+    QUnit.asyncTest('logout', function(assert) {
+        expect(5);
+
+        gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {
+            assert.ok(!err, 'Verifty that a user can login without errors');
+
+            // Verify that an error is thrown when no callback was provided
+            assert.throws(function() {
+                gh.api.authenticationAPI.logout();
+            }, 'Verify that an error is thrown when no callback was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.authenticationAPI.logout('invalid_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
+
+            // Verify that a user can log out without errors
+            gh.api.authenticationAPI.logout(function(err) {
+                assert.ok(!err, 'Verify that a user can log out without errors');
+
+                // Mock an error from the back-end
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.api.utilAPI.mockRequest('POST', '/api/auth/logout', 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.authenticationAPI.logout(function(err) {
+                        assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                    });
+
+                    QUnit.start();
+                });
+            });
+        });
+    });
+
+
     //////////////////////////
     // SIGNED AUTHENTICATON //
     //////////////////////////

@@ -381,7 +381,7 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             }
             return gh.api.utilAPI.notification('Configuration updated.', 'The configuration was successfully updated.', 'success');
         });
-        
+
         return false;
     };
 
@@ -431,10 +431,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
      * @private
      */
     var addBinding = function() {
-        $('body').on('submit', '.gh-signin-form', doLogin);
         $('body').on('click', '#gh-tenants-apps-form button', submitTenantForm);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
+        $('body').on('submit', '#gh-signin-form', doLogin);
     };
 
     /**

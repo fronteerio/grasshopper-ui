@@ -1,0 +1,12 @@
+<option value=""></option>
+<%_.each(data.courses, function(course) { %>
+    <% if (course.subjects.length === 0) { %>
+        <option value="<%- course.id %>"><%- course.displayName %></option>
+    <% } else { %>
+        <optgroup label="<%- course.displayName %>">
+            <%_.each(course.subjects, function(subject) { %>
+                <option value="<%- subject.id %>"><%- subject.displayName %></option>
+            <% }); %>
+        </optgroup>
+    <% } %>
+<% }); %>
