@@ -67,7 +67,7 @@ casper.test.begin('Student - Component - Modules', function(test) {
                 casper.waitUntilVisible('#gh-modal-login', function() {
                     test.assertVisible('#gh-modal-login', 'Verify that clicking the button as anonymous triggers a login modal');
                     casper.click('#gh-modal-login button[data-dismiss="modal"]');
-                    casper.waitWhileVisible('#gh-modal-login', function() {
+                    casper.waitWhileSelector('body.modal-open', function() {
                         test.assertNotVisible('#gh-modal-login', 'Verify that the modal was dismissed before continuing the test');
                     });
                 });
@@ -99,7 +99,7 @@ casper.test.begin('Student - Component - Modules', function(test) {
             casper.waitUntilVisible('#gh-modal-login', function() {
                 test.assertVisible('#gh-modal-login', 'Verify that clicking the button as anonymous triggers a login modal');
                 casper.click('#gh-modal-login button[data-dismiss="modal"]');
-                casper.waitWhileVisible('#gh-modal-login', function() {
+                casper.waitWhileSelector('body.modal-open', function() {
                     test.assertNotVisible('#gh-modal-login', 'Verify that the modal was dismissed before continuing the test');
                 });
             });
