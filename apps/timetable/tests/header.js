@@ -19,12 +19,12 @@ casper.test.begin('Student - Component - Header', function(test) {
      * Verify the page header
      */
     var verifyHeader = function() {
-        casper.echo('# Verify that the timetable header', 'INFO');
+        casper.echo('# Verify the timetable header', 'INFO');
         casper.waitForSelector('#gh-right-container #gh-header', function() {
             test.assertExists('#gh-left-container #gh-header-logo img', 'Verify that the header hero has the Cambridge University logo');
             test.assertExists('#gh-right-container #gh-header h1', 'Verify that the header has a header h1');
             test.assertSelectorHasText('#gh-right-container #gh-header h1', 'My timetable', 'Verify that the header has the text \'My timetable\'');
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form', 'Verify that the header has a login form');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form', 'Verify that the header has a login form');
         });
     };
 
@@ -33,12 +33,12 @@ casper.test.begin('Student - Component - Header', function(test) {
      */
     var verifyLogInForm = function() {
         casper.echo('# Verify the timetable login form', 'INFO');
-        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form label[for="gh-signin-email"]', 'Verify that the login form has an email label');
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form input#gh-signin-email', 'Verify that the login form has an email field');
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form label[for="gh-signin-password"]', 'Verify that the login form has a password label');
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form input#gh-signin-password', 'Verify that the login form has a password field');
-            test.assertExists('#gh-right-container #gh-header .gh-signin-form button[type="submit"]', 'Verify that the login form has a submit button');
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-email"]', 'Verify that the login form has an email label');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-email', 'Verify that the login form has an email field');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form label[for="gh-signin-password"]', 'Verify that the login form has a password label');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form input#gh-signin-password', 'Verify that the login form has a password field');
+            test.assertExists('#gh-right-container #gh-header #gh-signin-form button[type="submit"]', 'Verify that the login form has a submit button');
         });
     };
 
@@ -47,12 +47,12 @@ casper.test.begin('Student - Component - Header', function(test) {
      */
     var verifyLogIn = function(user) {
         casper.echo('# Verify the timetable login functionality', 'INFO');
-        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
-            casper.fill('#gh-right-container #gh-header .gh-signin-form', {
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+            casper.fill('#gh-right-container #gh-header #gh-signin-form', {
                 'username': user.email,
                 'password': user.password
             }, false);
-            casper.click('#gh-right-container #gh-header .gh-signin-form button[type="submit"]');
+            casper.click('#gh-right-container #gh-header #gh-signin-form button[type="submit"]');
 
             // Wait for the login to succeed
             casper.waitForSelector('#gh-signout-form button[type="submit"]', function() {
@@ -71,8 +71,8 @@ casper.test.begin('Student - Component - Header', function(test) {
             test.assertExists('#gh-signout-form button[type="submit"]', 'Verify that the logout button is present');
             casper.click('#gh-signout-form button[type="submit"]');
 
-            casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
-                test.assertExists('#gh-right-container #gh-header .gh-signin-form', 'Verify that the logout was successful');
+            casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+                test.assertExists('#gh-right-container #gh-header #gh-signin-form', 'Verify that the logout was successful');
             });
         });
     };

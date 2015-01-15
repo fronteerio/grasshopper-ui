@@ -59,12 +59,12 @@ casper.test.begin('Student - Component - Subheader', function(test) {
      * Verify the subheader as a logged in user
      */
     var verifySubHeaderLoggedIn = function(user) {
-        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
-            casper.fill('#gh-right-container #gh-header .gh-signin-form', {
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+            casper.fill('#gh-right-container #gh-header #gh-signin-form', {
                 'username': user.email,
                 'password': user.password
             }, false);
-            casper.click('#gh-right-container #gh-header .gh-signin-form button[type="submit"]');
+            casper.click('#gh-right-container #gh-header #gh-signin-form button[type="submit"]');
 
             // Wait for the login to succeed
             casper.waitForSelector('#gh-signout-form button[type="submit"]', function() {
@@ -77,11 +77,11 @@ casper.test.begin('Student - Component - Subheader', function(test) {
         // Create a user to test with
         userAPI.createUsers(1, function(user1) {
             casper.then(function() {
-                casper.echo('# Verify the admin page subheader as an anonymous user', 'INFO');
+                casper.echo('# Verify the page subheader as an anonymous user', 'INFO');
                 verifySubHeader();
             });
             casper.then(function() {
-                casper.echo('# Verify the admin page subheader as a logged in user', 'INFO');
+                casper.echo('# Verify the page subheader as a logged in user', 'INFO');
                 verifySubHeaderLoggedIn(user1);
             });
         });
