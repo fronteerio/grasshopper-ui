@@ -1,6 +1,7 @@
 var path = require('path');
 
 module.exports = {
+    'admin': path.normalize(__dirname + '/../admin'),
     'apps': path.normalize(__dirname + '/../../../apps'),
     'documentRoot': path.normalize(__dirname + '/../ui'),
     'ip': '127.0.0.2',

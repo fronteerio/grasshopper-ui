@@ -15,22 +15,38 @@
 
 define(['exports'], function(exports) {
 
+
+    /////////////
+    // GENERAL //
+    /////////////
+
     /**
-     * Get the request information for an administrator to become a user
+     * Log out the current user
      *
-     * @param  {Number}      userId          The ID of the user to become
-     * @param  {Function}    callback        Standard callback function
-     * @param  {Object}      callback.err    Error object containing the error code and error message
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
      */
-    var becomeUser = exports.becomeUser = function(userId, callback) {
+    var logout = exports.logout = function(callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(userId)) {
-            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/auth/logout',
+            'type': 'POST',
+            'success': function() {
+                return callback();
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
+
+
+    //////////////////////////
+    // LOCAL AUTHENTICATION //
+    //////////////////////////
 
     /**
      * Log in using local authentication
@@ -65,5 +81,27 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
+    };
+
+
+    //////////////////////////
+    // SIGNED AUTHENTICATON //
+    //////////////////////////
+
+    /**
+     * Get the request information for an administrator to become a user
+     *
+     * @param  {Number}      userId          The ID of the user to become
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Object}      callback.err    Error object containing the error code and error message
+     */
+    var becomeUser = exports.becomeUser = function(userId, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        return callback();
     };
 });
