@@ -107,17 +107,14 @@ casper.test.begin('Student - Component - Modules', function(test) {
     };
 
     casper.start(configAPI.tenantUI, function() {
-        // Create a user to test with
-        userAPI.createUsers(1, function(user1) {
-            casper.then(function() {
-                casper.echo('# Verify the modules', 'INFO');
-                verifyModules();
-            });
+        casper.then(function() {
+            casper.echo('# Verify the modules', 'INFO');
+            verifyModules();
+        });
 
-            casper.then(function() {
-                casper.echo('# Verify the module series', 'INFO');
-                verifySeries();
-            });
+        casper.then(function() {
+            casper.echo('# Verify the module series', 'INFO');
+            verifySeries();
         });
     });
 

@@ -92,14 +92,13 @@ var userAPI = (function() {
      * Log out of the tenant
      */
     var doLogOut = function() {
-        casper.wait(configAPI().modalWaitTime, function() {
-            casper.thenEvaluate(function() {
-                $('form[action="/api/auth/logout"]').submit();
-            });
+        casper.thenEvaluate(function() {
+            $('form[action="/api/auth/logout"]').submit();
         });
     };
 
     return {
-        'createUsers': createUsers
+        'createUsers': createUsers,
+        'doLogOut': doLogOut
     };
 })();
