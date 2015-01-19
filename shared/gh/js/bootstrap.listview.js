@@ -94,15 +94,16 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
 
             // Fetch the user's events
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
-                $(document).trigger('gh.calendar.refresh', [{
-                    'callback': function() {
-                        // Show a success notification
-                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
-                    },
-                    'events': events.results
-                }]);
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    $(document).trigger('gh.calendar.refresh', [{
+                        'callback': function() {
+                            // Show a success notification
+                            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                        },
+                        'events': events.results
+                    }]);
+                });
             });
         });
     });
@@ -143,15 +144,16 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
             // Fetch the user's events
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
-                $(document).trigger('gh.calendar.refresh', [{
-                    'callback': function() {
-                        // Show a success notification
-                        gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
-                    },
-                    'events': events.results
-                }]);
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    $(document).trigger('gh.calendar.refresh', [{
+                        'callback': function() {
+                            // Show a success notification
+                            gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
+                        },
+                        'events': events.results
+                    }]);
+                });
             });
         });
     });
@@ -207,15 +209,16 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
             // Fetch the user's events
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
-                $(document).trigger('gh.calendar.refresh', [{
-                    'callback': function() {
-                        // Show a success notification
-                        gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
-                    },
-                    'events': events.results
-                }]);
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    $(document).trigger('gh.calendar.refresh', [{
+                        'callback': function() {
+                            // Show a success notification
+                            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                        },
+                        'events': events.results
+                    }]);
+                });
             });
         });
     });
@@ -271,15 +274,16 @@ define(['gh.core'], function(gh) {
             gh.api.utilAPI.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Fetch the user's events
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
-                $(document).trigger('gh.calendar.refresh', [{
-                    'callback': function() {
-                        // Show a success notification
-                        gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
-                    },
-                    'events': events.results
-                }]);
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    $(document).trigger('gh.calendar.refresh', [{
+                        'callback': function() {
+                            // Show a success notification
+                            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
+                        },
+                        'events': events.results
+                    }]);
+                });
             });
         });
     });

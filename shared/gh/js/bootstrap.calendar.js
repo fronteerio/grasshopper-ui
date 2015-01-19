@@ -58,6 +58,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changePeriod = function() {
+
         // Cache the clicked button
         var $button = $(this);
         // Retrieve the button's action
@@ -73,6 +74,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Track the week change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -81,7 +85,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changeTerm = function() {
-        // Create a jQuery object from the originating button
+
+        // Cache the clicked button
         var $button = $(this);
         // Retrieve the button's action
         var action = $button.attr('data-action');
@@ -116,6 +121,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Track the term change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -124,6 +132,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changeView = function() {
+
         // Cache the clicked button
         var $button = $(this);
         // Retrieve the view
@@ -144,6 +153,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
         // Track the view change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -152,6 +164,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var navigateToToday = function() {
+
         calendar.fullCalendar('today');
         // Set the current day
         setCurrentDay();
@@ -159,8 +172,33 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+
         // Track the today click in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to today');
+
+        // Fetch the user's events
+        getUserEvents();
+    };
+
+    /**
+     * Get the user's events for the current view's time span
+     *
+     * @private
+     */
+    var getUserEvents = function() {
+        // Fetch the user's events
+        if (!gh.data.me.anon) {
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
+                    if (err) {
+                        return gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                    }
+
+                    // Update the calendar
+                    updateCalendar(data.results);
+                });
+            });
+        }
     };
 
     /**
@@ -172,16 +210,34 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var refreshCalendar = function(ev, evt) {
+        if (evt.callback && !_.isFunction(evt.callback)) {
+            throw new Error('A valid callback function should be provided');
+        }
+
+        // Set a default callback function in case no callback function has been provided
+        evt.callback = evt.callback || function() {};
+
+        // Replace the calendar's events
+        updateCalendar(evt.events);
+        // Invoke the callback function
+        evt.callback();
+    };
+
+    /**
+     * Update the calendar event object
+     *
+     * @param  {Event[]}    events    Array containing the user's events
+     * @private
+     */
+    var updateCalendar = function(events) {
         // Remove the existing events
         calendar.fullCalendar('removeEvents');
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(evt.events);
+        fixDatesToGMT(events);
         // Get the event context
-        getEventContext(evt.events);
+        getEventContext(events);
         // Replace the calendar's events
-        calendar.fullCalendar('addEventSource', evt.events);
-        // Invoke the callback function
-        evt.callback();
+        calendar.fullCalendar('addEventSource', events);
     };
 
     /**
@@ -326,6 +382,16 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 return term.name;
             }
         });
+    };
+
+    /**
+     * Return the current view
+     *
+     * @return  {String}    The calendar's current view
+     * @private
+     */
+    var getCurrentView = function() {
+        return calendar.fullCalendar('getView')['intervalUnit'];
     };
 
     /**
@@ -528,8 +594,20 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
         // Change the calendar's view
         $('#gh-calendar-toolbar-views button').on('click', changeView);
+
+        // Return the calendar's current view
+        $(document).on('gh.calendar.getCurrentView', function(evt, callback) {
+            return callback(getCurrentView());
+        });
+
+        // Return the calendar's current view date
+        $(document).on('gh.calendar.getCurrentViewDate', function(evt, callback) {
+            return callback(getCurrentViewDate());
+        });
+
         // Refresh the calendar
         $(document).on('gh.calendar.refresh', refreshCalendar);
+
         // Resize the calendar
         $(window).on('resize', setCalendarHeight);
     };

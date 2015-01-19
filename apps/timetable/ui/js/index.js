@@ -68,23 +68,38 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
             'data': null
         }, $('#gh-main'));
 
-        if (gh.data.me.anon) {
-            $(document).trigger('gh.calendar.init');
-        } else {
-            var range = gh.api.utilAPI.getCalendarDateRange();
-            gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
-                if (err) {
-                    gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
-                }
+        // Fetch the triposes
+        getTripos(function() {
 
-                var calendarData = {
-                    'triposData': triposData,
-                    'events': data
-                };
+            // Initialise the calendar
+            $(document).trigger('gh.calendar.init', {'triposData': triposData});
 
-                $(document).trigger('gh.calendar.init', calendarData);
-            });
-        }
+            // Fetch the user's events
+            if (!gh.data.me.anon) {
+
+                // Define the range of the events that need to be fetched
+                gh.api.utilAPI.getCalendarDateRange(function(range) {
+
+                    // Fetch all the events within the defined range
+                    gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
+                        if (err) {
+                            gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                        }
+
+                        var calendarData = {
+                            'triposData': triposData,
+                            'events': data
+                        };
+
+                        // Ingest the fetched events into the calendar object
+                        $(document).trigger('gh.calendar.refresh', [
+                            {'callback': null},
+                            {'events': calendarData}
+                        ]);
+                    });
+                });
+            }
+        });
     };
 
     /**
@@ -221,9 +236,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
     /**
      * Get the tripos structure from the REST API and filter it down for easy access in the templates
      *
+     * @param  {Function}    callback    Standard callback function
      * @private
      */
-    var getTripos = function() {
+    var getTripos = function(callback) {
 
         // Fetch the triposes
         gh.api.utilAPI.getTriposStructure(function(err, data) {
@@ -239,6 +255,8 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
 
             // Run the hashchange logic to put the right selections in place
             handleHashChange();
+
+            return callback();
         });
     };
 
@@ -342,7 +360,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery
         renderPickers();
         renderLoginModal();
         setUpCalendar();
-        getTripos();
     };
 
     initIndex();
