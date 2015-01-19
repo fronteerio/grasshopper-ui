@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.student-listview', 'chosen', 'jquery-bbq'], function(gh) {
 
     var state = $.bbq.getState() || {};
 

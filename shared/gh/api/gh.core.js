@@ -27,7 +27,30 @@ define([
 
         'jquery',
         'lodash',
-        'bootstrap'
+        'bootstrap',
+
+        /*!
+         * All the Grasshopper API libraries found in /shared/gh/api. By including these here, requirejs will know that the
+         * libraries are already included in the `gh.core` dependency and individual libraries will not be loaded
+         * on the client when requested.
+         */
+        'gh.api.admin',
+        'gh.api.app',
+        'gh.api.authentication',
+        'gh.api.config',
+        'gh.api.event',
+        'gh.api.groups',
+        'gh.api.orgunit',
+        'gh.api.series',
+        'gh.api.tenant',
+        'gh.api.tests',
+        'gh.api.user',
+        'gh.api.util',
+
+        /**
+         * Grasshopper plugins
+         */
+        'bootstrap.listview'
     ],
 
     function(gh) {

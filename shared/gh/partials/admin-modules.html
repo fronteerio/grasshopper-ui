@@ -1,0 +1,8 @@
+<div id="gh-result-summary">
+    <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-module"><i class="fa fa-plus-square"></i> New module</button>
+</div>
+<div id="gh-modules-list-container">
+    <ul id="gh-modules-list" class="list-group">
+        <%= _.partial('admin-module-item', {'data': data}) %>
+    </ul>
+</div>
