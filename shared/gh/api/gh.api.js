@@ -16,7 +16,8 @@
 /**
  * Initialises the grasshopper APIs
  */
-define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.groups', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'],
+define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.groups',
+        'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'],
     function(adminAPI, appAPI, authenticationAPI, configAPI, eventAPI, groupsAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI, utilAPI) {
 
         var gh = {
@@ -54,6 +55,9 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
 
                 utilAPI.cachePartials(function() {
                     // Continue startup
+
+                    // The APIs have now fully initialised. All javascript that
+                    // depends on the initialised core APIs can now execute
                     return callback(gh);
                 });
             });

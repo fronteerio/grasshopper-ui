@@ -477,25 +477,29 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/calendar.html',
+        require(['text!gh/partials/admin-module-item.html',
+                 'text!gh/partials/admin-modules.html',
+                 'text!gh/partials/calendar.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
-                 'text!gh/partials/list-group-item.html',
                  'text!gh/partials/login-form.html',
                  'text!gh/partials/login-modal.html',
-                 'text!gh/partials/modules.html',
+                 'text!gh/partials/student-module-item.html',
+                 'text!gh/partials/student-modules.html',
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
-                 'text!gh/partials/subheader-pickers.html'], function(calendar, eventItem, eventPopover, listGroupItem, loginForm, loginModal, modules, subheaderPart, subheaderPicker, subheaderPickers) {
+                 'text!gh/partials/subheader-pickers.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
 
             // Declare all partials which makes them available in every template
+            _.declarePartial('admin-module-item', adminModuleItem);
+            _.declarePartial('admin-modules', adminModules);
             _.declarePartial('calendar', calendar);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);
-            _.declarePartial('list-group-item', listGroupItem);
             _.declarePartial('login-form', loginForm);
             _.declarePartial('login-modal', loginModal);
-            _.declarePartial('modules', modules);
+            _.declarePartial('student-modules', studentModules);
+            _.declarePartial('student-module-item', studentModuleItem);
             _.declarePartial('subheader-part', subheaderPart);
             _.declarePartial('subheader-picker', subheaderPicker);
             _.declarePartial('subheader-pickers', subheaderPickers);

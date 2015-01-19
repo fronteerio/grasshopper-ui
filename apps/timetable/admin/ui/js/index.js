@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
 
     // Cache the tripos data
     var triposData = {};
