@@ -17,4 +17,18 @@ define(['gh.core'], function(gh) {
 
     var modules = null;
 
+
+    /////////////
+    // BINDING //
+    /////////////
+
+    $('body').on('click', '.gh-series-select', function() {
+        // Remove the active state from other series
+        $('.gh-series-select').removeClass('gh-series-active');
+        // Add the active state to the clicked series
+        $(this).addClass('gh-series-active');
+
+        // TODO: Load the series in batch edit mode
+    });
+
 });

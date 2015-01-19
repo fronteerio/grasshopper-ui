@@ -33,10 +33,21 @@
     color: #FFF;
 }
 
+.btn-default.gh-btn-secondary.gh-btn-reverse:hover,
+.btn-default.gh-btn-secondary.gh-btn-reverse:focus {
+    background-color: #62326E;
+    border-color: #62326E;
+}
+
 
 /**********/
 /* LAYOUT */
 /**********/
+
+#gh-page-container #gh-left-container #gh-result-summary {
+    background-color: #171717;
+    border-bottom-color: #171717;
+}
 
 .gh-tripos-help {
     color: #FFF;
@@ -67,12 +78,12 @@
 
 #gh-main-tripos > .gh-row-part > .gh-part,
 #gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
-    background-color: #632F6F;
+    background-color: #62326E;
 }
 
 #gh-main-tripos > .gh-row-part > .gh-part:nth-child(even),
 #gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part {
-    background-color: #92308A;
+    background-color: #913389;
 }
 
 #gh-main-tripos > .gh-row-part > .gh-part p.gh-part-editing {
@@ -81,4 +92,39 @@
 
 #gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit {
     background-color: #171717;
+}
+
+
+/**************/
+/* LIST GROUP */
+/**************/
+
+.list-group .list-group-item {
+    background-color: #62326E;
+}
+
+.list-group .list-group-item.gh-list-group-item-open {
+    background-color: #42305B;
+}
+
+.list-group .list-group-item .gh-list-action {
+    background-color: transparent;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
+    background-color: #42305B;
+}
+
+
+/***********/
+/* MODULES */
+/***********/
+
+.list-group .list-group-item .gh-list-group-item-container .gh-series-select.gh-series-active {
+    background-color: #FFF;
+}
+
+.list-group .list-group-item .gh-series-select.gh-series-active p,
+.list-group .list-group-item .gh-series-select.gh-series-active .gh-list-action i {
+    color: #171717;
 }

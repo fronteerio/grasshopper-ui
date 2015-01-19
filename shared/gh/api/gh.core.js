@@ -54,7 +54,6 @@ define([
     ],
 
     function(gh) {
-        console.log('return gh', gh);
         return gh;
     }
 );

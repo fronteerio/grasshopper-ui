@@ -194,3 +194,24 @@
 #gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft i {
     margin-right: 4px;
 }
+
+
+/***********/
+/* MODULES */
+/***********/
+
+.list-group .list-group-item .list-group .list-group-item {
+    margin-left: 50px;
+}
+
+.list-group .list-group-item .gh-list-group-item-container .gh-series-select {
+    padding: 0 0 0 12px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-new-module {
+    margin: 3px 0 0 27px;
+}
+
+.list-group .list-group-item .gh-list-group-series-actions {
+    padding: 12px 0 12px 49px;
+}

@@ -55,6 +55,11 @@
     padding-right: 5px;
 }
 
+.btn:hover,
+.btn:focus {
+    text-decoration: none;
+}
+
 
 /************/
 /* CALENDAR */
