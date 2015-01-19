@@ -108,7 +108,7 @@
 }
 
 .list-group .list-group-item .gh-list-action {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
