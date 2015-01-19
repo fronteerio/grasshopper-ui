@@ -44,6 +44,8 @@ casper.test.begin('Student - Component - Header', function(test) {
 
     /**
      * Verify the login functionality
+     *
+     * @param {User}    user    User object to test with
      */
     var verifyLogIn = function(user) {
         casper.echo('# Verify the timetable login functionality', 'INFO');
