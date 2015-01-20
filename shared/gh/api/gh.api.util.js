@@ -58,8 +58,16 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     };
 
     /**
-     * Get the date range the calendar should be displaying. The range starts on January 1st of the
-     * previous year and ends December 31st of the next year.
+     * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
+     *
+     *  * Day:
+     *  * We only fetch the events that occur on the specific day.
+     *
+     *  * Week:
+     *  * We fetch the events that occur one week before and after the current view's date
+     *
+     *  * Month:
+     *  * We fetch the events that occur one month before and after the current view's date
      *
      * @param  {Function}   callback            Standard callback function
      * @param  {Object}     callback.range      Object containg start and end date that form the range of the calendar
