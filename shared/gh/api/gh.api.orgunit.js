@@ -121,8 +121,8 @@ define(['exports'], function(exports) {
                 'app': appId,
                 'displayName': displayName,
                 'type': type,
-                'parentId': parentId,
-                'groupId': groupId,
+                'parent': parentId,
+                'group': groupId,
                 'description': description
             },
             'success': function(data) {

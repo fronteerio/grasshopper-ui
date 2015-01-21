@@ -13,9 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core'], function(gh) {
-
-    var modules = null;
+define(['gh.core', 'bootstrap.new-module'], function(gh) {
 
 
     /////////////

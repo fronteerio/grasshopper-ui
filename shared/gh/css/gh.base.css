@@ -186,6 +186,46 @@ label {
 }
 
 
+/**********/
+/* MODALS */
+/**********/
+
+.modal-header,
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    border-top: 0;
+    padding: 0 25px 15px 15px;
+}
+
+.modal-header .close {
+    font-weight: 200;
+    opacity: 1;
+    text-shadow: none;
+}
+
+.modal-header .close:hover {
+    color: #AAA;
+    font-weight: 200;
+    opacity: 1;
+}
+
+.modal-title {
+    font-weight: 200;
+}
+
+.modal-content {
+    border-radius: 0;
+}
+
+.modal-content form label {
+    color: #8D8D8D;
+    font-weight: 200;
+}
+
+
 /*****************/
 /* NOTIFICATIONS */
 /*****************/

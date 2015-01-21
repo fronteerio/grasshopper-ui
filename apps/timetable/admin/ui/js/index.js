@@ -15,6 +15,8 @@
 
 define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
 
+    var state = $.bbq.getState() || {};
+
     // Cache the tripos data
     var triposData = {};
 
@@ -41,6 +43,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
 
             // Set up the tripos picker after all data has been retrieved
             setUpTriposPicker();
+
+            // Run the hashchange logic to put the right selections in place
+            handleHashChange();
         });
     };
 
@@ -114,6 +119,13 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
         $('.gh-tripos-help').hide();
         var partId = parseInt(data.selected, 10);
 
+        // Push the selected tripos in the URL
+        state['part'] = partId;
+        $.bbq.pushState(state);
+
+        // Track the part picker change in GA
+        gh.api.utilAPI.sendTrackingEvent('admin-picker', 'change', 'Admin part picker', partId);
+
         gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
             if (err) {
                 gh.api.utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
@@ -157,6 +169,16 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
      */
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
+
+        // Push the selected tripos in the URL
+        state = {
+            'tripos': triposId,
+            'part': $.bbq.getState()['part']
+        };
+        $.bbq.pushState(state);
+
+        // Track the tripos picker change in GA
+        gh.api.utilAPI.sendTrackingEvent('admin-picker', 'change', 'Admin Tripos picker', triposId);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
@@ -274,6 +296,44 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
         });
     };
 
+    /**
+     * Handle the hashchange event by applying state values to the pickers. Can also be
+     * used separate from the hashchange event to apply state values to the pickers
+     *
+     * @private
+     */
+    var handleHashChange = function() {
+        state = $.bbq.getState() || {};
+
+        // If the URL shows a preselected tripos, select that tripos automatically
+        if (state.tripos && !_.isEmpty(state.tripos)) {
+            $('#gh-subheader-tripos').val(state.tripos);
+            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
+            $('#gh-subheader-tripos').trigger('chosen:updated');
+        } else {
+            // There is no state for the tripos, make sure it's reset
+            setUpTriposPicker();
+            // There can't be a part because there is no tripos
+            if ($('#gh_subheader_part_chosen').length) {
+                // Destroy the field if it's been initialised previously
+                $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
+                // Show the subheader part picker
+                $('#gh-subheader-part').hide();
+            }
+        }
+
+        // If the URL shows a preselected part, select that part automatically
+        if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
+            $('#gh-subheader-part').val(state.part);
+            $('#gh-subheader-part').trigger('change', {'selected': state.part});
+            $('#gh-subheader-part').trigger('chosen:updated');
+        } else {
+            // Remove any modules and event series from the sidebar when no part is selected
+            // so no inaccurate information is presented to the user
+            $('#gh-modules-container').empty();
+        }
+    };
+
 
     /////////////
     //  VIDEO  //
@@ -345,6 +405,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
         // Login and logout
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Handle hash changes
+        $(window).on('hashchange', handleHashChange);
     };
 
     /**

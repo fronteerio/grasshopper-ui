@@ -57,6 +57,7 @@ requirejs.config({
         'bootstrap.admin-listview': 'gh/js/bootstrap.admin-listview',
         'bootstrap.calendar': 'gh/js/bootstrap.calendar',
         'bootstrap.listview': 'gh/js/bootstrap.listview',
+        'bootstrap.new-module': 'gh/js/bootstrap.new-module',
         'bootstrap.student-listview': 'gh/js/bootstrap.student-listview'
     },
     'priority': ['jquery', 'lodash'],
