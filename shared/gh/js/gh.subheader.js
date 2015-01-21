@@ -66,7 +66,11 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
             utilAPI.localDataStorage().remove('expanded');
 
             // Add the current expanded module(s) back to the local storage
-            expandedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
+            collapsedIds = $('.gh-list-group-item-open').map(function(index, value) {
+                return $(value).attr('data-id');
+            });
+
+            collapsedIds = _.map(collapsedIds, function(id) { return id; });
             utilAPI.localDataStorage().store('expanded', expandedIds);
         });
     };

@@ -23,25 +23,27 @@ define(['gh.api.util'], function(utilAPI) {
     /**
      * Update the list's expanded status in the local storage
      *
-     * @param  {Number}     id           The id of the list
-     * @param  {Boolean}    expanded     Whether or not the list is expanded
+     * @param  {Object[]}    items    Collection of list items
      * @private
      */
-    var updateListExpandedStatus = function(id, expanded) {
-        // Fetch and parse the expandedIds from the local storage
+    var updateListExpandedStatus = function(items) {
+        // Fetch and parse the collapse listIds from the local storage
         var expandedIds = utilAPI.localDataStorage().get('expanded') || [];
 
-        // Add the listId to the local storage if expanded
-        if (expanded) {
-            expandedIds.push(id);
+        _.each(items, function(item) {
 
-        // Remove the listId from the local storage if not expanded
-        } else {
-            _.remove(expandedIds, function(listId) { return listId === id; });
-        }
+            // Add the listId to the local storage if expanded
+            if (item.expanded) {
+                expandedIds.push(item.id);
+
+            // Remove the listId from the local storage if not expanded
+            } else {
+                _.remove(expandedIds, function(listId) { return listId === item.id; });
+            }
+        });
 
         // Store the expanded listIds
-        utilAPI.localDataStorage().store('expanded', _.compact(expandedIds));
+        utilAPI.localDataStorage().store('expanded', _.uniq(_.compact(expandedIds)));
     };
 
 
@@ -57,7 +59,16 @@ define(['gh.api.util'], function(utilAPI) {
         $(this).closest('.list-group-item').toggleClass('gh-list-group-item-open');
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
-        // Update the list's expanded status in the local storage
-        updateListExpandedStatus($(this).closest('.list-group-item').attr('data-id'), $(this).closest('.list-group-item').hasClass('gh-list-group-item-open'));
+
+        // Fetch the id's of the expanded list
+        var expandedItems = $('#gh-modules-list > .list-group-item').map(function(index, module) {
+            return {
+                'id': $(module).attr('data-id'),
+                'expanded': $(module).hasClass('gh-list-group-item-open')
+            };
+        });
+
+        // Store the expanded list items
+        updateListExpandedStatus(expandedItems);
     });
 });
