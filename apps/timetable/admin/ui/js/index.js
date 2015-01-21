@@ -137,12 +137,12 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
                 module.Series.sort(gh.api.utilAPI.sortByDisplayName);
             });
 
-            // Decorate the modules with their collapsed status if LocalStorage is supported
-            var collapsedIds = [];
+            // Decorate the modules with their expanded status if LocalStorage is supported
+            var expandedIds = [];
             if (Storage) {
-                collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('admin.collapsed'));
+                expandedIds = _.compact(gh.api.utilAPI.localDataStorage().get('expanded'));
                 _.each(modules.results, function(module) {
-                    module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
+                    module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
                 });
             }
 
@@ -152,11 +152,11 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
             }, $('#gh-modules-container'));
 
             // Clear local storage
-            gh.api.utilAPI.localDataStorage().remove('admin.collapsed');
+            gh.api.utilAPI.localDataStorage().remove('expanded');
 
-            // Add the current collapsed module(s) back to the local storage
-            collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
-            gh.api.utilAPI.localDataStorage().store('admin.collapsed', collapsedIds);
+            // Add the current expanded module(s) back to the local storage
+            expandedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
+            gh.api.utilAPI.localDataStorage().store('expanded', expandedIds);
         });
     };
 

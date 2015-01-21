@@ -21,27 +21,27 @@ define(['gh.api.util'], function(utilAPI) {
     /////////////
 
     /**
-     * Update the list's collapsed status in the local storage
+     * Update the list's expanded status in the local storage
      *
      * @param  {Number}     id           The id of the list
-     * @param  {Boolean}    collapsed    Whether or not the list is collapsed
+     * @param  {Boolean}    expanded     Whether or not the list is expanded
      * @private
      */
-    var updateListCollapsedStatus = function(id, collapsed) {
-        // Fetch and parse the collapse listIds from the local storage
-        var collapsedIds = utilAPI.localDataStorage().get('collapsed') || [];
+    var updateListExpandedStatus = function(id, expanded) {
+        // Fetch and parse the expandedIds from the local storage
+        var expandedIds = utilAPI.localDataStorage().get('expanded') || [];
 
-        // Add the listId to the local storage if collapsed
-        if (collapsed) {
-            collapsedIds.push(id);
+        // Add the listId to the local storage if expanded
+        if (expanded) {
+            expandedIds.push(id);
 
-        // Remove the listId from the local storage if not collapsed
+        // Remove the listId from the local storage if not expanded
         } else {
-            _.remove(collapsedIds, function(listId) { return listId === id; });
+            _.remove(expandedIds, function(listId) { return listId === id; });
         }
 
-        // Store the collapsed listIds
-        utilAPI.localDataStorage().store('collapsed', _.compact(collapsedIds));
+        // Store the expanded listIds
+        utilAPI.localDataStorage().store('expanded', _.compact(expandedIds));
     };
 
 
@@ -57,7 +57,7 @@ define(['gh.api.util'], function(utilAPI) {
         $(this).closest('.list-group-item').toggleClass('gh-list-group-item-open');
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
-        // Update the list's collapsed status in the local storage
-        updateListCollapsedStatus($(this).closest('.list-group-item').attr('data-id'), $(this).closest('.list-group-item').hasClass('gh-list-group-item-open'));
+        // Update the list's expanded status in the local storage
+        updateListExpandedStatus($(this).closest('.list-group-item').attr('data-id'), $(this).closest('.list-group-item').hasClass('gh-list-group-item-open'));
     });
 });
