@@ -26,27 +26,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     /////////////////
 
     /**
-     * Fetch the tripos data
-     *
-     * @param  {Function}    callback    Standard callback function
-     * @private
-     */
-    var fetchTriposData = function(callback) {
-
-        // Fetch the triposes
-        gh.api.utilAPI.getTriposStructure(function(err, data) {
-            if (err) {
-                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
-            }
-
-            // Cache the tripos data
-            triposData = data;
-
-            return callback();
-        });
-    };
-
-    /**
      * Set up the header component by rendering the header and login templates, fetching the tripos
      * structure and initialising the subheader component
      *
@@ -87,27 +66,8 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
         // Fetch the user's events
         if (!gh.data.me.anon) {
 
-            // Define the range of the events that need to be fetched
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
-
-                // Fetch all the events within the defined range
-                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
-                    if (err) {
-                        gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
-                    }
-
-                    var calendarData = {
-                        'triposData': triposData,
-                        'events': data
-                    };
-
-                    // Ingest the fetched events into the calendar object
-                    $(document).trigger('gh.calendar.refresh', [
-                        {'callback': null},
-                        {'events': calendarData}
-                    ]);
-                });
-            });
+            // Put the calendar on today's view
+            $(document).trigger('gh.calendar.navigateToToday');
         }
     };
 
@@ -149,6 +109,26 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
             } else {
                 gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
             }
+        });
+    };
+
+    /**
+     * Fetch the tripos data
+     *
+     * @param  {Function}    callback    Standard callback function
+     * @private
+     */
+    var fetchTriposData = function(callback) {
+        // Fetch the triposes
+        gh.api.utilAPI.getTriposStructure(function(err, data) {
+            if (err) {
+                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+            }
+
+            // Cache the tripos data
+            triposData = data;
+
+            return callback();
         });
     };
 

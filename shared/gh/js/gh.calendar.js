@@ -41,13 +41,13 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         {
             'name': 'lent',
             'label': 'Lent',
-            'start': '2015-01-13',
+            'start': '2015-01-15',
             'end': '2015-03-13'
         },
         {
             'name': 'easter',
             'label': 'Easter',
-            'start': '2015-04-21',
+            'start': '2015-04-23',
             'end': '2015-06-12'
         }
     ];
@@ -164,7 +164,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var navigateToToday = function() {
-
+        // Navigate to today
         calendar.fullCalendar('today');
         // Set the current day
         setCurrentDay();
@@ -604,6 +604,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $(document).on('gh.calendar.getCurrentViewDate', function(evt, callback) {
             return callback(getCurrentViewDate());
         });
+
+        // Navigate to today
+        $(document).on('gh.calendar.navigateToToday', navigateToToday);
 
         // Refresh the calendar
         $(document).on('gh.calendar.refresh', refreshCalendar);
