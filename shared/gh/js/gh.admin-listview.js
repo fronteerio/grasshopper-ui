@@ -28,6 +28,11 @@ define(['gh.core', 'gh.new-module'], function(gh) {
         $('.gh-tripos-help').hide();
     };
 
+    /**
+     * Select a series to show from the modules list
+     *
+     * @private
+     */
     var selectSeries = function() {
         // Remove the active state from other series
         $('.gh-series-select').removeClass('gh-series-active');
@@ -42,6 +47,8 @@ define(['gh.core', 'gh.new-module'], function(gh) {
 
     /**
      * Add handlers to various elements in the listview
+     *
+     * @private
      */
     var addBinding = function() {
         // Select a series in the sidebar

@@ -96,6 +96,8 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
 
     /**
      * Toggle a list item's children's visibility and update the icon classes
+     *
+     * @private
      */
     var toggleList = function() {
         // Toggle the child lists
@@ -122,6 +124,8 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
 
     /**
      * Add handlers to various listview elements
+     *
+     * @private
      */
     var addBinding = function() {
         // Toggle a list item

@@ -19,6 +19,8 @@ define(['gh.core'], function(gh) {
 
     /**
      * Add all events in the module to the calendar
+     *
+     * @private
      */
     var addAllToCalendar = function() {
         if (gh.data.me.anon) {
@@ -68,6 +70,8 @@ define(['gh.core'], function(gh) {
 
     /**
      * Remove all events in the module from the calendar
+     *
+     * @private
      */
     var removeAllFromCalendar = function() {
         if (gh.data.me.anon) {
@@ -117,6 +121,8 @@ define(['gh.core'], function(gh) {
 
     /**
      * Add a single event to the calendar
+     *
+     * @private
      */
     var addToCalendar = function() {
         if (gh.data.me.anon) {
@@ -181,6 +187,8 @@ define(['gh.core'], function(gh) {
 
     /**
      * Remove a single event from the calendar
+     *
+     * @private
      */
     var removeFromCalendar = function() {
         if (gh.data.me.anon) {
@@ -250,6 +258,8 @@ define(['gh.core'], function(gh) {
 
     /**
      * Add binding to various student list view elements
+     *
+     * @private
      */
     var addBinding = function() {
         $('body').on('click', '.gh-add-all-to-calendar', addAllToCalendar);

@@ -155,6 +155,8 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
 
     /**
      * Add bindings to various elements in the subheader component
+     *
+     * @private
      */
     var addBinding = function() {
         // Handle hash changes

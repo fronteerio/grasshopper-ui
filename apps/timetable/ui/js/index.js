@@ -26,36 +26,37 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     /////////////////
 
     /**
-     * Render the header
+     * Set up the header component by rendering the header and login templates, fetching the tripos
+     * structure and initialising the subheader component
      *
      * @private
      */
-    var renderHeader = function() {
+    var setUpHeader = function() {
+        // Render the header template
         gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
-    };
 
-    /**
-     * Render the login modal
-     *
-     * @private
-     */
-    var renderLoginModal = function() {
-         gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
-            'gh': gh
-        }, $('#gh-modal'));
-    };
-
-    /**
-     * Render the tripos pickers
-     *
-     * @private
-     */
-    var renderPickers = function() {
+        // Render the tripos pickers
         gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
+
+        // Fetch the triposes
+        gh.api.utilAPI.getTriposStructure(function(err, data) {
+            if (err) {
+                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+            }
+
+            // Cache the tripos data
+            triposData = data;
+
+            // Set up the tripos picker after all data has been retrieved
+            // Initialise the subheader component after all data has been retrieved
+            $(document).trigger('gh.subheader.init', {
+                'triposData': triposData
+            });
+        });
     };
 
     /**
@@ -88,27 +89,14 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     };
 
     /**
-     * Get the tripos structure from the REST API and filter it down for easy access in the templates
+     * Render the login modal dialog used to prompt anonymous users to sign in
      *
      * @private
      */
-    var getTripos = function() {
-
-        // Fetch the triposes
-        gh.api.utilAPI.getTriposStructure(function(err, data) {
-            if (err) {
-                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
-            }
-
-            // Cache the tripos data
-            triposData = data;
-
-            // Set up the tripos picker after all data has been retrieved
-            // Initialise the subheader component after all data has been retrieved
-            $(document).trigger('gh.subheader.init', {
-                'triposData': triposData
-            });
-        });
+    var renderLoginModal = function() {
+         gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
+            'gh': gh
+        }, $('#gh-modal'));
     };
 
 
@@ -123,7 +111,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      * @private
      */
     var doLogin = function(ev) {
-
         // Prevent the form from being submitted
         ev.preventDefault();
 
@@ -165,14 +152,12 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      *
      * @private
      */
-    var initIndex = function() {
+    var setUpIndex = function() {
         addBinding();
-        renderHeader();
-        renderPickers();
-        renderLoginModal();
+        setUpHeader();
         setUpCalendar();
-        getTripos();
+        renderLoginModal();
     };
 
-    initIndex();
+    setUpIndex();
 });

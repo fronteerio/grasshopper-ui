@@ -17,6 +17,8 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
 
     /**
      * Create the module using the provided title
+     *
+     * @private
      */
     var createModule = function() {
         // Get the AppId
@@ -47,6 +49,8 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
 
     /**
      * Render and show the 'new module' modal dialog
+     *
+     * @private
      */
     var showNewModuleModal = function() {
         // Render the modal
@@ -63,6 +67,15 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
     // BINDING //
     /////////////
 
-    $('body').on('click', '.gh-new-module', showNewModuleModal);
-    $('body').on('submit', '#gh-new-module-form', createModule);
+    /**
+     * Add handlers to various elements in the new module modal
+     *
+     * @private
+     */
+    var addBinding = function() {
+        $('body').on('click', '.gh-new-module', showNewModuleModal);
+        $('body').on('submit', '#gh-new-module-form', createModule);
+    };
+
+    addBinding();
 });
