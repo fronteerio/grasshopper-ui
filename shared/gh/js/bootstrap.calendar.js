@@ -204,23 +204,23 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     /**
      * Refresh the calendar
      *
-     * @param  {Event}       evt             The dispatched event
-     * @param  {Event[]}     evt.events      The user's subscribed events
-     * @param  {Function}    evt.callback    Standard callback function
+     * @param  {Object}      data             The dispatched event
+     * @param  {Event[]}     data.events      The user's subscribed events
+     * @param  {Function}    data.callback    Standard callback function
      * @private
      */
-    var refreshCalendar = function(ev, evt) {
-        if (evt.callback && !_.isFunction(evt.callback)) {
+    var refreshCalendar = function(ev, data) {
+        if (data.callback && !_.isFunction(data.callback)) {
             throw new Error('A valid callback function should be provided');
         }
 
         // Set a default callback function in case no callback function has been provided
-        evt.callback = evt.callback || function() {};
+        data.callback = data.callback || function() {};
 
         // Replace the calendar's events
-        updateCalendar(evt.events);
+        updateCalendar(data.events);
         // Invoke the callback function
-        evt.callback();
+        data.callback();
     };
 
     /**
@@ -387,7 +387,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     /**
      * Return the current view
      *
-     * @return  {String}    The calendar's current view
+     * @return {String}    The calendar's current view (e.g. 'month', 'week', 'day'...)
      * @private
      */
     var getCurrentView = function() {
@@ -397,7 +397,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     /**
      * Return the start date of the current view in UNIX format
      *
-     * @return {Number}    The start date of the current view
+     * @return {Number}    The start date of the current view in a UNIX time format
      * @private
      */
     var getCurrentViewDate = function() {

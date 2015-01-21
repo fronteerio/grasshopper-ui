@@ -81,6 +81,10 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             'end': null
         };
 
+        /**
+         * TODO: move the dispatching of events to actual UI files
+         */
+
         // Fetch the calendar's current view type
         $(document).trigger('gh.calendar.getCurrentView', function(currentView) {
 
