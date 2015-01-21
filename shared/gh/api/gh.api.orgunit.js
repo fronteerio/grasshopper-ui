@@ -118,14 +118,18 @@ define(['exports'], function(exports) {
         var data = {
             'app': appId,
             'displayName': displayName,
-            'type': type,
-            'groupId': groupId,
-            'description': description
+            'type': type
         };
 
-        // Only add the optional parentId if it has been explicitly specified
+        // Only add the optional parameters if they have been explicitly specified
         if (parentId) {
             data.parentId = parentId;
+        }
+        if (groupId) {
+            data.groupId = groupId;
+        }
+        if (description) {
+            data.description = description;
         }
 
         $.ajax({

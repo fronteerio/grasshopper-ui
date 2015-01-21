@@ -404,7 +404,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the createOrgUnit functionality
     QUnit.asyncTest('createOrgUnit', function(assert) {
-        expect(13);
+        expect(14);
 
         var testOrgUnit = testAPI.getRandomOrgUnit();
 
@@ -458,10 +458,15 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                                 gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', null, null, null, function(err, data) {
                                                     assert.ok(!err, 'Verify that an organisational unit can be successfully created');
 
-                                                    // Verify that a default callback is set when none is provided and no error is thrown
-                                                    assert.equal(null, gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', null, null, null, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+                                                    // Verify that an organisational unit can be successfully created when all the parameters are provided
+                                                    gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', data.id, data.GroupId, 'some description', function(err, data) {
+                                                        assert.ok(!err, 'Verify that an organisational unit can be successfully created when all the parameters are provided');
 
-                                                    QUnit.start();
+                                                        // Verify that a default callback is set when none is provided and no error is thrown
+                                                        assert.equal(null, gh.api.orgunitAPI.createOrgUnit(parseInt(testApp.id, 10), 'displayName', 'tripos', null, null, null, null), 'Verify that a default callback is set when none is provided and no error is thrown');
+
+                                                        QUnit.start();
+                                                    });
                                                 });
                                             });
                                         });
