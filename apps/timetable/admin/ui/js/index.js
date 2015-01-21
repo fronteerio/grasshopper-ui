@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
 
     var state = $.bbq.getState() || {};
 
@@ -104,6 +104,9 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
         gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
+
+        // Initialise the subheader component
+        $(document).trigger('gh.subheader.init');
     };
 
     /**

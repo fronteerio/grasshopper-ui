@@ -54,11 +54,12 @@ requirejs.config({
         'pluginBuilder': 'gh/pluginBuilder',
 
         // GH Plugins
-        'bootstrap.admin-listview': 'gh/js/bootstrap.admin-listview',
-        'bootstrap.calendar': 'gh/js/bootstrap.calendar',
-        'bootstrap.listview': 'gh/js/bootstrap.listview',
-        'bootstrap.new-module': 'gh/js/bootstrap.new-module',
-        'bootstrap.student-listview': 'gh/js/bootstrap.student-listview'
+        'gh.admin-listview': 'gh/js/gh.admin-listview',
+        'gh.calendar': 'gh/js/gh.calendar',
+        'gh.listview': 'gh/js/gh.listview',
+        'gh.new-module': 'gh/js/gh.new-module',
+        'gh.student-listview': 'gh/js/gh.student-listview',
+        'gh.subheader': 'gh/js/gh.subheader'
     },
     'priority': ['jquery', 'lodash'],
     'shim' : {

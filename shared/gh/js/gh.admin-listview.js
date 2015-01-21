@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.new-module'], function(gh) {
+define(['gh.core', 'gh.new-module'], function(gh) {
 
 
     /////////////

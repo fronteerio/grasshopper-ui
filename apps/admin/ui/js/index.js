@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'chosen', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.calendar', 'chosen', 'jquery-bbq'], function(gh) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
