@@ -255,10 +255,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
 
             // Render the login form
             renderLoginForm();
-
-            // Hide the current academic year on the left hand side
-            $('#gh-content-description p').hide();
-
         } else {
 
             // Render the picker container
@@ -275,9 +271,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
 
             // Initialise the video
             initVideo();
-
-            // Show the current academic year on the left hand side
-            $('#gh-content-description p').show();
         }
     };
 

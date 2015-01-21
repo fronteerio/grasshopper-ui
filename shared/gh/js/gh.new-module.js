@@ -29,11 +29,17 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
         var groupId = $(this).find('button[type="submit"]').data('groupid');
 
         orgUnitAPI.createOrgUnit(appId, displayName, 'module', parentId, groupId, null, function(err, module) {
+            // Show a success or failure notification
             if (err) {
                 return utilAPI.notification('Module not created.', 'The module could not be successfully created.', 'error');
             }
             utilAPI.notification('Module created.', 'The module was successfully created.', 'success');
+            // Hide the module modal
             $('#gh-new-module-modal').modal('hide');
+            // Refresh the modules list
+            $(document).trigger('gh.listview.refresh', {
+                'partId': parentId
+            });
         });
 
         return false;

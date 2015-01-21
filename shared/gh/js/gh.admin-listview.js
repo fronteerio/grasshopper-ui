@@ -15,18 +15,41 @@
 
 define(['gh.core', 'gh.new-module'], function(gh) {
 
+    /**
+     * Set up the modules of events in the sidebar. Note that the generic gh.listview.js does
+     * all the heavy lifting and this function handles admin-specific functionality
+     *
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected part to fetch modules for
+     * @private
+     */
+    var setUpModules = function(ev, data) {
+        // Hide the tripos help text
+        $('.gh-tripos-help').hide();
+    };
+
+    var selectSeries = function() {
+        // Remove the active state from other series
+        $('.gh-series-select').removeClass('gh-series-active');
+        // Add the active state to the clicked series
+        $(this).addClass('gh-series-active');
+        // TODO: Load the series in batch edit mode
+    };
 
     /////////////
     // BINDING //
     /////////////
 
-    $('body').on('click', '.gh-series-select', function() {
-        // Remove the active state from other series
-        $('.gh-series-select').removeClass('gh-series-active');
-        // Add the active state to the clicked series
-        $(this).addClass('gh-series-active');
+    /**
+     * Add handlers to various elements in the listview
+     */
+    var addBinding = function() {
+        // Select a series in the sidebar
+        $('body').on('click', '.gh-series-select', selectSeries);
+        // Set up the modules in the sidebar
+        $(document).on('gh.listview.setup', setUpModules);
+    };
 
-        // TODO: Load the series in batch edit mode
-    });
+    addBinding();
 
 });

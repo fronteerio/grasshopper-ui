@@ -13,7 +13,55 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util'], function(utilAPI) {
+define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
+
+    /**
+     * Set up the modules of events in the sidebar. Note that context-specific handling should be done
+     * in the appropriate components
+     *
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected part to fetch modules for
+     * @private
+     */
+    var setUpModules = function(ev, data) {
+        // Retrieve the organisational unit information for the modules
+        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, data.partId, ['module'], function(err, modules) {
+            if (err) {
+                utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+            }
+
+            // Sort the data before displaying it
+            modules.results.sort(utilAPI.sortByDisplayName);
+            $.each(modules.results, function(i, module) {
+                module.Series.sort(utilAPI.sortByDisplayName);
+            });
+
+            // Decorate the modules with their expanded status if LocalStorage is supported
+            var expandedIds = [];
+            if (Storage) {
+                expandedIds = _.compact(utilAPI.localDataStorage().get('expanded'));
+                _.each(modules.results, function(module) {
+                    module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
+                });
+            }
+
+            // Render the series in the sidebar
+            utilAPI.renderTemplate($('#gh-modules-template'), {
+                'data': modules.results
+            }, $('#gh-modules-container'));
+
+            // Clear local storage
+            utilAPI.localDataStorage().remove('expanded');
+
+            // Add the current expanded module(s) back to the local storage
+            collapsedIds = $('.gh-list-group-item-open').map(function(index, value) {
+                return $(value).attr('data-id');
+            });
+
+            collapsedIds = _.map(collapsedIds, function(id) { return id; });
+            utilAPI.localDataStorage().store('expanded', expandedIds);
+        });
+    };
 
 
     /////////////
@@ -46,15 +94,10 @@ define(['gh.api.util'], function(utilAPI) {
         utilAPI.localDataStorage().store('expanded', _.uniq(_.compact(expandedIds)));
     };
 
-
-    /////////////
-    // BINDING //
-    /////////////
-
     /**
      * Toggle a list item's children's visibility and update the icon classes
      */
-    $('body').on('click', '.gh-toggle-list', function() {
+    var toggleList = function() {
         // Toggle the child lists
         $(this).closest('.list-group-item').toggleClass('gh-list-group-item-open');
         // Toggle the caret class of the icon that was clicked
@@ -70,5 +113,24 @@ define(['gh.api.util'], function(utilAPI) {
 
         // Store the expanded list items
         updateListExpandedStatus(expandedItems);
-    });
+    };
+
+
+    /////////////
+    // BINDING //
+    /////////////
+
+    /**
+     * Add handlers to various listview elements
+     */
+    var addBinding = function() {
+        // Toggle a list item
+        $('body').on('click', '.gh-toggle-list', toggleList);
+        // Set up the modules list
+        $(document).on('gh.listview.setup', setUpModules);
+        // Refresh the modules list
+        $(document).on('gh.listview.refresh', setUpModules);
+    };
+
+    addBinding();
 });

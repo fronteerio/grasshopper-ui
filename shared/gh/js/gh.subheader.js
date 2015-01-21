@@ -25,9 +25,6 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
      * @private
      */
     var setUpModules = function(ev, data) {
-
-        // Hide the tripos help text
-        $('.gh-tripos-help').hide();
         var partId = parseInt(data.selected, 10);
 
         // Push the selected tripos in the URL
@@ -37,41 +34,8 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
         // Track the part picker change in GA
         utilAPI.sendTrackingEvent('picker', 'change', 'part picker', partId);
 
-        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, partId, ['module'], function(err, modules) {
-            if (err) {
-                utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
-            }
-
-            // Sort the data before displaying it
-            modules.results.sort(utilAPI.sortByDisplayName);
-            $.each(modules.results, function(i, module) {
-                module.Series.sort(utilAPI.sortByDisplayName);
-            });
-
-            // Decorate the modules with their expanded status if LocalStorage is supported
-            var expandedIds = [];
-            if (Storage) {
-                expandedIds = _.compact(utilAPI.localDataStorage().get('expanded'));
-                _.each(modules.results, function(module) {
-                    module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
-                });
-            }
-
-            // Render the series in the sidebar
-            utilAPI.renderTemplate($('#gh-modules-template'), {
-                'data': modules.results
-            }, $('#gh-modules-container'));
-
-            // Clear local storage
-            utilAPI.localDataStorage().remove('expanded');
-
-            // Add the current expanded module(s) back to the local storage
-            collapsedIds = $('.gh-list-group-item-open').map(function(index, value) {
-                return $(value).attr('data-id');
-            });
-
-            collapsedIds = _.map(collapsedIds, function(id) { return id; });
-            utilAPI.localDataStorage().store('expanded', expandedIds);
+        $(document).trigger('gh.listview.setup', {
+            'partId': partId
         });
     };
 
@@ -168,6 +132,7 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
             $('#gh-subheader-tripos').trigger('chosen:updated');
         } else {
             // There is no state for the tripos, make sure it's reset
+            setUpTriposPicker();
             // Resetting the tripos means destroying the part picker and hiding it
             if ($('#gh_subheader_part_chosen').length) {
                 // Destroy the field if it's been initialised previously
@@ -175,8 +140,6 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
                 // Show the subheader part picker
                 $('#gh-subheader-part').hide();
             }
-            // Reinitialise the tripos picker
-            setUpTriposPicker();
         }
 
         // If the URL shows a preselected part, select that part automatically
@@ -185,9 +148,8 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
         } else {
-            // Remove any modules and event series from the sidebar when no part is selected
-            // so no inaccurate information is presented to the user
-            $('#gh-modules-container').empty();
+            // Show the informational message to the user, if there is one
+            utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
         }
     };
 
@@ -200,9 +162,6 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;
-
-            // Add event handlers to various elements
-            addBinding();
             // Set up the tripos picker
             setUpTriposPicker();
             // Run the hashchange logic to put the right selections in place
