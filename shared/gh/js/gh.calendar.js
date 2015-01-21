@@ -621,7 +621,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
       * @param  {Object[]}    calendarData.events        An Array of events to add to the calendar on initialisation
       * @private
       */
-    var initCalendar = function(ev, calendarData) {
+    var setUpCalendar = function(ev, calendarData) {
         // Create an empty array if there are no events yet
         var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
@@ -709,7 +709,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     // Initialise the calendar
-    $(document).on('gh.calendar.init', initCalendar);
+    $(document).on('gh.calendar.init', setUpCalendar);
 
     // Inform the page that the calendar is ready to go so that
     // it can initialise the calendar when it's ready for it

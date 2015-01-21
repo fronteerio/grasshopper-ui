@@ -145,6 +145,14 @@
             </div>
         </script>
 
+        <div id="gh-new-module-modal-container"><!-- --></div>
+        <script id="gh-new-module-modal-template" type="text/template">
+            <%= _.partial('new-module-modal', {
+                'groupId': groupId,
+                'parentId': parentId
+            }) %>
+        </script>
+
         <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>
 </html>

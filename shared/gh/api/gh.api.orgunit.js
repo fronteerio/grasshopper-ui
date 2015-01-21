@@ -114,17 +114,28 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request options object
+        var data = {
+            'app': appId,
+            'displayName': displayName,
+            'type': type
+        };
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (parentId) {
+            data.parentId = parentId;
+        }
+        if (groupId) {
+            data.groupId = groupId;
+        }
+        if (description) {
+            data.description = description;
+        }
+
         $.ajax({
             'url': '/api/orgunit',
             'type': 'POST',
-            'data': {
-                'app': appId,
-                'displayName': displayName,
-                'type': type,
-                'parentId': parentId,
-                'groupId': groupId,
-                'description': description
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

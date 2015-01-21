@@ -17,15 +17,12 @@ define(['gh.core'], function(gh) {
 
     var modules = null;
 
-
-    /////////////
-    // BINDING //
-    /////////////
-
     /**
      * Add all events in the module to the calendar
+     *
+     * @private
      */
-    $('body').on('click', '.gh-add-all-to-calendar', function() {
+    var addAllToCalendar = function() {
         if (gh.data.me.anon) {
             return $('#gh-modal-login').modal();
         }
@@ -70,12 +67,14 @@ define(['gh.core'], function(gh) {
                 });
             });
         });
-    });
+    };
 
     /**
      * Remove all events in the module from the calendar
+     *
+     * @private
      */
-    $('body').on('click', '.gh-remove-all-from-calendar', function() {
+    var removeAllFromCalendar = function() {
         if (gh.data.me.anon) {
             return $('#gh-modal-login').modal();
         }
@@ -120,12 +119,14 @@ define(['gh.core'], function(gh) {
                 });
             });
         });
-    });
+    };
 
     /**
      * Add a single event to the calendar
+     *
+     * @private
      */
-    $('body').on('click', '.gh-add-to-calendar', function() {
+    var addToCalendar = function() {
         if (gh.data.me.anon) {
             return $('#gh-modal-login').modal();
         }
@@ -185,12 +186,14 @@ define(['gh.core'], function(gh) {
                 });
             });
         });
-    });
+    };
 
     /**
      * Remove a single event from the calendar
+     *
+     * @private
      */
-    $('body').on('click', '.gh-remove-from-calendar', function() {
+    var removeFromCalendar = function() {
         if (gh.data.me.anon) {
             return $('#gh-modal-login').modal();
         }
@@ -250,5 +253,24 @@ define(['gh.core'], function(gh) {
                 });
             });
         });
-    });
+    };
+
+
+    /////////////
+    // BINDING //
+    /////////////
+
+    /**
+     * Add binding to various student list view elements
+     *
+     * @private
+     */
+    var addBinding = function() {
+        $('body').on('click', '.gh-add-all-to-calendar', addAllToCalendar);
+        $('body').on('click', '.gh-remove-all-from-calendar', removeAllFromCalendar);
+        $('body').on('click', '.gh-add-to-calendar', addToCalendar);
+        $('body').on('click', '.gh-remove-from-calendar', removeFromCalendar);
+    };
+
+    addBinding();
 });
