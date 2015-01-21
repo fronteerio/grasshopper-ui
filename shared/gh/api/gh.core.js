@@ -50,7 +50,7 @@ define([
         /**
          * Grasshopper plugins
          */
-        'bootstrap.listview'
+        'gh.listview'
     ],
 
     function(gh) {

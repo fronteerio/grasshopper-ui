@@ -13,7 +13,9 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', 'clickover', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh) {
+
+    var state = $.bbq.getState() || {};
 
     // Cache the tripos data
     var triposData = {};
@@ -40,7 +42,10 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
             triposData = data;
 
             // Set up the tripos picker after all data has been retrieved
-            setUpTriposPicker();
+            // Initialise the subheader component after all data has been retrieved
+            $(document).trigger('gh.subheader.init', {
+                'triposData': triposData
+            });
         });
     };
 
@@ -99,120 +104,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
         gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
-    };
-
-    /**
-     * Set up the modules of events in the sidebar
-     *
-     * @param  {Event}     ev      Standard jQuery event
-     * @param  {Object}    data    Data object describing the selected part to fetch modules for
-     * @private
-     */
-    var setUpModules = function(ev, data) {
-
-        // Hide the tripos help text
-        $('.gh-tripos-help').hide();
-        var partId = parseInt(data.selected, 10);
-
-        gh.api.orgunitAPI.getOrgUnits(gh.data.me.AppId, true, partId, ['module'], function(err, modules) {
-            if (err) {
-                gh.api.utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
-            }
-
-            // Sort the data before displaying it
-            modules.results.sort(gh.api.utilAPI.sortByDisplayName);
-            $.each(modules.results, function(i, module) {
-                module.Series.sort(gh.api.utilAPI.sortByDisplayName);
-            });
-
-            // Decorate the modules with their collapsed status if LocalStorage is supported
-            var collapsedIds = [];
-            if (Storage) {
-                collapsedIds = _.compact(gh.api.utilAPI.localDataStorage().get('admin.collapsed'));
-                _.each(modules.results, function(module) {
-                    module.collapsed = (_.indexOf(collapsedIds, String(module.id)) > -1);
-                });
-            }
-
-            // Render the series in the sidebar
-            gh.api.utilAPI.renderTemplate($('#gh-modules-template'), {
-                'data': modules.results
-            }, $('#gh-modules-container'));
-
-            // Clear local storage
-            gh.api.utilAPI.localDataStorage().remove('admin.collapsed');
-
-            // Add the current collapsed module(s) back to the local storage
-            collapsedIds = _.compact([$('.gh-list-group-item-open').attr('data-id')]);
-            gh.api.utilAPI.localDataStorage().store('admin.collapsed', collapsedIds);
-        });
-    };
-
-    /**
-     * Set up the part picker in the subheader
-     *
-     * @param  {Event}     ev      Standard jQuery event
-     * @param  {Object}    data    Data object describing the selected tripos to fetch parts for
-     * @private
-     */
-    var setUpPartPicker = function(ev, data) {
-        var triposId = parseInt(data.selected, 10);
-
-        // Get the parts associated to the selected tripos
-        var parts = _.filter(triposData.parts, function(part) {
-            return parseInt(data.selected, 10) === part.ParentId;
-        });
-
-        // Render the results in the part picker
-        gh.api.utilAPI.renderTemplate($('#gh-subheader-part-template'), {
-            'data': parts
-        }, $('#gh-subheader-part'));
-
-        // Show the subheader part picker
-        $('#gh-subheader-part').show();
-
-        // Destroy the field if it's been initialised previously
-        $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
-
-        // Initialise the Chosen plugin on the part picker
-        $('#gh-subheader-part').chosen({
-            'no_results_text': 'No matches for',
-            'disable_search_threshold': 10
-        }).on('change', setUpModules);
-    };
-
-    /**
-     * Set up the Tripos picker in the subheader
-     *
-     * @private
-     */
-    var setUpTriposPicker = function() {
-        var triposPickerData = {
-            'courses': triposData.courses
-        };
-
-        _.each(triposPickerData.courses, function(course) {
-            course.subjects = _.filter(triposData.subjects, function(subject) {
-                return course.id === subject.ParentId;
-            });
-        });
-
-        // Massage the data so that courses are linked to their child subjects
-        // Render the results in the tripos picker
-        gh.api.utilAPI.renderTemplate($('#gh-subheader-picker-template'), {
-            'data': triposPickerData
-        }, $('#gh-subheader-tripos'));
-
-        // Show the subheader tripos picker
-        $('#gh-subheader-tripos').show();
-
-        // Destroy the field if it's been initialised previously
-        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpModules);
-
-        // Initialise the Chosen plugin on the tripos picker
-        $('#gh-subheader-tripos').chosen({
-            'no_results_text': 'No matches for'
-        }).change(setUpPartPicker);
     };
 
     /**
@@ -364,10 +255,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
 
             // Render the login form
             renderLoginForm();
-
-            // Hide the current academic year on the left hand side
-            $('#gh-content-description p').hide();
-
         } else {
 
             // Render the picker container
@@ -384,9 +271,6 @@ define(['gh.core', 'bootstrap.calendar', 'bootstrap.admin-listview', 'chosen', '
 
             // Initialise the video
             initVideo();
-
-            // Show the current academic year on the left hand side
-            $('#gh-content-description p').show();
         }
     };
 
