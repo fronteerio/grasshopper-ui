@@ -142,3 +142,26 @@
 .list-group .list-group-item .gh-series-select.gh-series-active .gh-list-action i {
     color: #171717;
 }
+
+
+/**************/
+/* NEW SERIES */
+/**************/
+
+#gh-new-series-form {
+    border-color: #EEE;
+}
+
+#gh-new-series-form .form-group:first-child {
+    -webkit-box-shadow: inset 0px -5px 6px -3px rgba(204,204,204,1);
+       -moz-box-shadow: inset 0px -5px 6px -3px rgba(204,204,204,1);
+            box-shadow: inset 0px -5px 6px -3px rgba(204,204,204,1);
+}
+
+#gh-new-series-form .form-group label {
+    color: #777;
+}
+
+#gh-new-series-form #gh-create-series-submit {
+    background-color: #171717;
+}

@@ -109,11 +109,13 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     /**
      * Show the new series form
      *
+     * @param  {Object}    data    Object containing template data
      * @private
      */
-    var showNewSeriesForm = function() {
+    var showNewSeriesForm = function(data) {
         gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
-            'gh': gh
+            'gh': gh,
+            'data': data
         }, $('#gh-main'));
     };
 
@@ -238,22 +240,24 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @param  {Event}     evt          The dispatched jQuery event
      * @param  {Object}    data         The event message object
      * @param  {String}    data.name    The name of the view
+     * @param  {Object}    data.data    The message data object
      * @private
      */
     var onViewChange = function(evt, data) {
-        setView(data.name);
+        setView(data.name, data.data);
     };
 
     /**
      * Change the current view
      *
      * @param  {String}    view    The name of the view that needs to be displayed
+     * @param  {Object}    data    The message data object
      * @private
      */
-    var setView = function(view) {
+    var setView = function(view, data) {
         switch(view) {
             case adminConstants.views.NEW_SERIES:
-                showNewSeriesForm();
+                showNewSeriesForm(data);
                 break;
 
             // Show the editable parts for the admin by default
@@ -296,9 +300,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     var initIndex = function() {
         addBinding();
         renderHeader();
-
-        // Show the modules tile overview
-        setView(adminConstants.views.EDITABLE_PARTS);
 
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {

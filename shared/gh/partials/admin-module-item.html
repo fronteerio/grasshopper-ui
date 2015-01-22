@@ -34,7 +34,7 @@
 
 <% if (isChild) { %>
     <div class="gh-list-group-series-actions">
-        <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-series"><i class="fa fa-plus-square"></i> New series</button>
+        <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-series" data-groupid="<%- data[0].GroupId %>"><i class="fa fa-plus-square"></i> New series</button>
         <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-borrow-series"><i class="fa fa-link"></i> Borrow</button>
     </div>
 <% } %>

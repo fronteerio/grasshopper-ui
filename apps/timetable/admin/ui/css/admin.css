@@ -215,3 +215,29 @@
 .list-group .list-group-item .gh-list-group-series-actions {
     padding: 12px 0 12px 49px;
 }
+
+
+/**************/
+/* NEW SERIES */
+/**************/
+
+#gh-new-series-form {
+    border-bottom: 1px solid;
+}
+
+#gh-new-series-form .form-group {
+    padding: 5px 20px;
+}
+
+#gh-new-series-form .form-group:first-child {
+    padding: 25px;
+}
+
+#gh-new-series-form .form-group button {
+    margin-right: 20px;
+}
+
+#gh-new-series-form .form-group label {
+    font-size: 13px;
+    font-weight: 400;
+}
