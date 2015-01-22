@@ -13,33 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.new-module', 'gh.borrow-series'], function(gh) {
-
-    /**
-     * Set up the modules of events in the sidebar. Note that the generic gh.listview.js does
-     * all the heavy lifting and this function handles admin-specific functionality
-     *
-     * @param  {Event}     ev      Standard jQuery event
-     * @param  {Object}    data    Data object describing the selected part to fetch modules for
-     * @private
-     */
-    var setUpModules = function(ev, data) {
-        // Hide the tripos help text
-        $('.gh-tripos-help').hide();
-    };
-
-    /**
-     * Select a series to show from the modules list
-     *
-     * @private
-     */
-    var selectSeries = function() {
-        // Remove the active state from other series
-        $('.gh-series-select').removeClass('gh-series-active');
-        // Add the active state to the clicked series
-        $(this).addClass('gh-series-active');
-        // TODO: Load the series in batch edit mode
-    };
+define(['gh.core'], function(gh) {
 
 
     /////////////

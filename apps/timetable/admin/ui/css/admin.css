@@ -204,8 +204,14 @@
     margin-left: 50px;
 }
 
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description,
 .list-group .list-group-item .gh-list-group-item-container .gh-series-select {
     padding: 0 0 0 12px;
+    width: 100%;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed {
+    width: 100%;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-new-module {
@@ -214,4 +220,50 @@
 
 .list-group .list-group-item .gh-list-group-series-actions {
     padding: 12px 0 12px 49px;
+}
+
+/* Borrowing modules */
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    position: relative;
+    width: 210px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-action,
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-deselect i {
+    padding: 0;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-action .gh-borrow-series-select,
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-deselect {
+    display: block;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-action .gh-borrow-series-deselect,
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-select {
+    display: none;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description {
+    background-color: #FFF;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description p {
+    color: #171717;
+    margin-right: 40px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item i.fa-check {
+    display: none;
+    color: #42305B;
+    float: right;
+    padding-right: 12px;
+    position: absolute;
+    right: 0;
+    top: 35%;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed i.fa-check {
+    display: block;
 }

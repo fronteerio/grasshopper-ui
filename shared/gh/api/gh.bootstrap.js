@@ -55,6 +55,7 @@ requirejs.config({
 
         // GH Plugins
         'gh.admin-listview': 'gh/js/gh.admin-listview',
+        'gh.borrow-series': 'gh/js/gh.borrow-series',
         'gh.calendar': 'gh/js/gh.calendar',
         'gh.listview': 'gh/js/gh.listview',
         'gh.new-module': 'gh/js/gh.new-module',

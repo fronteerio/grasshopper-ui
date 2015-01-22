@@ -26,11 +26,11 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
         // Get the display name of the new module
         var displayName = $(this).find('#gh-module-title').val();
         // Get the ID of the part that this new module belongs to
-        var parentId = $(this).find('button[type="submit"]').data('parentid');
+        var partId = $(this).find('button[type="submit"]').data('partid');
         // Get the ID of the group that this new module belongs to
         var groupId = $(this).find('button[type="submit"]').data('groupid');
 
-        orgUnitAPI.createOrgUnit(appId, displayName, 'module', parentId, groupId, null, function(err, module) {
+        orgUnitAPI.createOrgUnit(appId, displayName, 'module', partId, groupId, null, function(err, module) {
             // Show a success or failure notification
             if (err) {
                 return utilAPI.notification('Module not created.', 'The module could not be successfully created.', 'error');
@@ -40,7 +40,7 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
             $('#gh-new-module-modal').modal('hide');
             // Refresh the modules list
             $(document).trigger('gh.listview.refresh', {
-                'partId': parentId
+                'partId': partId
             });
         });
 
@@ -55,7 +55,7 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
     var showNewModuleModal = function() {
         // Render the modal
         utilAPI.renderTemplate($('#gh-new-module-modal-template'), {
-            'parentId': $(this).data('parentid'),
+            'partId': $(this).data('partid'),
             'groupId': $(this).data('groupid')
         }, $('#gh-new-module-modal-container'));
         // Show the modal
