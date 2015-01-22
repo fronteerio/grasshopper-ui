@@ -464,7 +464,8 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
                  'text!gh/partials/student-modules.html',
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
-                 'text!gh/partials/subheader-pickers.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
+                 'text!gh/partials/subheader-pickers.html',
+                 'text!gh/partials/visibility-modal.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-module-item', adminModuleItem);
@@ -480,6 +481,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             _.declarePartial('subheader-part', subheaderPart);
             _.declarePartial('subheader-picker', subheaderPicker);
             _.declarePartial('subheader-pickers', subheaderPickers);
+            _.declarePartial('visibility-modal', visibilityModal);
 
             callback();
         });
