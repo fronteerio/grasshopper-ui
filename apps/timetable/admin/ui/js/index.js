@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -30,7 +30,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
      *
      * @private
      */
-    var getTripos = function() {
+    var getTriposData = function() {
 
         // Fetch the triposes
         gh.api.utilAPI.getTriposStructure(function(err, data) {
@@ -47,18 +47,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
                 'triposData': triposData
             });
         });
-    };
-
-    /**
-     * Get the user's triposes
-     *
-     * @private
-     */
-    var getUserTripos = function() {
-        /* TODO: replace this by available parts for the admin */
-        gh.api.utilAPI.renderTemplate($('#gh-main-tripos-template'), {
-            'data': null
-        }, $('#gh-main'));
     };
 
     /**
@@ -104,6 +92,29 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
         gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
+    };
+
+    /**
+     * Get the user's triposes
+     *
+     * @private
+     */
+    var showEditableParts = function() {
+        /* TODO: replace this by available parts for the admin */
+        gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
+            'data': null
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Show the new series form
+     *
+     * @private
+     */
+    var showNewSeriesForm = function() {
+        gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
+            'gh': gh
+        }, $('#gh-main'));
     };
 
     /**
@@ -217,6 +228,42 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
     };
 
 
+    /////////////
+    //  VIEWS  //
+    /////////////
+
+    /**
+     * Handle the view changed event
+     *
+     * @param  {Event}     evt          The dispatched jQuery event
+     * @param  {Object}    data         The event message object
+     * @param  {String}    data.name    The name of the view
+     * @private
+     */
+    var onViewChange = function(evt, data) {
+        setView(data.name);
+    };
+
+    /**
+     * Change the current view
+     *
+     * @param  {String}    view    The name of the view that needs to be displayed
+     * @private
+     */
+    var setView = function(view) {
+        switch(view) {
+            case adminConstants.views.NEW_SERIES:
+                showNewSeriesForm();
+                break;
+
+            // Show the editable parts for the admin by default
+            default:
+                showEditableParts();
+                break;
+        }
+    };
+
+
     //////////////////////
     //  INITIALISATION  //
     //////////////////////
@@ -236,6 +283,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
         // Login and logout
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Change the view
+        $(document).on('gh.admin.changeView', onViewChange);
     };
 
     /**
@@ -246,6 +296,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
     var initIndex = function() {
         addBinding();
         renderHeader();
+
+        // Show the modules tile overview
+        setView(adminConstants.views.EDITABLE_PARTS);
 
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {
@@ -261,10 +314,10 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
             renderPickers();
 
             // Fetch all the triposes
-            getTripos();
+            getTriposData();
 
             // Fetch the user's triposes
-            getUserTripos();
+            showEditableParts();
 
             // Show the tripos help info
             showTriposHelp();

@@ -455,26 +455,30 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         require(['text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
                  'text!gh/partials/calendar.html',
+                 'text!gh/partials/editable-parts.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
                  'text!gh/partials/login-form.html',
                  'text!gh/partials/login-modal.html',
                  'text!gh/partials/new-module-modal.html',
+                 'text!gh/partials/new-series.html',
                  'text!gh/partials/student-module-item.html',
                  'text!gh/partials/student-modules.html',
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
-                 'text!gh/partials/subheader-pickers.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
+                 'text!gh/partials/subheader-pickers.html'], function(adminModuleItem, adminModules, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
             _.declarePartial('calendar', calendar);
+            _.declarePartial('editable-parts', editableParts);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);
             _.declarePartial('login-form', loginForm);
             _.declarePartial('login-modal', loginModal);
             _.declarePartial('new-module-modal', newModuleModal);
+            _.declarePartial('new-series', newSeries);
             _.declarePartial('student-modules', studentModules);
             _.declarePartial('student-module-item', studentModuleItem);
             _.declarePartial('subheader-part', subheaderPart);
