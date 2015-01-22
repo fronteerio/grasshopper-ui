@@ -222,7 +222,7 @@
     padding: 12px 0 12px 49px;
 }
 
-/* Borrowing modules */
+/* Borrowing series */
 #gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
     padding-bottom: 10px;
     padding-top: 10px;
@@ -245,18 +245,12 @@
     display: none;
 }
 
-#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description {
-    background-color: #FFF;
-}
-
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description p {
-    color: #171717;
     margin-right: 40px;
 }
 
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     display: none;
-    color: #42305B;
     float: right;
     padding-right: 12px;
     position: absolute;

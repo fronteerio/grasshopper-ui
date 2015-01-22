@@ -15,8 +15,16 @@
 
 define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
 
+    // Cache the tripos data
     var triposData = null;
 
+    /**
+     * Set up the modules of events in the list.
+     *
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected part to fetch modules for
+     * @private
+     */
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
 
@@ -27,6 +35,13 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         });
     };
 
+    /**
+     * Set up the part picker in the modal
+     *
+     * @param  {Event}     ev      Standard jQuery event
+     * @param  {Object}    data    Data object describing the selected tripos to fetch parts for
+     * @private
+     */
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
 
@@ -110,6 +125,9 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         $(this).closest('.list-group-item ').removeClass('gh-borrow-series-borrowed');
     };
 
+    /**
+     * Collect all series marked as 'to borrow' and borrow them into a module
+     */
     var borrowSeries = function()  {
         // Get the ID of the module to borrow series to
         var moduleId = $(this).data('moduleid');
@@ -166,8 +184,11 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
                 'no_results_text': 'No matches for'
             }).change(setUpPartPicker);
         });
+        // Mark a series as 'to borrow'
         $('body').on('click', '.gh-borrow-series-select', addSeriesToBorrow);
+        // Unmark a series as 'to borrow'
         $('body').on('click', '.gh-borrow-series-deselect', removeSeriesToBorrow);
+        // Borrow all series marked as 'to borrow' into a module
         $('body').on('click', '#gh-borrow-series-submit', borrowSeries);
     };
 
