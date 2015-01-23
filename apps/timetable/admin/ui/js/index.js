@@ -194,7 +194,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         }
         showVideo();
 
-        // Do not show the video the next time
+        // Do not show the video at the top the next time
         gh.api.utilAPI.localDataStorage().store('hideVideo', true);
     };
 
@@ -204,8 +204,10 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var hideVideo = function() {
-        $('.gh-video').hide();
-        $('.gh-show-video').show();
+        // Show the video in the list
+        $('#gh-main-tripos .gh-video').show();
+        // Hide the video on the top
+        $('#gh-main-tripos .gh-video:first-child').hide();
         return false;
     };
 
@@ -215,8 +217,10 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var showVideo = function() {
-        $('.gh-video').show();
-        $('.gh-show-video').hide();
+        // Hide the video in the list
+        $('#gh-main-tripos .gh-video').hide();
+        // Show the video on the top
+        $('#gh-main-tripos .gh-video:first-child').show();
         return false;
     };
 
@@ -226,6 +230,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var playVideo = function() {
+        showVideo();
         return false;
     };
 
@@ -280,7 +285,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     var addBinding = function() {
 
         // Video events
-        $('body').on('click', '.gh-show-video', showVideo);
         $('body').on('click', '.gh-hide-video', hideVideo);
         $('body').on('click', '.gh-play-video', playVideo);
 
