@@ -16,6 +16,18 @@
 define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, moment, sinon) {
 
 
+    /////////////////
+    //  CONSTANTS  //
+    /////////////////
+
+    // Keep track of number of milliseconds in a day, week and month for use in the calendar
+    var periods = {
+        'day': 1000 * 60 * 60 * 24,
+        'week': 1000 * 60 * 60 * 24 * 7,
+        'month': 1000 * 60 * 60 * 24 * 7 * 30,
+    };
+
+
     ////////////////
     //  CALENDAR  //
     ////////////////
@@ -47,23 +59,49 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     };
 
     /**
-     * Get the date range the calendar should be displaying. The range starts on January 1st of the
-     * previous year and ends December 31st of the next year.
+     * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
      *
-     * @return {Object}     Object containg start and end date that form the range of the calendar
+     *  * Day:
+     *  * We only fetch the events that occur in a 24 hour time frame based on the current day
+     *
+     *  * Week:
+     *  * We fetch the events that occur one week before and after the current view's date
+     *
+     *  * Month:
+     *  * We fetch the events that occur one month before and after the current view's date
+     *
+     * @param  {Function}   callback            Standard callback function
+     * @param  {Object}     callback.range      Object containg start and end date that form the range of the calendar
      */
-    var getCalendarDateRange = exports.getCalendarDateRange = function() {
-        // Get the current year to base calculations off of
-        var currentYear = new Date().getFullYear();
+    /* istanbul ignore next */
+    var getCalendarDateRange = exports.getCalendarDateRange = function(callback) {
 
         // Create the range object to return
         var range = {
-            'start': (currentYear - 1) + '-01-01',
-            'end': (currentYear + 1) + '-12-31'
+            'start': null,
+            'end': null
         };
 
-        // Return the range object
-        return range;
+        /**
+         * TODO: move the dispatching of events to actual UI files
+         */
+
+        // Fetch the calendar's current view type
+        $(document).trigger('gh.calendar.getCurrentView', function(currentView) {
+
+            // Fetch the calendar's current view date
+            $(document).trigger('gh.calendar.getCurrentViewDate', function(currentViewDate) {
+
+                // Calculate the start date
+                range.start = convertUnixDatetoISODate(currentViewDate - periods[currentView]);
+
+                // Calculate the end date
+                range.end = convertUnixDatetoISODate(currentViewDate + periods[currentView]);
+
+                // Return the range object
+                return callback(range);
+            });
+        });
     };
 
     /**
@@ -431,9 +469,11 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     /**
      * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with
      * custom functions that are available in every template. By running
-     * `_.partial('name', data)` in a template the partial can be accessed. The name
-     * corresponds to the name given when declaring the partial. The data should be an
-     * object containing values used in the partial.
+     * `_.partial('name', data, renderAtStart)` in a template the partial can be accessed.
+     * The name corresponds to the name given when declaring the partial. The data should be an
+     * object containing values used in the partial. `renderAtStart` should be set to false if
+     * the partial is called from inside another partial and should be rendered via a
+     * JavaScript call after the wrapping partial has been rendered.
      *
      * @param  {Function}    callback    Standard callback function
      */
@@ -446,36 +486,50 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             'declarePartial': function(name, template) {
                 partialCache[name] = _.template(template);
             },
-            'partial': function(name, data) {
+            'partial': function(name, data, renderAtStart) {
+                // TODO: replace `renderStart` with a more robust solution for delayed rendering
+                //       of partials inside of partials
+                /* istanbul ignore if */
+                if (renderAtStart === false) {
+                    return '<%= _.partial("' + name + '", {data: data}, null) %>';
+                }
                 return partialCache[name](data);
             }
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/admin-module-item.html',
+        require(['text!gh/partials/admin-borrow-series-module-item.html',
+                 'text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
+                 'text!gh/partials/borrow-series-modal.html',
                  'text!gh/partials/calendar.html',
+                 'text!gh/partials/editable-parts.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
                  'text!gh/partials/login-form.html',
                  'text!gh/partials/login-modal.html',
                  'text!gh/partials/new-module-modal.html',
+                 'text!gh/partials/new-series.html',
                  'text!gh/partials/student-module-item.html',
                  'text!gh/partials/student-modules.html',
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBorrowSeriesModuleItem, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
+            _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
+            _.declarePartial('borrow-series-modal', borrowSeriesModal);
             _.declarePartial('calendar', calendar);
+            _.declarePartial('editable-parts', editableParts);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);
             _.declarePartial('login-form', loginForm);
             _.declarePartial('login-modal', loginModal);
             _.declarePartial('new-module-modal', newModuleModal);
+            _.declarePartial('new-series', newSeries);
             _.declarePartial('student-modules', studentModules);
             _.declarePartial('student-module-item', studentModuleItem);
             _.declarePartial('subheader-part', subheaderPart);

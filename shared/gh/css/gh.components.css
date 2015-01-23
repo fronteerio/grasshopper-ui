@@ -321,6 +321,10 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 0;
 }
 
+.list-group .list-group-item .gh-list-group-item-container {
+    width: 100%;
+}
+
 /* This container is needed to let the 3 columns behave like table cells and thus create the perfect layout */
 .list-group .list-group-item .gh-list-group-item-container,
 .list-group .list-group-item .gh-list-group-item-container .gh-toggle-list {
@@ -329,7 +333,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .gh-list-group-item-container .gh-toggle-list {
     font-weight: 200;
-    max-width: 270px;
+    width: 100%;
     padding: 0;
 }
 
@@ -562,4 +566,11 @@ tbody tr:last-child > td.fc-widget-content {
     display: block;
     margin-top: 15px;
     padding-top: 7px;
+}
+
+.modal #gh-modules-container {
+    margin-top: 25px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }

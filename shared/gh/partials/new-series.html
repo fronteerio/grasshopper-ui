@@ -1,0 +1,11 @@
+<form id="gh-new-series-form" class="form" role="form">
+    <div class="form-group">
+        <label for="gh-series-name">Series title</label>
+        <input type="text" name="series-name" class="form-control" id="gh-series-name" placeholder="Enter a name for your new series" required>
+    </div>
+    <div class="form-group">
+        <button type="submit" id="gh-create-series-submit" class="btn btn-default pull-right" data-groupid="<%- data.groupId %>" data-parentid="<%- data.parentId %>" data-partid="<%- data.partId %>" disabled><i class="fa fa-check"></i>Create</button>
+        <button type="button" id="gh-create-series-cancel" class="btn btn-link pull-right">Cancel</button>
+        <div class="clearfix"></div>
+    </div>
+</form>

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -30,7 +30,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
      *
      * @private
      */
-    var getTripos = function() {
+    var getTriposData = function() {
 
         // Fetch the triposes
         gh.api.utilAPI.getTriposStructure(function(err, data) {
@@ -47,18 +47,6 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
                 'triposData': triposData
             });
         });
-    };
-
-    /**
-     * Get the user's triposes
-     *
-     * @private
-     */
-    var getUserTripos = function() {
-        /* TODO: replace this by available parts for the admin */
-        gh.api.utilAPI.renderTemplate($('#gh-main-tripos-template'), {
-            'data': null
-        }, $('#gh-main'));
     };
 
     /**
@@ -104,6 +92,31 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
         gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
+    };
+
+    /**
+     * Get the user's triposes
+     *
+     * @private
+     */
+    var renderEditableParts = function() {
+        /* TODO: replace this by available parts for the admin */
+        gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
+            'data': null
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Show the new series form
+     *
+     * @param  {Object}    data    Object containing template data
+     * @private
+     */
+    var renderNewSeriesForm = function(data) {
+        gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
+            'gh': gh,
+            'data': data
+        }, $('#gh-main'));
     };
 
     /**
@@ -181,7 +194,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
         }
         showVideo();
 
-        // Do not show the video the next time
+        // Do not show the video at the top the next time
         gh.api.utilAPI.localDataStorage().store('hideVideo', true);
     };
 
@@ -191,8 +204,10 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
      * @private
      */
     var hideVideo = function() {
-        $('.gh-video').hide();
-        $('.gh-show-video').show();
+        // Show the video in the list
+        $('#gh-main-tripos .gh-video').show();
+        // Hide the video on the top
+        $('#gh-main-tripos .gh-video:first-child').hide();
         return false;
     };
 
@@ -202,8 +217,10 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
      * @private
      */
     var showVideo = function() {
-        $('.gh-video').show();
-        $('.gh-show-video').hide();
+        // Hide the video in the list
+        $('#gh-main-tripos .gh-video').hide();
+        // Show the video on the top
+        $('#gh-main-tripos .gh-video:first-child').show();
         return false;
     };
 
@@ -213,7 +230,46 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
      * @private
      */
     var playVideo = function() {
+        showVideo();
         return false;
+    };
+
+
+    /////////////
+    //  VIEWS  //
+    /////////////
+
+    /**
+     * Handle the view changed event
+     *
+     * @param  {Event}     ev           The dispatched jQuery event
+     * @param  {Object}    data         The event message object
+     * @param  {String}    data.name    The name of the view
+     * @param  {Object}    data.data    Object containing template data
+     * @private
+     */
+    var onViewChange = function(ev, data) {
+        setView(data.name, data.data);
+    };
+
+    /**
+     * Change the current view
+     *
+     * @param  {String}    view    The name of the view that needs to be displayed
+     * @param  {Object}    data    Object containing template data
+     * @private
+     */
+    var setView = function(view, data) {
+        switch(view) {
+            case adminConstants.views.NEW_SERIES:
+                renderNewSeriesForm(data);
+                break;
+
+            // Show the editable parts for the admin by default
+            default:
+                renderEditableParts();
+                break;
+        }
     };
 
 
@@ -229,13 +285,15 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
     var addBinding = function() {
 
         // Video events
-        $('body').on('click', '.gh-show-video', showVideo);
         $('body').on('click', '.gh-hide-video', hideVideo);
         $('body').on('click', '.gh-play-video', playVideo);
 
         // Login and logout
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Change the view
+        $(document).on('gh.admin.changeView', onViewChange);
     };
 
     /**
@@ -261,10 +319,10 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickove
             renderPickers();
 
             // Fetch all the triposes
-            getTripos();
+            getTriposData();
 
             // Fetch the user's triposes
-            getUserTripos();
+            renderEditableParts();
 
             // Show the tripos help info
             showTriposHelp();

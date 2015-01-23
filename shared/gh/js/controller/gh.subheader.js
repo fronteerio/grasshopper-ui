@@ -35,7 +35,8 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
         utilAPI.sendTrackingEvent('picker', 'change', 'part picker', partId);
 
         $(document).trigger('gh.listview.setup', {
-            'partId': partId
+            'partId': partId,
+            'container': $('#gh-left-container')
         });
     };
 

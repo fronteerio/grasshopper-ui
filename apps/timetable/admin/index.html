@@ -100,62 +100,38 @@
         </script>
 
         <script id="gh-subheader-pickers-template" type="text/template">
-
             <%= _.partial('subheader-pickers') %>
         </script>
 
-        <script id="gh-main-tripos-template" type="text/template">
-            <div id="gh-main-tripos">
-                <div class="gh-video">
-                    <button class="btn gh-hide-video"><i class="fa fa-remove"></i></button>
-                    <span class="gh-video-info">A quick look at how to use<br/>the new timetable system</span>
-                    <button class="btn gh-play-video"><i class="fa fa-youtube-play"></i>Play video</button>
-                </div>
-                <div class="row gh-row-part">
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-editing">Mary Wellingtion is editing</p>
-                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
-                        <p class="gh-part-part">Part IA</p>
-                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
-                        <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
-                    </div>
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
-                        <p class="gh-part-part">Part IB</p>
-                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
-                    </div>
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Japanese Studies</p>
-                        <p class="gh-part-part">Part II</p>
-                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
-                    </div>
-                </div>
-                <div class="row gh-row-part">
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
-                        <p class="gh-part-part">Part IA</p>
-                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
-                    </div>
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-tripos">Asian and Middle Eastern Studies - Chinese Studies</p>
-                        <p class="gh-part-part">Part IB</p>
-                        <button class="btn btn-default pull-left gh-part-edit">Edit</button>
-                    </div>
-                    <div class="col-xs-4 gh-part">
-                        <p class="gh-part-tripos">...</p>
-                        <button class="btn btn-default gh-show-video"><i class="fa fa-youtube-play"></i> Help video<a></button>
-                    </div>
-                </div>
-            </div>
+        <!-- Editable parts -->
+        <script id="gh-editable-parts-template" type="text/template">
+            <%= _.partial('editable-parts') %>
         </script>
 
+        <!-- New series -->
+        <script id="gh-new-series-template" type="text/template">
+            <%= _.partial('new-series', {'data': data}) %>
+        </script>
+
+        <!-- New module -->
         <div id="gh-new-module-modal-container"><!-- --></div>
         <script id="gh-new-module-modal-template" type="text/template">
             <%= _.partial('new-module-modal', {
                 'groupId': groupId,
-                'parentId': parentId
+                'partId': partId
             }) %>
         </script>
+
+        <!-- Borrow series modal template -->
+        <script id="gh-borrow-series-modal-template" type="text/template">
+            <%= _.partial('borrow-series-modal', {
+                'data': data,
+                'moduleId': moduleId,
+                'partId': partId
+            }) %>
+        </script>
+
+        <div id="gh-modal"><!-- --></div>
 
         <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>
