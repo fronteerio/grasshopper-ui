@@ -59,7 +59,7 @@
 }
 
 #gh-main-tripos .gh-video {
-    background-color: #CCC;
+    background-color: #CCC !important;
 }
 
 .gh-show-video,
