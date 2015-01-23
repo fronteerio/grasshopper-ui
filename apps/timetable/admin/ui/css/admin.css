@@ -103,9 +103,10 @@
 
 #gh-main-tripos .gh-video .gh-video-info {
     display: block;
-    font-size: 30px;
+    font-size: 27px;
     text-align: center;
     width: auto;
+    margin-top: 30px;
 }
 
 #gh-main-tripos .gh-video:first-child .gh-video-info {
