@@ -64,7 +64,8 @@ requirejs.config({
         'gh.new-module': 'gh/js/controller/gh.new-module',
         'gh.new-series': 'gh/js/controller/gh.new-series',
         'gh.student-listview': 'gh/js/controller/gh.student-listview',
-        'gh.subheader': 'gh/js/controller/gh.subheader'
+        'gh.subheader': 'gh/js/controller/gh.subheader',
+        'gh.visibility': 'gh/js/controller/gh.visibility'
     },
     'priority': ['jquery', 'lodash'],
     'shim' : {

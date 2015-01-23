@@ -200,6 +200,20 @@
     margin-right: 4px;
 }
 
+.gh-visibility {
+    display: block;
+    font-size: 16px;
+    margin-top: -8px;
+    position: absolute;
+    right: 43px;
+    text-decoration: none;
+    top: 50%;
+}
+
+.gh-visibility:hover {
+    text-decoration: none;
+}
+
 
 /***********/
 /* MODULES */
@@ -294,4 +308,82 @@
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed i.fa-check {
     display: block;
+}
+
+
+/**************/
+/* VISIBILITY */
+/**************/
+
+#gh-visibility-modal .modal-body {
+    padding: 30px;
+}
+
+#gh-visibility-modal .modal-footer button {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#gh-visibility-modal #gh-visibility-form {
+    overflow: auto;
+}
+
+#gh-visibility-modal #gh-visibility-form label {
+    cursor: pointer;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+            border-radius: 2px;
+    border: 3px solid;
+    height: 154px;
+    margin-bottom: 10px;
+    position: relative;
+    width: 154px;
+}
+
+#gh-visibility-modal #gh-visibility-form label:not(.checked) .gh-visibility-icon-container i.fa-check {
+    display: none;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container input {
+    visibility: hidden;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-eye,
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-eye-slash {
+    font-size: 60px;
+    margin-top: 35px;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
+    bottom: 6px;
+    font-size: 30px;
+    font-weight: 600;
+    position: absolute;
+    right: 8px;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container .visibility-type {
+    font-size: 21px;
+    font-weight: 600;
+}
+
+#gh-visibility-modal #gh-visibility-form label small {
+    font-weight: 400;
+}
+
+#gh-visibility-modal #gh-visibility-form label small p.warning {
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    padding: 5px 10px;
+}
+
+#gh-visibility-modal #gh-visibility-form label:not(.checked) small p.warning {
+    display: none;
 }

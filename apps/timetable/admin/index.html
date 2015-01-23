@@ -100,6 +100,7 @@
         </script>
 
         <script id="gh-subheader-pickers-template" type="text/template">
+            <a class="pull-right gh-visibility" href="#"><i class="fa fa-eye-slash"></i> Visibility<a>
             <%= _.partial('subheader-pickers') %>
         </script>
 
@@ -129,6 +130,12 @@
                 'moduleId': moduleId,
                 'partId': partId
             }) %>
+        </script>
+
+        <!-- Visibility -->
+        <div id="gh-visibility-modal-container"><!-- --></div>
+        <script id="gh-visibility-modal-template" type="text/template">
+            <%= _.partial('visibility-modal', {'data': data}) %>
         </script>
 
         <div id="gh-modal"><!-- --></div>

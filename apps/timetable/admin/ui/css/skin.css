@@ -68,7 +68,9 @@
 #gh-main-tripos .gh-video .gh-hide-video i,
 #gh-main-tripos > .gh-row-part > .gh-part p,
 #gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit,
-#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft {
+#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft,
+.gh-visibility,
+.gh-visibility:hover {
     color: #FFF;
 }
 
@@ -181,4 +183,32 @@
 
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     color: #42305B;
+}
+
+
+/**************/
+/* VISIBILITY */
+/**************/
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
+    background-color: #EEE;
+    border-color: #EEE;
+    color: #333;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked small {
+    color: #333;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container {
+    background-color: #FFF;
+    border-color: #62326E;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
+    color: #62326E;
+}
+
+#gh-visibility-modal #gh-visibility-form label small p.warning {
+    background-color: #E0E6E4
 }

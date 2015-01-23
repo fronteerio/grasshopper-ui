@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI) {
+define(['gh.api.util', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(utilAPI, orgunitAPI) {
 
     var triposData = null;
 
@@ -153,6 +153,11 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
             utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
         }
     };
+
+
+    /////////////
+    // BINDING //
+    /////////////
 
     /**
      * Add bindings to various elements in the subheader component
