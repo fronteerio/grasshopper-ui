@@ -6,16 +6,20 @@
         <%- _.chain(data.organisers).map(function(organiser) { return organiser.displayName; }).value().join(', ') %>
     </p>
     <%
-        var belongsTo = '';
-        if (data.context.course && data.context.course.displayName) {
-            belongsTo += data.context.course.displayName;
-        }
-        if (data.context.subject && data.context.subject.displayName) {
-            belongsTo += ', ' + data.context.subject.displayName;
-        }
-        if (data.context.part && data.context.part.displayName) {
-            belongsTo += ', ' + data.context.part.displayName;
+        if (data.context) {
+            var belongsTo = '';
+            if (data.context.course && data.context.course.displayName) {
+                belongsTo += data.context.course.displayName;
+            }
+            if (data.context.subject && data.context.subject.displayName) {
+                belongsTo += ', ' + data.context.subject.displayName;
+            }
+            if (data.context.part && data.context.part.displayName) {
+                belongsTo += ', ' + data.context.part.displayName;
+            }
+    %>
+        <small class="gh-popover-belongs">Belongs to <%- belongsTo %></small>
+    <%
         }
     %>
-    <small class="gh-popover-belongs">Belongs to <%- belongsTo %></small>
 </div>

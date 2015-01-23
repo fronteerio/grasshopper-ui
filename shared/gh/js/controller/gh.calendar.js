@@ -41,13 +41,13 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         {
             'name': 'lent',
             'label': 'Lent',
-            'start': '2015-01-13',
+            'start': '2015-01-15',
             'end': '2015-03-13'
         },
         {
             'name': 'easter',
             'label': 'Easter',
-            'start': '2015-04-21',
+            'start': '2015-04-23',
             'end': '2015-06-12'
         }
     ];
@@ -58,6 +58,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changePeriod = function() {
+
         // Cache the clicked button
         var $button = $(this);
         // Retrieve the button's action
@@ -73,6 +74,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Track the week change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -81,7 +85,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changeTerm = function() {
-        // Create a jQuery object from the originating button
+
+        // Cache the clicked button
         var $button = $(this);
         // Retrieve the button's action
         var action = $button.attr('data-action');
@@ -116,6 +121,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Track the term change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -124,6 +132,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var changeView = function() {
+
         // Cache the clicked button
         var $button = $(this);
         // Retrieve the view
@@ -144,6 +153,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
         // Track the view change in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
+
+        // Fetch the user's events
+        getUserEvents();
     };
 
     /**
@@ -152,6 +164,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var navigateToToday = function() {
+        // Navigate to today
         calendar.fullCalendar('today');
         // Set the current day
         setCurrentDay();
@@ -159,29 +172,74 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+
         // Track the today click in GA
         gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to today');
+
+        // Fetch the user's events
+        getUserEvents();
+    };
+
+    /**
+     * Get the user's events for the current view's time span
+     *
+     * @private
+     */
+    var getUserEvents = function() {
+        // Only attempt to get the user's calendar when not anonymous
+        if (!gh.data.me.anon) {
+
+            // Determine the date range for which to get the user's events
+            gh.api.utilAPI.getCalendarDateRange(function(range) {
+                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
+                    if (err) {
+                        return gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                    }
+
+                    // Update the calendar
+                    updateCalendar(data.results);
+                });
+            });
+        }
     };
 
     /**
      * Refresh the calendar
      *
-     * @param  {Event}       evt             The dispatched event
-     * @param  {Event[]}     evt.events      The user's subscribed events
-     * @param  {Function}    evt.callback    Standard callback function
+     * @param  {Object}      data             The dispatched event
+     * @param  {Event[]}     data.events      The user's subscribed events
+     * @param  {Function}    data.callback    Standard callback function
      * @private
      */
-    var refreshCalendar = function(ev, evt) {
+    var refreshCalendar = function(ev, data) {
+        if (data.callback && !_.isFunction(data.callback)) {
+            throw new Error('A valid callback function should be provided');
+        }
+
+        // Set a default callback function in case no callback function has been provided
+        data.callback = data.callback || function() {};
+
+        // Replace the calendar's events
+        updateCalendar(data.events);
+        // Invoke the callback function
+        data.callback();
+    };
+
+    /**
+     * Update the calendar event object
+     *
+     * @param  {Event[]}    events    Array containing the user's events
+     * @private
+     */
+    var updateCalendar = function(events) {
         // Remove the existing events
         calendar.fullCalendar('removeEvents');
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(evt.events);
+        fixDatesToGMT(events);
         // Get the event context
-        getEventContext(evt.events);
+        getEventContext(events);
         // Replace the calendar's events
-        calendar.fullCalendar('addEventSource', evt.events);
-        // Invoke the callback function
-        evt.callback();
+        calendar.fullCalendar('addEventSource', events);
     };
 
     /**
@@ -329,9 +387,19 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
+     * Return the current view
+     *
+     * @return {String}    The calendar's current view (e.g. 'month', 'week', 'day'...)
+     * @private
+     */
+    var getCurrentView = function() {
+        return calendar.fullCalendar('getView')['intervalUnit'];
+    };
+
+    /**
      * Return the start date of the current view in UNIX format
      *
-     * @return {Number}    The start date of the current view
+     * @return {Number}    The start date of the current view in a UNIX time format
      * @private
      */
     var getCurrentViewDate = function() {
@@ -528,8 +596,23 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
         // Change the calendar's view
         $('#gh-calendar-toolbar-views button').on('click', changeView);
+
+        // Return the calendar's current view
+        $(document).on('gh.calendar.getCurrentView', function(evt, callback) {
+            return callback(getCurrentView());
+        });
+
+        // Return the calendar's current view date
+        $(document).on('gh.calendar.getCurrentViewDate', function(evt, callback) {
+            return callback(getCurrentViewDate());
+        });
+
+        // Navigate to today
+        $(document).on('gh.calendar.navigateToToday', navigateToToday);
+
         // Refresh the calendar
         $(document).on('gh.calendar.refresh', refreshCalendar);
+
         // Resize the calendar
         $(window).on('resize', setCalendarHeight);
     };
