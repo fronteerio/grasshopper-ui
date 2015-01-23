@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.new-module', 'gh.borrow-series'], function(gh) {
+define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], function(gh) {
 
     /**
      * Set up the modules of events in the sidebar. Note that the generic gh.listview.js does
