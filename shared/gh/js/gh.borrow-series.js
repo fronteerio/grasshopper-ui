@@ -79,7 +79,6 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         // Get the part ID of the module
         var partId = $(this).closest('#gh-modules-list-container').data('partid');
 
-
         // Fetch the triposes
         utilAPI.getTriposStructure(function(err, _triposData) {
             // Cache the triposdata for use in the other picker
@@ -112,6 +111,8 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
     /**
      * Add a series to the list of series that will be borrowed by applying the `gh-borrow-series-borrowed`
      * class to its container
+     *
+     * @private
      */
     var addSeriesToBorrow = function() {
         $(this).closest('.list-group-item ').addClass('gh-borrow-series-borrowed');
@@ -120,6 +121,8 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
     /**
      * Remove a series from the list of series that will be borrowed by removing the
      * `gh-borrow-series-borrowed` class from its container
+     *
+     * @private
      */
     var removeSeriesToBorrow = function() {
         $(this).closest('.list-group-item ').removeClass('gh-borrow-series-borrowed');
@@ -127,6 +130,8 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
 
     /**
      * Collect all series marked as 'to borrow' and borrow them into a module
+     *
+     * @private
      */
     var borrowSeries = function()  {
         // Get the ID of the module to borrow series to

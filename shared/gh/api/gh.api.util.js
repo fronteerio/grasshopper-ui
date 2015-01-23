@@ -489,6 +489,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             'partial': function(name, data, renderAtStart) {
                 // TODO: replace `renderStart` with a more robust solution for delayed rendering
                 //       of partials inside of partials
+                /* istanbul ignore if */
                 if (renderAtStart === false) {
                     return '<%= _.partial("' + name + '", {data: data}, null) %>';
                 }
