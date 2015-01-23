@@ -24,6 +24,11 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
      * @private
      */
     var setUpModules = function(ev, data) {
+        // Assign a default container if it's not defined in the data
+        data.container = data.container || $('body');
+        // Assign a default template if it's not defined in the data
+        data.template = data.template || $('#gh-modules-template');
+
         // Retrieve the organisational unit information for the modules
         orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, data.partId, ['module'], function(err, modules) {
             if (err) {
@@ -46,19 +51,19 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
             }
 
             // Render the series in the sidebar
-            utilAPI.renderTemplate($('#gh-modules-template'), {
+            utilAPI.renderTemplate($(data.template), {
                 'data': modules.results
-            }, $('#gh-modules-container'));
+            }, $('#gh-modules-container', $(data.container)));
 
             // Clear local storage
             utilAPI.localDataStorage().remove('expanded');
 
             // Add the current expanded module(s) back to the local storage
-            collapsedIds = $('.gh-list-group-item-open').map(function(index, value) {
+            expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
                 return $(value).attr('data-id');
             });
 
-            collapsedIds = _.map(collapsedIds, function(id) { return id; });
+            expandedIds = _.map(expandedIds, function(id) { return id; });
             utilAPI.localDataStorage().store('expanded', expandedIds);
         });
     };
@@ -106,7 +111,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
         // Fetch the id's of the expanded list
-        var expandedItems = $('#gh-modules-list > .list-group-item').map(function(index, module) {
+        var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
                 'id': $(module).attr('data-id'),
                 'expanded': $(module).hasClass('gh-list-group-item-open')
