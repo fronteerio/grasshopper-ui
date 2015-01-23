@@ -99,7 +99,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      *
      * @private
      */
-    var showEditableParts = function() {
+    var renderEditableParts = function() {
         /* TODO: replace this by available parts for the admin */
         gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
             'data': null
@@ -112,7 +112,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @param  {Object}    data    Object containing template data
      * @private
      */
-    var showNewSeriesForm = function(data) {
+    var renderNewSeriesForm = function(data) {
         gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
             'gh': gh,
             'data': data
@@ -237,13 +237,13 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     /**
      * Handle the view changed event
      *
-     * @param  {Event}     evt          The dispatched jQuery event
+     * @param  {Event}     ev           The dispatched jQuery event
      * @param  {Object}    data         The event message object
      * @param  {String}    data.name    The name of the view
-     * @param  {Object}    data.data    The message data object
+     * @param  {Object}    data.data    Object containing template data
      * @private
      */
-    var onViewChange = function(evt, data) {
+    var onViewChange = function(ev, data) {
         setView(data.name, data.data);
     };
 
@@ -251,18 +251,18 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * Change the current view
      *
      * @param  {String}    view    The name of the view that needs to be displayed
-     * @param  {Object}    data    The message data object
+     * @param  {Object}    data    Object containing template data
      * @private
      */
     var setView = function(view, data) {
         switch(view) {
             case adminConstants.views.NEW_SERIES:
-                showNewSeriesForm(data);
+                renderNewSeriesForm(data);
                 break;
 
             // Show the editable parts for the admin by default
             default:
-                showEditableParts();
+                renderEditableParts();
                 break;
         }
     };
@@ -318,7 +318,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             getTriposData();
 
             // Fetch the user's triposes
-            showEditableParts();
+            renderEditableParts();
 
             // Show the tripos help info
             showTriposHelp();

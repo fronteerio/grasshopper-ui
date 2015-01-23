@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.api.series', 'gh.api.util'], function(gh, adminConstants, seriesAPI, utilAPI) {
+define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.util'], function(gh, adminConstants, orgunitAPI, seriesAPI, utilAPI) {
 
     /**
      * Create a new series
@@ -28,20 +28,36 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.series', 'gh.api.util'], functi
         var displayName = $('#gh-series-name').val();
         // Get the ID of the group that this new series belongs to
         var groupId = $(this).find('button[type="submit"]').data('groupid');
+        // Get the ID of the parent that this new series will belong to
+        var parentId = $(this).find('button[type="submit"]').data('parentid');
+        // Get the ID of the part
+        var partId = $(this).find('button[type="submit"]').data('partid');
 
         // Create a new series
         seriesAPI.createSeries(appId, displayName, null, groupId, function(err, data) {
             if (err) {
                 return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
             }
-            utilAPI.notification('Series created.', 'The series was successfully created.', 'success');
+
+            // Link the created series to the module
+            orgunitAPI.addOrgUnitSeries(parentId, data.id, function(err, data) {
+                if (err) {
+                    return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                }
+                utilAPI.notification('Series created.', 'The series was successfully created.', 'success');
+
+                // Refresh the listview
+                $(document).trigger('gh.listview.refresh', {
+                    'partId': partId
+                });
+            });
         });
 
         return false;
     };
 
     /**
-     *
+     * Toggle the enabled status of the button
      *
      * @api private
      */
@@ -56,12 +72,13 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.series', 'gh.api.util'], functi
         $button.removeAttr('disabled');
     };
 
+
     /////////////
     // BINDING //
     /////////////
 
     /**
-     * Add handlers to various elements in the new module modal
+     * Add handlers to various elements in the new series view
      *
      * @private
      */
@@ -71,11 +88,17 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.series', 'gh.api.util'], functi
         $('body').on('click', '.gh-new-series', function() {
             // Fetch the group ID
             var groupId = $(this).data('groupid');
+            // Feth the parent ID
+            var parentId = $(this).closest('.list-group-item').data('id');
+            // Fetch the part ID
+            var partId = $(this).closest('#gh-modules-list-container').data('partid');
             // Dispatch an event to the admin view controller
             $(document).trigger('gh.admin.changeView', {
                 'name': adminConstants.views.NEW_SERIES,
                 'data': {
-                    'groupId': groupId
+                    'groupId': groupId,
+                    'parentId': parentId,
+                    'partId': partId
                 }
             });
         });
