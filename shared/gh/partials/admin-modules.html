@@ -1,11 +1,11 @@
 <% if (data.length) {
-    var parentId = data[0].ParentId;
+    var partId = data[0].ParentId;
     var groupId = data[0].GroupId;
 } %>
 <div id="gh-result-summary">
-    <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-module" data-parentid="<%= parentId %>" data-groupid="<%= groupId %>"><i class="fa fa-plus-square"></i> New module</button>
+    <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-module" data-partid="<%= partId %>" data-groupid="<%= groupId %>"><i class="fa fa-plus-square"></i> New module</button>
 </div>
-<div id="gh-modules-list-container">
+<div id="gh-modules-list-container" data-partId="<%= partId %>">
     <ul id="gh-modules-list" class="list-group">
         <%= _.partial('admin-module-item', {'data': data}) %>
     </ul>

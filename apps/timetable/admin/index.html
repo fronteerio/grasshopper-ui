@@ -149,9 +149,20 @@
         <script id="gh-new-module-modal-template" type="text/template">
             <%= _.partial('new-module-modal', {
                 'groupId': groupId,
-                'parentId': parentId
+                'partId': partId
             }) %>
         </script>
+
+        <!-- Borrow series modal template -->
+        <script id="gh-borrow-series-modal-template" type="text/template">
+            <%= _.partial('borrow-series-modal', {
+                'data': data,
+                'moduleId': moduleId,
+                'partId': partId
+            }) %>
+        </script>
+
+        <div id="gh-modal"><!-- --></div>
 
         <script data-main="/shared/gh/api/gh.bootstrap.js" data-loadmodule="/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>

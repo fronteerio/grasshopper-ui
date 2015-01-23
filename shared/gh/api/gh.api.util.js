@@ -469,9 +469,11 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     /**
      * Add support for partials in Lodash. `_.mixin` allows us to extend underscore with
      * custom functions that are available in every template. By running
-     * `_.partial('name', data)` in a template the partial can be accessed. The name
-     * corresponds to the name given when declaring the partial. The data should be an
-     * object containing values used in the partial.
+     * `_.partial('name', data, renderAtStart)` in a template the partial can be accessed.
+     * The name corresponds to the name given when declaring the partial. The data should be an
+     * object containing values used in the partial. `renderAtStart` should be set to false if
+     * the partial is called from inside another partial and should be rendered via a
+     * JavaScript call after the wrapping partial has been rendered.
      *
      * @param  {Function}    callback    Standard callback function
      */
@@ -484,14 +486,22 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
             'declarePartial': function(name, template) {
                 partialCache[name] = _.template(template);
             },
-            'partial': function(name, data) {
+            'partial': function(name, data, renderAtStart) {
+                // TODO: replace `renderStart` with a more robust solution for delayed rendering
+                //       of partials inside of partials
+                /* istanbul ignore if */
+                if (renderAtStart === false) {
+                    return '<%= _.partial("' + name + '", {data: data}, null) %>';
+                }
                 return partialCache[name](data);
             }
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/admin-module-item.html',
+        require(['text!gh/partials/admin-borrow-series-module-item.html',
+                 'text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
+                 'text!gh/partials/borrow-series-modal.html',
                  'text!gh/partials/calendar.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
@@ -502,11 +512,13 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
                  'text!gh/partials/student-modules.html',
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
-                 'text!gh/partials/subheader-pickers.html'], function(adminModuleItem, adminModules, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
+                 'text!gh/partials/subheader-pickers.html'], function(adminBorrowSeriesModuleItem, adminModuleItem, adminModules, borrowSeriesModal, calendar, eventItem, eventPopover, loginForm, loginModal, newModuleModal, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers) {
 
             // Declare all partials which makes them available in every template
+            _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
+            _.declarePartial('borrow-series-modal', borrowSeriesModal);
             _.declarePartial('calendar', calendar);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);

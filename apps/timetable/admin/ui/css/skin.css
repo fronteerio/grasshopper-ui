@@ -142,3 +142,17 @@
 .list-group .list-group-item .gh-series-select.gh-series-active .gh-list-action i {
     color: #171717;
 }
+
+/* Borrowing series */
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description {
+    background-color: #FFF;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description p {
+    color: #171717;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item i.fa-check {
+    color: #42305B;
+}
