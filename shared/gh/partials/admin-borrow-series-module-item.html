@@ -1,9 +1,5 @@
 <% isChild = (typeof isChild === 'undefined') ? false : isChild; %>
 
-<% if (data.length) {
-    var groupId = data[0].GroupId;
-} %>
-
 <% _.each(data, function(d) { %>
     <li class="list-group-item <% if (d.expanded) { %>gh-list-group-item-open<% } %>" data-id="<%- d.id %>">
         <div class="gh-list-group-item-container">
@@ -12,22 +8,26 @@
                     <div class="gh-list-icon">
                         <i class="fa <% if (d.expanded) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>"></i>
                     </div>
-            <% } else { %>
-                <button class="btn btn-link gh-series-select">
             <% } %>
                     <div class="gh-list-description">
+                        <% if (isChild) { %>
+                            <i class="fa fa-check"></i>
+                        <% } %>
                         <p><%- d.displayName %></p>
                     </div>
                     <% if (isChild) { %>
                         <div class="gh-list-action">
-                            <i class="fa fa-angle-right"></i>
+                            <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-borrow-series-select"><i class="fa fa-plus-square"></i> Add</button>
+                            <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-borrow-series-deselect"><i class="fa fa-close"></i></button>
                         </div>
                     <% } %>
+            <% if (!isChild) { %>
                 </button>
+            <% } %>
         </div>
         <% if (d.Series) { %>
             <ul class="list-group hide">
-                <%= _.partial('admin-module-item', {
+                <%= _.partial('admin-borrow-series-module-item', {
                     'data': d.Series,
                     'isChild': true
                 }) %>
@@ -35,10 +35,3 @@
         <% } %>
     </li>
 <% }); %>
-
-<% if (isChild) { %>
-    <div class="gh-list-group-series-actions">
-        <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-series" data-groupid="<%- groupId %>"><i class="fa fa-plus-square"></i> New series</button>
-        <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-borrow-series"><i class="fa fa-link"></i> Borrow</button>
-    </div>
-<% } %>

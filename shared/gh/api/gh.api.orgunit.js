@@ -52,7 +52,7 @@ define(['exports'], function(exports) {
      * Add an event series to an organisational unit
      *
      * @param  {Number}      orgUnitId            The ID of the organisational unit to add an event series to
-     * @param  {Number}      serieId              The ID of the event series to add to the organisational unit
+     * @param  {Number[]}    serieId              The ID of the event series to add to the organisational unit
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the added event series
@@ -62,7 +62,7 @@ define(['exports'], function(exports) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!_.isNumber(serieId)) {
+        } else if (!_.isNumber(serieId) && !_.isArray(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         }
 
@@ -123,10 +123,10 @@ define(['exports'], function(exports) {
 
         // Only add the optional parameters if they have been explicitly specified
         if (parentId) {
-            data.parentId = parentId;
+            data.parent = parentId;
         }
         if (groupId) {
-            data.groupId = groupId;
+            data.group = groupId;
         }
         if (description) {
             data.description = description;

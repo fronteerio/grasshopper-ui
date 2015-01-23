@@ -53,13 +53,18 @@ requirejs.config({
         'gh.core': 'gh/api/gh.core',
         'pluginBuilder': 'gh/pluginBuilder',
 
-        // GH Plugins
-        'gh.admin-listview': 'gh/js/gh.admin-listview',
-        'gh.calendar': 'gh/js/gh.calendar',
-        'gh.listview': 'gh/js/gh.listview',
-        'gh.new-module': 'gh/js/gh.new-module',
-        'gh.student-listview': 'gh/js/gh.student-listview',
-        'gh.subheader': 'gh/js/gh.subheader'
+        // GH constants
+        'gh.admin-constants': 'gh/js/constants/gh.admin',
+
+        // GH view controllers
+        'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
+        'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
+        'gh.calendar': 'gh/js/controller/gh.calendar',
+        'gh.listview': 'gh/js/controller/gh.listview',
+        'gh.new-module': 'gh/js/controller/gh.new-module',
+        'gh.new-series': 'gh/js/controller/gh.new-series',
+        'gh.student-listview': 'gh/js/controller/gh.student-listview',
+        'gh.subheader': 'gh/js/controller/gh.subheader'
     },
     'priority': ['jquery', 'lodash'],
     'shim' : {
