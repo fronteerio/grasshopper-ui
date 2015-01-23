@@ -186,8 +186,10 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var getUserEvents = function() {
-        // Fetch the user's events
+        // Only attempt to get the user's calendar when not anonymous
         if (!gh.data.me.anon) {
+
+            // Determine the date range for which to get the user's events
             gh.api.utilAPI.getCalendarDateRange(function(range) {
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
                     if (err) {

@@ -20,6 +20,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     //  CONSTANTS  //
     /////////////////
 
+    // Keep track of number of milliseconds in a day, week and month for use in the calendar
     var periods = {
         'day': 1000 * 60 * 60 * 24,
         'week': 1000 * 60 * 60 * 24 * 7,
@@ -61,7 +62,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
      * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
      *
      *  * Day:
-     *  * We only fetch the events that occur on the specific day.
+     *  * We only fetch the events that occur in a 24 hour time frame based on the current day
      *
      *  * Week:
      *  * We fetch the events that occur one week before and after the current view's date

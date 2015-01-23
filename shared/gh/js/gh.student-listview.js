@@ -54,8 +54,9 @@ define(['gh.core'], function(gh) {
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
 
-            // Fetch the user's events
+            // Determine the date range for which to get the user's events
             gh.api.utilAPI.getCalendarDateRange(function(range) {
+                // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
@@ -106,8 +107,9 @@ define(['gh.core'], function(gh) {
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
-            // Fetch the user's events
+            // Determine the date range for which to get the user's events
             gh.api.utilAPI.getCalendarDateRange(function(range) {
+                // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
@@ -173,8 +175,9 @@ define(['gh.core'], function(gh) {
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
-            // Fetch the user's events
+            // Determine the date range for which to get the user's events
             gh.api.utilAPI.getCalendarDateRange(function(range) {
+                // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
@@ -240,8 +243,10 @@ define(['gh.core'], function(gh) {
             // Track the subscription in GA
             gh.api.utilAPI.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
-            // Fetch the user's events
+            // Determine the date range for which to get the user's events
             gh.api.utilAPI.getCalendarDateRange(function(range) {
+
+                // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {

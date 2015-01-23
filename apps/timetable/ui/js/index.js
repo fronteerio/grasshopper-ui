@@ -157,12 +157,12 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      */
     var setUpIndex = function() {
         addBinding();
-        renderLoginModal();
 
         // Fetch the tripos data before initialising the header and the calendar
         fetchTriposData(function() {
             setUpHeader();
             setUpCalendar();
+            renderLoginModal();
         });
     };
 
