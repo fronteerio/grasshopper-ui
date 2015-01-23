@@ -16,6 +16,18 @@
 define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, moment, sinon) {
 
 
+    /////////////////
+    //  CONSTANTS  //
+    /////////////////
+
+    // Keep track of number of milliseconds in a day, week and month for use in the calendar
+    var periods = {
+        'day': 1000 * 60 * 60 * 24,
+        'week': 1000 * 60 * 60 * 24 * 7,
+        'month': 1000 * 60 * 60 * 24 * 7 * 30,
+    };
+
+
     ////////////////
     //  CALENDAR  //
     ////////////////
@@ -47,23 +59,49 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     };
 
     /**
-     * Get the date range the calendar should be displaying. The range starts on January 1st of the
-     * previous year and ends December 31st of the next year.
+     * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
      *
-     * @return {Object}     Object containg start and end date that form the range of the calendar
+     *  * Day:
+     *  * We only fetch the events that occur in a 24 hour time frame based on the current day
+     *
+     *  * Week:
+     *  * We fetch the events that occur one week before and after the current view's date
+     *
+     *  * Month:
+     *  * We fetch the events that occur one month before and after the current view's date
+     *
+     * @param  {Function}   callback            Standard callback function
+     * @param  {Object}     callback.range      Object containg start and end date that form the range of the calendar
      */
-    var getCalendarDateRange = exports.getCalendarDateRange = function() {
-        // Get the current year to base calculations off of
-        var currentYear = new Date().getFullYear();
+    /* istanbul ignore next */
+    var getCalendarDateRange = exports.getCalendarDateRange = function(callback) {
 
         // Create the range object to return
         var range = {
-            'start': (currentYear - 1) + '-01-01',
-            'end': (currentYear + 1) + '-12-31'
+            'start': null,
+            'end': null
         };
 
-        // Return the range object
-        return range;
+        /**
+         * TODO: move the dispatching of events to actual UI files
+         */
+
+        // Fetch the calendar's current view type
+        $(document).trigger('gh.calendar.getCurrentView', function(currentView) {
+
+            // Fetch the calendar's current view date
+            $(document).trigger('gh.calendar.getCurrentViewDate', function(currentViewDate) {
+
+                // Calculate the start date
+                range.start = convertUnixDatetoISODate(currentViewDate - periods[currentView]);
+
+                // Calculate the end date
+                range.end = convertUnixDatetoISODate(currentViewDate + periods[currentView]);
+
+                // Return the range object
+                return callback(range);
+            });
+        });
     };
 
     /**
