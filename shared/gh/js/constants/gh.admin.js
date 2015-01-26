@@ -17,6 +17,7 @@ define(['exports'], function(exports) {
 
     // The admin views
     var views = exports.views = {
+        'BATCH_EDIT': 'batchEdit',
         'EDITABLE_PARTS': 'editableParts',
         'NEW_SERIES': 'newSeries'
     };

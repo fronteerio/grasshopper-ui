@@ -34,11 +34,13 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], functi
      * @private
      */
     var selectSeries = function() {
-        // Remove the active state from other series
-        $('.gh-series-select').removeClass('gh-series-active');
-        // Add the active state to the clicked series
-        $(this).addClass('gh-series-active');
+        // Update the hash
+        var state = $.bbq.getState();
+        state['series'] = $(this).closest('.list-group-item').data('id');
+        state['module'] = $(this).closest('ul').closest('.list-group-item').data('id');
+        $.bbq.pushState(state);
         // TODO: Load the series in batch edit mode
+        
     };
 
 

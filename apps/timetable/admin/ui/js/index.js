@@ -120,6 +120,19 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     };
 
     /**
+     * Show the batch edit form
+     *
+     * @param  {Object}    data    Object containing template data
+     * @private
+     */
+    var renderBatchEdit = function(data) {
+        gh.api.utilAPI.renderTemplate($('#gh-batch-edit-template'), {
+            'gh': gh,
+            'data': data
+        }, $('#gh-main'));
+    };
+
+    /**
      * Show the tripos help info
      *
      * @private
@@ -264,7 +277,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             case adminConstants.views.NEW_SERIES:
                 renderNewSeriesForm(data);
                 break;
-
+            case adminConstants.views.BATCH_EDIT:
+                renderBatchEdit(data);
+                break;
             // Show the editable parts for the admin by default
             default:
                 renderEditableParts();

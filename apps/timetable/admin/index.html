@@ -88,7 +88,10 @@
         </script>
 
         <script id="gh-modules-template" type="text/template">
-            <%= _.partial('admin-modules', {'data': data}) %>
+            <%= _.partial('admin-modules', {
+                'data': data,
+                'state': state
+            }) %>
         </script>
 
         <script id="gh-subheader-part-template" type="text/template">
@@ -120,6 +123,10 @@
                 'groupId': groupId,
                 'partId': partId
             }) %>
+        </script>
+
+        <script id="gh-batch-edit-template" type="text/template">
+            <%= _.partial('admin-batch-edit', {'data': data}) %>
         </script>
 
         <!-- Borrow series modal template -->

@@ -13,9 +13,12 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI) {
+define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], function(utilAPI, adminConstants, orgunitAPI) {
 
     var triposData = null;
+
+    // Cache the state
+    var state = $.bbq.getState();
 
     /**
      * Set up the modules of events in the sidebar
@@ -51,10 +54,7 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
         var triposId = parseInt(data.selected, 10);
 
         // Push the selected tripos in the URL
-        state = {
-            'tripos': triposId,
-            'part': $.bbq.getState()['part']
-        };
+        state['tripos'] = triposId;
         $.bbq.pushState(state);
 
         // Track the tripos picker change in GA
@@ -125,7 +125,6 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
      */
     var handleHashChange = function() {
         state = $.bbq.getState() || {};
-
         // If the URL shows a preselected tripos, select that tripos automatically
         if (state.tripos && !_.isEmpty(state.tripos)) {
             $('#gh-subheader-tripos').val(state.tripos);
@@ -151,6 +150,11 @@ define(['gh.api.util', 'gh.api.orgunit', 'chosen'], function(utilAPI, orgunitAPI
         } else {
             // Show the informational message to the user, if there is one
             utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+        }
+
+        // If the URL shows a module and series, go into batch edit mode
+        if (state.module && !_.isEmpty(state.module) && state.series && !_.isEmpty(state.series)) {
+            $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.BATCH_EDIT});
         }
     };
 
