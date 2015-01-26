@@ -295,3 +295,12 @@
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed i.fa-check {
     display: block;
 }
+
+
+/*****************/
+/* BATCH EDITING */
+/*****************/
+
+#gh-batch-edit-container {
+    margin: 30px;
+}

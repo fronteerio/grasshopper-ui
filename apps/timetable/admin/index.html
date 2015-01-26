@@ -87,6 +87,7 @@
             </div>
         </script>
 
+        <!-- Modules list -->
         <script id="gh-modules-template" type="text/template">
             <%= _.partial('admin-modules', {
                 'data': data,
@@ -94,14 +95,17 @@
             }) %>
         </script>
 
+        <!-- Subheader part picker -->
         <script id="gh-subheader-part-template" type="text/template">
             <%= _.partial('subheader-part', {'data': data}) %>
         </script>
 
+        <!-- Subheader tripos picker -->
         <script id="gh-subheader-picker-template" type="text/template">
             <%= _.partial('subheader-picker', {'data': data}) %>
         </script>
 
+        <!-- Subheader picker select elements -->
         <script id="gh-subheader-pickers-template" type="text/template">
             <%= _.partial('subheader-pickers') %>
         </script>

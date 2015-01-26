@@ -13,16 +13,28 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series'], function(seriesAPI) {
+define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAPI, utilAPI, adminConstants) {
 
     /**
-     * Load the events in the selected series
+     * Load the information on the series and events in the series before initialising
+     * the batch edit page
      */
     var loadSeriesEvents = function() {
         var seriesId = parseInt($.bbq.getState()['series'], 10);
 
-        seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
-            console.log('Series events', err, events);
+        // Get the information about the series
+        seriesAPI.getSeries(seriesId, function(err, series) {
+            // Get the information about the events in the series
+            seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
+                // Load up the batch edit page and provide the events and series data
+                $(document).trigger('gh.admin.changeView', {
+                    'name': adminConstants.views.BATCH_EDIT,
+                    'data': {
+                        'events': events,
+                        'series': series
+                    }
+                });
+            });
         });
     };
 

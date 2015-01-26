@@ -160,7 +160,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
         if ($('body').data('isadminui')) {
             // If the URL shows a module and series, go into batch edit mode
             if (state.module && !_.isEmpty(state.module) && state.series && !_.isEmpty(state.series)) {
-                $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.BATCH_EDIT});
+                // Set up batch edit, this will redirect the user to the correct batch edit view as well
                 $(document).trigger('gh.batchedit.setup');
             } else {
                 // If there is no preselected series, the module and series should be removed from the hash

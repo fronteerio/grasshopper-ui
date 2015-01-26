@@ -94,6 +94,10 @@
     background-color: #171717;
 }
 
+/* Primary toolbar */
+.gh-toolbar-primary {
+    background-color: #62326E;
+}
 
 /**************/
 /* LIST GROUP */
