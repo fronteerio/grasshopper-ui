@@ -106,7 +106,9 @@
 
         <!-- Editable parts -->
         <script id="gh-editable-parts-template" type="text/template">
-            <%= _.partial('editable-parts') %>
+            <%= _.partial('editable-parts', {
+                'data': data
+            }) %>
         </script>
 
         <!-- New series -->
