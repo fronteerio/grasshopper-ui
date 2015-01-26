@@ -50,6 +50,11 @@
     line-height: 45px;
 }
 
+/* Toolbar */
+#gh-toolbar-container {
+    height: auto;
+}
+
 /**********/
 /* LAYOUT */
 /**********/
@@ -310,8 +315,17 @@
     font-weight: 400;
 }
 
+#gh-batch-edit-header > div > * {
+    height: 39px;
+    width: 100%;
+}
+
 .gh-batch-edit-events-container {
     margin-bottom: 100px;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th {
+    border-bottom-width: 5px;
 }
 
 .gh-batch-edit-events-container .table > tbody > tr > td {

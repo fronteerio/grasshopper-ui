@@ -15,19 +15,23 @@
 
         <div id="gh-batch-edit-header" class="row">
             <div class="col-xs-4">
-                Batch edit: <input type="text" placeholder="Event titles">
+                <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
             </div>
             <div class="col-xs-2">
-                <button type="button" class="btn btn-default pull-right">Time/dates</button>
+                <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right">Time/dates</button>
             </div>
             <div class="col-xs-2">
-                <input type="text" placeholder="Lecturers">
+                <input type="text" id="gh-batch-edit-lecturer" placeholder="Lecturers">
             </div>
             <div class="col-xs-2">
-                <input type="text" placeholder="Locations">
+                <input type="text" id="gh-batch-edit-location" placeholder="Locations">
             </div>
             <div class="col-xs-2">
-                <select name="" id=""></select>
+                <select id="gh-batch-edit-type">
+                    <option value="seminar">Seminar</option>
+                    <option value="lecture">Lecture</option>
+                    <option value="fieldtrip">Field trip</option>
+                </select>
             </div>
         </div>
 

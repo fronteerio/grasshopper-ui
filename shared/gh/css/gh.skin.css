@@ -139,6 +139,8 @@ h1, h2, h3, h4, h5 {
     color: #FFF;
 }
 
+.btn-default.gh-btn-secondary.gh-btn-reverse.active:hover,
+.btn-default.gh-btn-secondary.gh-btn-reverse.active:focus,
 .btn-default.gh-btn-secondary.gh-btn-reverse.active {
     background-color: #FFF;
     border-color: #FFF;
