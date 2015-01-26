@@ -37,7 +37,6 @@
 }
 
 #gh-login-form label {
-    color: #CCC;
     font-size: 14px;
 }
 
@@ -54,6 +53,7 @@
 #gh-toolbar-container {
     height: auto;
 }
+
 
 /**********/
 /* LAYOUT */
@@ -141,7 +141,6 @@
 
 #gh-main-tripos .gh-video .gh-hide-video {
     background: none;
-    color: #FFF;
     font-size: 30px;
     font-weight: 200;
     height: 60px;
@@ -150,10 +149,6 @@
     text-align: center;
     top: 10px;
     width: 60px;
-}
-
-#gh-main-tripos .gh-video .gh-hide-video:hover {
-    color: #AAA;
 }
 
 #gh-main-tripos > .gh-row-part {
@@ -336,10 +331,6 @@
     white-space: nowrap;
 }
 
-.gh-batch-edit-events-container .table > tbody > tr.info td {
-    background-color: #ECF5F9;
-}
-
 .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
     max-width: 40px;
 }
@@ -355,9 +346,9 @@
 }
 
 .gh-batch-edit-actions-container {
-    background: #FFF;
     bottom: 0;
-    border-top: 1px solid #EEE;
+    border-top-width: 1px;
+    border-top-style: solid;
     -webkit-box-shadow: 0 6px 37px;
        -moz-box-shadow: 0 6px 37px;
             box-shadow: 0 6px 37px;
@@ -365,7 +356,7 @@
     padding: 20px;
     position: fixed;
     width: -moz-calc(100% - 320px); /* Firefox */
-    width: -webkit-calc(100% - 320px); /* WebKit */
     width: -o-calc(100% - 320px); /* Opera */
+    width: -webkit-calc(100% - 320px); /* WebKit */
     width: calc(100% - 320px); /* Standard */
 }

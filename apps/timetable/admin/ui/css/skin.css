@@ -14,6 +14,15 @@
  */
 
 
+/*********/
+/* LOGIN */
+/*********/
+
+#gh-login-form label {
+    color: #CCC;
+}
+
+
 /***********/
 /* BUTTONS */
 /***********/
@@ -74,6 +83,14 @@
 
 #gh-main-tripos .gh-video .gh-play-video {
     background-color: #FFF;
+}
+
+#gh-main-tripos .gh-video .gh-hide-video {
+    color: #FFF;
+}
+
+#gh-main-tripos .gh-video .gh-hide-video:hover {
+    color: #AAA;
 }
 
 #gh-main-tripos > .gh-row-part > .gh-part,
@@ -186,4 +203,18 @@
 
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     color: #42305B;
+}
+
+
+/*****************/
+/* BATCH EDITING */
+/*****************/
+
+.gh-batch-edit-events-container .table > tbody > tr.info td {
+    background-color: #ECF5F9;
+}
+
+.gh-batch-edit-actions-container {
+    background: #FFF;
+    border-top-color: #EEE;
 }
