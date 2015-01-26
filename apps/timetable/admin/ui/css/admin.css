@@ -304,3 +304,54 @@
 #gh-batch-edit-container {
     margin: 30px;
 }
+
+#gh-batch-edit-container h1 {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.gh-batch-edit-events-container {
+    margin-bottom: 100px;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr > td {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr.info td {
+    background-color: #ECF5F9;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr > td:first-child {
+    max-width: 40px;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th .checkbox,
+.gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
+    margin: 0;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
+.gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
+    margin-top: 2px;
+}
+
+.gh-batch-edit-actions-container {
+    background: #FFF;
+    bottom: 0;
+    border-top: 1px solid #EEE;
+    -webkit-box-shadow: 0 6px 37px;
+       -moz-box-shadow: 0 6px 37px;
+            box-shadow: 0 6px 37px;
+    margin-left: -30px;
+    padding: 20px;
+    position: fixed;
+    width: -moz-calc(100% - 320px); /* Firefox */
+    width: -webkit-calc(100% - 320px); /* WebKit */
+    width: -o-calc(100% - 320px); /* Opera */
+    width: calc(100% - 320px); /* Standard */
+}

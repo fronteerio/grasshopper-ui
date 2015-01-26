@@ -144,6 +144,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
             }
         }
 
+        state = $.bbq.getState() || {};
         // If the URL shows a preselected part, select that part automatically
         if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
             $('#gh-subheader-part').val(state.part);
@@ -156,6 +157,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
             utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
         }
 
+        state = $.bbq.getState() || {};
         // ADMIN ONLY LOGIC
         if ($('body').data('isadminui')) {
             // If the URL shows a module and series, go into batch edit mode

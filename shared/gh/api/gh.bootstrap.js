@@ -57,8 +57,8 @@ requirejs.config({
         'gh.admin-constants': 'gh/js/constants/gh.admin',
 
         // GH view controllers
-        'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
         'gh.admin-batch-edit': 'gh/js/controller/gh.admin-batch-edit',
+        'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
         'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
         'gh.calendar': 'gh/js/controller/gh.calendar',
         'gh.listview': 'gh/js/controller/gh.listview',

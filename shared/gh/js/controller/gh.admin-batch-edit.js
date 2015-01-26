@@ -38,6 +38,31 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
         });
     };
 
+    /**
+     * Check/uncheck all events in a term
+     */
+    var toggleAllEvents = function() {
+        // Determine if the boxes should all be checked
+        var checkAll = $(this).is(':checked');
+        // Get the boxes to check
+        var $checkboxes = $($(this).closest('thead').next('tbody').find('input[type="checkbox"]'));
+        // (un)check the boxes
+        if (checkAll) {
+            $checkboxes.prop('checked', 'checked');
+        } else {
+            $checkboxes.removeAttr('checked');
+        }
+        // Trigger the change event on all checkboxes
+        $checkboxes.change();
+    };
+
+    var toggleEvent = function() {
+        if ($(this).is(':checked')) {
+            $(this).closest('tr').addClass('info');
+        } else {
+            $(this).closest('tr').removeClass('info');
+        }
+    };
 
     /////////////
     // BINDING //
@@ -50,6 +75,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
      */
     var addBinding = function() {
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
+        $('body').on('change', '.gh-select-all', toggleAllEvents);
+        $('body').on('change', '.gh-select-single', toggleEvent);
     };
 
     addBinding();
