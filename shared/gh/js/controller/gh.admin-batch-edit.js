@@ -18,14 +18,24 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
     /**
      * Load the information on the series and events in the series before initialising
      * the batch edit page
+     *
+     * @private
      */
     var loadSeriesEvents = function() {
         var seriesId = parseInt($.bbq.getState()['series'], 10);
 
         // Get the information about the series
         seriesAPI.getSeries(seriesId, function(err, series) {
+            if (err) {
+                return gh.api.utilAPI.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+            }
+
             // Get the information about the events in the series
             seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                }
+
                 // Load up the batch edit page and provide the events and series data
                 $(document).trigger('gh.admin.changeView', {
                     'name': adminConstants.views.BATCH_EDIT,
@@ -40,6 +50,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
 
     /**
      * Check/uncheck all events in a term
+     *
+     * @private
      */
     var toggleAllEvents = function() {
         // Determine if the boxes should all be checked
@@ -56,6 +68,11 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
         $checkboxes.change();
     };
 
+    /**
+     * Checks/unchecks a single event
+     *
+     * @private
+     */
     var toggleEvent = function() {
         if ($(this).is(':checked')) {
             $(this).closest('tr').addClass('info');
@@ -63,6 +80,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.admin-constants'], function(seriesAP
             $(this).closest('tr').removeClass('info');
         }
     };
+
 
     /////////////
     // BINDING //
