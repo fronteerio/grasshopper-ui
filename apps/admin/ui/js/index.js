@@ -447,7 +447,7 @@ define(['gh.core', 'gh.calendar', 'chosen', 'jquery-bbq'], function(gh) {
         renderHeader();
         // Determine which page to load based on the login state and
         // page the user's on
-        if (gh.data && gh.data.me) {
+        if (gh.data && !gh.data.me.anon) {
             // Show the right content, depending on the page the user's on
             if (currentPage === 'configuration') {
                 setUpConfig();
