@@ -46,6 +46,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             $(document).trigger('gh.subheader.init', {
                 'triposData': triposData
             });
+
+            // Set up the editable parts
+            renderEditableParts();
         });
     };
 
@@ -95,14 +98,66 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     };
 
     /**
-     * Get the user's triposes
+     * Render the editable parts for the user
      *
      * @private
      */
     var renderEditableParts = function() {
-        /* TODO: replace this by available parts for the admin */
+        var editableParts = [];
+        // Create an entry for each course. If the course has a subject, include the subject
+        _.each(triposData.courses, function(course) {
+            // Get the subjects that are children of the course
+            var subjects = _.filter(triposData.subjects, function(subject) {
+                return course.id === subject.ParentId;
+            });
+
+            // If there subjects for the course the data object needs to be slightly different
+            if (subjects.length) {
+                // Loop over all subjects
+                _.each(subjects, function(subject) {
+                    // Get the parts that are children of the subject
+                    var parts = _.filter(triposData.parts, function(part) {
+                        return subject.id === part.ParentId;
+                    });
+
+                    // For all parts that are children of the subject, create an object and push
+                    // it into the Array
+                    _.each(parts, function(part) {
+                        editableParts.push({
+                            'displayName': course.displayName + ' - ' + subject.displayName,
+                            'hash': '#tripos=' + subject.id + '&part=' + part.id,
+                            'canManage': course.canManage,
+                            'part': part,
+                            'isEditing': false, // TODO: Replace when locking is supported in the backend
+                            'isDraft': false // TODO: Replace when drafts are supported in the backend
+                        });
+                    });
+                });
+            } else {
+                // There are no subjects and children parts are attached to the course parent
+                // Get all the parts that are children of the course
+                var parts = _.filter(triposData.parts, function(part) {
+                    return course.id === part.ParentId;
+                });
+
+                // For all parts that are children of the course, create an object and push
+                // it into the Array
+                _.each(parts, function(part) {
+                    editableParts.push({
+                        'displayName': course.displayName,
+                        'hash': '#tripos=' + course.id + '&part=' + part.id,
+                        'canManage': course.canManage,
+                        'part': part,
+                        'isEditing': false, // TODO: Replace when locking is supported in the backend
+                        'isDraft': false // TODO: Replace when drafts are supported in the backend
+                    });
+                });
+            }
+        });
+
+        // Render the editable parts template
         gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
-            'data': null
+            'data': editableParts
         }, $('#gh-main'));
     };
 
@@ -335,9 +390,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
             // Fetch all the triposes
             getTriposData();
-
-            // Fetch the user's triposes
-            renderEditableParts();
 
             // Show the tripos help info
             showTriposHelp();
