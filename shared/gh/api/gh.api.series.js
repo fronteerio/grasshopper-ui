@@ -75,15 +75,26 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {
+            'app': appId,
+            'displayName': displayName
+        };
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (description) {
+            data['description'] = description;
+        }
+        /* istanbul ignore next */
+        if (groupId) {
+            data['group'] = groupId;
+        }
+
         $.ajax({
             'url': '/api/series',
             'type': 'POST',
-            'data': {
-                'app': appId,
-                'displayName': displayName,
-                'description': description,
-                'group': groupId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -507,13 +518,23 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (userId) {
+            data['userId'] = userId;
+        }
+        /* istanbul ignore next */
+        if (context) {
+            data['context'] = context;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId + '/subscribe',
             'type': 'POST',
-            'data': {
-                'userId': userId,
-                'context': context
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -580,14 +601,27 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        /* istanbul ignore next */
+        if (description) {
+            data['description'] = description;
+        }
+        /* istanbul ignore next */
+        if (groupId) {
+            data['group'] = groupId;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId,
             'type': 'POST',
-            'data': {
-                'description': description,
-                'displayName': displayName,
-                'group': groupId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

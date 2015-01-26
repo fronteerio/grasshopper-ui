@@ -227,7 +227,7 @@ define(['exports'], function(exports) {
             'type': 'POST',
             'success': function(data) {
                 // If the updated user is the same as the cached user, update the cached user object calendar token
-                /* istanbul ignore if */
+                /* istanbul ignore next */
                 if (require('gh.core').data.me.id === data.id) {
                     require('gh.core').data.me.calendarToken = data.calendarToken;
                 }
@@ -333,16 +333,31 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for recaptchaResponse should be provided'});
         }
 
+        // Request data object
         var data = {
             'appId': appId,
             'displayName': displayName,
             'email': email,
-            'password': password,
-            'emailPreference': emailPreference,
-            'isAdmin': isAdmin,
-            'recaptchaChallenge': recaptchaChallenge,
-            'recaptchaResponse': recaptchaResponse
+            'password': password
         };
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (emailPreference) {
+            data['emailPreference'] = emailPreference;
+        }
+        /* istanbul ignore next */
+        if (isAdmin !== null) {
+            data['isAdmin'] = isAdmin;
+        }
+        /* istanbul ignore next */
+        if (recaptchaChallenge) {
+            data['recaptchaChallenge'] = recaptchaChallenge;
+        }
+        /* istanbul ignore next */
+        if (recaptchaResponse) {
+            data['recaptchaResponse'] = recaptchaResponse;
+        }
 
         $.ajax({
             'url': '/api/users',
@@ -390,7 +405,6 @@ define(['exports'], function(exports) {
      * Update a user
      *
      * @param  {Number}      userId               The ID of the user to update
-     * @param  {Number}      appId                The ID of the app for which to update the app-specific user values
      * @param  {String}      [displayName]        The updated user display name
      * @param  {String}      [email]              The updated user email address
      * @param  {String}      [emailPreference]    The updated user email preference
@@ -398,13 +412,11 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user
      */
-    var updateUser = exports.updateUser = function(userId, appId, displayName, email, emailPreference, callback) {
+    var updateUser = exports.updateUser = function(userId, displayName, email, emailPreference, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
-        } else if (!_.isNumber(appId)) {
-            return callback({'code': 400, 'msg': 'A valid app id should be provided'});
         } else if (displayName && !_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid value for displayName should be provided'});
         } else if (email && !_.isString(email)) {
@@ -413,14 +425,27 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for emailPreference should be provided'});
         }
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        /* istanbul ignore next */
+        if (email) {
+            data['email'] = email;
+        }
+        /* istanbul ignore next */
+        if (emailPreference) {
+            data['emailPreference'] = emailPreference;
+        }
+
         $.ajax({
             'url': '/api/users/' + userId,
             'type': 'POST',
-            'data': {
-                'displayName': displayName,
-                'email': email,
-                'emailPreference': emailPreference
-            },
+            'data': data,
             'success': function(data) {
                 // If the updated user is the same as the cached user, update the cached user object
                 /* istanbul ignore if */

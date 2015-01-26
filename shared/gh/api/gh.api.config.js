@@ -30,12 +30,18 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
         }
 
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        /* istanbul ignore next */
+        if (appId) {
+            data['app'] = appId;
+        }
+
         $.ajax({
             'url': '/api/config',
             'type': 'GET',
-            'data': {
-                'app': appId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -68,9 +74,9 @@ define(['exports'], function(exports) {
         }
 
         // Add the appId to the configValues
-        /* istanbul ignore else */
+        /* istanbul ignore next */
         if (appId) {
-            configValues.app = appId;
+            configValues['app'] = appId;
         }
 
         $.ajax({
