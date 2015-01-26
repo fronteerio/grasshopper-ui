@@ -39,8 +39,6 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], functi
         state['series'] = $(this).closest('.list-group-item').data('id');
         state['module'] = $(this).closest('ul').closest('.list-group-item').data('id');
         $.bbq.pushState(state);
-        // TODO: Load the series in batch edit mode
-        
     };
 
 

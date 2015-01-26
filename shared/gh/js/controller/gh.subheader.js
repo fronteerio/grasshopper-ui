@@ -131,6 +131,8 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
             $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
             $('#gh-subheader-tripos').trigger('chosen:updated');
         } else {
+            // If there is no selected tripos, the tripos, part, module and series should be removed from the hash
+            $.bbq.removeState('tripos', 'part', 'module', 'series');
             // There is no state for the tripos, make sure it's reset
             setUpTriposPicker();
             // Resetting the tripos means destroying the part picker and hiding it
@@ -148,13 +150,24 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
         } else {
+            // If there is no preselected part the part, module and series should be removed from the hash
+            $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
             utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
         }
 
-        // If the URL shows a module and series, go into batch edit mode
-        if (state.module && !_.isEmpty(state.module) && state.series && !_.isEmpty(state.series)) {
-            $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.BATCH_EDIT});
+        // ADMIN ONLY LOGIC
+        if ($('body').data('isadminui')) {
+            // If the URL shows a module and series, go into batch edit mode
+            if (state.module && !_.isEmpty(state.module) && state.series && !_.isEmpty(state.series)) {
+                $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.BATCH_EDIT});
+                $(document).trigger('gh.batchedit.setup');
+            } else {
+                // If there is no preselected series, the module and series should be removed from the hash
+                $.bbq.removeState('module', 'series');
+                // Show the editable parts in the UI
+                $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.EDITABLE_PARTS});
+            }
         }
     };
 

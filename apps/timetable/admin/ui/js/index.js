@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
+define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'gh.admin-batch-edit', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -46,9 +46,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             $(document).trigger('gh.subheader.init', {
                 'triposData': triposData
             });
-
-            // Set up the editable parts
-            renderEditableParts();
         });
     };
 
