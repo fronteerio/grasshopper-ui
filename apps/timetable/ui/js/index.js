@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'gh.config', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh, config) {
 
     var state = $.bbq.getState() || {};
 
@@ -158,11 +158,18 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     var setUpIndex = function() {
         addBinding();
 
-        // Fetch the tripos data before initialising the header and the calendar
-        fetchTriposData(function() {
-            setUpHeader();
-            setUpCalendar();
-            renderLoginModal();
+        // Fetch the custom application configurations
+        config.init(function(err) {
+            if (err) {
+                return gh.api.utilAPI.notification('Fetching application configuration failed.', 'An error occurred while fetching the application configuration.', 'error');
+            }
+
+            // Fetch the tripos data before initialising the header and the calendar
+            fetchTriposData(function() {
+                setUpHeader();
+                setUpCalendar();
+                renderLoginModal();
+            });
         });
     };
 
