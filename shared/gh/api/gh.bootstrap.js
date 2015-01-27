@@ -29,6 +29,7 @@ requirejs.config({
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
         'jquery-bbq': 'vendor/js/jquery-bbq',
+        'jquery.jeditable': 'vendor/js/jquery.jeditable',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
         'sinon': 'vendor/js/sinon-1.12.1',
