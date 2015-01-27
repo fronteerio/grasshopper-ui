@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], function(utilAPI, adminConstants, orgunitAPI) {
+define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(utilAPI, adminConstants, orgunitAPI) {
 
     var triposData = null;
 
@@ -172,6 +172,11 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'chosen'], functi
             }
         }
     };
+
+
+    /////////////
+    // BINDING //
+    /////////////
 
     /**
      * Add bindings to various elements in the subheader component
