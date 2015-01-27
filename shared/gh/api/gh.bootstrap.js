@@ -62,7 +62,6 @@ requirejs.config({
         'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
         'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
         'gh.calendar': 'gh/js/controller/gh.calendar',
-        'gh.config': 'gh/js/controller/gh.config',
         'gh.listview': 'gh/js/controller/gh.listview',
         'gh.new-module': 'gh/js/controller/gh.new-module',
         'gh.new-series': 'gh/js/controller/gh.new-series',

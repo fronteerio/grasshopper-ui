@@ -38,12 +38,24 @@ define(['exports'], function(exports) {
             data['app'] = appId;
         }
 
+        // Fetch the configurations from the API
         $.ajax({
             'url': '/api/config',
             'type': 'GET',
             'data': data,
-            'success': function(data) {
-                return callback(null, data);
+            'success': function(APIConfig) {
+
+                // Read the configuration file
+                $.ajax({
+                    'url': '/shared/gh/files/config.json',
+                    'dataType': 'JSON',
+                    'type': 'GET',
+                    'success': function(JSONConfig) {
+
+                        // Merge the two configurations
+                        return callback(null, _.extend(JSONConfig, APIConfig));
+                    }
+                });
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});

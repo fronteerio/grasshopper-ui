@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.config', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh, config) {
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
 
     var state = $.bbq.getState() || {};
 
@@ -158,11 +158,14 @@ define(['gh.core', 'gh.config', 'gh.subheader', 'gh.calendar', 'gh.student-listv
     var setUpIndex = function() {
         addBinding();
 
-        // Fetch the custom application configurations
-        config.init(function(err) {
+        // Fetch the application configuration
+        gh.api.configAPI.getConfig(null, function(err, data) {
             if (err) {
-                return gh.api.utilAPI.notification('Fetching application configuration failed.', 'An error occurred while fetching the application configuration.', 'error');
+                return gh.api.utilAPI.notification('Fetching configuration failed.', 'An error occurred while fetching the configuration.', 'error');
             }
+
+            // Cache the configuration
+            gh.config = data;
 
             // Fetch the tripos data before initialising the header and the calendar
             fetchTriposData(function() {
