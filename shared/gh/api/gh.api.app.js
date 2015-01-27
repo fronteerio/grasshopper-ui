@@ -170,15 +170,12 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (displayName) {
             data['displayName'] = displayName;
         }
-        /* istanbul ignore next */
         if (enabled !== null) {
             data['enabled'] = enabled;
         }
-        /* istanbul ignore next */
         if (host) {
             data['host'] = host;
         }

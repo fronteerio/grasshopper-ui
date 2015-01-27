@@ -181,31 +181,24 @@ define(['exports'], function(exports) {
         };
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }
-        /* istanbul ignore next */
         if (location) {
             data['location'] = location;
         }
-        /* istanbul ignore next */
         if (notes) {
             data['notes'] = notes;
         }
-        /* istanbul ignore next */
         if (organiserOther) {
             data['organiserOther'] = organiserOther;
         }
-        /* istanbul ignore next */
         if (organiserUsers) {
             data['organiserUsers'] = organiserUsers;
         }
-        /* istanbul ignore next */
         if (seriesId) {
             data['serie'] = seriesId;
         }
@@ -263,31 +256,24 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (displayName) {
             data['displayName'] = displayName;
         }
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }
-        /* istanbul ignore next */
         if (start) {
             data['start'] = start;
         }
-        /* istanbul ignore next */
         if (end) {
             data['end'] = end;
         }
-        /* istanbul ignore next */
         if (location) {
             data['location'] = location;
         }
-        /* istanbul ignore next */
         if (notes) {
             data['notes'] = notes;
         }

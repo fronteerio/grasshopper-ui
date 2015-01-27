@@ -33,7 +33,7 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
+        /* istanbul ignore else */
         if (appId) {
             data['app'] = appId;
         }
@@ -74,7 +74,7 @@ define(['exports'], function(exports) {
         }
 
         // Add the appId to the configValues
-        /* istanbul ignore next */
+        /* istanbul ignore else */
         if (appId) {
             configValues['app'] = appId;
         }

@@ -116,7 +116,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the createEventByApp functionality
     QUnit.asyncTest('createEventByApp', function(assert) {
-        expect(21);
+        expect(22);
 
         // Fetch a random test app
         var app = testAPI.getTestApp();
@@ -191,20 +191,25 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                                                 gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, 'invalid_series_id', function(err, data) {
                                                                     assert.ok(err, 'Verify that an error is thrown when an invalid value for seriesId was provided');
 
-                                                                    // Verify that an event can be created without errors
-                                                                    gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
-                                                                        assert.ok(!err, 'Verify that an event can be created without errors');
-                                                                        assert.ok(data, 'Verify that the created event is returned');
+                                                                    // Create a test series
+                                                                    gh.api.seriesAPI.createSeries(app.id, 'displayName', 'Test description', 1, function(err, data) {
+                                                                        assert.ok(!err, 'Verify that the test series have been created without errors');
 
-                                                                        // Verify that a thrown error is handled successfully
-                                                                        var body = {'code': 400, 'msg': 'Bad Request'};
-                                                                        gh.api.utilAPI.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
-                                                                            gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
-                                                                                assert.ok(err, 'Verify that an error is thrown when the back-end errored');
-                                                                                assert.ok(!data, 'Verify that no data is returned when an error is thrown');
+                                                                        // Verify that an event can be created without errors
+                                                                        gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', 1, 'location', 'notes', ['John Doe', 'Jane Doe'], null, data.id, function(err, data) {
+                                                                            assert.ok(!err, 'Verify that an event can be created without errors');
+                                                                            assert.ok(data, 'Verify that the created event is returned');
+
+                                                                            // Verify that a thrown error is handled successfully
+                                                                            var body = {'code': 400, 'msg': 'Bad Request'};
+                                                                            gh.api.utilAPI.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                                                gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                                                                                    assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                                                                    assert.ok(!data, 'Verify that no data is returned when an error is thrown');
+                                                                                });
+
+                                                                                QUnit.start();
                                                                             });
-
-                                                                            QUnit.start();
                                                                         });
                                                                     });
                                                                 });
@@ -226,7 +231,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateEvent functionality
     QUnit.asyncTest('updateEvent', function(assert) {
-        expect(16);
+        expect(18);
 
         // Create a test event
         createRandomEvent(null, function(err, evt) {
@@ -278,20 +283,26 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                             gh.api.eventAPI.updateEvent(evt.id, 'displayName', 'description', null, '2014-12-31', '2015-01-01', 'location', 1234, function(err, data) {
                                                 assert.ok(err, 'Verify that an error is thrown when an invalid value for notes was provided');
 
-                                                // Verify that an event can be updated without errors
+                                                // Verify that an event can be updated without errors when all the parameters have been specified
                                                 gh.api.eventAPI.updateEvent(evt.id, 'displayName', 'description', null, '2014-12-31', '2015-01-01', 'location', 'notes', function(err, data) {
                                                     assert.ok(!err, 'Verify that an event can be updated without errors');
                                                     assert.ok(data, 'Verify that the updated event is returned');
 
-                                                    // Verify that a thrown error is handled successfully
-                                                    body = {'code': 400, 'msg': 'Bad Request'};
-                                                    gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
-                                                        gh.api.eventAPI.updateEvent(evt.id, 'displayName', 'description', null, '2014-12-31', '2015-01-01', 'location', 'notes', function(err, data) {
-                                                            assert.ok(err, 'Verify that a thrown error is handled successfully');
-                                                            assert.ok(!data, 'Verity that no event is returned');
-                                                        });
+                                                    // Verify that an event can be updated without errors when only one parameter has been specified
+                                                    gh.api.eventAPI.updateEvent(evt.id, null, null, 1, null, null, null, null, function(err, data) {
+                                                        assert.ok(!err, 'Verify that an event can be updated without errors');
+                                                        assert.ok(data, 'Verify that the updated event is returned');
 
-                                                        QUnit.start();
+                                                        // Verify that a thrown error is handled successfully
+                                                        body = {'code': 400, 'msg': 'Bad Request'};
+                                                        gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                                            gh.api.eventAPI.updateEvent(evt.id, 'displayName', 'description', null, '2014-12-31', '2015-01-01', 'location', 'notes', function(err, data) {
+                                                                assert.ok(err, 'Verify that a thrown error is handled successfully');
+                                                                assert.ok(!data, 'Verity that no event is returned');
+                                                            });
+
+                                                            QUnit.start();
+                                                        });
                                                     });
                                                 });
                                             });

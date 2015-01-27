@@ -122,15 +122,12 @@ define(['exports'], function(exports) {
         };
 
         // Only add the optional parameters if they have been explicitly specified
-        /* istanbul ignore next */
         if (parentId) {
             data['parent'] = parentId;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
@@ -595,23 +592,18 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
-        /* istanbul ignore next */
         if (displayName) {
             data['displayName'] = displayName;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }
-        /* istanbul ignore next */
         if (parentId) {
             data['parent'] = parentId;
         }
-        /* istanbul ignore next */
         if (type) {
             data['type'] = type;
         }

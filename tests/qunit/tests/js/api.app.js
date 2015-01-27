@@ -198,7 +198,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateApp functionality
     QUnit.asyncTest('updateApp', function(assert) {
-        expect(17);
+        expect(18);
 
         // Fetch a random app
         var app = testAPI.getTestApp();
@@ -241,15 +241,20 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             assert.strictEqual(data.TenantId, app.TenantId, 'Verify that the tenant id remained the same');
                             assert.ok(data.updatedAt !== app.updatedAt, 'Verify that the value for updatedAt was changed');
 
-                            // Mock an error from the back-end
-                            var body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.appAPI.updateApp(app.id, displayName, enabled, host, function(err, data) {
-                                    assert.ok(err, 'Verify that an error is thrown when the back-end errored');
-                                    assert.ok(!data, 'Verify that no data is returned when an error is thrown');
-                                });
+                            // Verify that an error is thrown when no parameters have been specified
+                            gh.api.appAPI.updateApp(app.id, null, null, null, function(err, data) {
+                                assert.ok(err, 'Verify that an error is thrown when no parameters have been specified');
 
-                                QUnit.start();
+                                // Mock an error from the back-end
+                                var body = {'code': 400, 'msg': 'Bad Request'};
+                                gh.api.utilAPI.mockRequest('POST', '/api/apps/' + app.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.appAPI.updateApp(app.id, displayName, enabled, host, function(err, data) {
+                                        assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                        assert.ok(!data, 'Verify that no data is returned when an error is thrown');
+                                    });
+
+                                    QUnit.start();
+                                });
                             });
                         });
                     });

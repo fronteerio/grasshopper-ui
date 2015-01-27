@@ -82,11 +82,9 @@ define(['exports'], function(exports) {
         };
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }
@@ -499,19 +497,19 @@ define(['exports'], function(exports) {
      *
      * @param  {Number}      serieId                The ID of the series to subscribe to
      * @param  {Number}      [userId]               The ID of the user that should be subscribed. Defaults to the current user
-     * @param  {Number}      [context]              The ID of the organisational unit to which the serie belongs
+     * @param  {Number}      [orgUnit]              The ID of the organisational unit to which the serie belongs
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the subscribed to event series
      */
-    var subscribeSeries = exports.subscribeSeries = function(serieId, userId, context, callback) {
+    var subscribeSeries = exports.subscribeSeries = function(serieId, userId, orgUnit, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         } else if (userId && !_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid userId should be provided'});
-        } else if (context && !_.isNumber(context)) {
+        } else if (orgUnit && !_.isNumber(orgUnit)) {
             return callback({'code': 400, 'msg': 'A valid context should be provided'});
         }
 
@@ -522,13 +520,11 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (userId) {
             data['userId'] = userId;
         }
-        /* istanbul ignore next */
-        if (context) {
-            data['context'] = context;
+        if (orgUnit) {
+            data['orgUnit'] = orgUnit;
         }
 
         $.ajax({
@@ -605,15 +601,12 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (displayName) {
             data['displayName'] = displayName;
         }
-        /* istanbul ignore next */
         if (description) {
             data['description'] = description;
         }
-        /* istanbul ignore next */
         if (groupId) {
             data['group'] = groupId;
         }

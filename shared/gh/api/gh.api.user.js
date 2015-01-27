@@ -342,11 +342,9 @@ define(['exports'], function(exports) {
         };
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (emailPreference) {
             data['emailPreference'] = emailPreference;
         }
-        /* istanbul ignore next */
         if (isAdmin !== null) {
             data['isAdmin'] = isAdmin;
         }
@@ -429,15 +427,12 @@ define(['exports'], function(exports) {
         var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
-        /* istanbul ignore next */
         if (displayName) {
             data['displayName'] = displayName;
         }
-        /* istanbul ignore next */
         if (email) {
             data['email'] = email;
         }
-        /* istanbul ignore next */
         if (emailPreference) {
             data['emailPreference'] = emailPreference;
         }
