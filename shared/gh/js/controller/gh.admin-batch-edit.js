@@ -103,6 +103,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
 
     /**
      * Set up editable fields in the batch edit tables
+     *
+     * @private
      */
     var setUpJEditable = function() {
         // Apply jEditable for inline editing
@@ -114,6 +116,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
 
     /**
      * Submit all changes made in batch edit mode
+     *
+     * @private
      */
     var submitBatchEdit = function() {
         var eventObjs = [];
@@ -143,7 +147,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
         var hasError = false;
 
         /**
-         * Update a single event. Calls itsself when more events need updating and executes
+         * Update a single event. Calls itself when more events need updating and executes
          * a callback function when everything has been persisted
          *
          * @param  {Object}      updatedEvent    The event that needs to be updated
@@ -156,10 +160,10 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
                     hasError = true;
                     // Mark the row so it's visually obvious that the update failed
                     $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                } else {
+                    // Mark the row so it's visually obvious that the update was successful
+                    $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
                 }
-
-                // Mark the row so it's visually obvious that the update was successful
-                $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
 
                 // If we're done, execute the callback, otherwise call the function again with
                 // the next event to update
