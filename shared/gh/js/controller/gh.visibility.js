@@ -38,7 +38,6 @@ define(['gh.api.util'], function(utilAPI) {
         }}, $('#gh-visibility-modal-container'));
         // Show the modal
         $('#gh-visibility-modal').modal();
-        return false;
     };
 
     /**
