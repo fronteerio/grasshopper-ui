@@ -19,12 +19,14 @@
                     <div class="gh-list-description">
                         <p><%- d.displayName %></p>
                         <% if (isChild) { %>
-                            <p><%- d.metadata.pattern %></p>
-                            <% if (d.metadata.locations && d.metadata.locations.length) { %>
-                                <p><%- d.metadata.locations.join(', ') %></p>
-                            <% } %>
-                            <% if (d.metadata.organisers && d.metadata.organisers.length) { %>
-                                <p><%- d.metadata.organisers.join(', ') %></p>
+                            <% if (d.metadata) { %>
+                                <p><%- d.metadata.pattern %></p>
+                                <% if (d.metadata.locations && d.metadata.locations.length) { %>
+                                    <p><%- d.metadata.locations.join(', ') %></p>
+                                <% } %>
+                                <% if (d.metadata.organisers && d.metadata.organisers.length) { %>
+                                    <p><%- d.metadata.organisers.join(', ') %></p>
+                                <% } %>
                             <% } %>
                         <% } %>
                     </div>

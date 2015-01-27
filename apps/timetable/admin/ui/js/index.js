@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
+define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'gh.admin-batch-edit', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -46,9 +46,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             $(document).trigger('gh.subheader.init', {
                 'triposData': triposData
             });
-
-            // Set up the editable parts
-            renderEditableParts();
         });
     };
 
@@ -169,6 +166,19 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      */
     var renderNewSeriesForm = function(data) {
         gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
+            'gh': gh,
+            'data': data
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Show the batch edit form
+     *
+     * @param  {Object}    data    Object containing template data
+     * @private
+     */
+    var renderBatchEdit = function(data) {
+        gh.api.utilAPI.renderTemplate($('#gh-batch-edit-template'), {
             'gh': gh,
             'data': data
         }, $('#gh-main'));
@@ -319,7 +329,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             case adminConstants.views.NEW_SERIES:
                 renderNewSeriesForm(data);
                 break;
-
+            case adminConstants.views.BATCH_EDIT:
+                renderBatchEdit(data);
+                break;
             // Show the editable parts for the admin by default
             default:
                 renderEditableParts();

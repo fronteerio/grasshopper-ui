@@ -14,6 +14,15 @@
  */
 
 
+/*********/
+/* LOGIN */
+/*********/
+
+#gh-login-form label {
+    color: #CCC;
+}
+
+
 /***********/
 /* BUTTONS */
 /***********/
@@ -76,6 +85,14 @@
     background-color: #FFF;
 }
 
+#gh-main-tripos .gh-video .gh-hide-video {
+    color: #FFF;
+}
+
+#gh-main-tripos .gh-video .gh-hide-video:hover {
+    color: #AAA;
+}
+
 #gh-main-tripos > .gh-row-part > .gh-part,
 #gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
     background-color: #62326E;
@@ -92,6 +109,11 @@
 
 #gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit {
     background-color: #171717;
+}
+
+/* Primary toolbar */
+.gh-toolbar-primary {
+    background-color: #62326E;
 }
 
 
@@ -181,4 +203,18 @@
 
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     color: #42305B;
+}
+
+
+/*****************/
+/* BATCH EDITING */
+/*****************/
+
+.gh-batch-edit-events-container .table > tbody > tr.info td {
+    background-color: #ECF5F9;
+}
+
+.gh-batch-edit-actions-container {
+    background: #FFF;
+    border-top-color: #EEE;
 }
