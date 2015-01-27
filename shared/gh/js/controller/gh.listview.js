@@ -52,8 +52,12 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
 
             // Render the series in the sidebar
             utilAPI.renderTemplate($(data.template), {
-                'data': modules.results
+                'data': modules.results,
+                'state': $.bbq.getState()
             }, $('#gh-modules-container', $(data.container)));
+
+            // Put focus on the selected series
+            $('.gh-series-active').focus();
 
             // Clear local storage
             utilAPI.localDataStorage().remove('expanded');

@@ -22,11 +22,11 @@
         <link rel="stylesheet" href="/admin/ui/css/skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body>
+    <body data-isadminui="true">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
-                    <a href="http://cam.ac.uk" id="gh-header-logo" target="_blank" title="Visit the Cambridge University website">
+                    <a href="/admin" id="gh-header-logo" title="Visit the Cambridge University website">
                         <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
                     </a>
                     <div id="gh-content-description">
@@ -87,18 +87,25 @@
             </div>
         </script>
 
+        <!-- Modules list -->
         <script id="gh-modules-template" type="text/template">
-            <%= _.partial('admin-modules', {'data': data}) %>
+            <%= _.partial('admin-modules', {
+                'data': data,
+                'state': state
+            }) %>
         </script>
 
+        <!-- Subheader part picker -->
         <script id="gh-subheader-part-template" type="text/template">
             <%= _.partial('subheader-part', {'data': data}) %>
         </script>
 
+        <!-- Subheader tripos picker -->
         <script id="gh-subheader-picker-template" type="text/template">
             <%= _.partial('subheader-picker', {'data': data}) %>
         </script>
 
+        <!-- Subheader picker select elements -->
         <script id="gh-subheader-pickers-template" type="text/template">
             <a class="pull-right gh-visibility" href="#"><i class="fa fa-eye-slash"></i> Visibility<a>
             <%= _.partial('subheader-pickers') %>
@@ -123,6 +130,11 @@
                 'groupId': groupId,
                 'partId': partId
             }) %>
+        </script>
+
+        <!-- Batch edit template -->
+        <script id="gh-batch-edit-template" type="text/template">
+            <%= _.partial('admin-batch-edit', {'data': data}) %>
         </script>
 
         <!-- Borrow series modal template -->

@@ -19,7 +19,7 @@
 
 #gh-page-container #gh-left-container,
 #gh-page-container #gh-right-container #gh-header-container,
-#gh-page-container #gh-right-container #gh-main #gh-calendar-toolbar {
+#gh-page-container #gh-right-container #gh-main #gh-toolbar-container {
     display: none;
 }
 

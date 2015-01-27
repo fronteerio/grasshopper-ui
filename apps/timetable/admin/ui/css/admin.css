@@ -37,7 +37,6 @@
 }
 
 #gh-login-form label {
-    color: #CCC;
     font-size: 14px;
 }
 
@@ -49,6 +48,12 @@
     height: 45px;
     line-height: 45px;
 }
+
+/* Toolbar */
+#gh-toolbar-container {
+    height: auto;
+}
+
 
 /**********/
 /* LAYOUT */
@@ -136,7 +141,6 @@
 
 #gh-main-tripos .gh-video .gh-hide-video {
     background: none;
-    color: #FFF;
     font-size: 30px;
     font-weight: 200;
     height: 60px;
@@ -145,10 +149,6 @@
     text-align: center;
     top: 10px;
     width: 60px;
-}
-
-#gh-main-tripos .gh-video .gh-hide-video:hover {
-    color: #AAA;
 }
 
 #gh-main-tripos > .gh-row-part {
@@ -264,6 +264,71 @@
 #gh-new-series-form .form-group label {
     font-size: 13px;
     font-weight: 400;
+}
+
+
+/*****************/
+/* BATCH EDITING */
+/*****************/
+
+#gh-batch-edit-container {
+    margin: 30px;
+}
+
+#gh-batch-edit-container h1 {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+#gh-batch-edit-header > div > * {
+    height: 39px;
+    width: 100%;
+}
+
+.gh-batch-edit-events-container {
+    margin-bottom: 100px;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th {
+    border-bottom-width: 5px;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr > td {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr > td:first-child {
+    max-width: 40px;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th .checkbox,
+.gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
+    margin: 0;
+}
+
+.gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
+.gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
+    margin-top: 2px;
+}
+
+.gh-batch-edit-actions-container {
+    bottom: 0;
+    border-top-width: 1px;
+    border-top-style: solid;
+    -webkit-box-shadow: 0 6px 37px;
+       -moz-box-shadow: 0 6px 37px;
+            box-shadow: 0 6px 37px;
+    margin-left: -30px;
+    padding: 20px;
+    position: fixed;
+    width: -moz-calc(100% - 320px); /* Firefox */
+    width: -o-calc(100% - 320px); /* Opera */
+    width: -webkit-calc(100% - 320px); /* WebKit */
+    width: calc(100% - 320px); /* Standard */
 }
 
 
