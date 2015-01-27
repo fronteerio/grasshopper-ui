@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'gh.admin-batch-edit', 'clickover', 'jquery-bbq'], function(gh, adminConstants) {
+define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'gh.admin-batch-edit', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -182,6 +182,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
             'gh': gh,
             'data': data
         }, $('#gh-main'));
+
+        // Let the batch-edit plugin know that the HTML has been rendered
+        $(document).trigger('gh.batchedit.rendered');
     };
 
     /**

@@ -56,7 +56,7 @@
                 </thead>
                 <tbody>
                 <% _.each(data.events.results, function(ev) {%>
-                    <tr>
+                    <tr data-eventid="<%= ev.id %>">
                         <td>
                             <div class="checkbox">
                                 <label>
@@ -64,14 +64,14 @@
                                 </label>
                             </div>
                         </td>
-                        <td><%- ev.displayName %></td>
+                        <td class="jeditable-field gh-event-description"><%- ev.displayName %></td>
                         <td><%- ev.start %> - <%- ev.end %></td>
                         <!-- <td><%- ev.organisers.toString() %></td> -->
                         <!-- <td><%- ev.location %></td> -->
                         <!-- <td><%- ev.notes %></td> -->
-                        <td>Dr. Haruko Laurie</td>
-                        <td>Research Room 23</td>
-                        <td>Seminar</td>
+                        <td class="gh-event-organiser">Dr. Haruko Laurie</td>
+                        <td class="gh-event-location">Research Room 23</td>
+                        <td class="gh-event-notes">Seminar</td>
                     </tr>
                 <% }); %>
                 </tbody>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="gh-batch-edit-actions-container">
-            <button type="button" class="btn btn-default pull-right">Save</button>
+            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
             <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>
         </div>
     </div>
