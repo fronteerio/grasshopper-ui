@@ -15,38 +15,10 @@
 
 define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], function(seriesAPI, utilAPI, eventAPI, adminConstants) {
 
-    /**
-     * Load the information on the series and events in the series before initialising
-     * the batch edit page
-     *
-     * @private
-     */
-    var loadSeriesEvents = function() {
-        var seriesId = parseInt($.bbq.getState()['series'], 10);
 
-        // Get the information about the series
-        seriesAPI.getSeries(seriesId, function(err, series) {
-            if (err) {
-                return gh.api.utilAPI.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
-            }
-
-            // Get the information about the events in the series
-            seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
-                if (err) {
-                    return gh.api.utilAPI.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
-                }
-
-                // Load up the batch edit page and provide the events and series data
-                $(document).trigger('gh.admin.changeView', {
-                    'name': adminConstants.views.BATCH_EDIT,
-                    'data': {
-                        'events': events,
-                        'series': series
-                    }
-                });
-            });
-        });
-    };
+    ///////////////
+    // UTILITIES //
+    ///////////////
 
     /**
      * Check/uncheck all events in a term
@@ -82,21 +54,63 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
     };
 
     /**
+     * Shows/hides the batch edit footer based on whether or not updates happened
+     *
+     * @private
+     */
+    var toggleSubmit = function() {
+        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active').length;
+        if (eventsUpdated) {
+            // Update the count
+            var countString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
+            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(countString);
+            // Show the save button if events have changed but not submitted
+            $('.gh-batch-edit-actions-container').removeClass('hide');
+        } else {
+            // Hide the save button if all events have been submitted
+            $('.gh-batch-edit-actions-container').addClass('hide');
+        }
+    };
+
+    /**
+     * Handles keypress events when focus is set to individual edit fields
+     *     - Initialises jEditable field when hitting space or enter
+     *
+     * @param  {Event}    ev    Standard jQuery keypress event
+     * @private
+     */
+    var handleEditableKeyPress = function(ev) {
+        var key = parseInt(ev.which, 10);
+        if (key === 32 || key === 13) {
+            $(this).click();
+        }
+    };
+
+
+    ////////////////
+    // BATCH EDIT //
+    ////////////////
+
+    /**
      * Verifies that a valid value was entered and persists the value in the field
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
      * @private
      */
-    var editableSubmitted = function(value) {
+    var editableSubmitted = function(value, b, c) {
         // Get the value
         value = $.trim(value);
         // If no value has been entered, we fall back to the previous value
         if (!value) {
             return this.revert;
         } else {
-            // Mark the row so it's visually obvious that an edit was made to it
-            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + $(this).closest('tr').data('eventid') + '"]').removeClass('danger active success').addClass('active');
+            // If there was a change, mark the row so it's visually obvious that an edit was made to it
+            if (this.revert !== value) {
+                $('.gh-batch-edit-events-container tbody tr[data-eventid="' + $(this).closest('tr').data('eventid') + '"]').removeClass('danger active success').addClass('active');
+                // Show the save button
+                toggleSubmit();
+            }
             return value;
         }
     };
@@ -108,9 +122,14 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
      */
     var setUpJEditable = function() {
         // Apply jEditable for inline editing
-        $('.jeditable-field').editable(editableSubmitted, {
+        $('.gh-jeditable').editable(editableSubmitted, {
             'onblur': 'submit',
-            'select' : true
+            'select' : true,
+            'callback': function(value, settings) {
+                // Focus the edited field td element after submitting the value
+                // for improved keyboard accessibility
+                $(this).focus();
+            }
         });
     };
 
@@ -135,7 +154,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
                     // 'end': '',
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
-                    'notes': $('.gh-event-notes', $eventContainer).text(),
+                    'notes': $('.gh-event-type', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
                     // 'start': ''
                 };
                 eventObjs.push(eventObj);
@@ -155,36 +175,140 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
          * @private
          */
         var submitEventUpdate = function(updatedEvent, callback) {
-            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, null, null, updatedEvent.location, updatedEvent.notes, function(err, data) {
-                if (err) {
+            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, null, null, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+                if (evErr) {
                     hasError = true;
-                    // Mark the row so it's visually obvious that the update failed
-                    $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
-                } else {
-                    // Mark the row so it's visually obvious that the update was successful
-                    $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
                 }
 
-                // If we're done, execute the callback, otherwise call the function again with
-                // the next event to update
-                done++;
-                if (done === todo) {
-                    callback();
-                } else {
-                    submitEventUpdate(eventObjs[done], callback);
-                }
+                // Create an object of the organisers
+                // TODO: Implement lookup to handle organisers properly
+                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't 
+                // make sense to implement this, waiting for lookup to be hooked in
+                var organisers = _.object([updatedEvent.organisers], [true]);
+                // Update the event organisers
+                eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
+                    if (orgErr) {
+                        hasError = true;
+                        // Mark the row so it's visually obvious that the update failed
+                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                    } else {
+                        // Mark the row so it's visually obvious that the update was successful
+                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                    }
+
+                    // If we're done, execute the callback, otherwise call the function again with
+                    // the next event to update
+                    done++;
+                    if (done === todo) {
+                        callback();
+                    } else {
+                        submitEventUpdate(eventObjs[done], callback);
+                    }
+                });
             });
         };
 
         // Persist the first update
         if (eventObjs.length) {
+            // Deselect the 'check all' checkbox to see progress update
+            $('.gh-select-all').prop('checked', false);
+            $('.gh-select-all').change();
+            // Start by submitting the first update
             submitEventUpdate(eventObjs[done], function() {
                 if (hasError) {
-                    return utilAPI.notification('Events not edited.', 'Not all events could be successfully edited.', 'error');
+                    return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
                 }
-                return utilAPI.notification('Events edited.', 'The events where successfully edited.');
+                // Hide the save button
+                toggleSubmit();
+                return utilAPI.notification('Events updated.', 'The events where successfully updated.');
             });
         }
+    };
+
+    /**
+     * Batch edit the event type
+     *
+     * @private
+     */
+    var batchEditType = function() {
+        // Get the title
+        var title = $(this).val();
+        // Update all rows that are checked
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title);
+        // Add an `active` class to all updated rows to indicate that changes where made
+        $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
+        // Show the save button
+        toggleSubmit();
+    };
+
+    /**
+     * Batch edit the event location
+     *
+     * @private
+     */
+    var batchEditLocation = function() {
+        // Get the title
+        var title = $(this).val();
+        // Update all rows that are checked
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-location').text(title);
+        // Add an `active` class to all updated rows to indicate that changes where made
+        $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
+        // Show the save button
+        toggleSubmit();
+    };
+
+    /**
+     * Batch edit the event title
+     *
+     * @private
+     */
+    var batchEditTitle = function() {
+        // Get the title
+        var title = $(this).val();
+        // Update all rows that are checked
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-description').text(title);
+        // Add an `active` class to all updated rows to indicate that changes where made
+        $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
+        // Show the save button
+        toggleSubmit();
+    };
+
+
+    ////////////////////
+    // INITIALISATION //
+    ////////////////////
+
+    /**
+     * Load the information on the series and events in the series before initialising
+     * the batch edit page
+     *
+     * @private
+     */
+    var loadSeriesEvents = function() {
+        var seriesId = parseInt($.bbq.getState()['series'], 10);
+
+        // Get the information about the series
+        seriesAPI.getSeries(seriesId, function(err, series) {
+            if (err) {
+                return gh.api.utilAPI.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+            }
+
+            // Get the information about the events in the series
+            seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
+                if (err) {
+                    return gh.api.utilAPI.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                }
+
+                // Load up the batch edit page and provide the events and series data
+                $(document).trigger('gh.admin.changeView', {
+                    'name': adminConstants.views.BATCH_EDIT,
+                    'data': {
+                        'events': events,
+                        'series': series
+                    }
+                });
+            });
+        });
     };
 
 
@@ -198,12 +322,24 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
      * @private
      */
     var addBinding = function() {
+        // Setup
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
 
+        // List utilities
         $('body').on('change', '.gh-select-all', toggleAllEvents);
         $('body').on('change', '.gh-select-single', toggleEvent);
+
+        // Batch edit form submission
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
+
+        // Batch edit header functionality
+        $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
+        $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
+        $('body').on('keyup', '#gh-batch-edit-type', batchEditType);
+
+        // Keyboard accessibility
+        $('body').on('keypress', 'td.gh-jeditable', handleEditableKeyPress);
     };
 
     addBinding();

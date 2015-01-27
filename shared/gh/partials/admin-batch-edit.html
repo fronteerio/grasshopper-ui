@@ -21,17 +21,13 @@
                 <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right">Time/dates</button>
             </div>
             <div class="col-xs-2">
-                <input type="text" id="gh-batch-edit-lecturer" placeholder="Lecturers">
+                <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
             </div>
             <div class="col-xs-2">
                 <input type="text" id="gh-batch-edit-location" placeholder="Locations">
             </div>
             <div class="col-xs-2">
-                <select id="gh-batch-edit-type">
-                    <option value="seminar">Seminar</option>
-                    <option value="lecture">Lecture</option>
-                    <option value="fieldtrip">Field trip</option>
-                </select>
+                <input type="text" id="gh-batch-edit-type" placeholder="Type">
             </div>
         </div>
 
@@ -64,22 +60,20 @@
                                 </label>
                             </div>
                         </td>
-                        <td class="jeditable-field gh-event-description"><%- ev.displayName %></td>
-                        <td><%- ev.start %> - <%- ev.end %></td>
-                        <!-- <td><%- ev.organisers.toString() %></td> -->
-                        <!-- <td><%- ev.location %></td> -->
-                        <!-- <td><%- ev.notes %></td> -->
-                        <td class="gh-event-organiser">Dr. Haruko Laurie</td>
-                        <td class="gh-event-location">Research Room 23</td>
-                        <td class="gh-event-notes">Seminar</td>
+                        <td class="gh-jeditable gh-event-description" tabindex="0"><%- ev.displayName %></td>
+                        <td tabindex="0"><%- ev.start %> - <%- ev.end %></td>
+                        <td class="gh-jeditable gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
+                        <td class="gh-jeditable gh-event-location" tabindex="0"><%- ev.location %></td>
+                        <td class="gh-jeditable gh-event-type" tabindex="0"><%- ev.notes %></td>
                     </tr>
                 <% }); %>
                 </tbody>
             </table>
         </div>
 
-        <div class="gh-batch-edit-actions-container">
-            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
+        <div class="hide gh-batch-edit-actions-container">
+            <p id="gh-batch-edit-change-summary" class="pull-left">8 events updated</p>
+            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right"><i class="fa fa-check-square"></i> Save</button>
             <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>
         </div>
     </div>

@@ -312,9 +312,7 @@ define(['exports'], function(exports) {
         $.ajax({
             'url': '/api/events/' + eventId + '/organisers',
             'type': 'POST',
-            'data': {
-                'body': body
-            },
+            'data': body,
             'success': function(data) {
                 return callback(null, data);
             },
