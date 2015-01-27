@@ -83,21 +83,40 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
         }
 
+        // Request data object
+        var data = {
+            'displayName': displayName,
+            'start': start,
+            'end': end
+        }
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (description) {
+            data.description = description;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+        if (location) {
+            data['location'] = location;
+        }
+        if (notes) {
+            data['notes'] = notes;
+        }
+        if (organiserOther) {
+            data['organiserOther'] = organiserOther;
+        }
+        if (organiserUsers) {
+            data['organiserUsers'] = organiserUsers;
+        }
+        if (seriesId) {
+            data['serie'] = seriesId;
+        }
+
         $.ajax({
             'url': '/api/events/',
             'type': 'POST',
-            'data': {
-                'displayName': displayName,
-                'start': start,
-                'end': end,
-                'description': description,
-                'group': groupId,
-                'location': location,
-                'notes': notes,
-                'organiserOther': organiserOther,
-                'organiserUsers': organiserUsers,
-                'serie': seriesId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -153,22 +172,41 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
         }
 
+        // Request data object
+        var data = {
+            'app': appId,
+            'displayName': displayName,
+            'start': start,
+            'end': end
+        };
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (description) {
+            data['description'] = description;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+        if (location) {
+            data['location'] = location;
+        }
+        if (notes) {
+            data['notes'] = notes;
+        }
+        if (organiserOther) {
+            data['organiserOther'] = organiserOther;
+        }
+        if (organiserUsers) {
+            data['organiserUsers'] = organiserUsers;
+        }
+        if (seriesId) {
+            data['serie'] = seriesId;
+        }
+
         $.ajax({
             'url': '/api/events/',
             'type': 'POST',
-            'data': {
-                'app': appId,
-                'displayName': displayName,
-                'start': start,
-                'end': end,
-                'description': description,
-                'group': groupId,
-                'location': location,
-                'notes': notes,
-                'organiserOther': organiserOther,
-                'organiserUsers': organiserUsers,
-                'serie': seriesId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -214,18 +252,36 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'notes\' should be provided'});
         }
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        if (description) {
+            data['description'] = description;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+        if (start) {
+            data['start'] = start;
+        }
+        if (end) {
+            data['end'] = end;
+        }
+        if (location) {
+            data['location'] = location;
+        }
+        if (notes) {
+            data['notes'] = notes;
+        }
+
         $.ajax({
             'url': '/api/events/' + eventId,
             'type': 'POST',
-            'data': {
-                'displayName': displayName,
-                'description': description,
-                'group': groupId,
-                'start': start,
-                'end': end,
-                'location': location,
-                'notes': notes
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

@@ -123,13 +123,13 @@ define(['exports'], function(exports) {
 
         // Only add the optional parameters if they have been explicitly specified
         if (parentId) {
-            data.parent = parentId;
+            data['parent'] = parentId;
         }
         if (groupId) {
-            data.group = groupId;
+            data['group'] = groupId;
         }
         if (description) {
-            data.description = description;
+            data['description'] = description;
         }
 
         $.ajax({
@@ -588,16 +588,30 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (description) {
+            data['description'] = description;
+        }
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+        if (parentId) {
+            data['parent'] = parentId;
+        }
+        if (type) {
+            data['type'] = type;
+        }
+
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId,
             'type': 'POST',
-            'data': {
-                'description': description,
-                'displayName': displayName,
-                'group': groupId,
-                'parent': parentId,
-                'type': type
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

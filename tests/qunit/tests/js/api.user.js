@@ -556,7 +556,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                             }, 'Verify that an error is thrown when an invalid callback was provided');
 
                                             // Verify that a user can be created without errors
-                                            gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
+                                            gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, 'immediate', true, null, null, function(err, data) {
                                                 assert.ok(!err, 'Verify that a user can be created without errors');
                                                 assert.ok(data, 'Verify that the created user is returned');
 
@@ -645,7 +645,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateUser functionality
     QUnit.asyncTest('updateUser', function(assert) {
-        expect(12);
+        expect(15);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -653,46 +653,55 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
             // Verify that an error is thrown when an invalid callback was provided
             assert.throws(function() {
-                gh.api.userAPI.updateUser(user.id, user.AppId, null, null, null);
+                gh.api.userAPI.updateUser(user.id, null, null, null);
             }, 'Verify that an error is thrown when an invalid callback was provided');
 
             // Verify that an error is thrown when an invalid value for 'userId' was provided
-            gh.api.userAPI.updateUser(null, user.AppId, null, null, null, function(err, data) {
+            gh.api.userAPI.updateUser(null, null, null, null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid value for userId was provided');
 
-                // Verify that an error is thrown when no value for 'appId' was provided
-                gh.api.userAPI.updateUser(user.id, null, null, null, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no value for appId was provided');
+                // Verify that an error is thrown when an invalid value for displayName was provided
+                gh.api.userAPI.updateUser(user.id, ['invalid_value'], null, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
 
-                    // Verify that an error is thrown when an invalid value for 'appId' was provided
-                    gh.api.userAPI.updateUser(user.id, 'invalid app id', null, null, null, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid value for appId was provided');
+                    // Verify that an error is thrown when an invalid value for email was provided
+                    gh.api.userAPI.updateUser(user.id, null, ['invalid_value'], null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for email was provided');
 
-                        // Verify that an error is thrown when an invalid value for displayName was provided
-                        gh.api.userAPI.updateUser(user.id, user.AppId, ['invalid_value'], null, null, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
+                        // Verify that an error is thrown when an invalid value for emailPreference was provided
+                        gh.api.userAPI.updateUser(user.id, null, null, ['invalid_value'], function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid value for emailPreference was provided');
 
-                            // Verify that an error is thrown when an invalid value for email was provided
-                            gh.api.userAPI.updateUser(user.id, user.AppId, null, ['invalid_value'], null, function(err, data) {
-                                assert.ok(err, 'Verify that an error is thrown when an invalid value for email was provided');
+                            // Verify that a user can be updated without errors when only specifying a new display name
+                            var displayName = gh.api.utilAPI.generateRandomString();
+                            gh.api.userAPI.updateUser(user.id, displayName, null, null, function(err, data) {
+                                assert.ok(!err, 'Verify that a user can be updated without errors');
+                                assert.strictEqual(data.displayName, displayName, 'Verify that the user was updated successfully');
 
-                                // Verify that an error is thrown when an invalid value for emailPreference was provided
-                                gh.api.userAPI.updateUser(user.id, user.AppId, null, null, ['invalid_value'], function(err, data) {
-                                    assert.ok(err, 'Verify that an error is thrown when an invalid value for emailPreference was provided');
+                                // Verify that a user can be updated without errors when only specifying a new email address
+                                var emailAddress = gh.api.utilAPI.generateRandomString() + '@name.com';
+                                gh.api.userAPI.updateUser(user.id, null, emailAddress, null, function(err, data) {
+                                    assert.ok(!err, 'Verify that a user can be updated without errors');
+                                    assert.strictEqual(data.email, emailAddress, 'Verify that the user was updated successfully');
 
-                                    // Verify that a user can be updated without errors
-                                    gh.api.userAPI.updateUser(user.id, user.AppId, 'testdisplayname', gh.api.utilAPI.generateRandomString() + '@name.com', 'no', function(err, data) {
+                                    // Verify that a user can be updated without errors when only specifying the email preference
+                                    var emailPreference = 'immediate';
+                                    gh.api.userAPI.updateUser(user.id, null, null, emailPreference, function(err, data) {
                                         assert.ok(!err, 'Verify that a user can be updated without errors');
-                                        assert.strictEqual(data.displayName, 'testdisplayname', 'Verify that the user was updated successfully');
+                                        assert.strictEqual(data.emailPreference, emailPreference, 'Verify that the user was updated successfully');
 
-                                        // Mock an error from the back-end
-                                        var body = {'code': 400, 'msg': 'Bad Request'};
-                                        gh.api.utilAPI.mockRequest('POST', '/api/users/' + user.id + '?displayName=testdisplayname&email=display@name.com&emailPreference=no', 400, {'Content-Type': 'application/json'}, body, function() {
-                                            gh.api.userAPI.updateUser(user.id, user.AppId, 'testdisplayname', 'display@name.com', 'no', function(err, data) {
-                                                assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully updated');
-                                                assert.ok(!data, 'Verify that no data returns when the user can\'t be successfully updated');
+                                        // Verify that a user can be updated without errors when all the parameters have been specified
+                                        gh.api.userAPI.updateUser(user.id, 'someDisplayName', gh.api.utilAPI.generateRandomString() + '@name.com', 'no', function(err, data) {
+                                            assert.ok(!err, 'Verify that a user can be updated without errors');
 
-                                                QUnit.start();
+                                            // Mock an error from the back-end
+                                            var body = {'code': 400, 'msg': 'Bad Request'};
+                                            gh.api.utilAPI.mockRequest('POST', '/api/users/' + user.id + '?displayName=testdisplayname&email=display@name.com&emailPreference=no', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                gh.api.userAPI.updateUser(user.id, 'testdisplayname', 'display@name.com', 'no', function(err, data) {
+                                                    assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully updated');
+                                                    assert.ok(!data, 'Verify that no data returns when the user can\'t be successfully updated');
+                                                    QUnit.start();
+                                                });
                                             });
                                         });
                                     });
