@@ -204,6 +204,10 @@
     border-top-color: #EEE;
 }
 
+.gh-batch-edit-actions-container #gh-batch-edit-change-summary {
+    color: #999;
+}
+
 
 /*************/
 /* BORROWING */

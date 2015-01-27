@@ -331,6 +331,14 @@
     width: calc(100% - 320px); /* Standard */
 }
 
+.gh-batch-edit-actions-container #gh-batch-edit-change-summary {
+    margin: 9px 0 0px 12px;
+}
+
+.gh-batch-edit-actions-container #gh-batch-edit-submit {
+    margin-left: 50px;
+}
+
 
 /*************/
 /* BORROWING */
