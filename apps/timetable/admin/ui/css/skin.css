@@ -49,6 +49,15 @@
 }
 
 
+/***********/
+/* POPOVER */
+/***********/
+
+.popover {
+    background-color: #FFF;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
@@ -224,6 +233,11 @@
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     color: #42305B;
 }
+
+
+/**************/
+/* EDIT DATES */
+/**************/
 
 
 /**************/

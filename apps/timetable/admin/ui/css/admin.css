@@ -55,6 +55,15 @@
 }
 
 
+/***********/
+/* POPOVER */
+/***********/
+
+.popover {
+    padding: 5px 0 15px;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
@@ -381,6 +390,15 @@
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed i.fa-check {
     display: block;
+}
+
+
+/**************/
+/* EDIT DATES */
+/**************/
+
+#gh-edit-dates #gh-edit-dates-form select.form-control {
+    width: 50px;
 }
 
 

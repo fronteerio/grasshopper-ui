@@ -29,6 +29,8 @@ requirejs.config({
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
         'jquery-bbq': 'vendor/js/jquery-bbq',
+        'jquery-datepicker': 'vendor/js/jquery-datepicker',
+        'jquery-ui': 'vendor/js/jquery-ui',
         'jquery.jeditable': 'vendor/js/jquery.jeditable',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
@@ -62,6 +64,7 @@ requirejs.config({
         'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
         'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
         'gh.calendar': 'gh/js/controller/gh.calendar',
+        'gh.datepicker': 'gh/js/controller/gh.datepicker',
         'gh.listview': 'gh/js/controller/gh.listview',
         'gh.new-module': 'gh/js/controller/gh.new-module',
         'gh.new-series': 'gh/js/controller/gh.new-series',
@@ -77,6 +80,12 @@ requirejs.config({
         },
         'fullcalendar': {
             'deps': ['jquery', 'moment']
+        },
+        'jquery-ui': {
+            'deps': ['jquery']
+        },
+        'jquery-datepicker': {
+            'deps': ['jquery-ui']
         }
     },
     'waitSeconds': 30

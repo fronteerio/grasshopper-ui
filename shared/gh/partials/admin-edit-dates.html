@@ -1,0 +1,40 @@
+<div id="gh-edit-dates">
+    <form id="gh-edit-dates-form" role="form">
+        <div class="col-xs-6" id="gh-datepicker"></div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label class="sr-only" for="gh-module-from-hour">From</label>
+                <select id="gh-module-from-minutes" class="form-control pull-right">
+                    <% for (var i = 0; i<60; i += 15) { %>
+                        <option><%- i %></option>
+                    <% } %>
+                </select>
+                <label for="gh-module-from-hour" class="pull-left">From</label>
+                <select id="gh-module-from-hour" class="form-control pull-right">
+                    <% for (var i = 0; i<24; i++) { %>
+                        <option><%- i %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="gh-module-to-minutes">To</label>
+                <select id="gh-module-to-minutes" class="form-control pull-right">
+                    <% for (var i = 0; i<60; i += 15) { %>
+                        <option><%- i %></option>
+                    <% } %>
+                </select>
+                <label for="gh-module-to-hour" class="pull-left">To</label>
+                <select id="gh-module-to-hour" class="form-control pull-right">
+                    <% for (var i = 0; i<24; i++) { %>
+                        <option><%- i %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </form>
+</div>
+<div>
+    <button type="button" id="gh-edit-dates-cancel" class="btn btn-link pull-left" data-dismiss="popover">Cancel</button>
+    <button type="button" id="gh-edit-dates-apply" class="btn btn-default pull-right">Apply</button>
+</div>

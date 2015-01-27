@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], function(seriesAPI, utilAPI, eventAPI, adminConstants) {
+define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'gh.datepicker'], function(seriesAPI, utilAPI, eventAPI, adminConstants) {
 
 
     ///////////////
@@ -182,7 +182,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
 
                 // Create an object of the organisers
                 // TODO: Implement lookup to handle organisers properly
-                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't 
+                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
                 // make sense to implement this, waiting for lookup to be hooked in
                 var organisers = _.object([updatedEvent.organisers], [true]);
                 // Update the event organisers
