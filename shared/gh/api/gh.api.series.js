@@ -75,15 +75,24 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {
+            'app': appId,
+            'displayName': displayName
+        };
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (description) {
+            data['description'] = description;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+
         $.ajax({
             'url': '/api/series',
             'type': 'POST',
-            'data': {
-                'app': appId,
-                'displayName': displayName,
-                'description': description,
-                'group': groupId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -488,32 +497,40 @@ define(['exports'], function(exports) {
      *
      * @param  {Number}      serieId                The ID of the series to subscribe to
      * @param  {Number}      [userId]               The ID of the user that should be subscribed. Defaults to the current user
-     * @param  {Number}      [context]              The ID of the organisational unit to which the serie belongs
+     * @param  {Number}      [orgUnit]              The ID of the organisational unit to which the serie belongs
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the subscribed to event series
      */
-    var subscribeSeries = exports.subscribeSeries = function(serieId, userId, context, callback) {
+    var subscribeSeries = exports.subscribeSeries = function(serieId, userId, orgUnit, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
         } else if (userId && !_.isNumber(userId)) {
             return callback({'code': 400, 'msg': 'A valid userId should be provided'});
-        } else if (context && !_.isNumber(context)) {
+        } else if (orgUnit && !_.isNumber(orgUnit)) {
             return callback({'code': 400, 'msg': 'A valid context should be provided'});
         }
 
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (userId) {
+            data['userId'] = userId;
+        }
+        if (orgUnit) {
+            data['orgUnit'] = orgUnit;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId + '/subscribe',
             'type': 'POST',
-            'data': {
-                'userId': userId,
-                'context': context
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -580,14 +597,24 @@ define(['exports'], function(exports) {
         // Set a default callback function in case no callback function has been provided
         callback = callback || function() {};
 
+        // Request data object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        if (description) {
+            data['description'] = description;
+        }
+        if (groupId) {
+            data['group'] = groupId;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId,
             'type': 'POST',
-            'data': {
-                'description': description,
-                'displayName': displayName,
-                'group': groupId
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

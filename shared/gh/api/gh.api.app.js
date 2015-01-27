@@ -167,11 +167,18 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for host should be provided'});
         }
 
-        var data = {
-            'displayName': displayName,
-            'enabled': enabled,
-            'host': host
-        };
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (displayName) {
+            data['displayName'] = displayName;
+        }
+        if (enabled !== null) {
+            data['enabled'] = enabled;
+        }
+        if (host) {
+            data['host'] = host;
+        }
 
         $.ajax({
             'url': '/api/apps/' + appId,

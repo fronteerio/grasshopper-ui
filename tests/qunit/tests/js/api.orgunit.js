@@ -401,7 +401,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-
     // Test the createOrgUnit functionality
     QUnit.asyncTest('createOrgUnit', function(assert) {
         expect(14);
@@ -480,7 +479,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-
     // Test the createOrgUnitByApp functionality
 
     // Test the updateOrgUnit functionality
@@ -525,22 +523,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                     // Verify that a default callback is set when none is provided and no error is thrown
                                     assert.equal(null, gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, 'description', 'displayName', null, null, null), 'Verify that a default callback is set when none is provided and no error is thrown');
 
-                                    // Verify that the organisational unit can be updated
-                                    // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-                                    var body = {'code': 200, 'msg': 'OK'};
-                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 200, {'Content-Type': 'application/json'}, body, function() {
-                                        gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, function(err, data) {
-                                            assert.ok(!err, 'Verify that the organisational unit can be updated successfully');
+                                    // Verify that the organisational unit can be updated when all the parameters have been specified
+                                    gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, 'description', 'displayName', 1, 1, 'part', function(err, data) {
+                                        assert.ok(!err, 'Verify that the organisational unit can be updated successfully');
 
-                                            // Verify that the error is handled when the organisational unit could not be successfully updated
-                                            body = {'code': 400, 'msg': 'Bad Request'};
-                                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
-                                                gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, function(err, data) {
-                                                    assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully updated');
-                                                    assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully updated');
+                                        // Verify that the error is handled when the organisational unit could not be successfully updated
+                                        body = {'code': 400, 'msg': 'Bad Request'};
+                                        gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                            gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, function(err, data) {
+                                                assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully updated');
+                                                assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully updated');
 
-                                                    QUnit.start();
-                                                });
+                                                QUnit.start();
                                             });
                                         });
                                     });
