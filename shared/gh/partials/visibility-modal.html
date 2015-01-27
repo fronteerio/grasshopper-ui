@@ -1,0 +1,49 @@
+<div class="modal fade" id="gh-visibility-modal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="modal-title">Visibility</h4>
+            </div>
+            <div class="modal-body">
+                <form id="gh-visibility-form" class="form" role="form">
+                    <div class="col-xs-4 col-xs-offset-2 text-center">
+                        <label for="gh-visibility-draft" class="gh-visibility-label <% if (data.visibility === 'draft') { %>checked<% } %>">
+                            <div class="gh-visibility-icon-container">
+                                <i class="fa fa-eye-slash"></i>
+                                <div class="visibility-type">Draft</div>
+                                <i class="fa fa-check"></i>
+                                <input type="radio" id="gh-visibility-draft" name="gh-visibility-group" class="pull-left" <% if (data.visibility === 'draft') { %>checked="checked"<% } %> tabindex="0"/>
+                            </div>
+                            <small>
+                                <p>Events are hidden and students will see a message highlighting what is going on and asked to check again later.</p>
+                            </small>
+                        </label>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <label for="gh-visibility-published" class="gh-visibility-label <% if (data.visibility === 'published') { %>checked<% } %>">
+                            <div class="gh-visibility-icon-container">
+                                <i class="fa fa-eye"></i>
+                                <div class="visibility-type">Publish</div>
+                                <i class="fa fa-check"></i>
+                                <input type="radio" id="gh-visibility-published" name="gh-visibility-group" class="pull-left" <% if (data.visibility === 'published') { %>checked="checked"<% } %> tabindex="0"/>
+                            </div>
+                            <small>
+                                <p>Available to everyone</p>
+                                <p class="warning">Once clicking "Save" this can <strong>not</strong> be unpublished</p>
+                            </small>
+                        </label>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button" id="gh-visibility-save" class="btn btn-default pull-right">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
