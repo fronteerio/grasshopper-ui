@@ -303,14 +303,17 @@
 }
 
 .gh-batch-edit-events-container .table > tbody > tr > td {
+    cursor: pointer;
     max-width: 200px;
     overflow: hidden;
+    padding: 8px 13px;
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
 }
 
 .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
+    cursor: auto;
     max-width: 40px;
 }
 
@@ -319,9 +322,27 @@
     margin: 0;
 }
 
+.gh-batch-edit-events-container .table > thead > tr > th .checkbox {
+    margin-left: 5px;
+}
+
 .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
 .gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
     margin-top: 2px;
+}
+
+.gh-batch-edit-events-container .gh-jeditable-form {
+    margin: -8px -12px;
+    height: 30px;
+}
+
+.gh-batch-edit-events-container .gh-jeditable-form input {
+    border: none;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    padding: 0 10px;
 }
 
 .gh-batch-edit-actions-container {

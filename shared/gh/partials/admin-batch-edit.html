@@ -13,8 +13,11 @@
     <div id="gh-batch-edit-container">
         <h1><%= data.series.displayName %></h1>
 
-        <div id="gh-batch-edit-header" class="row">
-            <div class="col-xs-4">
+        <div id="gh-batch-edit-header">
+            <div class="col-xs-1">
+                <span class="gh-batch-edit-header-description">Batch edit:</span>
+            </div>
+            <div class="col-xs-3">
                 <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
             </div>
             <div class="col-xs-2">
@@ -35,36 +38,37 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="2">
+                        <th class="col-xs-1">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" class="gh-select-all"> Michaelmas
                                 </label>
                             </div>
                         </th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
+                        <th class="col-xs-3"></th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-2">
+                            <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                 <% _.each(data.events.results, function(ev) {%>
                     <tr data-eventid="<%= ev.id %>">
-                        <td>
+                        <td class="col-xs-1">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" class="gh-select-single"> <span class="sr-only">Select</span>
                                 </label>
                             </div>
                         </td>
-                        <td class="gh-jeditable gh-event-description" tabindex="0"><%- ev.displayName %></td>
-                        <td class="gh-event-date" tabindex="0"><%- ev.start %> - <%- ev.end %></td>
-                        <td class="gh-jeditable gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
-                        <td class="gh-jeditable gh-event-location" tabindex="0"><%- ev.location %></td>
-                        <td class="gh-jeditable gh-event-type" tabindex="0"><%- ev.notes %></td>
+                        <td class="col-xs-3 gh-jeditable gh-event-description" tabindex="0"><%- ev.displayName %></td>
+                        <td class="col-xs-2 gh-event-date" tabindex="0"><%- ev.start %> - <%- ev.end %></td>
+                        <td class="col-xs-2 gh-jeditable gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
+                        <td class="col-xs-2 gh-jeditable gh-event-location" tabindex="0"><%- ev.location %></td>
+                        <td class="col-xs-2 gh-jeditable gh-event-type" tabindex="0"><%- ev.notes %></td>
                     </tr>
                 <% }); %>
                 </tbody>
@@ -72,8 +76,8 @@
         </div>
 
         <div class="hide gh-batch-edit-actions-container">
-            <p id="gh-batch-edit-change-summary" class="pull-left">8 events updated</p>
-            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right"><i class="fa fa-check-square"></i> Save</button>
+            <p id="gh-batch-edit-change-summary" class="pull-left"></p>
+            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
             <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>
         </div>
     </div>
