@@ -33,6 +33,27 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
     ////////////////
 
     /**
+     * Add a leading zero to a digit
+     *
+     * @param  {Number}    digit    The digit that needs to be extended with an extra zero, if necessary
+     * @return {Number}             The extended digit
+     */
+    var addLeadingZero = exports.addLeadingZero = function(digit) {
+        if (!_.isNumber(digit)) {
+            throw new Error('An invalid digit has been provided');
+        }
+
+        // Convert the digit to a string
+        digit = String(digit);
+
+        // Add a leading zero if the length of the string equals 1
+        if (digit.length === 1) {
+            digit = '0' + digit;
+        }
+        return digit;
+    };
+
+    /**
      * Convert an ISO8601 date to a UNIX date
      *
      * @param  {String}    date    The ISO8601 date that needs to be converted to a UNIX date format

@@ -421,7 +421,7 @@
 /* EDIT DATES */
 /**************/
 
-/* date picker */
+/* Date picker */
 #gh-edit-dates .ui-datepicker-header {
     margin-bottom: 10px;
 }
@@ -443,6 +443,7 @@
 
 #gh-edit-dates .ui-datepicker-header .ui-datepicker-title {
     font-size: 14px;
+    line-height: 14px;
     text-align: center;
 }
 
@@ -453,16 +454,17 @@
 
 #gh-edit-dates .ui-datepicker-calendar th,
 #gh-edit-dates .ui-datepicker-calendar td {
-    border-width: 1px;
     border-style: solid;
+    border-width: 1px;
     font-size: 13px;
     font-weight: 600;
+    padding-top: 4px;
     text-align: center;
     vertical-align: middle;
 }
 
 #gh-edit-dates .ui-datepicker-calendar th {
-    padding: 4px;
+    padding: 7px 4px 4px 4px;
 }
 
 #gh-edit-dates .ui-datepicker-calendar td a {
@@ -476,7 +478,7 @@
     font-weight: 200;
 }
 
-/* form */
+/* Form */
 #gh-edit-dates #gh-edit-dates-form .gh-col-datepicker {
     padding-left: 0;
 }
@@ -486,6 +488,7 @@
 }
 
 #gh-edit-dates #gh-edit-dates-form label {
+    font-weight: 200;
     line-height: 40px;
     padding-right: 5px;
     text-align: right;

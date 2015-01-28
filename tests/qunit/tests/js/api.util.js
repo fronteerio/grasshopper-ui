@@ -21,6 +21,25 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //  CALENDAR  //
     ////////////////
 
+    // Test the 'addLeadingZero' functionality
+    QUnit.test('addLeadingZero', function(assert) {
+        // Verify that a digit needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.addLeadingZero();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a digit needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.addLeadingZero('invalid_digit');
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that no leading zero is added when unnecessary
+        assert.strictEqual(gh.api.utilAPI.addLeadingZero(10), '10', 'Verify that no leading zero is added when unnecessary');
+
+        // Verify that a leading zero is added when necessary
+        assert.strictEqual(gh.api.utilAPI.addLeadingZero(1), '01', 'Verify that a leading zero is added when necessary');
+    });
+
     // Test the 'convertISODatetoUnixDate' functionality
     QUnit.test('convertISODatetoUnixDate', function(assert) {
         // Verify that a date needs to be provided
