@@ -199,15 +199,18 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Stringify the response body
         body = JSON.stringify(body);
 
-        var server = require('sinon').fakeServer.create();
-        server.respondWith(type, url, [statusCode, headers, body]);
+        // Require Sinon before continuing
+        require(['sinon'], function(sinon) {
+            var server = sinon.fakeServer.create();
+            server.respondWith(type, url, [statusCode, headers, body]);
 
-        // Execute the request
-        requestFunc();
+            // Execute the request
+            requestFunc();
 
-        // Mock the response
-        server.respond();
-        server.restore();
+            // Mock the response
+            server.respond();
+            server.restore();
+        });
     };
 
     /**
