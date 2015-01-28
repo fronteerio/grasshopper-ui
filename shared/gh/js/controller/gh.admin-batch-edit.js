@@ -123,12 +123,18 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
     var setUpJEditable = function() {
         // Apply jEditable for inline editing
         $('.gh-jeditable').editable(editableSubmitted, {
+            'cssclass' : 'gh-jeditable-form',
+            'height': '38px',
             'onblur': 'submit',
+            'placeholder': '',
             'select' : true,
+            'tooltip': 'Click to edit',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
-                $(this).focus();
+                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                    $(this).focus();
+                }
             }
         });
     };

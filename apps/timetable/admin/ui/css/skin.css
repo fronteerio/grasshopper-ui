@@ -208,6 +208,11 @@
     color: #999;
 }
 
+.gh-batch-edit-events-container .gh-jeditable-form input {
+    border-left-color: #DDD;
+    border-right-color: #DDD;
+}
+
 
 /*************/
 /* BORROWING */
