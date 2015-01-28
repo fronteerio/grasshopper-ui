@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, moment, sinon) {
+define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
 
     /////////////////
@@ -199,7 +199,7 @@ define(['exports', 'moment', 'sinon', 'bootstrap-notify'], function(exports, mom
         // Stringify the response body
         body = JSON.stringify(body);
 
-        var server = sinon.fakeServer.create();
+        var server = require('sinon').fakeServer.create();
         server.respondWith(type, url, [statusCode, headers, body]);
 
         // Execute the request
