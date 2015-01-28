@@ -244,6 +244,48 @@
 /* EDIT DATES */
 /**************/
 
+/* date picker */
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-title {
+    color: #555;
+}
+
+#gh-edit-dates .ui-datepicker-calendar th,
+#gh-edit-dates .ui-datepicker-calendar td {
+    border-color: #EEE;
+}
+
+#gh-edit-dates .ui-datepicker-calendar th {
+    background-color: #EEE;
+    color: #777;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td a {
+    color: #222;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day {
+    background-color: #92308A;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-today {
+    background-color: #62326E;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day * ,
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-today * {
+    color: #FFF;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-other-month,
+#gh-edit-dates .ui-datepicker-calendar td.ui-state-disabled {
+    background-color: #F3F3F3;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-other-month *,
+#gh-edit-dates .ui-datepicker-calendar td.ui-state-disabled * {
+    color: #CCC;
+}
+
 
 /**************/
 /* VISIBILITY */

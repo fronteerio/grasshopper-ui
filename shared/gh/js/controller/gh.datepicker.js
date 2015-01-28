@@ -16,6 +16,20 @@
 define(['gh.core', 'clickover', 'jquery-datepicker'], function(gh) {
 
 
+    /////////////////////
+    //  DATA HANDLING  //
+    /////////////////////
+
+    /**
+     * Apply the date change
+     *
+     * @private
+     */
+    var applyDateChange = function() {
+        return false;
+    };
+
+
     ///////////////////
     //  DATE PICKER  //
     ///////////////////
@@ -26,7 +40,16 @@ define(['gh.core', 'clickover', 'jquery-datepicker'], function(gh) {
      * @private
      */
     var renderDatePicker = function() {
-        $('.popover #gh-datepicker').datepicker();
+        $('.popover #gh-datepicker').datepicker({
+            'dateFormat': "yyyy-mm-dd",
+            'dayNamesMin': ['S','M','T','W','T','F','S'],
+            'firstDay': 4,
+            'nextText': 'next',
+            'prevText': 'prev',
+            'showOtherMonths': true,
+            'selectOtherMonths': true,
+            'onSelect': function() {}
+        });
     };
 
 
@@ -40,6 +63,8 @@ define(['gh.core', 'clickover', 'jquery-datepicker'], function(gh) {
      * @private
      */
     var dismissPopover = function() {
+        // Destroy the date picker
+        $('.popover #gh-datepicker').datepicker('destroy');
         // This will trigger a global close
         $('body').trigger('click');
     };
@@ -50,10 +75,19 @@ define(['gh.core', 'clickover', 'jquery-datepicker'], function(gh) {
      * @private
      */
     var showPopover = function() {
+
         // Cache the trigger
         var $trigger = $(this);
+
         // Render the popover template
-        var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {'data': null});
+        var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {
+            'data': {
+                'interval': {
+                    'hours': 1,
+                    'minutes': 15
+                }
+            }
+        });
 
         // Show the popover window
         _.defer(function() {
@@ -82,6 +116,7 @@ define(['gh.core', 'clickover', 'jquery-datepicker'], function(gh) {
      * @private
      */
     var addBinding = function() {
+        $('body').on('click', '#gh-edit-dates-apply', applyDateChange);
         $('body').on('click', '#gh-edit-dates-cancel', dismissPopover);
         $('body').on('click', '.gh-event-date', showPopover);
     };
