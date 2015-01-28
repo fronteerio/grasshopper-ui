@@ -1,22 +1,26 @@
 {
     "terms": [
         {
-            "name": "michaelmas",
-            "label": "Michaelmas",
-            "start": "2014-10-09",
-            "end": "2014-12-05"
-        },
-        {
-            "name": "lent",
-            "label": "Lent",
-            "start": "2015-01-15",
-            "end": "2015-03-13"
-        },
-        {
-            "name": "easter",
-            "label": "Easter",
-            "start": "2015-04-23",
-            "end": "2015-06-12"
+            "2014": [
+                {
+                    "name": "michaelmas",
+                    "label": "Michaelmas",
+                    "start": "2014-10-09",
+                    "end": "2014-12-05"
+                },
+                {
+                    "name": "lent",
+                    "label": "Lent",
+                    "start": "2015-01-15",
+                    "end": "2015-03-13"
+                },
+                {
+                    "name": "easter",
+                    "label": "Easter",
+                    "start": "2015-04-23",
+                    "end": "2015-06-12"
+                }
+            ]
         }
     ]
 }

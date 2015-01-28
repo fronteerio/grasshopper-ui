@@ -52,7 +52,8 @@ define(['exports'], function(exports) {
                     'type': 'GET',
                     'success': function(JSONConfig) {
 
-                        // Merge the two configurations
+                        // Merge the two configurations. Note that the configuration file
+                        // will never overwrite the configuration from the back-end
                         return callback(null, _.extend(JSONConfig, APIConfig));
                     }
                 });

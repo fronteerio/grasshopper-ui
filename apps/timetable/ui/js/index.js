@@ -158,7 +158,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     var setUpIndex = function() {
         addBinding();
 
-        // Fetch the application configuration
+        // Retrieve the application configuration
         gh.api.configAPI.getConfig(null, function(err, data) {
             if (err) {
                 return gh.api.utilAPI.notification('Fetching configuration failed.', 'An error occurred while fetching the configuration.', 'error');
