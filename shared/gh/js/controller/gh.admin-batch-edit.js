@@ -21,11 +21,32 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
     ///////////////
 
     /**
+     * Enable editing of the series title
+     *
+     * @private
+     */
+    var renameSeries = function() {
+        $('.gh-jeditable-series-title').click();
+    };
+
+    /**
+     * Check all events in all terms
+     *
+     * @private
+     */
+    var checkAllEvents = function() {
+        // Tick all boxes
+        $('.gh-select-all').prop('checked', 'checked');
+        // Fire the change event to let the handlers do their magic
+        $('.gh-select-all').change();
+    };
+
+    /**
      * Check/uncheck all events in a term
      *
      * @private
      */
-    var toggleAllEvents = function() {
+    var toggleAllEventsInTerm = function() {
         // Determine if the boxes should all be checked
         var checkAll = $(this).is(':checked');
         // Get the boxes to check
@@ -98,18 +119,42 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
      * @return {String}             The value to show in the editable field after editing completed
      * @private
      */
-    var editableSubmitted = function(value, b, c) {
+    var editableSubmitted = function(value, editableField) {
         // Get the value
         value = $.trim(value);
         // If no value has been entered, we fall back to the previous value
         if (!value) {
             return this.revert;
         } else {
-            // If there was a change, mark the row so it's visually obvious that an edit was made to it
-            if (this.revert !== value) {
-                $('.gh-batch-edit-events-container tbody tr[data-eventid="' + $(this).closest('tr').data('eventid') + '"]').removeClass('danger active success').addClass('active');
-                // Show the save button
-                toggleSubmit();
+            // Depending on what editable field we're submitting either save it straight away or show a different save button
+            var isSeriesTitleEdit = editableField.cssclass.match('gh-jeditable-form-with-submit');
+            isSeriesTitleEdit = isSeriesTitleEdit && isSeriesTitleEdit.length;
+
+            // If the series title has been edited and submitted, persist the values straight away
+            if (isSeriesTitleEdit) {
+                if (this.revert !== value) {
+                    var seriesId = parseInt($.bbq.getState()['series'], 10);
+                    seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
+                        if (err) {
+                            // Show a failure notification
+                            return utilAPI.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
+                        }
+
+                        // Update the series in the sidebar
+                        $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
+
+                        // Show a success notification
+                        return utilAPI.notification('Series title updated.', 'The series title was successfully updated.');
+                    });
+                }
+            // If the events have been edited and submitted, toggle the sticky footer save button
+            } else {
+                // If there was a change, mark the row so it's visually obvious that an edit was made to it
+                if (this.revert !== value) {
+                    $('.gh-batch-edit-events-container tbody tr[data-eventid="' + $(this).closest('tr').data('eventid') + '"]').removeClass('danger active success').addClass('active');
+                    // Show the save button
+                    toggleSubmit();
+                }
             }
             return value;
         }
@@ -121,8 +166,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
      * @private
      */
     var setUpJEditable = function() {
-        // Apply jEditable for inline editing
-        $('.gh-jeditable').editable(editableSubmitted, {
+        // Apply jEditable for inline editing of events
+        $('.gh-jeditable-events').editable(editableSubmitted, {
             'cssclass' : 'gh-jeditable-form',
             'height': '38px',
             'onblur': 'submit',
@@ -136,6 +181,18 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
                     $(this).focus();
                 }
             }
+        });
+
+        // Apply jEditable to the series title
+        $('.gh-jeditable-series-title').editable(editableSubmitted, {
+            'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'height': '38px',
+            'maxlength': 255,
+            'onblur': 'submit',
+            'placeholder': '',
+            'select' : true,
+            'submit': '<button type="submit" class="btn btn-default">Save</button>',
+            'tooltip': 'Click to edit'
         });
     };
 
@@ -332,8 +389,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
 
+        // Settings
+        $('body').on('click', '.gh-select-all-terms', checkAllEvents);
+        $('body').on('click', '.gh-rename-series', renameSeries);
+
         // List utilities
-        $('body').on('change', '.gh-select-all', toggleAllEvents);
+        $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
         $('body').on('change', '.gh-select-single', toggleEvent);
 
         // Batch edit form submission
@@ -345,7 +406,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
         $('body').on('keyup', '#gh-batch-edit-type', batchEditType);
 
         // Keyboard accessibility
-        $('body').on('keypress', 'td.gh-jeditable', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
     };
 
     addBinding();

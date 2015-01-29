@@ -35,7 +35,8 @@ module.exports = function(grunt) {
                         'src': [
                             '**',
                             '!<%= target %>/.*/**',
-                            '!node_modules/**'
+                            '!node_modules/**',
+                            '!tests'
                         ],
                         'dest': '<%= target %>/original'
                     }
@@ -235,8 +236,7 @@ module.exports = function(grunt) {
                         'references': _replacementReferences({
                             'directories': [
                                 '<%= target %>/optimized/apps',
-                                '<%= target %>/optimized/shared',
-                                '<%= target %>/optimized/tests'
+                                '<%= target %>/optimized/shared'
                             ],
                             'includeExts': ['html', 'css']
                         })
@@ -254,8 +254,7 @@ module.exports = function(grunt) {
                         'references': _replacementReferences({
                             'directories': [
                                 '<%= target %>/optimized/apps',
-                                '<%= target %>/optimized/shared',
-                                '<%= target %>/optimized/tests'
+                                '<%= target %>/optimized/shared'
                             ],
                             'includeExts': ['html']
                         })

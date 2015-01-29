@@ -82,6 +82,7 @@ h1, h2, h3, h4, h5 {
 
 .btn-default:hover,
 .btn-default:focus,
+.btn-default:disabled,
 .btn-default#gh-btn-calendar-today {
     color: #FFF;
     background-color: #2A2A2A;
@@ -219,20 +220,20 @@ h1, h2, h3, h4, h5 {
 /* NAVIGATION PILL */
 /*******************/
 
-.nav-pills > li > a {
+.nav-pills.nav-stacked > li > a {
     background-color: transparent;
     color: #FFF;
 }
 
-.nav-pills > li > a:hover,
-.nav-pills > li > a:focus {
+.nav-pills.nav-stacked > li > a:hover,
+.nav-pills.nav-stacked > li > a:focus {
     background-color: #DDD;
     color: #171717;
 }
 
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
+.nav-pills.nav-stacked > li.active > a,
+.nav-pills.nav-stacked > li.active > a:hover,
+.nav-pills.nav-stacked > li.active > a:focus {
     background-color: #127077;
 }
 
