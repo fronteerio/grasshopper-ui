@@ -245,10 +245,6 @@
 /* NEW SERIES */
 /**************/
 
-#gh-new-series-form {
-    border-bottom: 1px solid;
-}
-
 #gh-new-series-form .form-group {
     padding: 5px 20px;
 }
@@ -257,15 +253,14 @@
     padding: 25px;
 }
 
-#gh-new-series-form .form-group button {
-    margin-right: 20px;
-}
-
 #gh-new-series-form .form-group label {
-    font-size: 13px;
-    font-weight: 400;
+    font-weight: 200;
 }
 
+#gh-new-series-form .form-group input {
+    margin: 0 12px;
+    width: 80%;
+}
 
 /*****************/
 /* BATCH EDITING */
