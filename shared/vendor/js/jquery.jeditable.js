@@ -173,7 +173,7 @@
                 }
                                 
                 self.editing    = true;
-                self.revert     = $(self).html();
+                self.revert     = $(self).text();
                 $(self).html('');
 
                 /* create the form object */
@@ -312,7 +312,7 @@
                           /* check if given target is function */
                           if ($.isFunction(settings.target)) {
                               var str = settings.target.apply(self, [input.val(), settings]);
-                              $(self).html(str);
+                              $(self).text(str);
                               self.editing = false;
                               callback.apply(self, [self.innerHTML, settings]);
                               /* TODO: this is not dry */                              
@@ -461,6 +461,9 @@
                     /* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */
                     //input[0].setAttribute('autocomplete','off');
                     input.attr('autocomplete','off');
+                    if (settings.maxlength) {
+                        input.attr('maxlength', settings.maxlength);
+                    }
                     $(this).append(input);
                     return(input);
                 }

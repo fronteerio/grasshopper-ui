@@ -276,8 +276,15 @@
 }
 
 #gh-batch-edit-container h1 {
+    cursor: pointer;
     font-size: 25px;
     font-weight: 400;
+    width: 80%;
+}
+
+#gh-batch-edit-settings + ul .btn {
+    text-align: left;
+    width: 100%;
 }
 
 #gh-batch-edit-header > div > * {
@@ -334,6 +341,11 @@
     border-right-style: solid;
     border-right-width: 1px;
     padding: 0 10px;
+}
+
+.gh-jeditable-form.gh-jeditable-form-with-submit input {
+    margin-right: 12px;
+    width: 90% !important;
 }
 
 .gh-batch-edit-actions-container {
