@@ -336,6 +336,20 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
         toggleSubmit();
     };
 
+    /**
+     * Batch edit the event date
+     *
+     * @param  {Event}     ev         Standard jQuery event
+     * @param  {Object}    trigger    jQuery object representing the trigger
+     * @private
+     */
+    var batchEditDate = function(ev, trigger) {
+        // Add an `active` class to the updated row to indicate that changes where made
+        $(trigger).parent().addClass('active');
+        // Show the save button
+        toggleSubmit();
+    };
+
 
     ////////////////////
     // INITIALISATION //
@@ -388,6 +402,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
         // Setup
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
+
+        // External edit
+        $(document).on('gh.datepicker.change', batchEditDate);
+        $('body').on('click', '.gh-event-date', function() {
+            $(document).trigger('gh.datepicker.show', this);
+        });
 
         // Settings
         $('body').on('click', '.gh-select-all-terms', checkAllEvents);

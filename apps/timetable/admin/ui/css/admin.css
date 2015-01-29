@@ -465,18 +465,17 @@
     border-width: 1px;
     font-size: 13px;
     font-weight: 600;
-    padding-top: 4px;
     text-align: center;
     vertical-align: middle;
 }
 
 #gh-edit-dates .ui-datepicker-calendar th {
-    padding: 7px 4px 4px 4px;
+    padding: 7px 4px 4px;
 }
 
 #gh-edit-dates .ui-datepicker-calendar td a {
     display: block;
-    padding: 4px;
+    padding: 8px 4px 4px;
     text-decoration: none;
 }
 

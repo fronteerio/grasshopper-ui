@@ -16,6 +16,7 @@
 define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, moment) {
 
     var $trigger = null;
+    var hasChanges = false;
 
 
     /////////////////////
@@ -87,13 +88,15 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var validateEntry = function() {
-        // Chech whether the entered ranges are valid
+        // Check whether the entered ranges are valid
         if (!isValidRange()) {
+            hasChanges = false;
             return $('#gh-edit-dates-apply').attr('disabled','disabled');
         }
 
         // Enable the submit button if the entries are valid
         if ($('#gh-edit-dates-apply').attr('disabled')) {
+            hasChanges = true;
             $('#gh-edit-dates-apply').removeAttr('disabled');
         }
     };
@@ -151,14 +154,22 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      */
     var dismissPopover = function() {
         $trigger.trigger('click');
+        $trigger.focus();
+
+        // Toggle the submit button in the batch edit
+        if (hasChanges) {
+            $(document).trigger('gh.datepicker.change', $trigger);
+        }
     };
 
     /**
      * Show the popover window
      *
+     * @param  {Event}     ev         Standard jQuery event
+     * @param  {Object}    trigger    jQuery object representing the trigger
      * @private
      */
-    var showPopover = function() {
+    var showPopover = function(ev, trigger) {
         // Render the popover template
         var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {
             'data': {
@@ -171,7 +182,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         });
 
         // Cache the trigger
-        $trigger = $(this);
+        $trigger = $(trigger);
 
         // Show the popover window
         _.defer(function() {
@@ -184,6 +195,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'onShown': function() {
                     renderDatePicker();
                     setCalendarDate();
+
+                    // Set the focus on current day of the calendar
+                    $('.popover .ui-state-active').focus();
                 }
             });
             $trigger.trigger('click');
@@ -196,15 +210,36 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     ///////////////
 
     /**
+     * Handles keypress events when focus is set to the editable event date field
+     *
+     * @param  {Event}    ev    Standard jQuery keypress event
+     * @private
+     */
+    var handleKeyPress = function(ev) {
+        var key = parseInt(ev.which, 10);
+        if (key === 32 || key === 13) {
+            $(this).click();
+        }
+    };
+
+    /**
      * Add handlers to various elements in the date picker popover
      *
      * @private
      */
     var addBinding = function() {
-        $('body').on('change', '#gh-edit-dates-form select', validateEntry);
+        // Form submission
         $('body').on('click', '#gh-edit-dates-apply', applyDateChange);
         $('body').on('click', '#gh-edit-dates-cancel', dismissPopover);
-        $('body').on('click', '.gh-event-date', showPopover);
+
+        // Keyboard accessibility
+        $('body').on('keypress', '.gh-event-date', handleKeyPress);
+
+        // Utilities
+        $('body').on('change', '#gh-edit-dates-form select', validateEntry);
+
+        // Setup
+        $(document).on('gh.datepicker.show', showPopover);
     };
 
     addBinding();
