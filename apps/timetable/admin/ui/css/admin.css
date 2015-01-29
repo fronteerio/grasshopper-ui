@@ -355,6 +355,50 @@
     margin-left: 50px;
 }
 
+/* Calendar icon */
+.gh-event-calendar-icon,
+.gh-event-display-date {
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
+}
+
+.gh-event-calendar-icon {
+    border-style: solid;
+    border-width: 1px;
+    height: 28px;
+    margin-top: -14px;
+    width: 25px;
+}
+
+.gh-event-calendar-icon .month,
+.gh-event-calendar-icon .day {
+    -webkit-font-smoothing: antialiased;
+       -moz-font-smoothing: antialiased;
+         -o-font-smoothing: antialiased;
+            font-smoothing: antialiased;
+    display: block;
+    font-weight: 800;
+    text-align: center;
+}
+
+.gh-event-calendar-icon .month {
+    font-size: 8px;
+    line-height: 10px;
+    text-transform: uppercase;
+}
+
+.gh-event-calendar-icon .day {
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.gh-event-display-date {
+    line-height: 20px;
+    margin-left: 35px;
+    margin-top: -10px;
+}
+
 
 /*************/
 /* BORROWING */

@@ -64,6 +64,94 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.strictEqual(convertedDate, '2014-11-28T10:50:49.000Z', 'Verify that the date is converted correctly');
     });
 
+    // Test the 'generateDisplayDate' functionality
+    QUnit.test('generateDisplayDate', function(assert) {
+        var startDate = '2015-02-18T10:00:00.000Z';
+        var endDate = '2015-02-18T17:30:00.000Z';
+
+        // Verify that a start date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate(null, endDate);
+        }, 'Verify that a start date needs to be provided');
+
+        // Verify that a valid start date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate(99999, endDate);
+        }, 'Verify that a valid start date needs to be provided');
+
+        // Verify that a valid start date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate('invalid_start_date', endDate);
+        }, 'Verify that a valid start date needs to be provided');
+
+        // Verify that an and date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate(startDate, null);
+        }, 'Verify that an end date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate(startDate, 99999);
+        }, 'Verify that a valid end date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.generateDisplayDate(startDate, 'invalid_end_date');
+        }, 'Verify that a valid end date needs to be provided');
+
+        // Verify that all the cases are covered
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W? · Wed 10am-5:30pm');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W? · Wed 4-5:30pm');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W? · Wed 10-11:30am');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W? · Wed 10:30-11am');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W? · Wed 10:30am-1:30pm');
+    });
+
+    // Test the 'dateDisplay' functionality
+    QUnit.test('dateDisplay', function(assert) {
+        var date = '2015-02-18T16:00:00.000Z';
+
+        /* DAY */
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.dayNumber(null);
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.dayNumber(9999);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.dayNumber('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the corret day is returned
+        assert.strictEqual(gh.api.utilAPI.dateDisplay.dayNumber(date), 18, 'Verify that the correct day is returned');
+
+        /* MONTH */
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.monthName(null);
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.monthName(9999);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.dateDisplay.monthName('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the correct month is returned
+        assert.strictEqual(gh.api.utilAPI.dateDisplay.monthName(date), 'Feb', 'Verify that the correct month is returned');
+    });
+
     // Test the 'isDateInRange' functionality
     QUnit.test('isDateInRange', function(assert) {
 
