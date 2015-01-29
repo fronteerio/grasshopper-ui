@@ -11,7 +11,29 @@
 
     <!-- Calendar -->
     <div id="gh-batch-edit-container">
-        <h1><%= data.series.displayName %></h1>
+        <ul class="nav nav-pills pull-right" role="tablist">
+            <li role="presentation" class="dropdown">
+                <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Series settings</span>
+                    <i class="fa fa-cog"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                    <li role="presentation">
+                        <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
+                    </li>
+                    <li role="presentation">
+                        <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
+                    </li>
+                    <!-- TODO: Not implemented in the backend + needs design -->
+                    <li role="presentation" class="hide">
+                        <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
 
         <div id="gh-batch-edit-header">
             <div class="col-xs-1">
@@ -64,11 +86,11 @@
                                 </label>
                             </div>
                         </td>
-                        <td class="col-xs-3 gh-jeditable gh-event-description" tabindex="0"><%- ev.displayName %></td>
+                        <td class="col-xs-3 gh-jeditable-events gh-event-description" tabindex="0"><%- ev.displayName %></td>
                         <td class="col-xs-2" tabindex="0"><%- ev.start %> - <%- ev.end %></td>
-                        <td class="col-xs-2 gh-jeditable gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
-                        <td class="col-xs-2 gh-jeditable gh-event-location" tabindex="0"><%- ev.location %></td>
-                        <td class="col-xs-2 gh-jeditable gh-event-type" tabindex="0"><%- ev.notes %></td>
+                        <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
+                        <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
+                        <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0"><%- ev.notes %></td>
                     </tr>
                 <% }); %>
                 </tbody>
