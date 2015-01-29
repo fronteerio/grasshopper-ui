@@ -82,6 +82,7 @@ h1, h2, h3, h4, h5 {
 
 .btn-default:hover,
 .btn-default:focus,
+.btn-default:disabled,
 .btn-default#gh-btn-calendar-today {
     color: #FFF;
     background-color: #2A2A2A;
