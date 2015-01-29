@@ -324,7 +324,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-calendar-view').toggleClass('gh-export-enabled');
 
         // Show the export container
-        $('#gh-export-container').show();
+        $('#gh-export-container').toggle();
 
 
 
@@ -338,6 +338,10 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             gh.api.userAPI.getUserCalendarIcal(gh.data.me.id, null, function() {});
         }
          */
+    };
+
+    var toggleExportOptions = function() {
+        $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
     };
 
     /**
@@ -612,6 +616,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var addBinding = function() {
         // Export the calendar
         $('#gh-btn-calendar-export').on('click', exportCalendar);
+        // Toggle the other options for export
+        $('#gh-export-collapsed-other-toggle').on('click', toggleExportOptions);
         // Print the calendar
         $('#gh-btn-calendar-print').on('click', printCalendar);
         // Navigate to the current day

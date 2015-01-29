@@ -42,5 +42,25 @@
     <!-- Calendar -->
     <div id="gh-calendar-container"><!-- --></div>
 
-    <div id="gh-export-container" style="display: none;"></div>
+    <div id="gh-export-container" style="display: none;">
+        <div id="gh-export-main">
+            <p>Add &amp; subscribe to my timetable with my default calendar app:</p>
+            <button id="gh-export-subscribe" class="btn btn-primary">Subscribe</button>
+
+            <button type="button" id="gh-export-collapsed-other-toggle" class="btn btn-link" data-toggle="collapse" data-target="#gh-export-collapsed-other" aria-expanded="false" aria-controls="gh-export-collapsed-other">
+                <i class="fa fa-caret-right"></i>Other ways to subscribe:
+            </button>
+            <div class="collapse" id="gh-export-collapsed-other">
+                <p class="gh-export-other-option">1. Copy the address of your timetable:</p>
+                <textarea id="gh-export-subscribe-copy"></textarea>
+                <p class="gh-export-other-option">2. Follow the instructions to add &amp; subscribe with your favourite Calendar app:</p>
+                <ul>
+                    <li><a href="https://support.google.com/calendar/answer/37100?hl=en" target="_blank" title="Google Calendar subscription instructions">Google Calendar</a> <i class="fa fa-external-link"></i></li>
+                    <li><a href="https://support.office.com/en-in/article/View-and-subscribe-to-Internet-Calendars-f6248506-e144-4508-b658-c838b6067597#bm2" target="_blank" title="Microsoft Outlook subscription instructions">Microsoft Outlook</a> <i class="fa fa-external-link"></i></li>
+                    <li><a href="http://support.apple.com/kb/PH11523" target="_blank" title="Apple Calendar subscription instructions">Apple Calendar</a> <i class="fa fa-external-link"></i></li>
+                </ul>
+            </div>
+        </div>
+        <small><i class="fa fa-info-circle"></i> Updates will be synced automatically, within ~ 8 hours after a change.</small>
+    </div>
 </div>
