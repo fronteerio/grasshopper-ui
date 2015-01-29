@@ -128,7 +128,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
         } else {
             // Depending on what editable field we're submitting either save it straight away or show a different save button
             var isSeriesTitleEdit = editableField.cssclass.match('gh-jeditable-form-with-submit');
-            isSeriesTitleEdit =  isSeriesTitleEdit && isSeriesTitleEdit.length;
+            isSeriesTitleEdit = isSeriesTitleEdit && isSeriesTitleEdit.length;
 
             // If the series title has been edited and submitted, persist the values straight away
             if (isSeriesTitleEdit) {
