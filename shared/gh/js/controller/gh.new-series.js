@@ -34,22 +34,23 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
         var partId = $(this).find('button[type="submit"]').data('partid');
 
         // Create a new series
-        seriesAPI.createSeries(appId, displayName, null, groupId, function(err, data) {
+        seriesAPI.createSeries(appId, displayName, null, groupId, function(err, series) {
             if (err) {
                 return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
             }
 
             // Link the created series to the module
-            orgunitAPI.addOrgUnitSeries(parentId, data.id, function(err, data) {
+            orgunitAPI.addOrgUnitSeries(parentId, series.id, function(err) {
                 if (err) {
                     return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
                 }
                 utilAPI.notification('Series created.', 'The series was successfully created.', 'success');
 
-                // Refresh the listview
-                $(document).trigger('gh.listview.refresh', {
-                    'partId': partId
-                });
+                // Create a new state object that will take care of opening the new series for us
+                var state = $.bbq.getState();
+                state.module = parentId;
+                state.series = series.id;
+                $.bbq.pushState(state);
             });
         });
 
