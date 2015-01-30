@@ -378,9 +378,9 @@
 .gh-event-calendar-icon {
     border-style: solid;
     border-width: 1px;
-    height: 28px;
-    margin-top: -14px;
-    width: 25px;
+    height: 25px;
+    margin-top: -13px;
+    width: 23px;
 }
 
 .gh-event-calendar-icon .month,
@@ -401,13 +401,13 @@
 }
 
 .gh-event-calendar-icon .day {
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 13px;
+    line-height: 16px;
 }
 
 .gh-event-display-date {
     line-height: 20px;
-    margin-left: 35px;
+    margin-left: 30px;
     margin-top: -10px;
 }
 
