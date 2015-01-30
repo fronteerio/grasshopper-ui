@@ -134,7 +134,10 @@
 
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
-            <%= _.partial('admin-batch-edit', {'data': data}) %>
+            <%= _.partial('admin-batch-edit', {
+                    'gh': gh,
+                    'data': data
+                }) %>
         </script>
 
         <!-- Borrow series modal template -->
