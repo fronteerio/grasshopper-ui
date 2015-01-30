@@ -80,7 +80,9 @@
         </script>
 
         <script id="gh-calendar-template" type="text/template">
-            <%= _.partial('calendar', {'data': data}) %>
+            <%= _.partial('calendar', {
+                'gh': gh
+            }) %>
         </script>
 
         <script id="gh-event-template" type="text/template">

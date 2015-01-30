@@ -57,7 +57,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     var setUpCalendar = function() {
         // Render the calendar template
         gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
-            'data': null
+            'gh': gh
         }, $('#gh-main'));
 
         // Initialise the calendar

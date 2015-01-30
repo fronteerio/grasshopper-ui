@@ -65,6 +65,13 @@
 /* CALENDAR */
 /************/
 
+#gh-calendar-container {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+}
+
 #gh-calendar-container,
 .gh-toolbar-secondary {
     margin: 0 30px;
@@ -102,7 +109,11 @@
 #gh-toolbar-container .gh-toolbar-secondary {
     font-weight: 600;
     padding-top: 40px;
+    opacity: 1;
     position: relative;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,
@@ -302,6 +313,119 @@ tbody tr:last-child > td.fc-widget-content {
 .fc-more-popover .fc-header .fc-title {
     font-size: 13px;
     padding: 3px 3px 0;
+}
+
+/* Export calendar */
+
+#gh-calendar-view #gh-export-container {
+    height: 100%;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 30px;
+    top: 259px;
+    -webkit-transition: width .2s, opacity .2s;
+       -moz-transition: width .2s, opacity .2s;
+            transition: width .2s, opacity .2s;
+    width: 0;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main {
+    padding: 30px;
+    margin-top: 30px;
+    width: 370px;
+}
+
+#gh-calendar-view .gh-toolbar-primary button {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
+    display: block;
+    padding: 15px;
+    width: 100%;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main #gh-export-collapsed-other-toggle {
+    margin: 20px 0 12px 0;
+    padding: 8px 0;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main .gh-export-other-option {
+    display: list-item;
+    font-weight: 400;
+    list-style-type: decimal;
+    margin-left: 18px;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main textarea {
+    height: 70px;
+    font-family: monospace;
+    font-size: 13px;
+    margin-bottom: 25px;
+    padding: 7px 12px;
+    resize: none;
+    width: 100%;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main ul {
+    list-style-type: circle;
+    padding: 0 0 0 25px;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main ul li {
+    margin: 7px 0;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main ul li:last-child {
+    margin: 0;
+}
+
+#gh-calendar-view #gh-export-container > #gh-export-sync-message {
+    display: block;
+    padding: 20px 20px 20px 30px;
+    width: 400px;
+}
+
+#gh-calendar-view #gh-export-container > #gh-export-sync-message i {
+    float: left;
+    font-size: 20px;
+    height: 20px;
+    margin: 9px 12px 0 0;
+    width: 20px;
+}
+
+#gh-calendar-view #gh-export-container > #gh-export-sync-message small {
+    display: block;
+    font-size: 14px;
+    overflow: auto;
+    width: 210px;
+}
+
+/* Export calendar animations */
+
+#gh-calendar-view.gh-export-enabled #gh-calendar-container {
+    opacity: 0.2;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-secondary {
+    opacity: 0.2;
+}
+
+#gh-calendar-view.gh-export-enabled #gh-export-container {
+    opacity: 1;
+    width: 400px;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {
+    opacity: 0;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary #gh-btn-calendar-export {
+    opacity: 1;
 }
 
 

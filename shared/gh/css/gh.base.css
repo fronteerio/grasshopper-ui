@@ -52,6 +52,11 @@ label {
     font-weight: 600;
 }
 
+a,
+.btn-link {
+    font-weight: 400 !important;
+}
+
 
 /**********/
 /* LAYOUT */
