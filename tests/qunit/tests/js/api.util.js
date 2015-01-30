@@ -115,41 +115,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.dayNumber(null);
+            gh.api.utilAPI.dateDisplay(null).dayNumber();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.dayNumber(9999);
+            gh.api.utilAPI.dateDisplay(9999).dayNumber();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.dayNumber('invalid_date');
+            gh.api.utilAPI.dateDisplay('invalid_date').dayNumber();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that the corret day is returned
-        assert.strictEqual(gh.api.utilAPI.dateDisplay.dayNumber(date), 18, 'Verify that the correct day is returned');
+        assert.strictEqual(gh.api.utilAPI.dateDisplay(date).dayNumber(), 18, 'Verify that the correct day is returned');
 
         /* MONTH */
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.monthName(null);
+            gh.api.utilAPI.dateDisplay(null).monthName();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.monthName(9999);
+            gh.api.utilAPI.dateDisplay(9999).monthName();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay.monthName('invalid_date');
+            gh.api.utilAPI.dateDisplay('invalid_date').monthName();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that the correct month is returned
-        assert.strictEqual(gh.api.utilAPI.dateDisplay.monthName(date), 'Feb', 'Verify that the correct month is returned');
+        assert.strictEqual(gh.api.utilAPI.dateDisplay(date).monthName(), 'Feb', 'Verify that the correct month is returned');
     });
 
     // Test the 'isDateInRange' functionality

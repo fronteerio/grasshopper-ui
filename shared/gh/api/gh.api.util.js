@@ -113,34 +113,40 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
     /**
      * All the functionality related to date displaying
+     *
+     * @param  {String}    date    The date in UTC format
+     * @return {Object}            Object containing dateDisplay functions
      */
-    var dateDisplay = exports.dateDisplay = {
+    var dateDisplay = exports.dateDisplay = function(date) {
 
         /**
          * Returns the day from a UTC string
          *
-         * @param  {String}    date    The date in UTC format
-         * @return {String}
+         * @return {Number}
          */
-        'dayNumber': function(date) {
+        var dayNumber = function() {
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
                 throw new Error('A valid date should be provided');
             }
             return parseInt(moment(date).utc().format('D'), 10);
-        },
+        };
 
         /**
          * Returns the month from a UTC tring
          *
-         * @param  {String}    date    The date in UTC format
          * @return {String}
          */
-        'monthName': function(date) {
+        var monthName = function() {
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
                 throw new Error('A valid date should be provided');
             }
             return MONTHS[moment(date).utc().format('M') - 1];
-        }
+        };
+
+        return {
+            'dayNumber': dayNumber,
+            'monthName': monthName
+        };
     };
 
     /**
