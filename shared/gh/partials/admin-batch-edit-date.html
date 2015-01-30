@@ -1,0 +1,9 @@
+<%
+    var startDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT(data.start));
+    var endDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT(data.end));
+%>
+<span class="gh-event-calendar-icon">
+    <span class="month"><%- gh.api.utilAPI.dateDisplay(data.start).monthName() %></span>
+    <span class="day"><%- gh.api.utilAPI.dateDisplay(data.start).dayNumber() %></span>
+</span>
+<span class="gh-event-display-date"><%- gh.api.utilAPI.generateDisplayDate(startDate, endDate) %></span>

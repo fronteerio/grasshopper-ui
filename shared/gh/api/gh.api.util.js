@@ -171,6 +171,33 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Convert a date to GMT+0 for display in the calendar
+     *
+     * @param  {String}    date    The date that needs conversion
+     */
+    var fixDateToGMT = exports.fixDateToGMT = function(date) {
+        if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+            throw new Error('A valid date should be provided');
+        }
+        return (new Date(date)).getTime() - ((new Date(date)).getTimezoneOffset() * 60000);
+    };
+
+    /**
+     * Convert start and end times of an event to GMT+0 for display in the calendar
+     *
+     * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
+     */
+    var fixDatesToGMT = exports.fixDatesToGMT = function(events) {
+        if (!_.isArray(events)) {
+            throw new Error('A valid array should be provided');
+        }
+        _.each(events, function(ev) {
+            ev.start = fixDateToGMT(ev.start);
+            ev.end = fixDateToGMT(ev.end);
+        });
+    };
+
+    /**
      * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
      *
      *  * Day:
@@ -614,6 +641,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         // Require all the partial HTML files
         require(['text!gh/partials/admin-batch-edit.html',
+                 'text!gh/partials/admin-batch-edit-date.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
                  'text!gh/partials/admin-edit-dates.html',
                  'text!gh/partials/admin-module-item.html',
@@ -632,10 +660,11 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
+            _.declarePartial('admin-batch-edit-date', adminBatchEditDate);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-edit-dates', adminEditDates);
             _.declarePartial('admin-module-item', adminModuleItem);

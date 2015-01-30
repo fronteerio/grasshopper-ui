@@ -221,11 +221,6 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
                     'start': $('.gh-event-date', $eventContainer).data('start')
                 };
-
-
-                console.log(eventObj);
-
-
                 eventObjs.push(eventObj);
             });
         });

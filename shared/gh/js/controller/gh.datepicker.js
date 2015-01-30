@@ -36,8 +36,17 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).utc().format();
         var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
 
+        // Render the content
+        var content = gh.api.utilAPI.renderTemplate($('#gh-batch-edit-date-template'), {
+            'gh': gh,
+            'data': {
+                'start': startDate,
+                'end': endDate
+            }
+        });
+
         // Update the trigger
-        $trigger.data('start', startDate).data('end', endDate).html(startDate + ' - ' + endDate);
+        $trigger.attr('data-start', startDate).attr('data-end', endDate).html(content);
 
         // Close the popover window
         dismissPopover();
@@ -135,11 +144,14 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         $('.popover #gh-datepicker').datepicker('setDate', dayValue);
 
         // Set the correct select box values
-        $('#gh-module-from-hour').val(moment($trigger.data('start')).utc().format('HH'));
-        $('#gh-module-from-minutes').val(moment($trigger.data('start')).utc().format('mm'));
+        var startDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.data('start')));
+        var endDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.data('end')));
 
-        $('#gh-module-to-hour').val(moment($trigger.data('end')).utc().format('HH'));
-        $('#gh-module-to-minutes').val(moment($trigger.data('end')).utc().format('mm'));
+        $('#gh-module-from-hour').val(moment(startDate).utc().format('HH'));
+        $('#gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
+
+        $('#gh-module-to-hour').val(moment(endDate).utc().format('HH'));
+        $('#gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
     };
 
 
