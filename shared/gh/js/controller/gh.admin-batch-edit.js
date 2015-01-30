@@ -214,13 +214,18 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
                     'id': $eventContainer.data('eventid'),
                     // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
-                    // 'end': '',
+                    'end': $('.gh-event-date', $eventContainer).data('end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).text(),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
-                    // 'start': ''
+                    'start': $('.gh-event-date', $eventContainer).data('start')
                 };
+
+
+                console.log(eventObj);
+
+
                 eventObjs.push(eventObj);
             });
         });
@@ -238,7 +243,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
          * @private
          */
         var submitEventUpdate = function(updatedEvent, callback) {
-            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, null, null, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
