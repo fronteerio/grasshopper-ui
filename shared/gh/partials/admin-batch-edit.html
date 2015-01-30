@@ -87,7 +87,13 @@
                             </div>
                         </td>
                         <td class="col-xs-3 gh-jeditable-events gh-event-description" tabindex="0"><%- ev.displayName %></td>
-                        <td class="col-xs-2" tabindex="0"><%- ev.start %> - <%- ev.end %></td>
+                        <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0">
+                            <span class="gh-event-calendar-icon">
+                                <span class="month"><%- gh.api.utilAPI.dateDisplay(ev.start).monthName() %></span>
+                                <span class="day"><%- gh.api.utilAPI.dateDisplay(ev.start).dayNumber() %></span>
+                            </span>
+                            <span class="gh-event-display-date"><%- gh.api.utilAPI.generateDisplayDate(ev.start, ev.end) %></span>
+                        </td>
                         <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
                         <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
                         <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0"><%- ev.notes %></td>

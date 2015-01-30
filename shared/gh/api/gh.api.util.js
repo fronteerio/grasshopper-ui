@@ -20,8 +20,12 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     //  CONSTANTS  //
     /////////////////
 
+    // Store the shorthand names of the weekdays
+    var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     // Keep track of number of milliseconds in a day, week and month for use in the calendar
-    var periods = {
+    var PERIODS = {
         'day': 1000 * 60 * 60 * 24,
         'week': 1000 * 60 * 60 * 24 * 7,
         'month': 1000 * 60 * 60 * 24 * 7 * 30,
@@ -59,6 +63,93 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * @param  {String}    startDate    The start date of the event in UTC format (e.g. 2014-10-07T08:00:00.000Z)
+     * @param  {String}    endDate      The end date of the event in UTC format (e.g. 2014-10-07T11:00:00.000Z)
+     * @return {String}                 The converted date in display format (e.g. 'W7 • Fri 2–3pm')
+     */
+    var generateDisplayDate = exports.generateDisplayDate = function(startDate, endDate) {
+        if (!_.isString(startDate) || !moment(startDate, 'YYYY-MM-DD').isValid()) {
+            throw new Error('A valid start date should be provided');
+        } else if (!_.isString(endDate) || !moment(endDate, 'YYYY-MM-DD').isValid()) {
+            throw new Error('A valid end date should be provided');
+        }
+
+        // TODO: add the week number when the custom configuration is in place
+        var weekNumber = 'W?';
+
+        // Retrieve the day
+        var weekDay = moment(endDate).utc().format('E');
+        weekDay = DAYS[weekDay - 1];
+
+        // Retrieve the meridien values
+        var startMeridien = moment(startDate).utc().format('a');
+        var endMeridien = moment(endDate).utc().format('a');
+
+        // Compose the start part
+        var startParts = [];
+        startParts.push(moment(startDate).utc().format('h'));
+        var startMinutes = moment(startDate).utc().format('m');
+        if (parseInt(startMinutes, 10)) {
+            startParts.push(':' + startMinutes);
+        }
+        if (startMeridien !== endMeridien) {
+            startParts.push(startMeridien);
+        }
+        startParts = startParts.join('');
+
+        // Compose the end part
+        var endParts = [];
+        endParts.push(moment(endDate).utc().format('h'));
+        var endMinutes = moment(endDate).utc().format('m');
+        if (parseInt(endMinutes, 10)) {
+            endParts.push(':' + endMinutes);
+        }
+        endParts.push(endMeridien);
+        endParts = endParts.join('');
+
+        // Return the display date
+        return String(weekNumber + ' · ' + weekDay + ' ' + startParts + '-' + endParts);
+    };
+
+    /**
+     * All the functionality related to date displaying
+     *
+     * @param  {String}    date    The date in UTC format
+     * @return {Object}            Object containing dateDisplay functions
+     */
+    var dateDisplay = exports.dateDisplay = function(date) {
+
+        /**
+         * Returns the day from a UTC string
+         *
+         * @return {Number}
+         */
+        var dayNumber = function() {
+            if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+                throw new Error('A valid date should be provided');
+            }
+            return parseInt(moment(date).utc().format('D'), 10);
+        };
+
+        /**
+         * Returns the month from a UTC tring
+         *
+         * @return {String}
+         */
+        var monthName = function() {
+            if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+                throw new Error('A valid date should be provided');
+            }
+            return MONTHS[moment(date).utc().format('M') - 1];
+        };
+
+        return {
+            'dayNumber': dayNumber,
+            'monthName': monthName
+        };
+    };
+
+    /**
      * Get the date range the calendar should be displaying. The date is determined by the calendar's current view.
      *
      *  * Day:
@@ -93,10 +184,10 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             $(document).trigger('gh.calendar.getCurrentViewDate', function(currentViewDate) {
 
                 // Calculate the start date
-                range.start = convertUnixDatetoISODate(currentViewDate - periods[currentView]);
+                range.start = convertUnixDatetoISODate(currentViewDate - PERIODS[currentView]);
 
                 // Calculate the end date
-                range.end = convertUnixDatetoISODate(currentViewDate + periods[currentView]);
+                range.end = convertUnixDatetoISODate(currentViewDate + PERIODS[currentView]);
 
                 // Return the range object
                 return callback(range);
