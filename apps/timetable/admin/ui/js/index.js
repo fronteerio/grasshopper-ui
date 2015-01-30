@@ -193,9 +193,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var showTriposHelp = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-tripos-help-template'), {
-            'data': null
-        }, $('#gh-modules-container'));
+        gh.api.utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-container'));
         $('.gh-tripos-help').show();
     };
 
