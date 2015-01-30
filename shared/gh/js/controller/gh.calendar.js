@@ -303,43 +303,21 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var exportCalendar = function() {
-        // Get the width of the calendar
-        var calendarWidth = $('#gh-calendar-container').width();
-
-        // Get the calendar components to move aside to make room for the export container
-        var $calendarComponents = $('#gh-calendar-container, .gh-toolbar-secondary');
-
-
-        if ($('#gh-calendar-view').hasClass('gh-export-enabled')) {
-            $calendarComponents.css({
-                'width': 'inherit',
-            });
-        } else {
-            $calendarComponents.css({
-                'width': calendarWidth + 'px',
-            });
-        }
-
         // Toggle the `export-enabled` class on the calendar view to move the components aside
         $('#gh-calendar-view').toggleClass('gh-export-enabled');
-
-        // Show the export container
-        $('#gh-export-container').toggle();
-
-
-
-
-        return false;
-
-        /**
-         * TODO: wait for back-end implementation
-         *
-        if (gh.data.me) {
-            gh.api.userAPI.getUserCalendarIcal(gh.data.me.id, null, function() {});
-        }
-         */
+        // Set the width of the button to avoid smaller size when toggling the label
+        $('#gh-btn-calendar-export').width($('#gh-btn-calendar-export > div').width());
+        // Toggle the label in the export button
+        $('#gh-btn-calendar-export > div').toggle();
+        // Set focus to the Subscribe button
+        $('#gh-export-subscribe').focus();
     };
 
+    /**
+     * Toggle the `other options` button icon when clicked
+     *
+     * @private
+     */
     var toggleExportOptions = function() {
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
     };

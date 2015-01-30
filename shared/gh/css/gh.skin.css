@@ -341,10 +341,25 @@ tbody .fc-sun {
     color: #171717;
 }
 
-#gh-calendar-view.gh-export-enabled #gh-export-container {
+#gh-calendar-view #gh-export-container {
     background: #EEF2F0;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main {
+    background-color: #FFF;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
+    background-color: #07525D;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe:hover {
+    background-color: #127077;
+}
+
+#gh-calendar-view #gh-export-container > #gh-export-sync-message {
+    color: #777;
+}
 
 /***********/
 /* POPOVER */
