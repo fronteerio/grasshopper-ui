@@ -593,6 +593,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         // Require all the partial HTML files
         require(['text!gh/partials/admin-batch-edit.html',
+                 'text!gh/partials/admin-batch-edit-event-type.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
                  'text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
@@ -610,10 +611,11 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBorrowSeriesModuleItem, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
+            _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);

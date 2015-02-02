@@ -166,6 +166,32 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
      * @private
      */
     var setUpJEditable = function() {
+
+        // Create a custom jEditable select box
+        $.editable.addInputType('event-type-select', {
+            'element' : function(settings, original) {
+                var select = $('<select class="form-control" name="gh-event-type-select">');
+                _.each(settings.data, function(label, value) {
+                    var option = $('<option>').val(value).append(label);
+                    select.append(option);
+                });
+                $(this).append(select);
+                var hidden = $('<input type="hidden">');
+                $(this).append(hidden);
+                return(hidden);
+            },
+            'content': function(string, settings, original) {
+
+            },
+            'plugin': function(settings, original) {
+                $('select', this).on('change', function() {
+                    $(this).parent().find('input[type="hidden"]').val($(this).val());
+                    $(this).closest('td').attr('data-type', $(this).val());
+                    $(this).closest('form').trigger('submit');
+                });
+            }
+        });
+
         // Apply jEditable for inline editing of events
         $('.gh-jeditable-events').editable(editableSubmitted, {
             'cssclass' : 'gh-jeditable-form',
@@ -193,6 +219,15 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
             'select' : true,
             'submit': '<button type="submit" class="btn btn-default">Save</button>',
             'tooltip': 'Click to edit'
+        });
+
+        // Apply jEditable to the event notes
+        $('.gh-jeditable-events-select').editable(editableSubmitted, {
+            'cssclass' : 'gh-jeditable-form',
+            'data': {'lab':'Lab','lecture':'Lecture','paper':'Paper','seminar':'Seminar'},
+            'select': true,
+            'type': 'event-type-select',
+            'tooltip': "Click to edit event notes"
         });
     };
 
@@ -245,7 +280,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
 
                 // Create an object of the organisers
                 // TODO: Implement lookup to handle organisers properly
-                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't 
+                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
                 // make sense to implement this, waiting for lookup to be hooked in
                 var organisers = _.object([updatedEvent.organisers], [true]);
                 // Update the event organisers

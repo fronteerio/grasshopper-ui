@@ -52,7 +52,7 @@
                 <input type="text" id="gh-batch-edit-location" placeholder="Locations">
             </div>
             <div class="col-xs-2">
-                <input type="text" id="gh-batch-edit-type" placeholder="Type">
+                <%= _.partial('admin-batch-edit-event-type', {'data': data}) %>
             </div>
         </div>
 
@@ -96,7 +96,7 @@
                         </td>
                         <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
                         <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
-                        <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0"><%- ev.notes %></td>
+                        <td class="col-xs-2 gh-jeditable-events-select gh-event-type" data-type="" tabindex="0"><%- ev.notes %></td>
                     </tr>
                 <% }); %>
                 </tbody>
