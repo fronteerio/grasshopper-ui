@@ -214,12 +214,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'g
                     'id': $eventContainer.data('eventid'),
                     // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
-                    'end': $('.gh-event-date', $eventContainer).data('end'),
+                    'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).text(),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
-                    'start': $('.gh-event-date', $eventContainer).data('start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 eventObjs.push(eventObj);
             });
