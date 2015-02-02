@@ -58,6 +58,7 @@ define(['exports'], function(exports) {
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
      *
+     */
     var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
@@ -88,7 +89,7 @@ define(['exports'], function(exports) {
             'displayName': displayName,
             'start': start,
             'end': end
-        }
+        };
 
         // Only add the parameters to the request object if they have been explicitly specified
         if (description) {
@@ -110,11 +111,11 @@ define(['exports'], function(exports) {
             data['organiserUsers'] = organiserUsers;
         }
         if (seriesId) {
-            data['serie'] = seriesId;
+            data['series'] = seriesId;
         }
 
         $.ajax({
-            'url': '/api/events/',
+            'url': '/api/events',
             'type': 'POST',
             'data': data,
             'success': function(data) {
@@ -125,7 +126,6 @@ define(['exports'], function(exports) {
             }
         });
     };
-    */
 
     /**
      * Create a new event in an app
