@@ -303,15 +303,23 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var exportCalendar = function() {
-        return false;
+        // Toggle the `export-enabled` class on the calendar view to move the components aside
+        $('#gh-calendar-view').toggleClass('gh-export-enabled');
+        // Set the width of the button to avoid smaller size when toggling the label
+        $('#gh-btn-calendar-export').width($('#gh-btn-calendar-export > div').width());
+        // Toggle the label in the export button
+        $('#gh-btn-calendar-export > div').toggle();
+        // Set focus to the Subscribe button
+        $('#gh-export-subscribe').focus();
+    };
 
-        /**
-         * TODO: wait for back-end implementation
-         *
-        if (gh.data.me) {
-            gh.api.userAPI.getUserCalendarIcal(gh.data.me.id, null, function() {});
-        }
-         */
+    /**
+     * Toggle the `other options` button icon when clicked
+     *
+     * @private
+     */
+    var toggleExportOptions = function() {
+        $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
     };
 
     /**
@@ -573,6 +581,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var addBinding = function() {
         // Export the calendar
         $('#gh-btn-calendar-export').on('click', exportCalendar);
+        // Toggle the other options for export
+        $('#gh-export-collapsed-other-toggle').on('click', toggleExportOptions);
         // Print the calendar
         $('#gh-btn-calendar-print').on('click', printCalendar);
         // Navigate to the current day

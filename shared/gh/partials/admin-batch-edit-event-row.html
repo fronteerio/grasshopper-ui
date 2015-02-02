@@ -1,0 +1,26 @@
+<% if (ev && !ev.isNew) { %>
+<tr data-eventid="<%= ev.id %>">
+<% } else { %>
+<tr data-tempid="<%= ev.tempId %>">
+<% } %>
+    <td class="col-xs-1">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" class="gh-select-single"> <span class="sr-only">Select</span>
+            </label>
+        </div>
+    </td>
+    <td class="col-xs-3 gh-jeditable-events gh-event-description" tabindex="0"><%- ev.displayName %></td>
+    <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0">
+        <%= _.partial('admin-batch-edit-date', {
+            'data': ev,
+            'gh': gh
+        }) %>
+    </td>
+    <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
+    <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
+    <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0"><%- ev.notes %></td>
+    <td class="col-xs-2 gh-event-delete" tabindex="0">
+        <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
+    </td>
+</tr>
