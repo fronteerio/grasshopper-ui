@@ -109,7 +109,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Compose the start part
         var startParts = [];
         startParts.push(moment(startDate).utc().format('h'));
-        var startMinutes = moment(startDate).utc().format('m');
+        var startMinutes = moment(startDate).utc().format('mm');
         if (parseInt(startMinutes, 10)) {
             startParts.push(':' + startMinutes);
         }
@@ -121,7 +121,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Compose the end part
         var endParts = [];
         endParts.push(moment(endDate).utc().format('h'));
-        var endMinutes = moment(endDate).utc().format('m');
+        var endMinutes = moment(endDate).utc().format('mm');
         if (parseInt(endMinutes, 10)) {
             endParts.push(':' + endMinutes);
         }

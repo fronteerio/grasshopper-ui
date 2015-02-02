@@ -147,11 +147,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var startDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-start')));
         var endDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-end')));
 
-        $('#gh-module-from-hour').val(moment(startDate).utc().format('HH'));
-        $('#gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
+        $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
+        $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
 
-        $('#gh-module-to-hour').val(moment(endDate).utc().format('HH'));
-        $('#gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
+        $('.popover #gh-module-to-hour').val(moment(endDate).utc().format('HH'));
+        $('.popover #gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
     };
 
 
@@ -206,6 +206,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'html': true,
                 'placement': 'bottom',
                 'onShown': function() {
+
+                    // Cache the trigger
+                    var eventId = $(trigger).closest('tr').attr('data-eventid');
+                    $trigger = $(trigger).closest('tr[data-eventid="' + eventId + '"]').find('td.gh-event-date');
+
                     renderDatePicker();
                     setCalendarDate();
 
