@@ -124,7 +124,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
             gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null);
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+        }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
@@ -232,7 +232,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
             gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null);
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+        }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {

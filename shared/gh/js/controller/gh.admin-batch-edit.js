@@ -31,6 +31,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
 
     /**
      * Add a new event row to the table and initialise the editable fields in it
+     *
+     * @private
      */
     var addNewEventRow = function() {
         // Append a new event row
