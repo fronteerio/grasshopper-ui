@@ -52,6 +52,16 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
     };
 
     /**
+     * Delete an event from the series
+     *
+     * @private
+     */
+    var deleteEvent = function() {
+        $(this).closest('tr').addClass('gh-event-deleted').hide();
+        toggleSubmit();
+    };
+
+    /**
      * Check all events in all terms
      *
      * @private
@@ -102,11 +112,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
      * @private
      */
     var toggleSubmit = function() {
-        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active').length;
+        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted)').length + $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
+
         if (eventsUpdated) {
             // Update the count
-            var countString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
-            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(countString);
+            var updatedCountString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
+            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(updatedCountString);
             // Show the save button if events have changed but not submitted
             $('.gh-batch-edit-actions-container').removeClass('hide');
         } else {
@@ -355,6 +366,49 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
     };
 
     /**
+     * Delete events
+     *
+     * @param  {Event[]}     eventsToDelete    Array of events to delete
+     * @param  {Function}    callback          Standard callback function
+     * @param  {Error}       callback.err      Error object containing the error code and error message
+     * @private
+     */
+    var deleteEvents = function(eventsToDelete, callback) {
+        if (!eventsToDelete.length) {
+            return callback(null);
+        }
+
+        var done = 0;
+        var todo = eventsToDelete.length;
+        var hasError = false;
+
+        /**
+         * Delete an event
+         *
+         * @param  {String}      eventID   The ID of the event to delete
+         * @param  {Function}    _callback Standard callback function
+         * @private
+         */
+        var deleteEvent = function(eventID, _callback) {
+            eventAPI.deleteEvent(eventID, function(err) {
+                // If we're done, execute the callback, otherwise call the function again with
+                // the next event to delete
+                done++;
+                if (done === todo) {
+                    _callback();
+                } else {
+                    deleteEvent(eventsToDelete[done], _callback);
+                }
+            });
+        };
+
+        // Start by deleting the first event
+        deleteEvent(eventsToDelete[done], function() {
+            callback(hasError);
+        });
+    };
+
+    /**
      * Submit all changes made in batch edit mode
      *
      * @private
@@ -362,6 +416,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
     var submitBatchEdit = function() {
         var updatedEventObjs = [];
         var newEventObjs = [];
+        var eventsToDelete = [];
 
         // For each term, go over each event and create an event object to persist
         // TODO: Only persist the events that have changed
@@ -399,6 +454,16 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
                 };
                 newEventObjs.push(newEventObj);
             });
+
+            // Loop over each deleted event in the term and create the event object
+            _.each($('tbody tr.gh-event-deleted', $termContainer), function($eventContainer) {
+                $eventContainer = $($eventContainer);
+                // Only push it in the array if it has an event ID
+                var eventID = $eventContainer.data('eventid');
+                if (eventID) {
+                    eventsToDelete.push(eventID);
+                }
+            });
         });
 
         // Deselect the 'check all' checkbox to see progress update
@@ -408,12 +473,15 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         submitEventUpdates(updatedEventObjs, function(updateErr) {
             // Create the new events
             createNewEvents(newEventObjs, function(newErr) {
-                if (updateErr || newErr) {
-                    return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
-                }
-                // Hide the save button
-                toggleSubmit();
-                return utilAPI.notification('Events updated.', 'The events where successfully updated.');
+                // Delete events
+                deleteEvents(eventsToDelete, function(deleteErr) {
+                    if (updateErr || newErr || deleteErr) {
+                        return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
+                    }
+                    // Hide the save button
+                    toggleSubmit();
+                    return utilAPI.notification('Events updated.', 'The events where successfully updated.');
+                });
             });
         });
     };
@@ -527,6 +595,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
+        $('body').on('click', '.gh-event-delete', deleteEvent);
 
         // Batch edit form submission
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
