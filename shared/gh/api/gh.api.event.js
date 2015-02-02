@@ -93,7 +93,7 @@ define(['exports'], function(exports) {
 
         // Only add the parameters to the request object if they have been explicitly specified
         if (description) {
-            data.description = description;
+            data['description'] = description;
         }
         if (groupId) {
             data['group'] = groupId;
