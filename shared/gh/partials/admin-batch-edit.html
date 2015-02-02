@@ -39,7 +39,7 @@
             <div class="col-xs-1">
                 <span class="gh-batch-edit-header-description">Batch edit:</span>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
             </div>
             <div class="col-xs-2">
@@ -54,6 +54,7 @@
             <div class="col-xs-2">
                 <input type="text" id="gh-batch-edit-type" placeholder="Type">
             </div>
+            <div class="col-xs-1"></div>
         </div>
 
         <div class="gh-batch-edit-events-container">
@@ -67,14 +68,14 @@
                                 </label>
                             </div>
                         </th>
-                        <th class="col-xs-3"></th>
                         <th class="col-xs-2"></th>
                         <th class="col-xs-2"></th>
                         <th class="col-xs-2"></th>
-                        <th class="col-xs-2">
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-1">
                             <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
                         </th>
-                        <th class="col-xs-2"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +89,7 @@
             </table>
         </div>
 
-        <div class="hide gh-batch-edit-actions-container">
+        <div class="gh-batch-edit-actions-container" style="display: none;">
             <p id="gh-batch-edit-change-summary" class="pull-left"></p>
             <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
             <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>

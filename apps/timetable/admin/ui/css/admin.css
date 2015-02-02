@@ -411,6 +411,10 @@
     margin-top: -10px;
 }
 
+.gh-event-delete button {
+    width: 100%;
+}
+
 
 /*************/
 /* BORROWING */
