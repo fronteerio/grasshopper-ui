@@ -59,8 +59,17 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
      * @private
      */
     var deleteEvent = function() {
-        $(this).closest('tr').addClass('gh-event-deleted').hide();
-        toggleSubmit();
+        // Only soft delete the event when it hasn't been created in the first place. If the
+        // row has no 'eventid' data attribute it shouldn't be deleted from the db
+        var $row = $(this).closest('tr');
+        if ($row.data('eventid')) {
+            $row.addClass('gh-event-deleted').fadeOut(200);
+            toggleSubmit();
+        } else {
+            $row.addClass('gh-event-deleted').fadeOut(200, function() {
+                $row.remove();
+            });
+        }
     };
 
     /**
@@ -121,10 +130,10 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
             var updatedCountString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
             $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(updatedCountString);
             // Show the save button if events have changed but not submitted
-            $('.gh-batch-edit-actions-container').removeClass('hide');
+            $('.gh-batch-edit-actions-container').fadeIn(200);
         } else {
             // Hide the save button if all events have been submitted
-            $('.gh-batch-edit-actions-container').addClass('hide');
+            $('.gh-batch-edit-actions-container').fadeOut(200);
         }
     };
 
@@ -222,8 +231,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
             'onblur': 'submit',
             'placeholder': '',
             'select' : true,
-            'submit': '<button type="submit" class="btn btn-default">Save</button>',
-            'tooltip': 'Click to edit'
+            'submit': '<button type="submit" class="btn btn-default">Save</button>'
         });
 
         // Apply jEditable for inline editing of event rows
@@ -233,7 +241,6 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
             'onblur': 'submit',
             'placeholder': '',
             'select' : true,
-            'tooltip': 'Click to edit',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
@@ -402,6 +409,9 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
          */
         var deleteEvent = function(eventID, _callback) {
             eventAPI.deleteEvent(eventID, function(err) {
+                // Remove the row from the DOM
+                $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventID + '"]').remove();
+
                 // If we're done, execute the callback, otherwise call the function again with
                 // the next event to delete
                 done++;

@@ -35,6 +35,16 @@ a,
     color: #127077;
 }
 
+.btn-link i {
+    color: #171717;
+}
+
+.btn-link:hover i,
+.btn-link:focus i {
+    color: #777;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
