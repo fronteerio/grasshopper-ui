@@ -380,8 +380,7 @@
 }
 
 /* Calendar icon */
-.gh-event-calendar-icon,
-.gh-event-display-date {
+.gh-event-calendar-icon {
     display: inline-block;
     overflow: hidden;
     position: absolute;
@@ -391,7 +390,7 @@
     border-style: solid;
     border-width: 1px;
     height: 25px;
-    margin-top: -13px;
+    margin-top: -4px;
     width: 23px;
 }
 
