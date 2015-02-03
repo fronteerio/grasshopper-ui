@@ -12,11 +12,10 @@
     </td>
     <td class="col-xs-2 gh-jeditable-events gh-event-description" tabindex="0" title="Click to edit the event name"><%- ev.displayName %></td>
     <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0" title="Click to edit the event start and end times">
-        <span class="gh-event-calendar-icon">
-            <span class="month"><%- utilAPI.dateDisplay(ev.start).monthName() %></span>
-            <span class="day"><%- utilAPI.dateDisplay(ev.start).dayNumber() %></span>
-        </span>
-        <span class="gh-event-display-date"><%- utilAPI.generateDisplayDate(ev.start, ev.end) %></span>
+        <%= _.partial('admin-batch-edit-date', {
+            'data': ev,
+            'utilAPI': utilAPI
+        }) %>
     </td>
     <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- ev.organisers %></td>
     <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0" title="Click to edit the event location"><%- ev.location %></td>

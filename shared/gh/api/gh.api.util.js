@@ -37,6 +37,27 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     ////////////////
 
     /**
+     * Add a leading zero to a digit
+     *
+     * @param  {Number}    digit    The digit that needs to be extended with an extra zero, if necessary
+     * @return {Number}             The extended digit
+     */
+    var addLeadingZero = exports.addLeadingZero = function(digit) {
+        if (!_.isNumber(digit)) {
+            throw new Error('An invalid digit has been provided');
+        }
+
+        // Convert the digit to a string
+        digit = String(digit);
+
+        // Add a leading zero if the length of the string equals 1
+        if (digit.length === 1) {
+            digit = '0' + digit;
+        }
+        return digit;
+    };
+
+    /**
      * Convert an ISO8601 date to a UNIX date
      *
      * @param  {String}    date    The ISO8601 date that needs to be converted to a UNIX date format
@@ -88,7 +109,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Compose the start part
         var startParts = [];
         startParts.push(moment(startDate).utc().format('h'));
-        var startMinutes = moment(startDate).utc().format('m');
+        var startMinutes = moment(startDate).utc().format('mm');
         if (parseInt(startMinutes, 10)) {
             startParts.push(':' + startMinutes);
         }
@@ -100,7 +121,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Compose the end part
         var endParts = [];
         endParts.push(moment(endDate).utc().format('h'));
-        var endMinutes = moment(endDate).utc().format('m');
+        var endMinutes = moment(endDate).utc().format('mm');
         if (parseInt(endMinutes, 10)) {
             endParts.push(':' + endMinutes);
         }
@@ -147,6 +168,33 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             'dayNumber': dayNumber,
             'monthName': monthName
         };
+    };
+
+    /**
+     * Convert a date to GMT+0 for display in the calendar
+     *
+     * @param  {String}    date    The date that needs conversion
+     */
+    var fixDateToGMT = exports.fixDateToGMT = function(date) {
+        if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+            throw new Error('A valid date should be provided');
+        }
+        return (new Date(date)).getTime() - ((new Date(date)).getTimezoneOffset() * 60000);
+    };
+
+    /**
+     * Convert start and end times of an event to GMT+0 for display in the calendar
+     *
+     * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
+     */
+    var fixDatesToGMT = exports.fixDatesToGMT = function(events) {
+        if (!_.isArray(events)) {
+            throw new Error('A valid array should be provided');
+        }
+        _.each(events, function(ev) {
+            ev.start = fixDateToGMT(ev.start);
+            ev.end = fixDateToGMT(ev.end);
+        });
     };
 
     /**
@@ -592,9 +640,11 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         });
 
         // Require all the partial HTML files
-        require(['text!gh/partials/admin-batch-edit-event-row.html',
+        require(['text!gh/partials/admin-batch-edit-date.html',
+                 'text!gh/partials/admin-batch-edit-event-row.html',
                  'text!gh/partials/admin-batch-edit.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
+                 'text!gh/partials/admin-edit-dates.html',
                  'text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
                  'text!gh/partials/borrow-series-modal.html',
@@ -611,12 +661,14 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEditEventRow, adminBatchEdit, adminBorrowSeriesModuleItem, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEditDate, adminBatchEditEventRow, adminBatchEdit, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit-event-row', adminBatchEditEventRow);
             _.declarePartial('admin-batch-edit', adminBatchEdit);
+            _.declarePartial('admin-batch-edit-date', adminBatchEditDate);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
+            _.declarePartial('admin-edit-dates', adminEditDates);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
             _.declarePartial('borrow-series-modal', borrowSeriesModal);

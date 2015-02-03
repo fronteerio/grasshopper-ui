@@ -29,28 +29,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     // Object used to cache the triposData received on initialisation
     var triposData = null;
 
-    // The start and end dates for the terms
-    // TODO: make this configurable in the admin UI
-    var terms = [
-        {
-            'name': 'michaelmas',
-            'label': 'Michaelmas',
-            'start': '2014-10-09',
-            'end': '2014-12-05'
-        },
-        {
-            'name': 'lent',
-            'label': 'Lent',
-            'start': '2015-01-15',
-            'end': '2015-03-13'
-        },
-        {
-            'name': 'easter',
-            'label': 'Easter',
-            'start': '2015-04-23',
-            'end': '2015-06-12'
-        }
-    ];
+    // Get the start and end dates for the terms
+    var terms = gh.api.configAPI.getAppTerm();
 
     /**
      * Change the calendar's current period
@@ -235,7 +215,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Remove the existing events
         calendar.fullCalendar('removeEvents');
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(events);
+        gh.api.utilAPI.fixDatesToGMT(events);
         // Get the event context
         getEventContext(events);
         // Replace the calendar's events
@@ -337,19 +317,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     ////////////
     //  UTIL  //
     ////////////
-
-    /**
-     * Convert start and end times of an event to GMT+0 for display in the calendar
-     *
-     * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
-     * @private
-     */
-    var fixDatesToGMT = function(events) {
-        _.each(events, function(ev) {
-            ev.start = (new Date(ev.start)).getTime() - ((new Date(ev.start)).getTimezoneOffset() * 60000);
-            ev.end = (new Date(ev.end)).getTime() - ((new Date(ev.end)).getTimezoneOffset() * 60000);
-        });
-    };
 
     /**
      * Return the current academic week number if the current date is within a term
@@ -641,7 +608,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
         // Manipulate the dates so they always display in GMT+0
-        fixDatesToGMT(events);
+        gh.api.utilAPI.fixDatesToGMT(events);
 
         if (calendarData && calendarData.triposData) {
             // Cache the triposData for later use

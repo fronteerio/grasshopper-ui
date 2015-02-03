@@ -17,9 +17,39 @@
  * Config API functions
  */
 var configAPI = (function() {
+
+    /**
+     * Update configuration values for an app
+     *
+     * @param  {Number}      appId           The ID of the app you wish to update configuration for. Defaults to the current app
+     * @param  {Object}      configValues    The configuration value(s) to update. e.g., {'key1': value1, 'key2': value2}
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Object}      callback.err    Error object containing the error code and error message
+     */
+    var updateConfig = function(appId, configValues, callback) {
+        var config = null;
+        var err = null;
+
+        mainUtil.callInternalAPI('config', 'updateConfig', [appId, configValues], function(_err, _config) {
+            if (_err) {
+                casper.echo('Could not persist the configuration. Error ' + _err.code + ': ' + _err.msg, 'ERROR');
+                err = _err;
+            } else {
+                config = _config;
+            }
+        });
+
+        casper.waitFor(function() {
+            return config !== null || err !== null;
+        }, function() {
+            callback(err, config);
+        });
+    };
+
     return {
         'adminUI': 'http://admin.grasshopper.com',
         'tenantUI': 'http://2013.timetable.cam.ac.uk',
+        'updateConfig': updateConfig,
         'waitTimeout': 20000
     };
 })();

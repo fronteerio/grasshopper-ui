@@ -135,8 +135,16 @@
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
             <%= _.partial('admin-batch-edit', {
-                'gh': gh,
-                'data': data
+                'data': data,
+                'gh': gh
+            }) %>
+        </script>
+
+        <!-- Batch edit date template -->
+        <script id="gh-batch-edit-date-template" type="text/template">
+            <%= _.partial('admin-batch-edit-date', {
+                'data': data,
+                'utilAPI': utilAPI
             }) %>
         </script>
 
@@ -155,6 +163,11 @@
                 'moduleId': moduleId,
                 'partId': partId
             }) %>
+        </script>
+
+        <!-- Date picker popover -->
+        <script id="gh-datepicker-popover-template" type="text/template">
+            <%= _.partial('admin-edit-dates', {'data': data}) %>
         </script>
 
         <!-- Visibility -->
