@@ -55,6 +55,17 @@
 }
 
 
+/***********/
+/* POPOVER */
+/***********/
+
+.popover {
+    max-width: 425px;
+    padding: 5px 0 15px;
+    width: 425px;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
@@ -370,8 +381,7 @@
 }
 
 /* Calendar icon */
-.gh-event-calendar-icon,
-.gh-event-display-date {
+.gh-event-calendar-icon {
     display: inline-block;
     overflow: hidden;
     position: absolute;
@@ -381,7 +391,7 @@
     border-style: solid;
     border-width: 1px;
     height: 25px;
-    margin-top: -13px;
+    margin-top: -4px;
     width: 23px;
 }
 
@@ -411,6 +421,8 @@
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
+    max-width: 150px;
+    text-overflow: ellipsis;
 }
 
 
@@ -455,6 +467,92 @@
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed i.fa-check {
     display: block;
+}
+
+
+/**************/
+/* EDIT DATES */
+/**************/
+
+/* Date picker */
+#gh-edit-dates .ui-datepicker-header {
+    margin-bottom: 10px;
+}
+
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-prev,
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-next {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-prev {
+    float: left;
+}
+
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-next {
+    float: right;
+}
+
+#gh-edit-dates .ui-datepicker-header .ui-datepicker-title {
+    font-size: 14px;
+    line-height: 14px;
+    text-align: center;
+}
+
+#gh-edit-dates .ui-datepicker-calendar {
+    clear: both;
+    width: 100%;
+}
+
+#gh-edit-dates .ui-datepicker-calendar th,
+#gh-edit-dates .ui-datepicker-calendar td {
+    border-style: solid;
+    border-width: 1px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#gh-edit-dates .ui-datepicker-calendar th {
+    padding: 7px 4px 4px;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td a {
+    display: block;
+    padding: 8px 4px 4px;
+    text-decoration: none;
+}
+
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-other-month,
+#gh-edit-dates .ui-datepicker-calendar td.ui-state-disabled {
+    font-weight: 200;
+}
+
+/* Form */
+#gh-edit-dates #gh-edit-dates-form .gh-col-datepicker {
+    padding-left: 0;
+}
+
+#gh-edit-dates #gh-edit-dates-form .gh-col-time {
+    padding-right: 0;
+}
+
+#gh-edit-dates #gh-edit-dates-form label {
+    font-weight: 200;
+    line-height: 40px;
+    padding-right: 5px;
+    text-align: right;
+}
+
+#gh-edit-dates #gh-edit-dates-form select.form-control {
+    margin-left: 5px;
+    width: 50px;
+}
+
+#gh-edit-dates #gh-edit-dates-buttons {
+    margin-top: 15px;
 }
 
 

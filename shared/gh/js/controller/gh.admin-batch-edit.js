@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
+define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -278,7 +278,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
          * @private
          */
         var submitEventUpdate = function(updatedEvent, _callback) {
-            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, null, null, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
@@ -439,12 +439,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
                     'id': $eventContainer.data('eventid'),
                     // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
-                    // 'end': '',
+                    'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).text(),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
-                    // 'start': ''
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 updatedEventObjs.push(updatedEventObj);
             });
@@ -456,12 +456,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
                     'tempId': $eventContainer.data('tempid'),
                     // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
-                    'end': $('.gh-event-date', $eventContainer).data('end'),
+                    'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).text(),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
-                    'start': $('.gh-event-date', $eventContainer).data('start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 newEventObjs.push(newEventObj);
             });
@@ -545,6 +545,20 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         toggleSubmit();
     };
 
+    /**
+     * Batch edit the event date
+     *
+     * @param  {Event}     ev         Standard jQuery event
+     * @param  {Object}    trigger    jQuery object representing the trigger
+     * @private
+     */
+    var batchEditDate = function(ev, trigger) {
+        // Add an `active` class to the updated row to indicate that changes where made
+        $(trigger).parent().addClass('active');
+        // Show the save button
+        toggleSubmit();
+    };
+
 
     ////////////////////
     // INITIALISATION //
@@ -597,6 +611,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Setup
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
+
+        // External edit
+        $(document).on('gh.datepicker.change', batchEditDate);
+        $('body').on('click', '.gh-event-date', function() {
+            $(document).trigger('gh.datepicker.show', this);
+        });
 
         // Settings
         $('body').on('click', '.gh-select-all-terms', checkAllEvents);
