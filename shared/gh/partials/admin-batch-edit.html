@@ -81,6 +81,7 @@
                 <% _.each(data.events.results, function(ev) { %>
                     <%= _.partial('admin-batch-edit-event-row', {
                         'ev': ev,
+                        'gh': gh,
                         'utilAPI': gh.api.utilAPI
                     }) %>
                 <% }); %>

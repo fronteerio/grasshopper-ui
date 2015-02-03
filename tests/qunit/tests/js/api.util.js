@@ -21,6 +21,25 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //  CALENDAR  //
     ////////////////
 
+    // Test the 'addLeadingZero' functionality
+    QUnit.test('addLeadingZero', function(assert) {
+        // Verify that a digit needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.addLeadingZero();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a digit needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.addLeadingZero('invalid_digit');
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that no leading zero is added when unnecessary
+        assert.strictEqual(gh.api.utilAPI.addLeadingZero(10), '10', 'Verify that no leading zero is added when unnecessary');
+
+        // Verify that a leading zero is added when necessary
+        assert.strictEqual(gh.api.utilAPI.addLeadingZero(1), '01', 'Verify that a leading zero is added when necessary');
+    });
+
     // Test the 'convertISODatetoUnixDate' functionality
     QUnit.test('convertISODatetoUnixDate', function(assert) {
         // Verify that a date needs to be provided
@@ -150,6 +169,56 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that the correct month is returned
         assert.strictEqual(gh.api.utilAPI.dateDisplay(date).monthName(), 'Feb', 'Verify that the correct month is returned');
+    });
+
+    // Test the 'fixDateToGMT' functionality
+    QUnit.test('fixDateToGMT', function(assert) {
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.fixDateToGMT();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.fixDateToGMT(9999);
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.fixDateToGMT('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a correct date is returned when a GMT+0 is specified
+        assert.strictEqual(gh.api.utilAPI.fixDateToGMT('2015-02-11T16:00:00.000Z'), 1423670400000, 'Verify that a correct date is returned when a GMT+0 is specified');
+
+        // Verify that a correct date is returned when a BST+1 is specified
+        assert.strictEqual(gh.api.utilAPI.fixDateToGMT('2014-11-11T10:00:00.000Z'), 1415700000000, 'Verify that a correct date is returned when a BST+1 is specified');
+    });
+
+    // Test the 'fixDatesToGMT' functionality
+    QUnit.test('fixDatesToGMT', function(assert) {
+
+        // Verify that an array needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.fixDatesToGMT();
+        }, 'Verify that an array needs to be provided');
+
+        // Verify that a valid parameter needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.fixDatesToGMT('invalid_parameter');
+        }, 'Verify that a valid parameter needs to be provided');
+
+        // Convert some test event dates
+        var events = [{
+            'start': '2015-02-11T16:00:00.000Z',
+            'end': '2014-11-11T10:00:00.000Z'
+        }];
+        gh.api.utilAPI.fixDatesToGMT(events);
+
+        // Verify that the dates have been successfully converted
+        assert.strictEqual(events[0].start, 1423670400000, 'Verify that the start date has been converted successfully');
+        assert.strictEqual(events[0].end, 1415700000000, 'Verify that the end date has been converted successfully');
     });
 
     // Test the 'isDateInRange' functionality
