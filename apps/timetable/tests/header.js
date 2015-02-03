@@ -81,7 +81,7 @@ casper.test.begin('Student - Component - Header', function(test) {
 
     casper.start(configAPI.tenantUI, function() {
         // Create a user to test with
-        userAPI.createUsers(1, function(user1) {
+        userAPI.createUsers(1, false, function(user1) {
             casper.then(verifyHeader);
             casper.then(verifyLogInForm);
             casper.then(function() {

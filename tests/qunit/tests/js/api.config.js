@@ -53,6 +53,32 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
+    // Test the `getStaticConfig` functionality. some of this is covered in the `getConfig` test as it calls `getStaticConfig`
+    QUnit.asyncTest('getStaticConfig', function(assert) {
+        expect(4);
+
+        // Verify that an error is thrown when no callback was provided
+        assert.throws(function() {
+            gh.api.configAPI.getStaticConfig();
+        }, 'Verify that an error is thrown when no callback was provided');
+
+        // Verify that an error is thrown when an invalid callback was provided
+        assert.throws(function() {
+            gh.api.configAPI.getStaticConfig('invalid_callback');
+        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+
+        // Verify that the error is handled when the static config file can't be loaded successfully
+        body = {'code': 400, 'msg': 'Bad Request'};
+        gh.api.utilAPI.mockRequest('GET', '/shared/gh/files/config.json', 400, {'Content-Type': 'application/json'}, body, function() {
+            gh.api.configAPI.getStaticConfig(function(err, data) {
+                assert.ok(err, 'Verify that the error is handled when the static config can\'t be successfully loaded');
+                assert.ok(!data, 'Verify that no data returns when the static config can\'t be successfully loaded');
+                QUnit.start();
+            });
+        });
+    });
+
     // Test the `updateConfig` functionality
     QUnit.asyncTest('updateConfig', function(assert) {
         expect(8);

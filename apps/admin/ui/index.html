@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="/apps/admin/ui/css/admin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body>
+    <body data-isglobaladminui="true">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -66,13 +66,14 @@
                                     <div class="panel-body">
                                         <form role="form" class="gh-configuration-form" data-appid="<%= app.id %>">
                                             <% _.each(app.config, function(value, option) { %>
+                                                <% if (option === 'AppId' || option === 'terms') {return;}%>
                                                 <% if (typeof value === 'boolean') { %>
                                                     <div class="checkbox">
                                                         <label>
                                                             <input type="checkbox" name="<%= option %>" value="<%= value %>" <% if (value === true) { %> checked=true<% } %>> <%= option %>
                                                         </label>
                                                     </div>
-                                                <% } else if (typeof value === 'string') { %>
+                                                <% } else { %>
                                                     <div class="form-group">
                                                         <label for="<%= option %>"><%= option %></label>
                                                         <input type="text" class="form-control" id="<%= option %>" value="<%= value %>" name="<%= option %>">

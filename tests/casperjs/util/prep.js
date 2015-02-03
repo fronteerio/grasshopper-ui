@@ -24,6 +24,10 @@ casper.test.begin('Prepare environment for tests', function(test) {
     // Don't hide any errors
     casper.options.silentErrors = false;
 
+    // Uncomment the next 2 lines for verbose logging
+    // casper.options.verbose = true;
+    // casper.options.logLevel = 'debug';
+
     // Replace the default passText, failText and warnText shown next to assertions in the terminal
     test.options.passText = '✓';
     test.options.failText = 'X';
@@ -64,5 +68,24 @@ casper.test.begin('Prepare environment for tests', function(test) {
         test.done();
     };
 
-    test.done();
+    // Set some configuration values for the application
+    casper.start(configAPI.tenantUI, function() {
+        // Create a tenant admin
+        userAPI.createUsers(1, true,  function(user1) {
+            // Log in with the tenant admin
+            userAPI.doLogin(user1, function(err) {
+                // Persist the academicYear configuration value
+                configAPI.updateConfig(1, {'academicYear': 2014}, function(err, config) {
+                    if (err) {
+                        return casper.echo('X Set the academicYear config to 2014', 'ERROR');
+                    }
+                    casper.echo('✓ Set the academicYear configuration value to 2014', 'INFO');
+                });
+            });
+        });
+    });
+
+    casper.run(function() {
+        test.done();
+    });
 });
