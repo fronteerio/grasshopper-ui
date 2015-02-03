@@ -22,14 +22,17 @@ var userAPI = (function() {
      * Creates a given number of users
      *
      * @param  {Number}      [numToCreate]             The number of users to create. Defaults to creating 1 user
+     * @param  {Boolean}     isAdmin                   Whether or not the created users should be tenant admins. Defaults to `false`
      * @param  {Function}    callback                  Standard callback function
      * @param  {User[]}      callback.userProfiles     Array of user objects representing the created users
      */
-    var createUsers = function(numToCreate, callback) {
+    var createUsers = function(numToCreate, isAdmin, callback) {
         casper.then(function() {
             var toCreate = numToCreate || 1;
             var created = 0;
             var userProfiles = [];
+            // Default isAdmin to false when it's not provided
+            isAdmin = isAdmin || false;
 
             // Point casper to the tenant UI
             casper.start(configAPI.tenantUI, function() {
@@ -39,7 +42,7 @@ var userAPI = (function() {
                 var createUser = function() {
                     var rndString = mainUtil.generateRandomString();
                     var rndPassword = mainUtil.generateRandomString();
-                    var params = [1, 'user-' + rndString, 'user-' + rndString + '@example.com', rndPassword, 'no', false, null, null];
+                    var params = [1, 'user-' + rndString, 'user-' + rndString + '@example.com', rndPassword, 'no', isAdmin, null, null];
 
                     mainUtil.callInternalAPI('user', 'createUser', params, function(err, userProfile) {
                         if (err) {
@@ -97,8 +100,27 @@ var userAPI = (function() {
         });
     };
 
+    /**
+     * Log in with the specified user
+     *
+     * @param  {User}        user        The user object to log in with
+     * @param  {Function}    callback    Standard callback function
+     */
+    var doLogin = function(user, callback) {
+        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
+            casper.fill('#gh-signin-form', {
+                'username': user.email,
+                'password': user.password
+            }, true);
+            casper.waitForSelector('#gh-right-container #gh-header #gh-signout-form', function() {
+                callback();
+            });
+        });
+    };
+
     return {
         'createUsers': createUsers,
+        'doLogin': doLogin,
         'doLogOut': doLogOut
     };
 })();

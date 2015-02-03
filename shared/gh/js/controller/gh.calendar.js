@@ -29,28 +29,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     // Object used to cache the triposData received on initialisation
     var triposData = null;
 
-    // The start and end dates for the terms
-    // TODO: make this configurable in the admin UI
-    var terms = [
-        {
-            'name': 'michaelmas',
-            'label': 'Michaelmas',
-            'start': '2014-10-09',
-            'end': '2014-12-05'
-        },
-        {
-            'name': 'lent',
-            'label': 'Lent',
-            'start': '2015-01-15',
-            'end': '2015-03-13'
-        },
-        {
-            'name': 'easter',
-            'label': 'Easter',
-            'start': '2015-04-23',
-            'end': '2015-06-12'
-        }
-    ];
+    // Get the start and end dates for the terms
+    var terms = gh.api.configAPI.getAppTerm();
 
     /**
      * Change the calendar's current period

@@ -13,7 +13,9 @@
  * permissions and limitations under the License.
  */
 
-define(['exports'], function(exports) {
+define(['exports', 'lodash'], function(exports) {
+
+    var config = null;
 
     /**
      * Get the configuration for an app
@@ -38,25 +40,52 @@ define(['exports'], function(exports) {
             data['app'] = appId;
         }
 
-        // Fetch the configurations from the API
+        // Fetch the configuration from the API
         $.ajax({
             'url': '/api/config',
             'type': 'GET',
             'data': data,
             'success': function(APIConfig) {
 
-                // Read the configuration file
-                $.ajax({
-                    'url': '/shared/gh/files/config.json',
-                    'dataType': 'JSON',
-                    'type': 'GET',
-                    'success': function(JSONConfig) {
-
-                        // Merge the two configurations. Note that the configuration file
-                        // will never overwrite the configuration from the back-end
-                        return callback(null, _.extend(JSONConfig, APIConfig));
+                // Get the static configuration as well
+                getStaticConfig(function(err, JSONConfig) {
+                    /* istanbul ignore if */
+                    if (err) {
+                        return callback(err);
                     }
+
+                    // Merge the two configurations. Note that the static configuration
+                    // file will never overwrite the configuration from the back-end
+                    config = _.extend(JSONConfig, APIConfig);
+
+                    return callback(null, config);
                 });
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
+
+    /**
+     * Get the static configuration for all apps
+     *
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The static configuration for all apps
+     */
+    var getStaticConfig = exports.getStaticConfig = function(callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        }
+
+        $.ajax({
+            'url': '/shared/gh/files/config.json',
+            'type': 'GET',
+            'success': function(JSONConfig) {
+                // Merge the two configurations. Note that the configuration file
+                // will never overwrite the configuration from the back-end
+                return callback(null, JSONConfig);
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
@@ -103,5 +132,15 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
+    };
+
+    /**
+     * Get the terms associated to an app
+     */
+    /* istanbul ignore next */
+    var getAppTerm = exports.getAppTerm = function() {
+        if (config && config.terms && config.academicYear) {
+            return config.terms[config.academicYear];
+        }
     };
 });
