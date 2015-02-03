@@ -67,7 +67,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.configAPI.getStaticConfig('invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-
         // Verify that the error is handled when the static config file can't be loaded successfully
         body = {'code': 400, 'msg': 'Bad Request'};
         gh.api.utilAPI.mockRequest('GET', '/shared/gh/files/config.json', 400, {'Content-Type': 'application/json'}, body, function() {

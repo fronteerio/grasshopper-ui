@@ -66,7 +66,7 @@
                                     <div class="panel-body">
                                         <form role="form" class="gh-configuration-form" data-appid="<%= app.id %>">
                                             <% _.each(app.config, function(value, option) { %>
-                                                <% if (option === 'AppId' || option === 'terms') {return;}%>
+                                                <% if (option === 'AppId' || option === 'terms') { return; }%>
                                                 <% if (typeof value === 'boolean') { %>
                                                     <div class="checkbox">
                                                         <label>
