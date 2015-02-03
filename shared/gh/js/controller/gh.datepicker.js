@@ -38,11 +38,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         // Render the content
         var content = gh.api.utilAPI.renderTemplate($('#gh-batch-edit-date-template'), {
-            'gh': gh,
             'data': {
                 'start': startDate,
                 'end': endDate
-            }
+            },
+            'utilAPI': gh.api.utilAPI
         });
 
         // Update the trigger

@@ -14,7 +14,7 @@
     <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0">
         <%= _.partial('admin-batch-edit-date', {
             'data': ev,
-            'gh': gh
+            'utilAPI': utilAPI
         }) %>
     </td>
     <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
