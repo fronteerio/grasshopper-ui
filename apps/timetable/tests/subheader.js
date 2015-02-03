@@ -77,7 +77,7 @@ casper.test.begin('Student - Component - Subheader', function(test) {
 
     casper.start(configAPI.tenantUI, function() {
         // Create a user to test with
-        userAPI.createUsers(1, function(user1) {
+        userAPI.createUsers(1, false, function(user1) {
             casper.then(function() {
                 casper.echo('# Verify the page subheader as an anonymous user', 'INFO');
                 verifySubHeader();

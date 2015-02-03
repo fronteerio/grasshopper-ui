@@ -40,13 +40,19 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
             }
         };
 
+        /**
+         * Initialise the various APIs and data needed to make the app function
+         *
+         * @param  {Function}    callback       Standard callback function
+         * @param  {Function}    callback.gh    Global data object containing information on the user, the app configuration and the APIs
+         * @private
+         */
         var initGH = function(callback) {
             // Load the me feed
             userAPI.getMe(function(err, me) {
                 /* istanbul ignore else */
                 if (!err) {
                     gh.data.me = me;
-
                 } else {
                     // Intercept 503 status indicating that the server is down
                     if (err.code === 503) {
@@ -54,14 +60,45 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                     }
                 }
 
-                utilAPI.cachePartials(function() {
-                    // Continue startup
-
-                    // The APIs have now fully initialised. All javascript that
-                    // depends on the initialised core APIs can now execute
-                    return callback(gh);
+                // Get the app configuration
+                getConfig(function() {
+                    // Cache the partials
+                    utilAPI.cachePartials(function() {
+                        // The APIs have now fully initialised. All javascript that
+                        // depends on the initialised core APIs can now execute
+                        return callback(gh);
+                    });
                 });
             });
+        };
+
+        /**
+         * Get the app configuration, except if the global admin page is loaded up
+         *
+         * @param  {Function}    callback    Standard callback function
+         * @private
+         */
+        var getConfig = function(callback) {
+            // Don't attempt to fetch any configuration when the global admin UI or QUnit
+            // is loaded up as it has its own way of dealing with configuration
+            /* istanbul ignore else */
+            if ($('body').data('isglobaladminui') || $('body').data('isqunit')) {
+                callback();
+            // Fetch the configuration and cache it on the global gh object when we're loading
+            // up the student UI or student admin UI
+            } else {
+                configAPI.getConfig(null, function(err, config) {
+                    if (err) {
+                        throw new Error('The configuration for the app could not be retrieved');
+                    }
+
+                    // Cache the config on the global gh.data object
+                    gh.config = config;
+
+                    // Continue the startup procedure
+                    callback();
+                });
+            }
         };
 
         return {
