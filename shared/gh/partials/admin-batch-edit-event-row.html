@@ -6,21 +6,21 @@
     <td class="col-xs-1">
         <div class="checkbox">
             <label>
-                <input type="checkbox" class="gh-select-single"> <span class="sr-only">Select</span>
+                <input type="checkbox" class="gh-select-single" title="Click to select the event"> <span class="sr-only">Select</span>
             </label>
         </div>
     </td>
-    <td class="col-xs-3 gh-jeditable-events gh-event-description" tabindex="0"><%- ev.displayName %></td>
-    <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0">
+    <td class="col-xs-2 gh-jeditable-events gh-event-description" tabindex="0" title="Click to edit the event name"><%- ev.displayName %></td>
+    <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0" title="Click to edit the event start and end times">
         <%= _.partial('admin-batch-edit-date', {
             'data': ev,
             'utilAPI': utilAPI
         }) %>
     </td>
-    <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
-    <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
-    <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0"><%- ev.notes %></td>
-    <td class="col-xs-2 gh-event-delete" tabindex="0">
+    <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- ev.organisers %></td>
+    <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0" title="Click to edit the event location"><%- ev.location %></td>
+    <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0" title="Click to edit the event notes"><%- ev.notes %></td>
+    <td class="col-xs-1 gh-event-delete" tabindex="0" title="Click to delete this event">
         <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
     </td>
 </tr>
