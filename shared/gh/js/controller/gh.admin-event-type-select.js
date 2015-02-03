@@ -21,14 +21,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             var content = gh.api.utilAPI.renderTemplate($('#gh-event-type-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
-                    // TODO: retrieve these values from the config
-                    'types': {
-                        'field_trip':'Field Trip',
-                        'lab':'Lab',
-                        'lecture':'Lecture',
-                        'paper':'Paper',
-                        'seminar':'Seminar'
-                    }
+                    'types': gh.config.events.types
                 }
             });
             $(this).append(content);

@@ -55,8 +55,7 @@
                 <%= _.partial('admin-batch-edit-event-type', {
                     'data': {
                         'id': 'gh-batch-edit-type',
-                        /* TODO: retrieve these values from the config */
-                        'types': {'field_trip':'Field Trip','lab':'Lab','lecture':'Lecture','paper':'Paper','seminar':'Seminar'}
+                        'types': gh.config.events.types
                     }
                 }) %>
             </div>

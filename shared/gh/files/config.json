@@ -1,5 +1,14 @@
 {
-    "terms": 
+    "events": {
+        "types": {
+            "field_trip": "Field Trip",
+            "lab": "Lab",
+            "lecture": "Lecture",
+            "paper": "Paper",
+            "seminar": "Seminar"
+        }
+    },
+    "terms":
         {
             "2014": [
                 {
