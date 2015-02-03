@@ -74,30 +74,15 @@
                         <th class="col-xs-2">
                             <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
                         </th>
+                        <th class="col-xs-2"></th>
                     </tr>
                 </thead>
                 <tbody>
-                <% _.each(data.events.results, function(ev) {%>
-                    <tr data-eventid="<%= ev.id %>">
-                        <td class="col-xs-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="gh-select-single"> <span class="sr-only">Select</span>
-                                </label>
-                            </div>
-                        </td>
-                        <td class="col-xs-3 gh-jeditable-events gh-event-description" tabindex="0"><%- ev.displayName %></td>
-                        <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0">
-                            <span class="gh-event-calendar-icon">
-                                <span class="month"><%- gh.api.utilAPI.dateDisplay(ev.start).monthName() %></span>
-                                <span class="day"><%- gh.api.utilAPI.dateDisplay(ev.start).dayNumber() %></span>
-                            </span>
-                            <span class="gh-event-display-date"><%- gh.api.utilAPI.generateDisplayDate(ev.start, ev.end) %></span>
-                        </td>
-                        <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0"><%- ev.organisers %></td>
-                        <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0"><%- ev.location %></td>
-                        <td class="col-xs-2 gh-jeditable-events-select gh-event-type" data-type="" tabindex="0"><%- ev.notes %></td>
-                    </tr>
+                <% _.each(data.events.results, function(ev) { %>
+                    <%= _.partial('admin-batch-edit-event-row', {
+                        'ev': ev,
+                        'utilAPI': gh.api.utilAPI
+                    }) %>
                 <% }); %>
                 </tbody>
             </table>

@@ -330,6 +330,11 @@ tbody tr:last-child > td.fc-widget-content {
     width: 0;
 }
 
+#gh-calendar-view #gh-export-container a,
+#gh-calendar-view #gh-export-container .btn-link {
+    font-weight: 400 !important;
+}
+
 #gh-calendar-view #gh-export-container #gh-export-main {
     padding: 30px;
     margin-top: 30px;

@@ -135,9 +135,17 @@
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
             <%= _.partial('admin-batch-edit', {
-                    'gh': gh,
-                    'data': data
-                }) %>
+                'gh': gh,
+                'data': data
+            }) %>
+        </script>
+
+        <!-- Batch edit event row template -->
+        <script id="gh-batch-edit-event-row-template" type="text/template">
+            <%= _.partial('admin-batch-edit-event-row', {
+                'ev': ev,
+                'utilAPI': utilAPI
+            }) %>
         </script>
 
         <!-- Borrow series modal template -->

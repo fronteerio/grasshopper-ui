@@ -34,6 +34,7 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 'userAPI': userAPI,
                 'utilAPI': utilAPI
             },
+            'config': {},
             'data': {
                 'me': null
             }

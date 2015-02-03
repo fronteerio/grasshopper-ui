@@ -78,9 +78,6 @@ requirejs.config({
         },
         'fullcalendar': {
             'deps': ['jquery', 'moment']
-        },
-        'gh.batch-select-type': {
-            'deps': ['jquery.jeditable']
         }
     },
     'waitSeconds': 30

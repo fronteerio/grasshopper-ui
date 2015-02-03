@@ -114,6 +114,114 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
+    // Test the createEvent functionality
+    QUnit.asyncTest('createEvent', function(assert) {
+        expect(20);
+
+        // Fetch a random test app
+        var app = testAPI.getTestApp();
+
+        // Verify that an error is thrown when no callback was provided
+        assert.throws(function() {
+            gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null);
+        }, 'Verify that an error is thrown when no callback was provided');
+
+        // Verify that an error is thrown when an invalid callback was provided
+        assert.throws(function() {
+            gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, 'invalid_callback');
+        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+        // Verify that an error is thrown when no displayName was provided
+        gh.api.eventAPI.createEvent(null, '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when no displayName was provided');
+
+            // Verify that an error is thrown when an invalid displayName was provided
+            gh.api.eventAPI.createEvent(1234, '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid displayName was provided');
+
+                // Verify that an error is thrown when no value for start was provided
+                gh.api.eventAPI.createEvent('displayName', null, '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when no value for start was provided');
+
+                    // Verify that an error is thrown when an invalid value for start was provided
+                    gh.api.eventAPI.createEvent('displayName', 1234, '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                        assert.ok(err, 'Verify that an error is thrown when an invalid value for start was provided');
+
+                        // Verify that an error is thrown when no value for end was provided
+                        gh.api.eventAPI.createEvent('displayName', '2014-12-31', null, 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when no value for end was provided');
+
+                            // Verify that an error is thrown when an invalid value for end was provided
+                            gh.api.eventAPI.createEvent('displayName', '2014-12-31', 1234, 'description', null, 'location', 'notes', null, null, null, function(err, data) {
+                                assert.ok(err, 'Verify that an error is thrown when an invalid value for end was provided');
+
+                                // Verify that an error is thrown when an invalid value for description was provided
+                                gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 1234, null, 'location', 'notes', null, null, null, function(err, data) {
+                                    assert.ok(err, 'Verify that an error is thrown when an invalid value for description was provided');
+
+                                    // Verify that an error is thrown when an invalid value for groupId was provided
+                                    gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', 'invalid_group_id', 'location', 'notes', null, null, null, function(err, data) {
+                                        assert.ok(err, 'Verify that an error is thrown when an invalid value for groupId was provided');
+
+                                        // Verify that an error is thrown when an invalid value for location was provided
+                                        gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 1234, 'notes', null, null, null, function(err, data) {
+                                            assert.ok(err, 'Verify that an error is thrown when an invalid value for location was provided');
+
+                                            // Verify that an error is thrown when an invalid value for notes was provided
+                                            gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 1234, null, null, null, function(err, data) {
+                                                assert.ok(err, 'Verify that an error is thrown when an invalid value for notes was provided');
+
+                                                // Verify that an error is thrown when an invalid value for organiserOther was provided
+                                                gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', 1234, null, null, function(err, data) {
+                                                    assert.ok(err, 'Verify that an error is thrown when an invalid value for organiserOther was provided');
+
+                                                    // Verify that an error is thrown when an invalid value for organiserUsers was provided
+                                                    gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, 'invalid_organiser_users', null, function(err, data) {
+                                                        assert.ok(err, 'Verify that an error is thrown when an invalid value for organiserUsers was provided');
+
+                                                        // Verify that an error is thrown when an invalid value for seriesId was provided
+                                                        gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, 'invalid_series_id', function(err, data) {
+                                                            assert.ok(err, 'Verify that an error is thrown when an invalid value for seriesId was provided');
+
+                                                            // Create a test series
+                                                            gh.api.seriesAPI.createSeries(app.id, 'displayName', 'Test description', 1, function(err, data) {
+                                                                assert.ok(!err, 'Verify that the test series have been created without errors');
+
+                                                                // Verify that an event can be created without errors
+                                                                var body = {'code': 200, 'msg': 'OK'};
+                                                                gh.api.utilAPI.mockRequest('POST', '/api/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                                                                    gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', 1, 'location', 'notes', ['John Doe', 'Jane Doe'], ['jd232', 'jd539'], data.id, function(err, data) {
+                                                                        assert.ok(!err, 'Verify that an event can be created without errors');
+                                                                        assert.ok(data, 'Verify that the created event is returned');
+
+                                                                        // Verify that a thrown error is handled successfully
+                                                                        var body = {'code': 400, 'msg': 'Bad Request'};
+                                                                        gh.api.utilAPI.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                                            gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', null, null, null, null, null, null, null, function(err, data) {
+                                                                                assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                                                                                assert.ok(!data, 'Verify that no data is returned when an error is thrown');
+                                                                            });
+
+                                                                            QUnit.start();
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     // Test the createEventByApp functionality
     QUnit.asyncTest('createEventByApp', function(assert) {
         expect(22);
@@ -124,7 +232,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
             gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null);
-        }, 'Verify that an error is thrown when an invalid callback was provided');
+        }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {

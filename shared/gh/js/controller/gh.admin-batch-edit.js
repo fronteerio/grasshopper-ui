@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], function(seriesAPI, utilAPI, eventAPI, adminConstants) {
+define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -27,6 +27,40 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
      */
     var renameSeries = function() {
         $('.gh-jeditable-series-title').click();
+    };
+
+    /**
+     * Add a new event row to the table and initialise the editable fields in it
+     *
+     * @private
+     */
+    var addNewEventRow = function() {
+        // Append a new event row
+        $('tbody').append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), {
+            'ev': {
+                'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+                'isNew': true, // Used in the template to know this one needs special handling
+                'displayName': '',
+                'end': moment(new Date()).add(1, 'hours').utc().format(),
+                'location': '',
+                'notes': '',
+                'organisers': 'organiser',
+                'start': moment(new Date()).utc().format()
+            },
+            'utilAPI': utilAPI
+        }));
+        // Enable JEditable on the row
+        setUpJEditable();
+    };
+
+    /**
+     * Delete an event from the series
+     *
+     * @private
+     */
+    var deleteEvent = function() {
+        $(this).closest('tr').addClass('gh-event-deleted').hide();
+        toggleSubmit();
     };
 
     /**
@@ -80,11 +114,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
      * @private
      */
     var toggleSubmit = function() {
-        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active').length;
+        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted)').length + $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
+
         if (eventsUpdated) {
             // Update the count
-            var countString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
-            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(countString);
+            var updatedCountString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
+            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(updatedCountString);
             // Show the save button if events have changed but not submitted
             $('.gh-batch-edit-actions-container').removeClass('hide');
         } else {
@@ -113,51 +148,63 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
     ////////////////
 
     /**
+     * Verifies that a valid series title was entered and saves the value
+     *
+     * @param  {String}   value     The new value for the item
+     * @return {String}             The value to show in the editable field after editing completed
+     * @private
+     */
+    var editableSeriesTitleSubmitted = function(value, editableField) {
+        // Get the value
+        value = $.trim(value);
+        // If no value has been entered, we fall back to the previous value
+        if (!value) {
+            return this.revert;
+        } else if (this.revert !== value) {
+            var seriesId = parseInt($.bbq.getState()['series'], 10);
+            seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
+                if (err) {
+                    // Show a failure notification
+                    return utilAPI.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
+                }
+
+                // Update the series in the sidebar
+                $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
+
+                // Show a success notification
+                return utilAPI.notification('Series title updated.', 'The series title was successfully updated.');
+            });
+        }
+        return value;
+    };
+
+    /**
      * Verifies that a valid value was entered and persists the value in the field
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
      * @private
      */
-    var editableSubmitted = function(value, editableField) {
+    var editableEventSubmitted = function(value, editableField) {
         // Get the value
         value = $.trim(value);
+        // Get the event ID. If not eventId is found on the tr that means we're dealing with a newly added event
+        var eventId = $(this).closest('tr').data('eventid');
         // If no value has been entered, we fall back to the previous value
         if (!value) {
             return this.revert;
-        } else {
-            // Depending on what editable field we're submitting either save it straight away or show a different save button
-            var isSeriesTitleEdit = editableField.cssclass.match('gh-jeditable-form-with-submit');
-            isSeriesTitleEdit = isSeriesTitleEdit && isSeriesTitleEdit.length;
-
-            // If the series title has been edited and submitted, persist the values straight away
-            if (isSeriesTitleEdit) {
-                if (this.revert !== value) {
-                    var seriesId = parseInt($.bbq.getState()['series'], 10);
-                    seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
-                        if (err) {
-                            // Show a failure notification
-                            return utilAPI.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
-                        }
-
-                        // Update the series in the sidebar
-                        $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
-
-                        // Show a success notification
-                        return utilAPI.notification('Series title updated.', 'The series title was successfully updated.');
-                    });
-                }
-            // If the events have been edited and submitted, toggle the sticky footer save button
-            } else {
-                // If there was a change, mark the row so it's visually obvious that an edit was made to it
-                if (this.revert !== value) {
-                    $('.gh-batch-edit-events-container tbody tr[data-eventid="' + $(this).closest('tr').data('eventid') + '"]').removeClass('danger active success').addClass('active');
-                    // Show the save button
-                    toggleSubmit();
-                }
-            }
-            return value;
+        // A value has been entered and the event already existed
+        } else if (this.revert !== value && eventId) {
+            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventId + '"]').removeClass('danger active success').addClass('active');
+            // Show the save button
+            toggleSubmit();
+        // A value has been entered and this is a newly added event
+        } else if (this.revert !== value && !eventId) {
+            $(this).closest('tr').removeClass('danger active success').addClass('active gh-new-event-row');
+            // Show the save button
+            toggleSubmit();
         }
+        return value;
     };
 
     /**
@@ -180,9 +227,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
                 $(this).append(hidden);
                 return(hidden);
             },
-            'content': function(string, settings, original) {
-
-            },
+            'content': function(string, settings, original) {},
             'plugin': function(settings, original) {
                 $('select', this).on('change', function() {
                     $(this).parent().find('input[type="hidden"]').val($(this).val());
@@ -192,8 +237,20 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
             }
         });
 
-        // Apply jEditable for inline editing of events
-        $('.gh-jeditable-events').editable(editableSubmitted, {
+        // Apply jEditable to the series title
+        $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
+            'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'height': '38px',
+            'maxlength': 255,
+            'onblur': 'submit',
+            'placeholder': '',
+            'select' : true,
+            'submit': '<button type="submit" class="btn btn-default">Save</button>',
+            'tooltip': 'Click to edit'
+        });
+
+        // Apply jEditable for inline editing of event rows
+        $('.gh-jeditable-events').editable(editableEventSubmitted, {
             'cssclass' : 'gh-jeditable-form',
             'height': '38px',
             'onblur': 'submit',
@@ -209,20 +266,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
             }
         });
 
-        // Apply jEditable to the series title
-        $('.gh-jeditable-series-title').editable(editableSubmitted, {
-            'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
-            'height': '38px',
-            'maxlength': 255,
-            'onblur': 'submit',
-            'placeholder': '',
-            'select' : true,
-            'submit': '<button type="submit" class="btn btn-default">Save</button>',
-            'tooltip': 'Click to edit'
-        });
-
         // Apply jEditable to the event notes
-        $('.gh-jeditable-events-select').editable(editableSubmitted, {
+        $('.gh-jeditable-events-select').editable(editableEventSubmitted, {
             'cssclass' : 'gh-jeditable-form',
             'data': {'lab':'Lab','lecture':'Lecture','paper':'Paper','seminar':'Seminar'},
             'select': true,
@@ -232,36 +277,20 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
     };
 
     /**
-     * Submit all changes made in batch edit mode
+     * Update all events that were edited or created
      *
+     * @param  {Event[]}     updatedEventObjs    Array of event objects to submit updates for
+     * @param  {Function}    callback            Standard callback function
+     * @param  {Error}       callback.err        Error object containing the error code and error message
      * @private
      */
-    var submitBatchEdit = function() {
-        var eventObjs = [];
-
-        // For each term, go over each event and create an event object to persist
-        // TODO: Only persist the events that have changed
-        _.each($('.gh-batch-edit-events-container'), function($termContainer) {
-            // Loop over each event in the term and create the event object
-            _.each($('tbody tr.active', $termContainer), function($eventContainer) {
-                $eventContainer = $($eventContainer);
-                var eventObj = {
-                    'id': $eventContainer.data('eventid'),
-                    // 'description': '',
-                    'displayName': $('.gh-event-description', $eventContainer).text(),
-                    // 'end': '',
-                    'location': $('.gh-event-location', $eventContainer).text(),
-                    // 'group': '',
-                    'notes': $('.gh-event-type', $eventContainer).text(),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
-                    // 'start': ''
-                };
-                eventObjs.push(eventObj);
-            });
-        });
+    var submitEventUpdates = function(updatedEventObjs, callback) {
+        if (!updatedEventObjs.length) {
+            return callback(null);
+        }
 
         var done = 0;
-        var todo = eventObjs.length;
+        var todo = updatedEventObjs.length;
         var hasError = false;
 
         /**
@@ -272,7 +301,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
          * @param  {Function}    callback        Standard callback function
          * @private
          */
-        var submitEventUpdate = function(updatedEvent, callback) {
+        var submitEventUpdate = function(updatedEvent, _callback) {
             eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, null, null, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
@@ -298,29 +327,198 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
                     // the next event to update
                     done++;
                     if (done === todo) {
-                        callback();
+                        _callback();
                     } else {
-                        submitEventUpdate(eventObjs[done], callback);
+                        submitEventUpdate(updatedEventObjs[done], _callback);
                     }
                 });
             });
         };
 
-        // Persist the first update
-        if (eventObjs.length) {
-            // Deselect the 'check all' checkbox to see progress update
-            $('.gh-select-all').prop('checked', false);
-            $('.gh-select-all').change();
-            // Start by submitting the first update
-            submitEventUpdate(eventObjs[done], function() {
-                if (hasError) {
-                    return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
-                }
-                // Hide the save button
-                toggleSubmit();
-                return utilAPI.notification('Events updated.', 'The events where successfully updated.');
-            });
+        // Start by submitting the first update
+        submitEventUpdate(updatedEventObjs[done], function() {
+            callback(hasError);
+        });
+    };
+
+    /**
+     * Create all new events that were added
+     *
+     * @param  {Event[]}     newEventObjs    Array of new events to create in the series
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Error}       callback.err    Error object containing the error code and error message
+     * @private
+     */
+    var createNewEvents = function(newEventObjs, callback) {
+        if (!newEventObjs.length) {
+            return callback(null);
         }
+
+        var done = 0;
+        var todo = newEventObjs.length;
+        var hasError = false;
+
+        /**
+         * Create a single event. Calls itself when more events need to be created and executes
+         * a callback function when everything has been persisted
+         *
+         * @param  {Object}      newEvent    The bew event that needs to be created
+         * @param  {Function}    callback    Standard callback function
+         * @private
+         */
+        var createNewEvent = function(newEvent, _callback) {
+            // Get the ID of the series this event is added to
+            var seriesId = parseInt($.bbq.getState()['series'], 10);
+            eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organisers, null, seriesId, function(evErr, data) {
+                if (evErr) {
+                    hasError = true;
+                    // Mark the row so it's visually obvious that the creation failed
+                    $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]').addClass('danger');
+                } else {
+                    var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
+                    // Mark the row so it's visually obvious that the creation was successful
+                    $row.removeClass('danger active').addClass('success');
+                    // Replace the temporary ID with the real one
+                    $row.data('tempid', null).removeAttr('data-tempid');
+                    $row.data('eventid', data.id).attr('data-eventid', data.id).removeClass('gh-new-event-row');
+                }
+
+                // If we're done, execute the callback, otherwise call the function again with
+                // the next event to create
+                done++;
+                if (done === todo) {
+                    _callback();
+                } else {
+                    createNewEvent(newEventObjs[done], _callback);
+                }
+            });
+        };
+
+        // Start by submitting the first new event
+        createNewEvent(newEventObjs[done], function() {
+            callback(hasError);
+        });
+    };
+
+    /**
+     * Delete events
+     *
+     * @param  {Event[]}     eventsToDelete    Array of events to delete
+     * @param  {Function}    callback          Standard callback function
+     * @param  {Error}       callback.err      Error object containing the error code and error message
+     * @private
+     */
+    var deleteEvents = function(eventsToDelete, callback) {
+        if (!eventsToDelete.length) {
+            return callback(null);
+        }
+
+        var done = 0;
+        var todo = eventsToDelete.length;
+        var hasError = false;
+
+        /**
+         * Delete an event
+         *
+         * @param  {String}      eventID   The ID of the event to delete
+         * @param  {Function}    _callback Standard callback function
+         * @private
+         */
+        var deleteEvent = function(eventID, _callback) {
+            eventAPI.deleteEvent(eventID, function(err) {
+                // If we're done, execute the callback, otherwise call the function again with
+                // the next event to delete
+                done++;
+                if (done === todo) {
+                    _callback();
+                } else {
+                    deleteEvent(eventsToDelete[done], _callback);
+                }
+            });
+        };
+
+        // Start by deleting the first event
+        deleteEvent(eventsToDelete[done], function() {
+            callback(hasError);
+        });
+    };
+
+    /**
+     * Submit all changes made in batch edit mode
+     *
+     * @private
+     */
+    var submitBatchEdit = function() {
+        var updatedEventObjs = [];
+        var newEventObjs = [];
+        var eventsToDelete = [];
+
+        // For each term, go over each event and create an event object to persist
+        // TODO: Only persist the events that have changed
+        _.each($('.gh-batch-edit-events-container'), function($termContainer) {
+            // Loop over each (non-new) event in the term and create the event object
+            _.each($('tbody tr.active:not(.gh-new-event-row)', $termContainer), function($eventContainer) {
+                $eventContainer = $($eventContainer);
+                var updatedEventObj = {
+                    'id': $eventContainer.data('eventid'),
+                    // 'description': '',
+                    'displayName': $('.gh-event-description', $eventContainer).text(),
+                    // 'end': '',
+                    'location': $('.gh-event-location', $eventContainer).text(),
+                    // 'group': '',
+                    'notes': $('.gh-event-type', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    // 'start': ''
+                };
+                updatedEventObjs.push(updatedEventObj);
+            });
+
+            // Loop over each new event in the term and create the event object
+            _.each($('tbody tr.active.gh-new-event-row', $termContainer), function($eventContainer) {
+                $eventContainer = $($eventContainer);
+                var newEventObj = {
+                    'tempId': $eventContainer.data('tempid'),
+                    // 'description': '',
+                    'displayName': $('.gh-event-description', $eventContainer).text(),
+                    'end': $('.gh-event-date', $eventContainer).data('end'),
+                    'location': $('.gh-event-location', $eventContainer).text(),
+                    // 'group': '',
+                    'notes': $('.gh-event-type', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    'start': $('.gh-event-date', $eventContainer).data('start')
+                };
+                newEventObjs.push(newEventObj);
+            });
+
+            // Loop over each deleted event in the term and create the event object
+            _.each($('tbody tr.gh-event-deleted', $termContainer), function($eventContainer) {
+                $eventContainer = $($eventContainer);
+                // Only push it in the array if it has an event ID
+                var eventID = $eventContainer.data('eventid');
+                if (eventID) {
+                    eventsToDelete.push(eventID);
+                }
+            });
+        });
+
+        // Deselect the 'check all' checkbox to see progress update
+        $('.gh-select-all').prop('checked', false);
+        $('.gh-select-all').change();
+        // Submit the event updates
+        submitEventUpdates(updatedEventObjs, function(updateErr) {
+            // Create the new events
+            createNewEvents(newEventObjs, function(newErr) {
+                // Delete events
+                deleteEvents(eventsToDelete, function(deleteErr) {
+                    if (updateErr || newErr || deleteErr) {
+                        return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
+                    }
+                    // Hide the save button
+                    toggleSubmit();
+                    return utilAPI.notification('Events updated.', 'The events where successfully updated.');
+                });
+            });
+        });
     };
 
     /**
@@ -431,6 +629,8 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants'], f
         // List utilities
         $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
         $('body').on('change', '.gh-select-single', toggleEvent);
+        $('body').on('click', '.gh-new-event', addNewEventRow);
+        $('body').on('click', '.gh-event-delete', deleteEvent);
 
         // Batch edit form submission
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
