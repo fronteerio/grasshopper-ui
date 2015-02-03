@@ -59,8 +59,8 @@ requirejs.config({
 
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/controller/gh.admin-batch-edit',
+        'gh.admin-event-type-select': 'gh/js/controller/gh.admin-event-type-select',
         'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
-        'gh.batch-select-type': 'gh/js/controller/gh.batch-select-type',
         'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
         'gh.calendar': 'gh/js/controller/gh.calendar',
         'gh.listview': 'gh/js/controller/gh.listview',
@@ -78,6 +78,9 @@ requirejs.config({
         },
         'fullcalendar': {
             'deps': ['jquery', 'moment']
+        },
+        'admin-event-type-select': {
+            'deps': ['jquery.jeditable']
         }
     },
     'waitSeconds': 30

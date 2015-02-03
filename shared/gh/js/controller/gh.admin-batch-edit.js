@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
+define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -214,29 +214,6 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
      */
     var setUpJEditable = function() {
 
-        // Create a custom jEditable select box
-        $.editable.addInputType('event-type-select', {
-            'element' : function(settings, original) {
-                var select = $('<select class="form-control" name="gh-event-type-select">');
-                _.each(settings.data, function(label, value) {
-                    var option = $('<option>').val(value).append(label);
-                    select.append(option);
-                });
-                $(this).append(select);
-                var hidden = $('<input type="hidden">');
-                $(this).append(hidden);
-                return(hidden);
-            },
-            'content': function(string, settings, original) {},
-            'plugin': function(settings, original) {
-                $('select', this).on('change', function() {
-                    $(this).parent().find('input[type="hidden"]').val($(this).val());
-                    $(this).closest('td').attr('data-type', $(this).val());
-                    $(this).closest('form').trigger('submit');
-                });
-            }
-        });
-
         // Apply jEditable to the series title
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
             'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
@@ -269,7 +246,6 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Apply jEditable to the event notes
         $('.gh-jeditable-events-select').editable(editableEventSubmitted, {
             'cssclass' : 'gh-jeditable-form',
-            'data': {'lab':'Lab','lecture':'Lecture','paper':'Paper','seminar':'Seminar'},
             'select': true,
             'type': 'event-type-select',
             'tooltip': "Click to edit event notes"
@@ -530,7 +506,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Get the title
         var title = $(this).val();
         // Update all rows that are checked
-        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title);
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title).attr('data-type', title);
         // Add an `active` class to all updated rows to indicate that changes where made
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
@@ -638,7 +614,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
-        $('body').on('keyup', '#gh-batch-edit-type', batchEditType);
+        $('body').on('change', '#gh-batch-edit-type', batchEditType);
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);

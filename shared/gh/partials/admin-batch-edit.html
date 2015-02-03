@@ -52,7 +52,13 @@
                 <input type="text" id="gh-batch-edit-location" placeholder="Locations">
             </div>
             <div class="col-xs-2">
-                <%= _.partial('admin-batch-edit-event-type', {'data': data}) %>
+                <%= _.partial('admin-batch-edit-event-type', {
+                    'data': {
+                        'id': 'gh-batch-edit-type',
+                        /* TODO: retrieve these values from the config */
+                        'types': {'field_trip':'Field Trip','lab':'Lab','lecture':'Lecture','paper':'Paper','seminar':'Seminar'}
+                    }
+                }) %>
             </div>
         </div>
 
