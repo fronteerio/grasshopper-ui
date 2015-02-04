@@ -61,6 +61,7 @@ requirejs.config({
 
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/controller/gh.admin-batch-edit',
+        'gh.admin-event-type-select': 'gh/js/controller/gh.admin-event-type-select',
         'gh.admin-listview': 'gh/js/controller/gh.admin-listview',
         'gh.borrow-series': 'gh/js/controller/gh.borrow-series',
         'gh.calendar': 'gh/js/controller/gh.calendar',
@@ -86,6 +87,9 @@ requirejs.config({
         },
         'jquery-datepicker': {
             'deps': ['jquery-ui']
+        },
+        'admin-event-type-select': {
+            'deps': ['jquery.jeditable']
         }
     },
     'waitSeconds': 30

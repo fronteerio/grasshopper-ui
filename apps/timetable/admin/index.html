@@ -156,6 +156,11 @@
             }) %>
         </script>
 
+        <!-- Event type template-->
+        <script id="gh-event-type-template" type="text/template">
+            <%= _.partial('admin-batch-edit-event-type', {'data': data}) %>
+        </script>
+
         <!-- Borrow series modal template -->
         <script id="gh-borrow-series-modal-template" type="text/template">
             <%= _.partial('borrow-series-modal', {
