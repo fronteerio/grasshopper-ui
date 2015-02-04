@@ -85,6 +85,33 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the 'generateDisplayDate' functionality
     QUnit.test('generateDisplayDate', function(assert) {
+        // Mock a configuration object to test with
+        require('gh.core').config = {
+            "terms": {
+                "2014": [
+                    {
+                        "name": "michaelmas",
+                        "label": "Michaelmas",
+                        "start": "2014-10-07T00:00:00.000Z",
+                        "end": "2014-12-04T00:00:00.000Z"
+                    },
+                    {
+                        "name": "lent",
+                        "label": "Lent",
+                        "start": "2015-01-13T00:00:00.000Z",
+                        "end": "2015-03-13T00:00:00.000Z"
+                    },
+                    {
+                        "name": "easter",
+                        "label": "Easter",
+                        "start": "2015-04-21T00:00:00.000Z",
+                        "end": "2015-06-12T00:00:00.000Z"
+                    }
+                ]
+            },
+            'academicYear': 2014
+        };
+
         var startDate = '2015-02-18T10:00:00.000Z';
         var endDate = '2015-02-18T17:30:00.000Z';
 
@@ -119,11 +146,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         }, 'Verify that a valid end date needs to be provided');
 
         // Verify that all the cases are covered
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W? · Wed 10am-5:30pm');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W? · Wed 4-5:30pm');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W? · Wed 10-11:30am');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W? · Wed 10:30-11am');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W? · Wed 10:30am-1:30pm');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 10am-5:30pm');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 4-5:30pm');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W6 · Wed 10-11:30am');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W6 · Wed 10:30-11am');
+        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W6 · Wed 10:30am-1:30pm');
     });
 
     // Test the 'dateDisplay' functionality
