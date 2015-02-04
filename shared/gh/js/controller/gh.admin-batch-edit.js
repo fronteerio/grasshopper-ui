@@ -35,8 +35,9 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
      * @private
      */
     var addNewEventRow = function() {
+        $eventContainer = $(this).closest('thead').next('tbody');
         // Append a new event row
-        $('tbody').append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), {
+        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), {
             'ev': {
                 'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
                 'isNew': true, // Used in the template to know this one needs special handling
@@ -148,6 +149,25 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         var key = parseInt(ev.which, 10);
         if (key === 32 || key === 13) {
             $(this).click();
+        }
+    };
+
+    /**
+     * Make the header stick to the top of the page, depending on how far
+     * down the page is scrolled
+     *
+     * @private
+     */
+    var handleStickyHeader = function() {
+        // Get the top of the window and the top of the header's position
+        var windowTop = $(window).scrollTop();
+        var headerTop = $('#gh-sticky-header-anchor').offset().top;
+        // If the window is scrolled further down than the header was originally
+        // positioned, make the header sticky
+        if (windowTop > headerTop) {
+            $('#gh-batch-edit-container').addClass('gh-sticky-header');
+        } else {
+            $('#gh-batch-edit-container').removeClass('gh-sticky-header');
         }
     };
 
@@ -612,6 +632,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Setup
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
+        $(window).scroll(handleStickyHeader);
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);

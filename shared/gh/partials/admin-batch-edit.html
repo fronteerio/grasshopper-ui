@@ -1,5 +1,4 @@
-<div id="gh-batch-edit-view" class="gh-main-view">
-
+<div class="gh-main-view">
     <div id="gh-toolbar-container">
         <div class="gh-toolbar gh-toolbar-primary">
             <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
@@ -9,7 +8,7 @@
         </div>
     </div>
 
-    <!-- Calendar -->
+    <div id="gh-sticky-header-anchor"></div>
     <div id="gh-batch-edit-container">
         <ul class="nav nav-pills pull-right" role="tablist">
             <li role="presentation" class="dropdown">
@@ -56,44 +55,43 @@
             </div>
             <div class="col-xs-1"></div>
         </div>
+    </div>
 
-        <div class="gh-batch-edit-events-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="col-xs-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="gh-select-all"> Michaelmas
-                                </label>
-                            </div>
-                        </th>
-                        <th class="col-xs-2"></th>
-                        <th class="col-xs-2"></th>
-                        <th class="col-xs-2"></th>
-                        <th class="col-xs-2"></th>
-                        <th class="col-xs-2"></th>
-                        <th class="col-xs-1">
-                            <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                <% _.each(data.events.results, function(ev) { %>
-                    <%= _.partial('admin-batch-edit-event-row', {
-                        'ev': ev,
-                        'gh': gh,
-                        'utilAPI': gh.api.utilAPI
-                    }) %>
-                <% }); %>
-                </tbody>
-            </table>
-        </div>
+    <div id="gh-batch-edit-term-container">
+        <% _.each(data.eventsByTerm, function(term, name) { %>
+            <div class="gh-batch-edit-events-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-1" colspan="6">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="gh-select-all"> <%- name %>
+                                    </label>
+                                </div>
+                            </th>
+                            <th class="col-xs-1">
+                                <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% _.each(term, function(ev) { %>
+                        <%= _.partial('admin-batch-edit-event-row', {
+                            'ev': ev,
+                            'gh': gh,
+                            'utilAPI': gh.api.utilAPI
+                        }) %>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% }); %>
+    </div>
 
-        <div class="gh-batch-edit-actions-container" style="display: none;">
-            <p id="gh-batch-edit-change-summary" class="pull-left"></p>
-            <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
-            <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>
-        </div>
+    <div class="gh-batch-edit-actions-container" style="display: none;">
+        <p id="gh-batch-edit-change-summary" class="pull-left"></p>
+        <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
+        <button type="button" class="btn btn-link pull-right" data-dismiss="modal">Cancel</button>
     </div>
 </div>

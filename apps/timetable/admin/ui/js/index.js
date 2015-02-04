@@ -178,6 +178,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var renderBatchEdit = function(data) {
+        data.eventsByTerm = gh.api.utilAPI.splitEventsByTerm(data.events);
+        delete data.events;
         gh.api.utilAPI.renderTemplate($('#gh-batch-edit-template'), {
             'gh': gh,
             'data': data
