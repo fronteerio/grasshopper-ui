@@ -191,6 +191,10 @@
 /* BATCH EDITING */
 /*****************/
 
+#gh-batch-edit-container {
+    background-color: #FFF;
+}
+
 .gh-batch-edit-events-container .table > tbody > tr.info td {
     background-color: #ECF5F9;
 }
