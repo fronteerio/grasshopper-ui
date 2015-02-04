@@ -380,6 +380,26 @@
     margin-left: 50px;
 }
 
+/* Event type */
+.gh-batch-edit-events-container .gh-jeditable-form select {
+    height: 40px;
+}
+
+.gh-batch-edit-events-container .gh-event-type::before {
+    border-radius: 12px;
+    content: attr(data-first);
+    display: inline-block;
+    height: 22px;
+    margin-right: 6px;
+    padding: 1px;
+    text-align: center;
+    width: 22px;
+}
+
+.gh-batch-edit-events-container .gh-event-type.gh-editing::before {
+    display: none;
+}
+
 /* Calendar icon */
 .gh-event-calendar-icon {
     display: inline-block;

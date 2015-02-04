@@ -18,6 +18,9 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
     // Create a custom jEditable select box
     $.editable.addInputType('event-type-select', {
         'element' : function(settings, original) {
+            // Add a class to the table cell
+            $(original).addClass('gh-editing');
+            // Render the event type select box template
             var content = gh.api.utilAPI.renderTemplate($('#gh-event-type-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
@@ -40,7 +43,12 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             $('select', this).on('change', function() {
                 $(this).parent().find('input[type="hidden"]').val($(this).val());
                 $(this).closest('td').attr('data-type', $(this).val());
+                $(this).closest('td').attr('data-first', $(this).val().substr(0,1));
                 $(this).closest('form').trigger('submit');
+            });
+            $('select', this).on('focusout', function() {
+                $(original).removeClass('gh-editing');
+                original.reset(this);
             });
         }
     });

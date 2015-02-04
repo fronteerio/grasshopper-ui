@@ -1,5 +1,5 @@
 <select id="<%- data.id %>" class="form-control" name="gh-event-type-select">
-    <% _.each(data.types, function(label, value) { %>
-        <option value="<%- value %>"><%- label %></option>
+    <% _.each(data.types, function(value, index) { %>
+        <option value="<%- value %>"><%- value %></option>
     <% }) %>
 </select>

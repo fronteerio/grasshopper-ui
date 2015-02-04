@@ -213,6 +213,39 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
             // Show the save button
             toggleSubmit();
         }
+        // Return the selected value
+        return value;
+    };
+
+    /**
+     * Verifies that a valid value for event type was entered and persists the value in the field
+     *
+     * @param  {String}   value     The new value for the item
+     * @return {String}             The value to show in the editable field after editing completed
+     * @private
+     */
+    var editableEventTypeSubmitted = function(value, editableField) {
+        // Get the value
+        value = $.trim(value);
+        // Get the event ID. If not eventId is found on the tr that means we're dealing with a newly added event
+        var eventId = $(this).closest('tr').data('eventid');
+        // If no value has been entered, we fall back to the previous value
+        if (!value) {
+            return this.revert;
+        // A value has been entered and the event already existed
+        } else if (this.revert !== value && eventId) {
+            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventId + '"]').removeClass('danger active success').addClass('active');
+            // Show the save button
+            toggleSubmit();
+        // A value has been entered and this is a newly added event
+        } else if (this.revert !== value && !eventId) {
+            $(this).closest('tr').removeClass('danger active success').addClass('active gh-new-event-row');
+            // Show the save button
+            toggleSubmit();
+        }
+        // Remove the editing class from the table cell
+        $(this).removeClass('gh-editing');
+        // Return the selected value
         return value;
     };
 
@@ -251,11 +284,12 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         });
 
         // Apply jEditable to the event notes
-        $('.gh-jeditable-events-select').editable(editableEventSubmitted, {
+        $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass' : 'gh-jeditable-form',
+            'placeholder': '',
             'select': true,
-            'type': 'event-type-select',
-            'tooltip': "Click to edit event notes"
+            'tooltip': 'Click to edit event notes',
+            'type': 'event-type-select'
         });
     };
 
@@ -516,7 +550,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         // Get the title
         var title = $(this).val();
         // Update all rows that are checked
-        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title).attr('data-type', title);
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title).attr('data-type', title).attr('data-first', title.substr(0,1));
         // Add an `active` class to all updated rows to indicate that changes where made
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
@@ -648,6 +682,7 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
     };
 
     addBinding();

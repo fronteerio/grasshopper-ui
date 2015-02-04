@@ -1,12 +1,12 @@
 {
     "events": {
-        "types": {
-            "field_trip": "Field Trip",
-            "lab": "Lab",
-            "lecture": "Lecture",
-            "paper": "Paper",
-            "seminar": "Seminar"
-        }
+        "types": [
+            "Field Trip",
+            "Lab",
+            "Lecture",
+            "Paper",
+            "Seminar"
+        ]
     },
     "terms":
         {
