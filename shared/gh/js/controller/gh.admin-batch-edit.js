@@ -159,15 +159,18 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      * @private
      */
     var handleStickyHeader = function() {
-        // Get the top of the window and the top of the header's position
-        var windowTop = $(window).scrollTop();
-        var headerTop = $('#gh-sticky-header-anchor').offset().top;
-        // If the window is scrolled further down than the header was originally
-        // positioned, make the header sticky
-        if (windowTop > headerTop) {
-            $('#gh-batch-edit-container').addClass('gh-sticky-header');
-        } else {
-            $('#gh-batch-edit-container').removeClass('gh-sticky-header');
+        // Only attempt to handle scrolling when the batch edit is being used
+        if ($('#gh-batch-edit-view').is(':visible')) {
+            // Get the top of the window and the top of the header's position
+            var windowTop = $(window).scrollTop();
+            var headerTop = $('#gh-sticky-header-anchor').offset().top;
+            // If the window is scrolled further down than the header was originally
+            // positioned, make the header sticky
+            if (windowTop > headerTop) {
+                $('#gh-batch-edit-container').addClass('gh-sticky-header');
+            } else {
+                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
+            }
         }
     };
 

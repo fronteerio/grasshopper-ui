@@ -96,7 +96,13 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         }
 
         // TODO: add the week number when the custom configuration is in place
-        var weekNumber = 'W?';
+        // var weekNumber = 'W' + getWeekInTerm(startDate);
+        var weekNumber = getWeekInTerm(startDate);
+        if (weekNumber === 0) {
+            weekNumber = 'OT';
+        } else {
+            weekNumber = 'W' + weekNumber;
+        }
 
         // Retrieve the day
         var weekDay = moment(endDate).utc().format('E');
@@ -130,6 +136,47 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         // Return the display date
         return String(weekNumber + ' · ' + weekDay + ' ' + startParts + '-' + endParts);
+    };
+
+    /**
+     * Get the week of the term in which a date is located. The function assumes that the
+     * week starts on the first day of the term and that the terms are limited by the
+     * academicYear that is set on the app
+     *
+     * @param  {String|Date}    date    The date to find the week number in the term for
+     * @return {Number}                 The week number of the term the given date is in
+     * @private
+     */
+    var getWeekInTerm = exports.getWeekInTerm = function(date) {
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+        // Variable used to assign the week number to and return
+        var weekNumber = 0;
+
+        // Loop over the terms. If the start date of the event falls inside of the term,
+        // use that term to calculate the week number that date falls in
+        _.each(terms, function(term) {
+            var termStartDate = new Date(term.start);
+            var termEndDate = new Date(term.end);
+            date = new Date(date);
+            // If the date falls in the term, use it to calculate the week number
+            if (termStartDate <= date && termEndDate >= date) {
+                // The number of milliseconds in one week
+                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+                // Convert the given date to milliseconds
+                date = date.getTime();
+                // Convert the term start date to milliseconds
+                termStartDate = termStartDate.getTime();
+                // Calculate the difference in milliseconds
+                var dateDifference = Math.abs(date - termStartDate);
+                // Convert back to weeks
+                weekNumber = Math.floor(dateDifference / ONE_WEEK) + 1;
+            }
+        });
+
+        return weekNumber;
     };
 
     /**
@@ -291,8 +338,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * keys being the term label and values the Array of events associated to that term
      *
      * @param  {Event[]}    events    The Array of events to split up into terms
-     *
-     * @return {Object}        Object representing the split up terms and events
+     * @return {Object}               Object representing the split up terms and events
      */
     var splitEventsByTerm = exports.splitEventsByTerm = function(events) {
         // Get the configuration
