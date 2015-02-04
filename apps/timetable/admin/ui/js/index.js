@@ -145,7 +145,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
                         'hash': '#tripos=' + course.id + '&part=' + part.id,
                         'canManage': course.canManage,
                         'part': part,
-                        'isEditing': false, // TODO: Replace when locking is supported in the backend
+                        'isEditing': part.Group.LockedBy || false,
                         'isDraft': false // TODO: Replace when drafts are supported in the backend
                     });
                 });

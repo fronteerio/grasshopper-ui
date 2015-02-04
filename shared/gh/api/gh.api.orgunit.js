@@ -345,15 +345,16 @@ define(['exports'], function(exports) {
     /**
      * Get the organisational units in an app
      *
-     * @param  {Number}      [appId]              The ID of the app to get the organisational units for
-     * @param  {Boolean}     [includeSeries]      Whether to include the event series associated to the oranisational units
-     * @param  {Number}      [parentId]           The ID of the parent to retrieve the organisational units for
-     * @param  {String[]}    [type]               The organisational unit type(s) to filter the organisational unit by
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    Object representing the organisational units in an app
+     * @param  {Number}      [appId]                 The ID of the app to get the organisational units for
+     * @param  {Boolean}     [includeSeries]         Whether to include the event series associated to the oranisational units
+     * @param  {Boolean}     [includePermissions]    Whether to include if the current user can manage the organisational units/series and whether an organisational unit is locked. Defaults to `false`
+     * @param  {Number}      [parentId]              The ID of the parent to retrieve the organisational units for
+     * @param  {String[]}    [type]                  The organisational unit type(s) to filter the organisational unit by
+     * @param  {Function}    callback                Standard callback function
+     * @param  {Object}      callback.err            Error object containing the error code and error message
+     * @param  {Object}      callback.response       Object representing the organisational units in an app
      */
-    var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, parentId, type, callback) {
+    var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, includePermissions, parentId, type, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (appId && !_.isNumber(appId)) {
@@ -366,17 +367,29 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid type should be provided'});
         }
 
-        includeSeries = includeSeries || false;
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (appId) {
+            data['app'] = appId;
+        }
+        if (includeSeries) {
+            data['includeSeries'] = includeSeries;
+        }
+        if (includePermissions) {
+            data['includePermissions'] = includePermissions;
+        }
+        if (parentId) {
+            data['parent'] = parentId;
+        }
+        if (type) {
+            data['type'] = type;
+        }
 
         $.ajax({
             'url': '/api/orgunit',
             'type': 'GET',
-            'data': {
-                'app': appId,
-                'includeSeries': includeSeries,
-                'parent': parentId,
-                'type': type
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

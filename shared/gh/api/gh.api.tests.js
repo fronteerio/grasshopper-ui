@@ -202,7 +202,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
             var appId = appIds.shift();
 
             // Fetch the orgunits for the app
-            orgunitAPI.getOrgUnits(appId, true, null, null, function(err, orgunits) {
+            orgunitAPI.getOrgUnits(appId, true, null, null, null, function(err, orgunits) {
                 /* istanbul ignore if */
                 if (err) {
                     return QUnit.stop();

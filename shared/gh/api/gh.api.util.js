@@ -744,7 +744,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         var core = require('gh.core');
         var appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
-        require('gh.api.orgunit').getOrgUnits(null, false, null, ['course', 'subject', 'part'], function(err, data) {
+        require('gh.api.orgunit').getOrgUnits(null, false, null, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
                 return callback(err);
             }
