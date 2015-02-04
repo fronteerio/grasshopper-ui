@@ -17,6 +17,15 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
 
     // Create a custom jEditable select box
     $.editable.addInputType('event-type-select', {
+
+        /**
+         * Create a form element and attach it to the generated form.
+         * The form is available inside the function as variable this.
+         *
+         * @param  {Object}    settings    the jEditable field settings
+         * @param  {String}    original    the containing HTML element
+         * @private
+         */
         'element' : function(settings, original) {
             // Add a class to the table cell
             $(original).addClass('gh-editing');
@@ -33,21 +42,44 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             $(this).append(hidden);
             return(hidden);
         },
-        'content': function(string, settings, original) {
+
+        /**
+         * Set the default value
+         *
+         * @param  {String}    data        object containing the element data
+         * @param  {Object}    settings    the jEditable field settings
+         * @param  {String}    original    the containing HTML element
+         * @private
+         */
+        'content': function(value, settings, original) {
             var eventType = $(original).attr('data-type');
             if (eventType) {
                 $(this).find('select option[value="' + eventType + '"]').attr('selected', 'selected');
             }
         },
+
+        /**
+         * Extend the jEditable behaviour with custom logic
+         *
+         * @param  {Object}    settings    the jEditable field settings
+         * @param  {String}    original    the containing HTML element
+         * @private
+         */
         'plugin': function(settings, original) {
             $('select', this).on('change', function() {
+                // Store the selected value in the hidden input field
                 $(this).parent().find('input[type="hidden"]').val($(this).val());
+                // Store the selected value in the `data-type` attribute
                 $(this).closest('td').attr('data-type', $(this).val());
+                // Store the first letter of the selected value in the `data-first` attribute
                 $(this).closest('td').attr('data-first', $(this).val().substr(0,1));
+                // Submit the form
                 $(this).closest('form').trigger('submit');
             });
             $('select', this).on('focusout', function() {
+                // Show the event type icon
                 $(original).removeClass('gh-editing');
+                // Reset the form
                 original.reset(this);
             });
         }

@@ -204,7 +204,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     ////////////////
 
     /**
-     * Verifies that a valid series title was entered and saves the value
+     * Verify that a valid series title was entered and saves the value
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
@@ -235,7 +235,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     };
 
     /**
-     * Verifies that a valid value was entered and persists the value in the field
+     * Verify that a valid value was entered and persist the value in the field
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
@@ -244,7 +244,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     var editableEventSubmitted = function(value, editableField) {
         // Get the value
         value = $.trim(value);
-        // Get the event ID. If not eventId is found on the tr that means we're dealing with a newly added event
+        // Get the event ID. If no eventId is found on the tr that means we're dealing with a newly added event
         var eventId = $(this).closest('tr').data('eventid');
         // If no value has been entered, we fall back to the previous value
         if (!value) {
@@ -265,7 +265,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     };
 
     /**
-     * Verifies that a valid value for event type was entered and persists the value in the field
+     * Verify that a valid value for event type was entered and persist the value in the field
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
@@ -274,7 +274,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     var editableEventTypeSubmitted = function(value, editableField) {
         // Get the value
         value = $.trim(value);
-        // Get the event ID. If not eventId is found on the tr that means we're dealing with a newly added event
+        // Get the event ID. If no eventId is found on the tr that means we're dealing with a newly added event
         var eventId = $(this).closest('tr').data('eventid');
         // If no value has been entered, we fall back to the previous value
         if (!value) {
@@ -336,7 +336,14 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit event notes',
-            'type': 'event-type-select'
+            'type': 'event-type-select',
+            'callback': function(value, settings) {
+                // Focus the edited field td element after submitting the value
+                // for improved keyboard accessibility
+                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                    $(this).focus();
+                }
+            }
         });
     };
 

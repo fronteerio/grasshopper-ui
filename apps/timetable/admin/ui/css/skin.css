@@ -232,7 +232,7 @@
 }
 
 .gh-batch-edit-events-container .gh-event-type[data-type="Paper"]::before {
-    background-color: #62326E;
+    background-color: #FF4719;
 }
 
 .gh-batch-edit-events-container .gh-event-type[data-type="Seminar"]::before {
