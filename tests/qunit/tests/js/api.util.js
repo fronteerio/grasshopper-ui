@@ -306,6 +306,65 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(2, numWeeks);
     });
 
+    // Test the 'splitEventsByTerm' functionality
+    QUnit.test('splitEventsByTerm', function(assert) {
+        expect(4);
+
+        // Mock a configuration object to test with
+        require('gh.core').config = {
+            "terms": {
+                "2014": [
+                    {
+                        "name": "michaelmas",
+                        "label": "Michaelmas",
+                        "start": "2014-10-07T00:00:00.000Z",
+                        "end": "2014-12-04T00:00:00.000Z"
+                    },
+                    {
+                        "name": "lent",
+                        "label": "Lent",
+                        "start": "2015-01-13T00:00:00.000Z",
+                        "end": "2015-03-13T00:00:00.000Z"
+                    },
+                    {
+                        "name": "easter",
+                        "label": "Easter",
+                        "start": "2015-04-21T00:00:00.000Z",
+                        "end": "2015-06-12T00:00:00.000Z"
+                    }
+                ]
+            },
+            'academicYear': 2014
+        };
+
+        // Mock an Array of events to test with
+        var events = {
+            "results": [
+                { // Michaelmas
+                    "end": "2014-10-20T14:00:00.000Z",
+                    "start": "2014-10-20T13:00:00.000Z"
+                },
+                { // Lent
+                    "end": "2015-01-30T11:00:00.000Z",
+                    "start": "2015-01-30T10:00:00.000Z"
+                },
+                { // Easter
+                    "end": "2015-04-30T14:00:00.000Z",
+                    "start": "2015-04-30T13:00:00.000Z"
+                }
+            ]
+        };
+
+        // Split the events by term
+        var eventsByTerm = gh.api.utilAPI.splitEventsByTerm(events);
+
+        // Verify that the returning events were correctly split by term
+        assert.ok(eventsByTerm, 'Verify that events can be successfully split by term');
+        assert.equal(eventsByTerm['Michaelmas'].length, 1, 'Verify that 1 event was triaged into Michaelmas');
+        assert.equal(eventsByTerm['Lent'].length, 1, 'Verify that 1 event was triaged into Lent');
+        assert.equal(eventsByTerm['Easter'].length, 1, 'Verify that 1 event was triaged into Easter');
+    });
+
 
     ///////////////
     //  GENERAL  //
