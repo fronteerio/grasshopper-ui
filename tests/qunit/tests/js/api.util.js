@@ -16,6 +16,33 @@
 require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     module('Util API');
 
+    // Mock a configuration object to test with
+    require('gh.core').config = {
+        "terms": {
+            "2014": [
+                {
+                    "name": "michaelmas",
+                    "label": "Michaelmas",
+                    "start": "2014-10-07T00:00:00.000Z",
+                    "end": "2014-12-04T00:00:00.000Z"
+                },
+                {
+                    "name": "lent",
+                    "label": "Lent",
+                    "start": "2015-01-13T00:00:00.000Z",
+                    "end": "2015-03-13T00:00:00.000Z"
+                },
+                {
+                    "name": "easter",
+                    "label": "Easter",
+                    "start": "2015-04-21T00:00:00.000Z",
+                    "end": "2015-06-12T00:00:00.000Z"
+                }
+            ]
+        },
+        'academicYear': 2014
+    };
+
 
     ////////////////
     //  CALENDAR  //
@@ -85,33 +112,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the 'generateDisplayDate' functionality
     QUnit.test('generateDisplayDate', function(assert) {
-        // Mock a configuration object to test with
-        require('gh.core').config = {
-            "terms": {
-                "2014": [
-                    {
-                        "name": "michaelmas",
-                        "label": "Michaelmas",
-                        "start": "2014-10-07T00:00:00.000Z",
-                        "end": "2014-12-04T00:00:00.000Z"
-                    },
-                    {
-                        "name": "lent",
-                        "label": "Lent",
-                        "start": "2015-01-13T00:00:00.000Z",
-                        "end": "2015-03-13T00:00:00.000Z"
-                    },
-                    {
-                        "name": "easter",
-                        "label": "Easter",
-                        "start": "2015-04-21T00:00:00.000Z",
-                        "end": "2015-06-12T00:00:00.000Z"
-                    }
-                ]
-            },
-            'academicYear': 2014
-        };
-
         var startDate = '2015-02-18T10:00:00.000Z';
         var endDate = '2015-02-18T17:30:00.000Z';
 
@@ -336,33 +336,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     // Test the 'splitEventsByTerm' functionality
     QUnit.test('splitEventsByTerm', function(assert) {
         expect(4);
-
-        // Mock a configuration object to test with
-        require('gh.core').config = {
-            "terms": {
-                "2014": [
-                    {
-                        "name": "michaelmas",
-                        "label": "Michaelmas",
-                        "start": "2014-10-07T00:00:00.000Z",
-                        "end": "2014-12-04T00:00:00.000Z"
-                    },
-                    {
-                        "name": "lent",
-                        "label": "Lent",
-                        "start": "2015-01-13T00:00:00.000Z",
-                        "end": "2015-03-13T00:00:00.000Z"
-                    },
-                    {
-                        "name": "easter",
-                        "label": "Easter",
-                        "start": "2015-04-21T00:00:00.000Z",
-                        "end": "2015-06-12T00:00:00.000Z"
-                    }
-                ]
-            },
-            'academicYear': 2014
-        };
 
         // Mock an Array of events to test with
         var events = {

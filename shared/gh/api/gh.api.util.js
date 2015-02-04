@@ -96,7 +96,13 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         }
 
         // TODO: add the week number when the custom configuration is in place
-        var weekNumber = 'W' + getWeekInTerm(startDate);
+        // var weekNumber = 'W' + getWeekInTerm(startDate);
+        var weekNumber = getWeekInTerm(startDate);
+        if (weekNumber === 0) {
+            weekNumber = 'OT';
+        } else {
+            weekNumber = 'W' + weekNumber;
+        }
 
         // Retrieve the day
         var weekDay = moment(endDate).utc().format('E');
@@ -332,8 +338,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * keys being the term label and values the Array of events associated to that term
      *
      * @param  {Event[]}    events    The Array of events to split up into terms
-     *
-     * @return {Object}        Object representing the split up terms and events
+     * @return {Object}               Object representing the split up terms and events
      */
     var splitEventsByTerm = exports.splitEventsByTerm = function(events) {
         // Get the configuration
