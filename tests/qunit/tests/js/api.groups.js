@@ -102,7 +102,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 gh.api.groupsAPI.updateGroupMembers(1, updates, function(err) {
                                     assert.ok(!err, 'Verify that group members can be successfully updated');
 
-                                    // Mock a successful response from the server
+                                    // Mock a failed response from the server
                                     body = {'code': 400, 'msg': 'Bad Request'};
                                     gh.api.utilAPI.mockRequest('POST', '/api/groups/' + 1 + '/members', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.groupsAPI.updateGroupMembers(1, updates, function(err) {
@@ -121,7 +121,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the lock functionality
     QUnit.asyncTest('lock', function(assert) {
-        expect(3);
+        expect(2);
 
         // Verify that an error is thrown when no group ID was provided
         assert.throws(function() {
@@ -133,15 +133,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.groupsAPI.lock('invalid_group_id');
         }, 'Verify that an error is thrown when an invalid group ID was provided');
 
-        // Verify that a group can be successfully locked
-        assert.equal(null, gh.api.groupsAPI.lock(1));
-
         QUnit.start();
     });
 
     // Test the unlock functionality
     QUnit.asyncTest('unlock', function(assert) {
-        expect(3);
+        expect(2);
 
         // Verify that an error is thrown when no group ID was provided
         assert.throws(function() {
@@ -152,8 +149,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.throws(function() {
             gh.api.groupsAPI.unlock('invalid_group_id');
         }, 'Verify that an error is thrown when an invalid group ID was provided');
-
-        assert.equal(null, gh.api.groupsAPI.unlock(1));
 
         QUnit.start();
     });

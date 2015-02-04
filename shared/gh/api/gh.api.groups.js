@@ -85,50 +85,42 @@ define(['exports'], function(exports) {
     /**
      * Lock a group
      *
-     * @param  {Number}    id    The id of the group to lock
+     * @param  {Number}    groupId    The id of the group to lock
      */
-    var lock = exports.lock = function(id) {
-        if (!_.isNumber(id)) {
+    var lock = exports.lock = function(groupId) {
+        /* istanbul ignore else */
+        if (!_.isNumber(groupId)) {
             throw new Error('A valid group ID should be provided');
         }
 
-        return;
-
-        /**
-         * TODO: wait for the back-end implementation
-         *
+        /* istanbul ignore next */
         $.ajax({
-            'url': '/api/groups/' + id + '/lock',
+            'url': '/api/groups/' + groupId + '/lock',
             'type': 'POST',
             'error': function(jqXHR, textStatus) {
-                thrown new Error(jqXHR.responseText);
+                throw new Error('The group could not be locked');
             }
         });
-         */
     };
 
     /**
      * Release the lock on a group
      *
-     * @param  {Number}    id    The id of the group to release the lock from
+     * @param  {Number}    groupId    The id of the group to release the lock from
      */
-    var unlock = exports.unlock = function(id) {
-        if (!_.isNumber(id)) {
+    var unlock = exports.unlock = function(groupId) {
+        /* istanbul ignore else */
+        if (!_.isNumber(groupId)) {
             throw new Error('A valid group ID should be provided');
         }
 
-        return;
-
-        /*
-         * TODO: wait for the back-end implementation
-         *
+        /* istanbul ignore next */
         $.ajax({
-            'url': '/api/groups/' + id + '/lock',
+            'url': '/api/groups/' + groupId + '/lock',
             'type': 'DELETE',
             'error': function(jqXHR, textStatus) {
-                thrown new Error(jqXHR.responseText);
+                throw new Error('The group could not be unlocked');
             }
         });
-         */
     };
 });
