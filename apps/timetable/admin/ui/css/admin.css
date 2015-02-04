@@ -279,7 +279,28 @@
 /*****************/
 
 #gh-batch-edit-container {
-    margin: 30px;
+    padding: 30px;
+    width: 100%;
+}
+
+#gh-batch-edit-container.gh-sticky-header {
+    -webkit-box-shadow: 0 6px 37px;
+       -moz-box-shadow: 0 6px 37px;
+            box-shadow: 0 6px 37px;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 320px);
+    z-index: 1;
+}
+
+#gh-batch-edit-container.gh-sticky-header + #gh-batch-edit-term-container {
+    margin-top: 150px;
+}
+
+#gh-batch-edit-container::after {
+    clear: both;
+    content: '';
+    display: block;
 }
 
 #gh-batch-edit-container h1 {
@@ -299,15 +320,23 @@
     width: 100%;
 }
 
-.gh-batch-edit-events-container {
+#gh-batch-edit-term-container {
+    margin: 0 30px 30px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container {
+    margin-bottom: 30px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
     margin-bottom: 100px;
 }
 
-.gh-batch-edit-events-container .table > thead > tr > th {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th {
     border-bottom-width: 5px;
 }
 
-.gh-batch-edit-events-container .table > tbody > tr > td {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td {
     cursor: pointer;
     max-width: 200px;
     overflow: hidden;
@@ -317,31 +346,31 @@
     white-space: nowrap;
 }
 
-.gh-batch-edit-events-container .table > tbody > tr > td:first-child {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
     cursor: auto;
     max-width: 40px;
 }
 
-.gh-batch-edit-events-container .table > thead > tr > th .checkbox,
-.gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     margin: 0;
 }
 
-.gh-batch-edit-events-container .table > thead > tr > th .checkbox {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox {
     margin-left: 5px;
 }
 
-.gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
-.gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
     margin-top: 2px;
 }
 
-.gh-batch-edit-events-container .gh-jeditable-form {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form {
     margin: -8px -12px;
     height: 30px;
 }
 
-.gh-batch-edit-events-container .gh-jeditable-form input {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form input {
     border: none;
     border-left-style: solid;
     border-left-width: 1px;
@@ -362,7 +391,6 @@
     -webkit-box-shadow: 0 6px 37px;
        -moz-box-shadow: 0 6px 37px;
             box-shadow: 0 6px 37px;
-    margin-left: -30px;
     padding: 20px;
     position: fixed;
     width: -moz-calc(100% - 320px); /* Firefox */

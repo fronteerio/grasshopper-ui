@@ -327,6 +327,52 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         return Math.round(difference / (60 * 60 * 24 * 7));
     };
 
+    /**
+     * Split up a given Array of events into separate Arrays per term. Returns an object with
+     * keys being the term label and values the Array of events associated to that term
+     *
+     * @param  {Event[]}    events    The Array of events to split up into terms
+     *
+     * @return {Object}        Object representing the split up terms and events
+     */
+    var splitEventsByTerm = exports.splitEventsByTerm = function(events) {
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+        // Create the object to return
+        var eventsByTerm = {};
+
+        // Transform the start and end dates in the terms to proper Date objects so we can
+        // compare them to the start times of the events. Also add a key to the object to
+        // return in which we will add the triaged events
+        _.each(terms, function(term) {
+            // Convert start and end strings into proper dates for comparison
+            term.start = new Date(term.start);
+            term.end = new Date(term.end);
+            // Add an Array to the object to return with the term label as the key
+            eventsByTerm[term.label] = [];
+        });
+
+        // Loop over the array of events to triage them
+        _.each(events.results, function(ev) {
+            // Convert start date into proper date for comparison
+            var evStart = new Date(ev.start);
+            // Loop over the terms and check whether the event start date
+            // falls between the term start and end date. If it does, push
+            // it into the term's Array
+            _.each(terms, function(term) {
+                if (evStart >= term.start && evStart <= term.end) {
+                    // The event takes place in this term, push it into the Array
+                    eventsByTerm[term.label].push(ev);
+                }
+            });
+        });
+
+        // Return the resulting object
+        return eventsByTerm;
+    };
+
 
     ///////////////
     //  GENERAL  //
