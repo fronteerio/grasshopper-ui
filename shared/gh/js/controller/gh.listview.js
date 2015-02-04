@@ -30,7 +30,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         data.template = data.template || $('#gh-modules-template');
 
         // Retrieve the organisational unit information for the modules
-        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, data.partId, ['module'], function(err, modules) {
+        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, null, data.partId, ['module'], function(err, modules) {
             if (err) {
                 utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
             }

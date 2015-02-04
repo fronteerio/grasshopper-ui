@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker'], function(seriesAPI, utilAPI, eventAPI, adminConstants, moment) {
+define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -148,6 +148,53 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
         var key = parseInt(ev.which, 10);
         if (key === 32 || key === 13) {
             $(this).click();
+        }
+    };
+
+
+    /////////////
+    // LOCKING //
+    /////////////
+
+    // The interval at which to lock the group
+    var lockInterval = null;
+    // The ID of the group that's currently being locked
+    var lockedGroupId = null;
+
+    /**
+     * Lock the group
+     *
+     * @private
+     */
+    var lockGroup = function() {
+        // Get the GroupId
+        lockedGroupId = $('#gh-modules-container button[data-groupid]').data('groupid');
+        // Lock the group
+        groupAPI.lock(lockedGroupId);
+        // Lock the currently edited group every 60 seconds
+        lockInterval = setInterval(function() {
+            // Only attempt to lock when the batch edit mode is active
+            if ($('#gh-batch-edit-view').is(':visible')) {
+                groupAPI.lock(lockedGroupId);
+            // If batch edit is not active we can unlock the group
+            } else {
+                unlockGroup();
+            }
+        }, 60000);
+    };
+
+    /**
+     * Unlock the group
+     *
+     * @private
+     */
+    var unlockGroup = function() {
+        // Only unlock the group if it was previously locked
+        if (lockedGroupId) {
+            // Unlock the group
+            groupAPI.unlock(lockedGroupId);
+            // Clear the interval
+            clearInterval(lockInterval);
         }
     };
 
@@ -629,6 +676,9 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
                     return gh.api.utilAPI.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
                 }
 
+                // Unlock the currently locked group
+                unlockGroup();
+
                 // Load up the batch edit page and provide the events and series data
                 $(document).trigger('gh.admin.changeView', {
                     'name': adminConstants.views.BATCH_EDIT,
@@ -637,6 +687,9 @@ define(['gh.api.series', 'gh.api.util', 'gh.api.event', 'gh.admin-constants', 'm
                         'series': series
                     }
                 });
+
+                // Lock the currently edited group every 60 seconds
+                lockGroup();
             });
         });
     };
