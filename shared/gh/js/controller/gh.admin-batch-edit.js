@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.datepicker'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
+define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -224,7 +224,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     ////////////////
 
     /**
-     * Verifies that a valid series title was entered and saves the value
+     * Verify that a valid series title was entered and saves the value
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
@@ -255,7 +255,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     };
 
     /**
-     * Verifies that a valid value was entered and persists the value in the field
+     * Verify that a valid value was entered and persist the value in the field
      *
      * @param  {String}   value     The new value for the item
      * @return {String}             The value to show in the editable field after editing completed
@@ -264,7 +264,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     var editableEventSubmitted = function(value, editableField) {
         // Get the value
         value = $.trim(value);
-        // Get the event ID. If not eventId is found on the tr that means we're dealing with a newly added event
+        // Get the event ID. If no eventId is found on the tr that means we're dealing with a newly added event
         var eventId = $(this).closest('tr').data('eventid');
         // If no value has been entered, we fall back to the previous value
         if (!value) {
@@ -280,6 +280,39 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             // Show the save button
             toggleSubmit();
         }
+        // Return the selected value
+        return value;
+    };
+
+    /**
+     * Verify that a valid value for event type was entered and persist the value in the field
+     *
+     * @param  {String}   value     The new value for the item
+     * @return {String}             The value to show in the editable field after editing completed
+     * @private
+     */
+    var editableEventTypeSubmitted = function(value, editableField) {
+        // Get the value
+        value = $.trim(value);
+        // Get the event ID. If no eventId is found on the tr that means we're dealing with a newly added event
+        var eventId = $(this).closest('tr').data('eventid');
+        // If no value has been entered, we fall back to the previous value
+        if (!value) {
+            return this.revert;
+        // A value has been entered and the event already existed
+        } else if (this.revert !== value && eventId) {
+            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventId + '"]').removeClass('danger active success').addClass('active');
+            // Show the save button
+            toggleSubmit();
+        // A value has been entered and this is a newly added event
+        } else if (this.revert !== value && !eventId) {
+            $(this).closest('tr').removeClass('danger active success').addClass('active gh-new-event-row');
+            // Show the save button
+            toggleSubmit();
+        }
+        // Remove the editing class from the table cell
+        $(this).removeClass('gh-editing');
+        // Return the selected value
         return value;
     };
 
@@ -289,6 +322,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      * @private
      */
     var setUpJEditable = function() {
+
         // Apply jEditable to the series title
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
             'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
@@ -307,6 +341,22 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             'onblur': 'submit',
             'placeholder': '',
             'select' : true,
+            'callback': function(value, settings) {
+                // Focus the edited field td element after submitting the value
+                // for improved keyboard accessibility
+                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                    $(this).focus();
+                }
+            }
+        });
+
+        // Apply jEditable to the event notes
+        $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
+            'cssclass' : 'gh-jeditable-form',
+            'placeholder': '',
+            'select': true,
+            'tooltip': 'Click to edit event notes',
+            'type': 'event-type-select',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
@@ -574,7 +624,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         // Get the title
         var title = $(this).val();
         // Update all rows that are checked
-        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title);
+        $('.gh-batch-edit-events-container tbody tr.info .gh-event-type').text(title).attr('data-type', title).attr('data-first', title.substr(0,1));
         // Add an `active` class to all updated rows to indicate that changes where made
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
@@ -709,10 +759,11 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
-        $('body').on('keyup', '#gh-batch-edit-type', batchEditType);
+        $('body').on('change', '#gh-batch-edit-type', batchEditType);
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
     };
 
     addBinding();

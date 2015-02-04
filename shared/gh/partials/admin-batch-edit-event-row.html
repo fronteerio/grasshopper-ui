@@ -19,7 +19,8 @@
     </td>
     <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- ev.organisers %></td>
     <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0" title="Click to edit the event location"><%- ev.location %></td>
-    <td class="col-xs-2 gh-jeditable-events gh-event-type" tabindex="0" title="Click to edit the event notes"><%- ev.notes %></td>
+    <td class="col-xs-2 gh-jeditable-events-select gh-event-type" data-type="<%- ev.notes %>" data-first="<% if (ev.notes) { %><%- ev.notes.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event notes">
+    <%- ev.notes %></td>
     <td class="col-xs-1 gh-event-delete" tabindex="0" title="Click to delete this event">
         <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
     </td>
