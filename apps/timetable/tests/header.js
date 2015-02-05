@@ -23,7 +23,9 @@ casper.test.begin('Student - Component - Header', function(test) {
         casper.waitForSelector('#gh-right-container #gh-header', function() {
             test.assertExists('#gh-left-container #gh-header-logo img', 'Verify that the header hero has the Cambridge University logo');
             test.assertExists('#gh-right-container #gh-header h1', 'Verify that the header has a header h1');
-            test.assertSelectorHasText('#gh-right-container #gh-header h1', 'My timetable', 'Verify that the header has the text \'My timetable\'');
+            test.assertEval(function() {
+                return require('gh.core').data.me.app.displayName === $('#gh-right-container #gh-header h1').text();
+            }, 'Verify that the header has the correct display name of the app');
             test.assertExists('#gh-right-container #gh-header #gh-signin-form', 'Verify that the header has a login form');
         });
     };
