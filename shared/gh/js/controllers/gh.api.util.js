@@ -214,6 +214,33 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Return a term object by specifying a date
+     *
+     * @param  {String}    date    The date where the term should be returned for
+     * @return {Object}            The matching term
+     */
+    var getTermByDate = exports.getTermByDate = function(date) {
+        if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+            throw new Error('A valid date should be provided');
+        }
+
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+
+        // Loop over the terms and check if the given date is in the range of one of the terms
+        var eventDate = convertISODatetoUnixDate(date);
+        for (var i=0; i<terms.length; i++) {
+            var termStart = convertISODatetoUnixDate(moment(terms[i].start).utc().format());
+            var termEnd = convertISODatetoUnixDate(moment(terms[i].end).utc().format());
+            if ((eventDate >= termStart) && (eventDate <= termEnd)) {
+                return terms[i];
+            }
+        }
+    };
+
+    /**
      * Get the week of the term in which a date is located. The function assumes that the
      * week starts on the first day of the term and that the terms are limited by the
      * academicYear that is set on the app

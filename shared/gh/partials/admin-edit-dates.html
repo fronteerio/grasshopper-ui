@@ -3,13 +3,39 @@
         <div class="col-xs-7 gh-col-datepicker" id="gh-datepicker"></div>
         <div class="col-xs-5 gh-col-time">
             <div class="form-group">
+                <label class="sr-only" for="gh-module-week">week</label>
+                <select id="gh-module-week" class="form-control">
+                    <option value="0">Out of term</option>
+                    <option value="1">Week 1</option>
+                    <option value="2">Week 2</option>
+                    <option value="3">Week 3</option>
+                    <option value="4">Week 4</option>
+                    <option value="5">Week 5</option>
+                    <option value="6">Week 6</option>
+                    <option value="7">Week 7</option>
+                    <option value="8">Week 8</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="gh-module-day">day</label>
+                <select id="gh-module-day" class="form-control">
+                    <option value="4" data-day="0">Thursday</option>
+                    <option value="5" data-day="1">Friday</option>
+                    <option value="6" data-day="2">Saturday</option>
+                    <option value="0" data-day="3">Sunday</option>
+                    <option value="1" data-day="4">Monday</option>
+                    <option value="2" data-day="5">Tuesday</option>
+                    <option value="3" data-day="6">Wednesday</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label class="sr-only" for="gh-module-from-hour">from</label>
-                <select id="gh-module-from-minutes" class="form-control pull-right">
+                <select id="gh-module-from-minutes" class="form-control gh-select-time pull-right">
                     <% for (var i = 0; i < 60; i += data.interval.minutes) { %>
                         <option value="<%= data.gh.api.utilAPI.addLeadingZero(i) %>"><%- data.gh.api.utilAPI.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
-                <select id="gh-module-from-hour" class="form-control pull-right">
+                <select id="gh-module-from-hour" class="form-control gh-select-time pull-right">
                     <% for (var i = 7; i < 20; i += data.interval.hours) { %>
                         <option value="<%= data.gh.api.utilAPI.addLeadingZero(i) %>"><%- data.gh.api.utilAPI.addLeadingZero(i) %></option>
                     <% } %>
@@ -19,12 +45,12 @@
             </div>
             <div class="form-group">
                 <label class="sr-only" for="gh-module-to-minutes">to</label>
-                <select id="gh-module-to-minutes" class="form-control pull-right">
+                <select id="gh-module-to-minutes" class="form-control gh-select-time pull-right">
                     <% for (var i = 0; i < 60; i += data.interval.minutes) { %>
                         <option value="<%= data.gh.api.utilAPI.addLeadingZero(i) %>"><%- data.gh.api.utilAPI.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
-                <select id="gh-module-to-hour" class="form-control pull-right">
+                <select id="gh-module-to-hour" class="form-control gh-select-time pull-right">
                     <% for (var i = 7; i < 20; i += data.interval.hours) { %>
                         <option value="<%= data.gh.api.utilAPI.addLeadingZero(i) %>"><%- data.gh.api.utilAPI.addLeadingZero(i) %></option>
                     <% } %>

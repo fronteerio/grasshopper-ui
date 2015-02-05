@@ -751,7 +751,7 @@
     text-align: right;
 }
 
-#gh-edit-dates #gh-edit-dates-form select.form-control {
+#gh-edit-dates #gh-edit-dates-form select.gh-select-time {
     margin-left: 5px;
     width: 50px;
 }
