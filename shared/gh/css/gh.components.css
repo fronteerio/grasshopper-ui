@@ -13,6 +13,9 @@
  * permissions and limitations under the License.
  */
 
+.gh-focus {
+    outline: -webkit-focus-ring-color auto 5px;
+}
 
 /**********/
 /* HEADER */

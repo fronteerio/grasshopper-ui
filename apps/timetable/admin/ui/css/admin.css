@@ -298,7 +298,8 @@
     margin-top: 150px;
 }
 
-#gh-batch-edit-container::after {
+#gh-batch-edit-container::after,
+#gh-batch-edit-header::after {
     clear: both;
     content: '';
     display: block;
@@ -319,6 +320,77 @@
 #gh-batch-edit-header > div > * {
     height: 39px;
     width: 100%;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container {
+    background: #eee;
+    padding: 20px 50px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description {
+    float: left;
+    width: 20%;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description h2 {
+    font-size: 20px;
+    margin: 7px 0 0;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container {
+    overflow: auto;
+    width: 80%;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container #gh-batch-edit-date-picker {
+    border-collapse: separate;
+    border-spacing: 1px;
+    display: table;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
+    background-color: #FFF;
+    display: table-cell;
+    height: 40px;
+    min-width: 77px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label {
+    font-size: 20px;
+    font-weight: 400;
+    padding: 4px 16px 0;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o {
+    margin-left: 2px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i {
+    color: #62326E;
+    margin-left: 2px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i.fa-square-o,
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-check-square-o {
+    display: none;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox input {
+    opacity: 0;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
+    border: 3px solid #62326E;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label {
+    padding: 4px 12px 0 13px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i.fa-check-square-o {
+    display: inline-block;
 }
 
 #gh-batch-edit-term-container {

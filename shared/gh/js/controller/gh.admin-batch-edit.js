@@ -729,6 +729,25 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     // BINDING //
     /////////////
 
+    var batchEditDateWeeks = function() {
+        // If the input field is checked, add appropriate the class to its parent
+        if ($(this).is(':checked')) {
+            // Add the class
+            $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
+        } else {
+            // Remove the class
+            $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
+        }
+    };
+
+    var blurEditDateWeeks = function() {
+        $('#gh-batch-edit-date-picker .checkbox').removeClass('gh-focus');
+    };
+
+    var focusEditDateWeeks = function() {
+        $(this).closest('.checkbox').addClass('gh-focus');
+    };
+
     /**
      * Add handlers to various elements in the listview
      *
@@ -764,6 +783,10 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
         $('body').on('change', '#gh-batch-edit-type', batchEditType);
+        $('body').on('change', '#gh-batch-edit-date-picker-container input', batchEditDateWeeks);
+        $('body').on('focus', '#gh-batch-edit-date-picker-container input', focusEditDateWeeks);
+        $('body').on('blur', '#gh-batch-edit-date-picker-container input', blurEditDateWeeks);
+
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
