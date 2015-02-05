@@ -208,8 +208,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'onShown': function() {
 
                     // Cache the trigger
-                    var eventId = $(trigger).closest('tr').attr('data-eventid');
-                    $trigger = $(trigger).closest('tr[data-eventid="' + eventId + '"]').find('td.gh-event-date');
+                    $trigger = $(trigger).closest('tr .gh-event-date');
 
                     renderDatePicker();
                     setCalendarDate();
