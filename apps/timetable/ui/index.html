@@ -59,7 +59,10 @@
         <script id="gh-header-template" type="text/template">
             <% if (!gh.data.me || gh.data.me.anon) { %>
                 <form id="gh-signin-form" class="form-inline pull-right" role="form">
-                    <%= _.partial('login-form') %>
+                    <%= _.partial('login-form', {
+                        'gh': gh,
+                        'isGlobalAdminUI': false
+                    }) %>
                 </form>
             <% } else { %>
                 <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
@@ -72,7 +75,10 @@
         </script>
 
         <script id="gh-modal-template" type="text/template">
-            <%= _.partial('login-modal', {'data': null}) %>
+            <%= _.partial('login-modal', {
+                'gh': gh,
+                'isGlobalAdminUI': false
+            }) %>
         </script>
 
         <script id="gh-modules-template" type="text/template">
