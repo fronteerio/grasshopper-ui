@@ -154,7 +154,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
         // Render the editable parts template
         gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
-            'data': editableParts
+            'data': editableParts,
+            'hideVideo': gh.api.utilAPI.localDataStorage().get('hideVideo')
         }, $('#gh-main'));
     };
 
@@ -254,21 +255,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     /////////////
 
     /**
-     * Initialise the video
-     *
-     * @private
-     */
-    var initVideo = function() {
-        if (gh.api.utilAPI.localDataStorage().get('hideVideo')) {
-            return hideVideo();
-        }
-        showVideo();
-
-        // Do not show the video at the top the next time
-        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
-    };
-
-    /**
      * Hide the help video
      *
      * @private
@@ -278,7 +264,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         $('#gh-main-tripos .gh-video').show();
         // Hide the video on the top
         $('#gh-main-tripos .gh-video:first-child').hide();
-        return false;
+        // Do not show the video next time
+        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
     };
 
     /**
@@ -290,8 +277,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         // Hide the video in the list
         $('#gh-main-tripos .gh-video').hide();
         // Show the video on the top
-        $('#gh-main-tripos .gh-video:first-child').show();
-        return false;
+        $('#gh-main-tripos > .gh-video').show();
+        // Scroll to the top to see the video
+        $('body').animate({scrollTop: 0}, 200);
     };
 
     /**
@@ -395,9 +383,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
             // Show the tripos help info
             showTriposHelp();
-
-            // Initialise the video
-            initVideo();
         }
     };
 
