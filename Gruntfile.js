@@ -259,7 +259,7 @@ module.exports = function(grunt) {
                                 '<%= target %>/optimized/apps',
                                 '<%= target %>/optimized/shared'
                             ],
-                            'includeExts': ['html']
+                            'includeExts': ['html', 'js']
                         })
                     }
                 ],
