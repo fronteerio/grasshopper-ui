@@ -756,8 +756,9 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $('body').on('click', '.gh-event-delete', deleteEvent);
 
-        // Batch edit form submission
+        // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
+        $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
 
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
