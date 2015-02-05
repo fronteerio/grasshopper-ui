@@ -167,7 +167,10 @@ module.exports = function(grunt) {
                     'coverage': {
                         'disposeCollector': true,
                         'baseUrl': ".",
-                        'src': ['shared/gh/api/*.js'],
+                        'src': [
+                            'shared/gh/js/*.js',
+                            'shared/gh/js/controllers/*.js'
+                        ],
                         'instrumentedFiles': 'target/coverage',
                         'lcovReport': 'coverage/lcov',
                         'htmlReport': 'coverage/html',
@@ -182,7 +185,7 @@ module.exports = function(grunt) {
                 'options': {
                     'appDir': './',
                     'baseUrl': './shared',
-                    'mainConfigFile': './shared/gh/api/gh.bootstrap.js',
+                    'mainConfigFile': './shared/gh/js/gh.bootstrap.js',
                     'dir': '<%= target %>/optimized',
                     'optimize': 'uglify',
                     'preserveLicenseComments': false,
@@ -256,7 +259,7 @@ module.exports = function(grunt) {
                                 '<%= target %>/optimized/apps',
                                 '<%= target %>/optimized/shared'
                             ],
-                            'includeExts': ['html']
+                            'includeExts': ['html', 'js']
                         })
                     }
                 ],
@@ -412,7 +415,7 @@ module.exports = function(grunt) {
 
         var basedir = grunt.config('target') + '/optimized/';
         var hashedPaths = require('./' + grunt.config.get('ver.gh.version'));
-        var bootstrapPath = basedir + hashedPaths['/shared/gh/api/gh.bootstrap.js'];
+        var bootstrapPath = basedir + hashedPaths['/shared/gh/js/gh.bootstrap.js'];
         var bootstrap = grunt.file.read(bootstrapPath);
         var regex = /("|')?paths("|')?: ?\{[^}]*\}/;
         var scriptPaths = 'paths = {' + bootstrap.match(regex)[0] + '}';
