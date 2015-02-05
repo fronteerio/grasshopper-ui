@@ -675,7 +675,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      */
     var batchEditDate = function(ev, trigger) {
         // Add an `active` class to the updated row to indicate that changes where made
-        $(trigger).parent().addClass('active');
+        $(trigger).parent().addClass('active gh-new-event-row');
         // Show the save button
         toggleSubmit();
     };
