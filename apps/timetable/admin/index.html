@@ -149,10 +149,19 @@
         </script>
 
         <!-- Batch edit date template -->
-        <script id="gh-batch-edit-date-template" type="text/template">
-            <%= _.partial('admin-batch-edit-date', {
+        <script id="gh-edit-date-field-template" type="text/template">
+            <%= _.partial('admin-edit-date-field', {
                 'data': data,
                 'utilAPI': utilAPI
+            }) %>
+        </script>
+
+        <script id="gh-batch-edit-date-template" type="text/template">
+            <%= _.partial('admin-batch-edit-date', {
+                'gh': gh,
+                'numberOfWeeks': numberOfWeeks,
+                'weeksInUse': weeksInUse,
+                'termsInUse': termsInUse
             }) %>
         </script>
 

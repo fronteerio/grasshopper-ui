@@ -37,7 +37,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
 
         // Render the content
-        var content = gh.api.utilAPI.renderTemplate($('#gh-batch-edit-date-template'), {
+        var content = gh.api.utilAPI.renderTemplate($('#gh-edit-date-field-template'), {
             'data': {
                 'start': startDate,
                 'end': endDate

@@ -323,8 +323,7 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container {
-    background: #eee;
-    padding: 20px 50px;
+    padding: 20px 50px 0;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description {
@@ -346,6 +345,7 @@
     border-collapse: separate;
     border-spacing: 1px;
     display: table;
+    margin-bottom: 12px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
@@ -392,6 +392,33 @@
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i.fa-check-square-o {
     display: inline-block;
 }
+
+#gh-batch-edit-container #gh-batch-edit-time-picker::after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-day-picker {
+    width: 120px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
+#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
+    width: 50px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-start,
+#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-end {
+    margin: 0 0 7px 17px;
+}
+
+#gh-batch-edit-container .gh-batch-edit-date-add-day {
+    clear: both;
+    display: block;
+}
+
+/* Terms */
 
 #gh-batch-edit-term-container {
     margin: 0 30px 30px;

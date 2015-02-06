@@ -139,6 +139,25 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Get the number of weeks in a term
+     *
+     * @param  {Object}    term    The term to get the number of weeks for
+     *
+     * @return {Number}            The number of weeks in the term
+     */
+    var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
+        // The number of milliseconds in one week
+        var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+        // Convert the term start and end date to milliseconds
+        var termStartDate = new Date(term.start).getTime();
+        var termEndDate = new Date(term.end).getTime();
+        // Calculate the time difference
+        var timeDifference = Math.abs(termEndDate - termStartDate);
+        // Convert to weeks and return
+        return Math.floor(timeDifference / ONE_WEEK) + 1;
+    };
+
+    /**
      * Get the week of the term in which a date is located. The function assumes that the
      * week starts on the first day of the term and that the terms are limited by the
      * academicYear that is set on the app
@@ -734,6 +753,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Require all the partial HTML files
         require(['text!gh/partials/admin-batch-edit.html',
                  'text!gh/partials/admin-batch-edit-date.html',
+                 'text!gh/partials/admin-edit-date-field.html',
                  'text!gh/partials/admin-batch-edit-event-row.html',
                  'text!gh/partials/admin-batch-edit-event-type.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
@@ -754,11 +774,12 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
             _.declarePartial('admin-batch-edit-date', adminBatchEditDate);
+            _.declarePartial('admin-edit-date-field', adminEditDateField);
             _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-batch-edit-event-row', adminBatchEditEventRow);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
