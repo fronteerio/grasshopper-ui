@@ -99,7 +99,6 @@ define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
      * @private
      */
     var doLogin = function(ev) {
-
         // Prevent the form from being submitted
         ev.preventDefault();
 
@@ -420,6 +419,15 @@ define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
         });
     };
 
+    /**
+     * Update the value attribute of a checkbox
+     *
+     * @private
+     */
+    var updateCheckboxValue = function() {
+        $(this).val($(this).is(':checked'));
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -431,6 +439,7 @@ define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
      * @private
      */
     var addBinding = function() {
+        $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
         $('body').on('click', '#gh-tenants-apps-form button', submitTenantForm);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);

@@ -77,7 +77,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      * @private
      */
     var renderLoginModal = function() {
-         gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
+        gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
     };
@@ -97,19 +97,27 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
         // Prevent the form from being submitted
         ev.preventDefault();
 
-        // Collect and submit the form data
-        var formValues = _.object(_.map($(this).serializeArray(), _.values));
-        gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-            if (!err) {
-                var state = $.param($.bbq.getState());
-                if (state) {
-                    return window.location.reload();
+        // Do local authentication
+        if (gh.config.enableLocalAuth) {
+
+            // Collect and submit the form data
+            var formValues = _.object(_.map($(this).serializeArray(), _.values));
+            gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
+                if (!err) {
+                    var state = $.param($.bbq.getState());
+                    if (state) {
+                        return window.location.reload();
+                    }
+                    window.location = '/';
+                } else {
+                    gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
                 }
-                window.location = '/';
-            } else {
-                gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
-            }
-        });
+            });
+
+        // Do Shibboleth authentication
+        } else if (gh.config.enableShibbolethAuth) {
+            gh.api.authenticationAPI.shibbolethLogin();
+        }
     };
 
     /**

@@ -154,7 +154,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
         // Render the editable parts template
         gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
-            'data': editableParts
+            'data': editableParts,
+            'hideVideo': gh.api.utilAPI.localDataStorage().get('hideVideo')
         }, $('#gh-main'));
     };
 
@@ -213,19 +214,26 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
      * @private
      */
     var doLogin = function(ev) {
-
         // Prevent the form from being submitted
         ev.preventDefault();
 
-        // Collect and submit the form data
-        var formValues = _.object(_.map($(this).serializeArray(), _.values));
-        gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-            if (!err) {
-                window.location = '/admin';
-            } else {
-                gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
-            }
-        });
+        // Do local authentication
+        if (gh.config.enableLocalAuth) {
+
+            // Collect and submit the form data
+            var formValues = _.object(_.map($(this).serializeArray(), _.values));
+            gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
+                if (!err) {
+                    window.location = '/admin';
+                } else {
+                    gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
+                }
+            });
+
+        // Do Shibboleth authentication
+        } else if (gh.config.enableShibbolethAuth) {
+            gh.api.authenticationAPI.shibbolethLogin();
+        }
     };
 
     /**
@@ -254,21 +262,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
     /////////////
 
     /**
-     * Initialise the video
-     *
-     * @private
-     */
-    var initVideo = function() {
-        if (gh.api.utilAPI.localDataStorage().get('hideVideo')) {
-            return hideVideo();
-        }
-        showVideo();
-
-        // Do not show the video at the top the next time
-        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
-    };
-
-    /**
      * Hide the help video
      *
      * @private
@@ -278,7 +271,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         $('#gh-main-tripos .gh-video').show();
         // Hide the video on the top
         $('#gh-main-tripos .gh-video:first-child').hide();
-        return false;
+        // Do not show the video next time
+        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
     };
 
     /**
@@ -290,8 +284,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         // Hide the video in the list
         $('#gh-main-tripos .gh-video').hide();
         // Show the video on the top
-        $('#gh-main-tripos .gh-video:first-child').show();
-        return false;
+        $('#gh-main-tripos > .gh-video').show();
+        // Scroll to the top to see the video
+        $('body').animate({scrollTop: 0}, 200);
     };
 
     /**
@@ -379,12 +374,15 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {
+            // Only show the login form is local authentication is enabled
+            if (gh.config.enableLocalAuth) {
 
-            // Display the help link
-            renderHelp();
+                // Display the help link
+                renderHelp();
 
-            // Render the login form
-            renderLoginForm();
+                // Render the login form
+                renderLoginForm();
+            }
         } else {
 
             // Render the picker container
@@ -395,9 +393,6 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
 
             // Show the tripos help info
             showTriposHelp();
-
-            // Initialise the video
-            initVideo();
         }
     };
 
