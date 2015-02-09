@@ -672,6 +672,10 @@ tbody tr:last-child > td.fc-widget-content {
     width: 350px;
 }
 
+.popover .popover-title {
+    display: none;
+}
+
 .popover .popover-content {
     margin: 12px 10px;
 }
