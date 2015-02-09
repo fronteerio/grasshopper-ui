@@ -321,6 +321,11 @@
     width: 100%;
 }
 
+#gh-batch-edit-header .gh-batch-edit-header-description {
+    display: table-cell;
+    vertical-align: middle;
+}
+
 #gh-batch-edit-term-container {
     margin: 0 30px 30px;
 }
