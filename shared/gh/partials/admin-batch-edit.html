@@ -42,7 +42,7 @@
                 <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
             </div>
             <div class="col-xs-2">
-                <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right"><i class="fa fa-calendar"></i> Time/dates</button>
+                <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Time/dates</button>
             </div>
             <div class="col-xs-2">
                 <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
@@ -60,11 +60,12 @@
             </div>
             <div class="col-xs-1"></div>
         </div>
+        <div id="gh-batch-edit-date-container"><!-- --></div>
     </div>
 
     <div id="gh-batch-edit-term-container">
         <% _.each(data.eventsByTerm, function(term, name) { %>
-            <div class="gh-batch-edit-events-container">
+            <div class="gh-batch-edit-events-container" data-term="<%- name.toLowerCase().replace(/\ /g, '') %>">
                 <table class="table">
                     <thead>
                         <tr>

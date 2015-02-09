@@ -154,6 +154,42 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
     });
 
+    // Test the 'getWeeksInTerm' functionality
+    QUnit.test('getWeeksInTerm', function(assert) {
+        // Get the first term of 2014 which has 9 weeks in it
+        // Verify that a valid term needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getWeeksInTerm();
+        }, 'Verify that a valid term needs to be provided');
+
+        // Verify that the correct number of weeks is returned
+        assert.strictEqual(gh.api.utilAPI.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 9, 'Verify that the correct number of weeks is returned');
+    });
+
+    // Test the 'getDateByWeekAndDay' functionality
+    QUnit.test('getDateByWeekAndDay', function(assert) {
+        // Verify that a valid term name needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getDateByWeekAndDay(null, 1, 1);
+        }, 'Verify that a valid term name needs to be provided');
+
+        // Verify that a valid week number needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getDateByWeekAndDay('michaelmas', null, 1);
+        }, 'Verify that a valid term name needs to be provided');
+
+        // Verify that a valid day number needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 1, null);
+        }, 'Verify that a valid term name needs to be provided');
+
+        // Verify that the correct date is returned
+        var testDate = new Date('Tue Oct 21 2014 01:00:00 GMT+0100 (BST)');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
+    });
+
     // Test the 'dateDisplay' functionality
     QUnit.test('dateDisplay', function(assert) {
         var date = '2015-02-18T16:00:00.000Z';

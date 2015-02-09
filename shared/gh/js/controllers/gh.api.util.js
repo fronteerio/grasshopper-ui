@@ -139,6 +139,81 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Get the number of weeks in a term
+     *
+     * @param  {Object}    term    The term to get the number of weeks for
+     * @return {Number}            The number of weeks in the term
+     */
+    var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
+        if (!_.isObject(term)) {
+            throw new Error('A valid term should be provided');
+        }
+
+        // The number of milliseconds in one week
+        var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+        // Convert the term start and end date to milliseconds
+        var termStartDate = new Date(term.start).getTime();
+        var termEndDate = new Date(term.end).getTime();
+        // Calculate the time difference
+        var timeDifference = Math.abs(termEndDate - termStartDate);
+        // Convert to weeks and return
+        return Math.floor(timeDifference / ONE_WEEK) + 1;
+    };
+
+    /**
+     * Get a date by specifying the term it's in, the week number it's in and the day of the week it is
+     *
+     * @param  {String}    termName      The name of the term to look for the date
+     * @param  {Number}    weekNumber    The week of the term to look for the date
+     * @param  {Number}    dayNumber     The day of the week to look for the dae
+     * @return {Date}                    Date object of the day in the term
+     */
+    var getDateByWeekAndDay = exports.getDateByWeekAndDay = function(termName, weekNumber, dayNumber) {
+        if (!_.isString(termName)) {
+            throw new Error('A valid term name should be provided');
+        } else if (!_.isNumber(weekNumber)) {
+            throw new Error('A valid week number should be provided');
+        } else if (!_.isNumber(dayNumber)) {
+            throw new Error('A valid day number should be provided');
+        }
+
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+        // Variable used to assign the date by week and day to and return
+        var dateByWeekAndDay = null;
+
+        // Loop over the terms
+        _.each(terms, function(term) {
+            if (term.name === termName) {
+                // The number of milliseconds in one week
+                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+                // The number of milliseconds in one day
+                var ONE_DAY = 1000 * 60 * 60 * 24;
+                // Get the date on which the term starts
+                var termStartDate = new Date(term.start).getTime();
+
+                // Calculate the week offset in milliseconds
+                var weekOffset = weekNumber * ONE_WEEK;
+                // Calculate the start date of the week
+                weekOffset = termStartDate + weekOffset;
+
+                // Now calculate the day offset in this week
+                var dayOffset = dayNumber - new Date(weekOffset).getDay();
+                // Calculate the week offset in milliseconds
+                dayOffset = dayOffset * ONE_DAY;
+
+                // Calculate the day of the week to return
+                dateByWeekAndDay = new Date(weekOffset + dayOffset);
+            }
+        });
+
+        // return the Date object
+        return dateByWeekAndDay;
+    };
+
+    /**
      * Get the week of the term in which a date is located. The function assumes that the
      * week starts on the first day of the term and that the terms are limited by the
      * academicYear that is set on the app
@@ -734,6 +809,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Require all the partial HTML files
         require(['text!gh/partials/admin-batch-edit.html',
                  'text!gh/partials/admin-batch-edit-date.html',
+                 'text!gh/partials/admin-edit-date-field.html',
                  'text!gh/partials/admin-batch-edit-event-row.html',
                  'text!gh/partials/admin-batch-edit-event-type.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
@@ -754,11 +830,12 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
             _.declarePartial('admin-batch-edit-date', adminBatchEditDate);
+            _.declarePartial('admin-edit-date-field', adminEditDateField);
             _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-batch-edit-event-row', adminBatchEditEventRow);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);

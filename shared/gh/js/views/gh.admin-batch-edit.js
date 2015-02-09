@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
+define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
 
 
     ///////////////
@@ -34,22 +34,23 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      *
      * @private
      */
-    var addNewEventRow = function() {
-        $eventContainer = $(this).closest('thead').next('tbody');
+    var addNewEventRow = function(ev, data) {
+        var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
+        var eventObj = {'ev': null};
+        eventObj.ev = data && data.eventObj ? data.eventObj : {
+            'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+            'isNew': true, // Used in the template to know this one needs special handling
+            'displayName': '',
+            'end': moment(new Date()).add(1, 'hours').utc().format(),
+            'location': '',
+            'notes': 'Lecture',
+            'organisers': 'organiser',
+            'start': moment(new Date()).utc().format()
+        };
+        eventObj['utilAPI'] = utilAPI;
+
         // Append a new event row
-        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), {
-            'ev': {
-                'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
-                'isNew': true, // Used in the template to know this one needs special handling
-                'displayName': '',
-                'end': moment(new Date()).add(1, 'hours').utc().format(),
-                'location': '',
-                'notes': '',
-                'organisers': 'organiser',
-                'start': moment(new Date()).utc().format()
-            },
-            'utilAPI': utilAPI
-        }));
+        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
     };
@@ -116,6 +117,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         } else {
             $(this).closest('tr').removeClass('info');
         }
+        toggleBatchEditDateEnabled();
     };
 
     /**
@@ -136,6 +138,30 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             // Hide the save button if all events have been submitted
             $('.gh-batch-edit-actions-container').fadeOut(200);
         }
+    };
+
+    /**
+     * Enable or disable batch editing of dates depending on whether or not there are
+     * event rows that have been selected
+     *
+     * @private
+     */
+    var toggleBatchEditDateEnabled = function() {
+        if ($('.gh-batch-edit-events-container tbody .gh-select-single:checked').length) {
+            $('#gh-batch-edit-time').removeAttr('disabled');
+        } else {
+            $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
+            $('#gh-batch-edit-time').attr('disabled', 'disabled');
+        }
+    };
+
+    /**
+     * Show/hide the date batch editing functionality
+     *
+     * @private
+     */
+    var toggleBatchEditDate = function() {
+        $('#gh-batch-edit-header').toggleClass('gh-batch-edit-time-open');
     };
 
     /**
@@ -166,10 +192,14 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             var headerTop = $('#gh-sticky-header-anchor').offset().top;
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
-            if (windowTop > headerTop) {
+            if (windowTop >= headerTop) {
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
+                // Set the margin of the batch edit container to the height of the sticky header
+                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
             } else {
                 $('#gh-batch-edit-container').removeClass('gh-sticky-header');
+                // Reset the margin of the batch edit container
+                $('#gh-batch-edit-term-container').css('margin-top', 0);
             }
         }
     };
@@ -401,31 +431,51 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     hasError = true;
                 }
 
-                // Create an object of the organisers
-                // TODO: Implement lookup to handle organisers properly
-                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
-                // make sense to implement this, waiting for lookup to be hooked in
-                var organisers = _.object([updatedEvent.organisers], [true]);
-                // Update the event organisers
-                eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
-                    if (orgErr) {
-                        hasError = true;
-                        // Mark the row so it's visually obvious that the update failed
-                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
-                    } else {
-                        // Mark the row so it's visually obvious that the update was successful
-                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
-                    }
+                if (updatedEvent.organisers) {
+                    // Create an object of the organisers
+                    // TODO: Implement lookup to handle organisers properly
+                    // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
+                    // make sense to implement this, waiting for lookup to be hooked in
+                    var organisers = _.object([updatedEvent.organisers], [true]);
+                    // Update the event organisers
+                    eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
+                        if (orgErr) {
+                            hasError = true;
+                            // Mark the row so it's visually obvious that the update failed
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                        } else {
+                            // Mark the row so it's visually obvious that the update was successful
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                        }
 
-                    // If we're done, execute the callback, otherwise call the function again with
-                    // the next event to update
-                    done++;
-                    if (done === todo) {
-                        _callback();
-                    } else {
-                        submitEventUpdate(updatedEventObjs[done], _callback);
-                    }
-                });
+                        // If we're done, execute the callback, otherwise call the function again with
+                        // the next event to update
+                        done++;
+                        if (done === todo) {
+                            _callback();
+                        } else {
+                            submitEventUpdate(updatedEventObjs[done], _callback);
+                        }
+                    });
+                } else {
+                        if (evErr) {
+                            hasError = true;
+                            // Mark the row so it's visually obvious that the update failed
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                        } else {
+                            // Mark the row so it's visually obvious that the update was successful
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                        }
+
+                        // If we're done, execute the callback, otherwise call the function again with
+                        // the next event to update
+                        done++;
+                        if (done === todo) {
+                            _callback();
+                        } else {
+                            submitEventUpdate(updatedEventObjs[done], _callback);
+                        }
+                }
             });
         };
 
@@ -674,8 +724,15 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      * @private
      */
     var batchEditDate = function(ev, trigger) {
-        // Add an `active` class to the updated row to indicate that changes where made
-        $(trigger).parent().addClass('active gh-new-event-row');
+        var eventId = $(trigger).closest('tr').data('eventid');
+        if (!eventId) {
+            // Add an `active` class to the updated row to indicate that changes where made and
+            // add a 'gh-new-event-row' class to it to indicate it's a new event
+            $(trigger).parent().addClass('active gh-new-event-row');
+        } else {
+            // Add an `active` class to the updated row to indicate that changes where made
+            $(trigger).parent().addClass('active');
+        }
         // Show the save button
         toggleSubmit();
     };
@@ -720,6 +777,9 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
 
                 // Lock the currently edited group every 60 seconds
                 lockGroup();
+
+                // TODO: Remove this and only trigger when button is clicked/expanded
+                $(document).trigger('gh.batchdate.setup');
             });
         });
     };
@@ -754,6 +814,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
+        $(document).on('gh.batchedit.addevent', addNewEventRow);
         $('body').on('click', '.gh-event-delete', deleteEvent);
 
         // Batch edit form submission and cancel
@@ -764,6 +825,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
         $('body').on('change', '#gh-batch-edit-type', batchEditType);
+        $('body').on('click', '#gh-batch-edit-time', toggleBatchEditDate);
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);

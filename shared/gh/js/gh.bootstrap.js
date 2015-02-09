@@ -63,6 +63,7 @@ requirejs.config({
 
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',
+        'gh.admin-batch-edit-date': 'gh/js/views/gh.admin-batch-edit-date',
         'gh.admin-event-type-select': 'gh/js/views/gh.admin-event-type-select',
         'gh.admin-listview': 'gh/js/views/gh.admin-listview',
         'gh.borrow-series': 'gh/js/views/gh.borrow-series',

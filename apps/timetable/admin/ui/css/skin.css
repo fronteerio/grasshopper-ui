@@ -200,7 +200,18 @@
 /* BATCH EDITING */
 /*****************/
 
-#gh-batch-edit-container {
+#gh-batch-edit-header.gh-batch-edit-time-open,
+#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
+    border-bottom-color: #EEE;
+}
+
+#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
+    border-color: #EEE;
+    color: #171717;
+}
+
+#gh-batch-edit-container,
+#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
     background-color: #FFF;
 }
 
@@ -220,6 +231,18 @@
 .gh-batch-edit-events-container .gh-jeditable-form input {
     border-left-color: #DDD;
     border-right-color: #DDD;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
+    background-color: #FFF;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i {
+    color: #62326E;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
+    border-color: #62326E;
 }
 
 /* Event type */
