@@ -568,7 +568,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
-                    'notes': $('.gh-event-type', $eventContainer).text(),
+                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
@@ -585,7 +585,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
-                    'notes': $('.gh-event-type', $eventContainer).text(),
+                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organisers': $('.gh-event-organisers', $eventContainer).text(),
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
