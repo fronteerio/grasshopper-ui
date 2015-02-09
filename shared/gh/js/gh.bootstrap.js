@@ -73,6 +73,7 @@ requirejs.config({
         'gh.new-series': 'gh/js/views/gh.new-series',
         'gh.student-listview': 'gh/js/views/gh.student-listview',
         'gh.subheader': 'gh/js/views/gh.subheader',
+        'gh.video': 'gh/js/views/gh.video',
         'gh.visibility': 'gh/js/views/gh.visibility'
     },
     'priority': ['jquery', 'lodash'],
