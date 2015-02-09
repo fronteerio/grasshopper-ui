@@ -50,9 +50,9 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         // Get the weeks that are in use by the selection
         var weeksInUse = getWeeksInUse($rows);
         // Get the term data for the selection
-        var termsInuse = getTermsInUse($rows);
+        var termsInUse = getTermsInUse($rows);
         // Render the batch date editor
-        renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInuse);
+        renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInUse);
     };
 
 
@@ -64,6 +64,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      * Remove events from a specified week number
      *
      * @param  {Number}    weekNumber    The week number to delete events from
+     * @private
      */
     var removeEventsInWeek = function(weekNumber) {
         // Get the checked events from the batch edit container
@@ -84,6 +85,8 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
 
     /**
      * Add another day to the terms based on the selection of weeks
+     *
+     * @private
      */
     var addAnotherDay = function() {
         // For each term selected, add an event

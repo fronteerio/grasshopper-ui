@@ -327,15 +327,15 @@
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open {
-    border-bottom: 2px solid #EEE;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
     padding-bottom: 10px;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    background-color: #FFF;
-    border: 2px solid #EEE;
+    border-style: solid;
+    border-width: 2px;
     border-bottom: 0px;
-    color: #171717;
     height: 51px !important;
     padding-top: 0;
     position: absolute;
@@ -382,7 +382,6 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
-    background-color: #FFF;
     display: table-cell;
     height: 40px;
     min-width: 77px;
@@ -402,7 +401,6 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i {
-    color: #62326E;
     margin-left: 2px;
 }
 
@@ -416,7 +414,8 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
-    border: 3px solid #62326E;
+    border-style: solid;
+    border-width: 3px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label {

@@ -45,6 +45,7 @@
             <div class="clearfix"></div>
         </div>
 
+        <!-- Header template -->
         <script id="gh-header-template" type="text/template">
             <h1>Timetable Administration</h1>
             <% if (!gh.data.me || gh.data.me.anon) { %>
@@ -65,16 +66,19 @@
             <% } %>
         </script>
 
+        <!-- Help template -->
         <script id="gh-help-template" type="text/template">
             <div id="gh-help">
                 <p>Need help? Contact: <a href="mailto:tthelp@cam.ac.uk" title="tthelp@cam.ac.uk">tthelp@cam.ac.uk</a></p>
             </div>
         </script>
 
+        <!-- Tripos help template -->
         <script id="gh-tripos-help-template" type="text/template">
             <p class="gh-tripos-help">To start editing timetables choose a tripos from the list above, or select from your list below</p>
         </script>
 
+        <!-- Login template -->
         <script id="gh-login-template" type="text/template">
             <div id="gh-login-form" class="col-xs-6 pull-left">
                 <form id="gh-signin-form" role="form">
@@ -148,7 +152,7 @@
             }) %>
         </script>
 
-        <!-- Batch edit date template -->
+        <!-- Edit date field template -->
         <script id="gh-edit-date-field-template" type="text/template">
             <%= _.partial('admin-edit-date-field', {
                 'data': data,
@@ -156,6 +160,7 @@
             }) %>
         </script>
 
+        <!-- Batch edit date template -->
         <script id="gh-batch-edit-date-template" type="text/template">
             <%= _.partial('admin-batch-edit-date', {
                 'gh': gh,

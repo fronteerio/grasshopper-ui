@@ -14,7 +14,7 @@
         <!-- Keep rendering new weeks until the amount of weeks left to render is 0 -->
         <% while (numberOfWeeks) { %>
             <% numberOfWeeks--; %>
-            <% var weekNumber = totalWeeks - numberOfWeeks%>
+            <% var weekNumber = totalWeeks - numberOfWeeks %>
             <!-- Determine if the week should be checked or not -->
             <% var weekUsed = _.indexOf(weeksInUse, weekNumber) !== -1 %>
             <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">

@@ -142,7 +142,6 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * Get the number of weeks in a term
      *
      * @param  {Object}    term    The term to get the number of weeks for
-     *
      * @return {Number}            The number of weeks in the term
      */
     var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
