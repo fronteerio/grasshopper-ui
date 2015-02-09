@@ -119,7 +119,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                         'displayName': '',
                         'end': moment(endDate).utc().format(),
                         'location': '',
-                        'notes': '',
+                        'notes': 'Lecture',
                         'organisers': 'organiser',
                         'start': moment(startDate).utc().format()
                     }
@@ -200,7 +200,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      * @private
      */
     var batchEditDateWeeks = function() {
-        // If the input field is checked, add appropriate the class to its parent
+        // If the input field is checked, add the appropriate class to its parent
         if ($(this).is(':checked')) {
             // Add the class
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
@@ -210,6 +210,11 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             // Remove all events associated to the week
             removeEventsInWeek(parseInt($(this).val(), 10));
         }
+        // Get the weeks that are in use by the selection
+        var weeksInUse = $('#gh-batch-edit-date-picker input:checked').length;
+        // Update the weeks in use label
+        weeksInUse = weeksInUse + (weeksInUse === 1 ? ' week' : ' weeks') + ' selected';
+        $('#gh-batch-edit-date-picker-container > small').text(weeksInUse);
     };
 
     /**

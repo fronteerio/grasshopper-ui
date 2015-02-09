@@ -43,7 +43,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             'displayName': '',
             'end': moment(new Date()).add(1, 'hours').utc().format(),
             'location': '',
-            'notes': '',
+            'notes': 'Lecture',
             'organisers': 'organiser',
             'start': moment(new Date()).utc().format()
         };
