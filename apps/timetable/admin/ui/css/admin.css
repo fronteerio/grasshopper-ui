@@ -280,7 +280,7 @@
 /*****************/
 
 #gh-batch-edit-container {
-    padding: 30px;
+    padding: 30px 30px 12px;
     width: 100%;
 }
 
@@ -318,8 +318,45 @@
     width: 100%;
 }
 
+#gh-batch-edit-header {
+    padding-bottom: 12px;
+}
+
+#gh-batch-edit-header .gh-batch-edit-header-description {
+    display: block;
+}
+
+#gh-batch-edit-header.gh-batch-edit-time-open {
+    border-bottom: 2px solid #EEE;
+    padding-bottom: 10px;
+}
+
+#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
+    background-color: #FFF;
+    border: 2px solid #EEE;
+    border-bottom: 0px;
+    color: #171717;
+    height: 51px !important;
+    padding-top: 0;
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+}
+
 #gh-batch-edit-container #gh-batch-edit-date-container {
-    padding: 20px 50px 0;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    -webkit-transition: height .2s, opacity .2s, padding .3s;
+       -moz-transition: height .2s, opacity .2s, padding .3s;
+            transition: height .2s, opacity .2s, padding .3s;
+}
+
+.gh-batch-edit-time-open + #gh-batch-edit-date-container {
+    padding: 20px 50px 0 !important;
+    height: 190px !important;
+    opacity: 1 !important;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description {

@@ -117,6 +117,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         } else {
             $(this).closest('tr').removeClass('info');
         }
+        toggleBatchEditDateEnabled();
     };
 
     /**
@@ -137,6 +138,30 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             // Hide the save button if all events have been submitted
             $('.gh-batch-edit-actions-container').fadeOut(200);
         }
+    };
+
+    /**
+     * Enable or disable batch editing of dates depending on whether or not there are
+     * event rows that have been selected
+     *
+     * @private
+     */
+    var toggleBatchEditDateEnabled = function() {
+        if ($('.gh-batch-edit-events-container tbody .gh-select-single:checked').length) {
+            $('#gh-batch-edit-time').removeAttr('disabled');
+        } else {
+            $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
+            $('#gh-batch-edit-time').attr('disabled', 'disabled');
+        }
+    };
+
+    /**
+     * Show/hide the date batch editing functionality
+     *
+     * @private
+     */
+    var toggleBatchEditDate = function() {
+        $('#gh-batch-edit-header').toggleClass('gh-batch-edit-time-open');
     };
 
     /**
@@ -773,6 +798,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
         $('body').on('change', '#gh-batch-edit-type', batchEditType);
+        $('body').on('click', '#gh-batch-edit-time', toggleBatchEditDate);
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
