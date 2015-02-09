@@ -158,6 +158,52 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Get a date by specifying the term it's in, the week number it's in and the day of the week it is
+     *
+     * @param  {String}    termName      The name of the term to look for the date
+     * @param  {Number}    weekNumber    The week of the term to look for the date
+     * @param  {Number}    dayNumber     The day of the week to look for the dae
+     *
+     * @return {Date}                    Date object of the day in the term
+     */
+    var getDateByWeekAndDay = exports.getDateByWeekAndDay = function(termName, weekNumber, dayNumber) {
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+        // Variable used to assign the date by week and day to and return
+        var dateByWeekAndDay = null;
+
+        // Loop over the terms
+        _.each(terms, function(term) {
+            if (term.name === termName) {
+                // The number of milliseconds in one week
+                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+                // The number of milliseconds in one day
+                var ONE_DAY = 1000 * 60 * 60 * 24;
+                // Get the date on which the term starts
+                var termStartDate = new Date(term.start).getTime();
+
+                // Calculate the week offset in milliseconds
+                var weekOffset = weekNumber * ONE_WEEK;
+                // Calculate the start date of the week
+                weekOffset = termStartDate + weekOffset;
+
+                // Now calculate the day offset in this week
+                var dayOffset = dayNumber - new Date(weekOffset).getDay();
+                // Calculate the week offset in milliseconds
+                dayOffset = dayOffset * ONE_DAY;
+
+                // Calculate the day of the week to return
+                dateByWeekAndDay = new Date(weekOffset + dayOffset);
+            }
+        });
+
+        // return the Date object
+        return dateByWeekAndDay;
+    };
+
+    /**
      * Get the week of the term in which a date is located. The function assumes that the
      * week starts on the first day of the term and that the terms are limited by the
      * academicYear that is set on the app

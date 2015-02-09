@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['lodash', 'gh.api.util', 'gh.api.config'], function(_, utilAPI, configAPI) {
+define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment, utilAPI, configAPI) {
 
 
     ///////////////
@@ -59,6 +59,74 @@ define(['lodash', 'gh.api.util', 'gh.api.config'], function(_, utilAPI, configAP
     ///////////////
     // UTILITIES //
     ///////////////
+
+    /**
+     * Remove events from a specified week number
+     *
+     * @param  {Number}    weekNumber    The week number to delete events from
+     */
+    var removeEventsInWeek = function(weekNumber) {
+        // Get the checked events from the batch edit container
+        var $rows = $('.gh-batch-edit-events-container tr.info');
+        // For each row, check if the event is taking place in the week that is to be removed
+        _.each($rows, function($row) {
+            $row = $($row);
+            // Get the start date of the event
+            var startDate = $row.find('.gh-event-date').data('start');
+            // Get the week in which the event takes place
+            var dateWeek = utilAPI.getWeekInTerm(startDate);
+            // If the event takes place in the week that needs to be removed, delete it
+            if (dateWeek === weekNumber) {
+                $row.find('.gh-event-delete').click();
+            }
+        });
+    };
+
+    /**
+     * Add another day to the terms based on the selection of weeks
+     */
+    var addAnotherDay = function() {
+        // For each term selected, add an event
+        _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
+            // For each selected week, add an event
+            _.each($('#gh-batch-edit-date-picker input:checked'), function(chk) {
+                // Get the week number
+                var eventWeek = parseInt(chk.value, 10);
+                // Get the day number
+                var eventDay = parseInt($('#gh-batch-edit-day-picker').val(), 10);
+                // Get the date by week and day
+                var dateByWeekAndDay = utilAPI.getDateByWeekAndDay(termName, eventWeek, eventDay);
+
+                var eventYear = dateByWeekAndDay.getFullYear();
+                var eventMonth = dateByWeekAndDay.getMonth();
+                eventDay = dateByWeekAndDay.getDate();
+                var eventStartHour = parseInt($('#gh-batch-edit-hours-start').val(), 10);
+                var eventStartMinute = parseInt($('#gh-batch-edit-minutes-start').val(), 10);
+                var eventEndHour = parseInt($('#gh-batch-edit-hours-end').val(), 10);
+                var eventEndMinute = parseInt($('#gh-batch-edit-minutes-end').val(), 10);
+
+                // Create the start date of the event
+                var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
+                // Create the end date of the event
+                var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+
+                // Send off an event that will be picked up by the batch edit and add the rows to the terms
+                $(document).trigger('gh.batchedit.addevent', {
+                    'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
+                    'eventObj': {
+                        'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+                        'isNew': true, // Used in the template to know this one needs special handling
+                        'displayName': '',
+                        'end': moment(endDate).utc().format(),
+                        'location': '',
+                        'notes': '',
+                        'organisers': 'organiser',
+                        'start': moment(startDate).utc().format()
+                    }
+                });
+            });
+        });
+    };
 
     /**
      * Get the terms that are in use by the checked event rows
@@ -139,6 +207,8 @@ define(['lodash', 'gh.api.util', 'gh.api.config'], function(_, utilAPI, configAP
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
+            // Remove all events associated to the week
+            removeEventsInWeek(parseInt($(this).val(), 10));
         }
     };
 
@@ -190,6 +260,9 @@ define(['lodash', 'gh.api.util', 'gh.api.config'], function(_, utilAPI, configAP
         $('body').on('change', '#gh-batch-edit-date-picker-container input', batchEditDateWeeks);
         $('body').on('focus', '#gh-batch-edit-date-picker-container input', focusEditDateWeeks);
         $('body').on('blur', '#gh-batch-edit-date-picker-container input', blurEditDateWeeks);
+
+        // Adding a new day
+        $('body').on('click', '.gh-batch-edit-date-add-day', addAnotherDay);
     };
 
     addBinding();

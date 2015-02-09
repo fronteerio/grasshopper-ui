@@ -294,10 +294,6 @@
     z-index: 1;
 }
 
-#gh-batch-edit-container.gh-sticky-header + #gh-batch-edit-term-container {
-    margin-top: 150px;
-}
-
 #gh-batch-edit-container::after,
 #gh-batch-edit-header::after {
     clear: both;
@@ -354,13 +350,14 @@
     height: 40px;
     min-width: 77px;
     overflow: hidden;
+    padding: 0;
     vertical-align: middle;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label {
     font-size: 20px;
     font-weight: 400;
-    padding: 4px 16px 0;
+    padding: 5px 16px 1px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o {

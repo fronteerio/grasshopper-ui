@@ -34,22 +34,23 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      *
      * @private
      */
-    var addNewEventRow = function() {
-        $eventContainer = $(this).closest('thead').next('tbody');
+    var addNewEventRow = function(ev, data) {
+        var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
+        var eventObj = {'ev': null};
+        eventObj.ev = data && data.eventObj ? data.eventObj : {
+            'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+            'isNew': true, // Used in the template to know this one needs special handling
+            'displayName': '',
+            'end': moment(new Date()).add(1, 'hours').utc().format(),
+            'location': '',
+            'notes': '',
+            'organisers': 'organiser',
+            'start': moment(new Date()).utc().format()
+        };
+        eventObj['utilAPI'] = utilAPI;
+
         // Append a new event row
-        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), {
-            'ev': {
-                'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
-                'isNew': true, // Used in the template to know this one needs special handling
-                'displayName': '',
-                'end': moment(new Date()).add(1, 'hours').utc().format(),
-                'location': '',
-                'notes': '',
-                'organisers': 'organiser',
-                'start': moment(new Date()).utc().format()
-            },
-            'utilAPI': utilAPI
-        }));
+        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
     };
@@ -166,10 +167,14 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             var headerTop = $('#gh-sticky-header-anchor').offset().top;
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
-            if (windowTop > headerTop) {
+            if (windowTop >= headerTop) {
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
+                // Set the margin of the batch edit container to the height of the sticky header
+                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
             } else {
                 $('#gh-batch-edit-container').removeClass('gh-sticky-header');
+                // Reset the margin of the batch edit container
+                $('#gh-batch-edit-term-container').css('margin-top', 0);
             }
         }
     };
@@ -757,6 +762,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
+        $(document).on('gh.batchedit.addevent', addNewEventRow);
         $('body').on('click', '.gh-event-delete', deleteEvent);
 
         // Batch edit form submission and cancel

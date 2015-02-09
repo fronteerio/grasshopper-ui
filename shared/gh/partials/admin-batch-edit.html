@@ -65,7 +65,7 @@
 
     <div id="gh-batch-edit-term-container">
         <% _.each(data.eventsByTerm, function(term, name) { %>
-            <div class="gh-batch-edit-events-container">
+            <div class="gh-batch-edit-events-container" data-term="<%- name.toLowerCase().replace(/\ /g, '') %>">
                 <table class="table">
                     <thead>
                         <tr>
