@@ -323,12 +323,14 @@
 }
 
 #gh-batch-edit-header .gh-batch-edit-header-description {
-    display: block;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open {
     border-bottom-style: solid;
     border-bottom-width: 2px;
+    height: 51px;
     padding-bottom: 10px;
 }
 
