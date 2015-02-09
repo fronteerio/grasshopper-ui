@@ -98,6 +98,8 @@
     vertical-align: middle;
 }
 
+/* Video */
+
 .gh-show-video {
     display: block;
     font-size: 16px;
@@ -113,8 +115,18 @@
 }
 
 #gh-main-tripos .gh-video {
+    -webkit-background-size: cover; /* For WebKit*/
+       -moz-background-size: cover; /* Mozilla*/
+         -o-background-size: cover; /* Opera*/
+            background-size: cover; /* Generic*/
     height: 415px;
     position: relative;
+    text-align: center;
+}
+
+#gh-main-tripos #gh-video {
+    height: 100%;
+    width: auto;
 }
 
 #gh-main-tripos .gh-video .gh-video-info {
@@ -161,6 +173,13 @@
     top: 10px;
     width: 60px;
 }
+
+#gh-main-tripos .gh-video.isPlaying .gh-video-info,
+#gh-main-tripos .gh-video.isPlaying .gh-play-video {
+    display: none;
+}
+
+/* Rows */
 
 #gh-main-tripos > .gh-row-part {
     margin: 0;

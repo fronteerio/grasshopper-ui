@@ -77,7 +77,16 @@
 }
 
 #gh-main-tripos .gh-video {
-    background-color: #CCC !important;
+    background-image: url('/shared/gh/img/video.png');
+}
+
+#gh-main-tripos .gh-video.isPlaying {
+    background-color: #000 !important;
+    background-image: none;
+}
+
+#gh-main-tripos .gh-video:not(.isPlaying) video {
+    display: none;
 }
 
 .gh-show-video,

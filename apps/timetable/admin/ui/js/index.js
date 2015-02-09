@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admin-listview', 'gh.admin-batch-edit', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, adminConstants) {
+define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, adminConstants) {
 
     var state = $.bbq.getState() || {};
 
@@ -273,6 +273,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         $('#gh-main-tripos .gh-video:first-child').hide();
         // Do not show the video next time
         gh.api.utilAPI.localDataStorage().store('hideVideo', true);
+        // Stop the video
+        $(document).trigger('gh.video.stop');
     };
 
     /**
@@ -287,6 +289,8 @@ define(['gh.core', 'gh.admin-constants', 'gh.subheader', 'gh.calendar', 'gh.admi
         $('#gh-main-tripos > .gh-video').show();
         // Scroll to the top to see the video
         $('body').animate({scrollTop: 0}, 200);
+        // Start the video
+        $(document).trigger('gh.video.play');
     };
 
     /**
