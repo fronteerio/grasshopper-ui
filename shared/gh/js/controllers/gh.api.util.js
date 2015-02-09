@@ -145,6 +145,10 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * @return {Number}            The number of weeks in the term
      */
     var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
+        if (!_.isObject(term)) {
+            throw new Error('A valid term should be provided');
+        }
+
         // The number of milliseconds in one week
         var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
         // Convert the term start and end date to milliseconds
@@ -162,10 +166,17 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * @param  {String}    termName      The name of the term to look for the date
      * @param  {Number}    weekNumber    The week of the term to look for the date
      * @param  {Number}    dayNumber     The day of the week to look for the dae
-     *
      * @return {Date}                    Date object of the day in the term
      */
     var getDateByWeekAndDay = exports.getDateByWeekAndDay = function(termName, weekNumber, dayNumber) {
+        if (!_.isString(termName)) {
+            throw new Error('A valid term name should be provided');
+        } else if (!_.isNumber(weekNumber)) {
+            throw new Error('A valid week number should be provided');
+        } else if (!_.isNumber(dayNumber)) {
+            throw new Error('A valid day number should be provided');
+        }
+
         // Get the configuration
         var config = require('gh.core').config;
         // Get the correct terms associated to the current application

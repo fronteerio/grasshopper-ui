@@ -431,31 +431,51 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     hasError = true;
                 }
 
-                // Create an object of the organisers
-                // TODO: Implement lookup to handle organisers properly
-                // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
-                // make sense to implement this, waiting for lookup to be hooked in
-                var organisers = _.object([updatedEvent.organisers], [true]);
-                // Update the event organisers
-                eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
-                    if (orgErr) {
-                        hasError = true;
-                        // Mark the row so it's visually obvious that the update failed
-                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
-                    } else {
-                        // Mark the row so it's visually obvious that the update was successful
-                        $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
-                    }
+                if (updatedEvent.organisers) {
+                    // Create an object of the organisers
+                    // TODO: Implement lookup to handle organisers properly
+                    // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
+                    // make sense to implement this, waiting for lookup to be hooked in
+                    var organisers = _.object([updatedEvent.organisers], [true]);
+                    // Update the event organisers
+                    eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
+                        if (orgErr) {
+                            hasError = true;
+                            // Mark the row so it's visually obvious that the update failed
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                        } else {
+                            // Mark the row so it's visually obvious that the update was successful
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                        }
 
-                    // If we're done, execute the callback, otherwise call the function again with
-                    // the next event to update
-                    done++;
-                    if (done === todo) {
-                        _callback();
-                    } else {
-                        submitEventUpdate(updatedEventObjs[done], _callback);
-                    }
-                });
+                        // If we're done, execute the callback, otherwise call the function again with
+                        // the next event to update
+                        done++;
+                        if (done === todo) {
+                            _callback();
+                        } else {
+                            submitEventUpdate(updatedEventObjs[done], _callback);
+                        }
+                    });
+                } else {
+                        if (evErr) {
+                            hasError = true;
+                            // Mark the row so it's visually obvious that the update failed
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                        } else {
+                            // Mark the row so it's visually obvious that the update was successful
+                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                        }
+
+                        // If we're done, execute the callback, otherwise call the function again with
+                        // the next event to update
+                        done++;
+                        if (done === todo) {
+                            _callback();
+                        } else {
+                            submitEventUpdate(updatedEventObjs[done], _callback);
+                        }
+                }
             });
         };
 
@@ -704,8 +724,15 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      * @private
      */
     var batchEditDate = function(ev, trigger) {
-        // Add an `active` class to the updated row to indicate that changes where made
-        $(trigger).parent().addClass('active gh-new-event-row');
+        var eventId = $(trigger).closest('tr').data('eventid');
+        if (!eventId) {
+            // Add an `active` class to the updated row to indicate that changes where made and
+            // add a 'gh-new-event-row' class to it to indicate it's a new event
+            $(trigger).parent().addClass('active gh-new-event-row');
+        } else {
+            // Add an `active` class to the updated row to indicate that changes where made
+            $(trigger).parent().addClass('active');
+        }
         // Show the save button
         toggleSubmit();
     };
