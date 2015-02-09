@@ -68,9 +68,9 @@ define([], function() {
      *
      * @private
      */
-    var initialise = function() {
+    var initialiseVideo = function() {
         addBinding();
     };
 
-    initialise();
+    initialiseVideo();
 });

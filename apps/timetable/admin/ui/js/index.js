@@ -273,7 +273,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
         $('#gh-main-tripos .gh-video:first-child').hide();
         // Do not show the video next time
         gh.api.utilAPI.localDataStorage().store('hideVideo', true);
-        // Start the video
+        // Stop the video
         $(document).trigger('gh.video.stop');
     };
 
