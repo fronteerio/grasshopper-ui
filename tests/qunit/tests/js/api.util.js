@@ -154,6 +154,62 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
     });
 
+    // Test the 'getAcademicWeekNumber' functionality
+    QUnit.test('getAcademicWeekNumber', function(assert) {
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getAcademicWeekNumber();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getAcademicWeekNumber('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that no week number is returned when specifying an out-of-term date
+        var weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 0, 'Verify that no week number is returned when specifying an out-of-term date');
+
+        // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
+
+        // Verify that a valid week number is returned when specifying an in-term date
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
+
+        // Verify that a valid week number is returned when specifying an in-term date
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-15T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 2, 'Verify that a valid week number is returned when specifying an in-term date');
+    });
+
+    // Test the 'getTerm' functionality
+    QUnit.test('getTerm', function(assert) {
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTerm();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTerm('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the corresponding term is returned when specifying an in-term date
+        var term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'));
+        assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
+
+        // Verify that the corresponding term is returned when specifying an out-of-term date that leans close to the start of a term
+        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
+        assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
+
+        // Verify that no term is returned when specifying an out-of-term date
+        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        assert.ok(!term);
+    });
+
     // Test the 'getWeeksInTerm' functionality
     QUnit.test('getWeeksInTerm', function(assert) {
         // Get the first term of 2014 which has 9 weeks in it

@@ -95,10 +95,8 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             throw new Error('A valid end date should be provided');
         }
 
-        // TODO: add the week number when the custom configuration is in place
-        // var weekNumber = 'W' + getWeekInTerm(startDate);
-        var weekNumber = getWeekInTerm(startDate);
-        if (weekNumber === 0) {
+        var weekNumber = getAcademicWeekNumber(convertISODatetoUnixDate(moment(startDate).utc().format()));
+        if (!weekNumber) {
             weekNumber = 'OT';
         } else {
             weekNumber = 'W' + weekNumber;
@@ -139,25 +137,72 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
-     * Get the number of weeks in a term
+     * Return the current academic week number if the current date is within a term
      *
-     * @param  {Object}    term    The term to get the number of weeks for
-     * @return {Number}            The number of weeks in the term
+     * @param  {Number}    date     The date where the academic week number needs to be returned for
+     * @return {Number}             The academic week number
      */
-    var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
-        if (!_.isObject(term)) {
-            throw new Error('A valid term should be provided');
+    var getAcademicWeekNumber = exports.getAcademicWeekNumber = function(date) {
+        if (!_.isNumber(date)) {
+            throw new Error('A valid date should be provided');
         }
 
-        // The number of milliseconds in one week
-        var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-        // Convert the term start and end date to milliseconds
-        var termStartDate = new Date(term.start).getTime();
-        var termEndDate = new Date(term.end).getTime();
-        // Calculate the time difference
-        var timeDifference = Math.abs(termEndDate - termStartDate);
-        // Convert to weeks and return
-        return Math.floor(timeDifference / ONE_WEEK) + 1;
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+
+        // Retrieve the corresponding term of the specified date
+        var currentTerm = getTerm(date);
+        if (!currentTerm) {
+            return 0;
+        }
+
+        // Get the start date of the corresponding term
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format());
+
+        // Return the current academic week number
+        return Math.ceil((date - startDate) / (PERIODS['week']) - 0.25) + 1;
+    };
+
+    /**
+     * Return the current term if the current date is within a term
+     *
+     * @param  {Number}    date     The date in a UNIX time format
+     * @return {String}             The name of the term that has the specified date in its range
+     */
+    var getTerm = exports.getTerm = function(date) {
+        if (!_.isNumber(date)) {
+            throw new Error('A valid date should be provided');
+        }
+
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+
+        // Get the current term and return its name
+        return _.find(terms, function(term) {
+
+            // Convert the dates from ISO to UNIX for easier calculation
+            var startDate = convertISODatetoUnixDate(moment(term.start).utc().format());
+            var endDate = convertISODatetoUnixDate(moment(term.end).utc().format());
+
+            // We consider weeks that only count 2 days as full academic weeks.
+            // E.g. A term starts on Tuesday 13th February, but the academic weeks always start on a Thursday.
+            //      This means that the first academic week of that term starts on the 13th and ends on the 14th.
+            //      The second academic week will start on Thursday 15th February.
+            var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).utc().format());
+            /* istanbul ignore else */
+            if (date < startDate && datePlus >= startDate) {
+                date = datePlus;
+            }
+
+            // Return the term where the specified date is within the range
+            if (isDateInRange(date, startDate, endDate)) {
+                return term.name;
+            }
+        });
     };
 
     /**
@@ -189,6 +234,28 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Get the number of weeks in a term
+     *
+     * @param  {Object}    term    The term to get the number of weeks for
+     * @return {Number}            The number of weeks in the term
+     */
+    var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
+        if (!_.isObject(term)) {
+            throw new Error('A valid term should be provided');
+        }
+
+        // The number of milliseconds in one week
+        var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+        // Convert the term start and end date to milliseconds
+        var termStartDate = new Date(term.start).getTime();
+        var termEndDate = new Date(term.end).getTime();
+        // Calculate the time difference
+        var timeDifference = Math.abs(termEndDate - termStartDate);
+        // Convert to weeks and return
+        return Math.floor(timeDifference / ONE_WEEK) + 1;
+    };
+
+    /**
      * Get a date by specifying the term it's in, the week number it's in and the day of the week it is
      *
      * @param  {String}    termName      The name of the term to look for the date
@@ -215,22 +282,18 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Loop over the terms
         _.each(terms, function(term) {
             if (term.name === termName) {
-                // The number of milliseconds in one week
-                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-                // The number of milliseconds in one day
-                var ONE_DAY = 1000 * 60 * 60 * 24;
                 // Get the date on which the term starts
                 var termStartDate = new Date(term.start).getTime();
 
                 // Calculate the week offset in milliseconds
-                var weekOffset = weekNumber * ONE_WEEK;
+                var weekOffset = weekNumber * PERIODS['week'];
                 // Calculate the start date of the week
                 weekOffset = termStartDate + weekOffset;
 
                 // Now calculate the day offset in this week
                 var dayOffset = dayNumber - new Date(weekOffset).getDay();
                 // Calculate the week offset in milliseconds
-                dayOffset = dayOffset * ONE_DAY;
+                dayOffset = dayOffset * PERIODS['day'];
 
                 // Calculate the day of the week to return
                 dateByWeekAndDay = new Date(weekOffset + dayOffset);
@@ -239,47 +302,6 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         // return the Date object
         return dateByWeekAndDay;
-    };
-
-    /**
-     * Get the week of the term in which a date is located. The function assumes that the
-     * week starts on the first day of the term and that the terms are limited by the
-     * academicYear that is set on the app
-     *
-     * @param  {String|Date}    date    The date to find the week number in the term for
-     * @return {Number}                 The week number of the term the given date is in
-     * @private
-     */
-    var getWeekInTerm = exports.getWeekInTerm = function(date) {
-        // Get the configuration
-        var config = require('gh.core').config;
-        // Get the correct terms associated to the current application
-        var terms = config.terms[config.academicYear];
-        // Variable used to assign the week number to and return
-        var weekNumber = 0;
-
-        // Loop over the terms. If the start date of the event falls inside of the term,
-        // use that term to calculate the week number that date falls in
-        _.each(terms, function(term) {
-            var termStartDate = new Date(term.start);
-            var termEndDate = new Date(term.end);
-            date = new Date(date);
-            // If the date falls in the term, use it to calculate the week number
-            if (termStartDate <= date && termEndDate >= date) {
-                // The number of milliseconds in one week
-                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-                // Convert the given date to milliseconds
-                date = date.getTime();
-                // Convert the term start date to milliseconds
-                termStartDate = termStartDate.getTime();
-                // Calculate the difference in milliseconds
-                var dateDifference = Math.abs(date - termStartDate);
-                // Convert back to weeks
-                weekNumber = Math.floor(dateDifference / ONE_WEEK) + 1;
-            }
-        });
-
-        return weekNumber;
     };
 
     /**
@@ -324,6 +346,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * Convert a date to GMT+0 for display in the calendar
      *
      * @param  {String}    date    The date that needs conversion
+     * @return {Number}            The converted date in a UNIX format
      */
     var fixDateToGMT = exports.fixDateToGMT = function(date) {
         if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
