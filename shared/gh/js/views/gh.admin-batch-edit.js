@@ -40,11 +40,11 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         eventObj.ev = data && data.eventObj ? data.eventObj : {
             'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
             'isNew': true, // Used in the template to know this one needs special handling
-            'displayName': '',
+            'displayName': $('.gh-jeditable-series-title').text(),
             'end': moment(new Date()).add(1, 'hours').utc().format(),
             'location': '',
             'notes': 'Lecture',
-            'organisers': 'organiser',
+            'organisers': null,
             'start': moment(new Date()).utc().format()
         };
         eventObj['utilAPI'] = utilAPI;
@@ -53,6 +53,8 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
+        // Show the save button
+        toggleSubmit();
     };
 
     /**
@@ -614,10 +616,9 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
-                updatedEventObjs.push(updatedEventObj);
             });
 
             // Loop over each new event in the term and create the event object
@@ -631,7 +632,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 newEventObjs.push(newEventObj);

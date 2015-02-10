@@ -119,11 +119,11 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                     'eventObj': {
                         'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
                         'isNew': true, // Used in the template to know this one needs special handling
-                        'displayName': '',
+                        'displayName': $('.gh-jeditable-series-title').text(),
                         'end': moment(endDate).utc().format(),
                         'location': '',
                         'notes': 'Lecture',
-                        'organisers': 'organiser',
+                        'organisers': null,
                         'start': moment(startDate).utc().format()
                     }
                 });
