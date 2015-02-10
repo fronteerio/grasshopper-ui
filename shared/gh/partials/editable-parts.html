@@ -15,12 +15,12 @@
     <div class="row gh-row-part">
         <% _.each(data, function(part) { %>
             <div class="col-xs-4 gh-part">
-                <% if (part.isEditing && (part.isEditing.displayName !== gh.data.me.displayName)) { %>
+                <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %>
                     <p class="gh-part-editing"><%- part.isEditing.displayName %> is editing</p>
                 <% } %>
                 <p class="gh-part-tripos"><%= part.displayName %></p>
                 <p class="gh-part-part"><%= part.part.displayName %></p>
-                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.displayName !== gh.data.me.displayName)) { %> disabled="disabled"<% } %>>Edit</a>
+                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %> disabled="disabled"<% } %>>Edit</a>
                 <% if (part.isDraft) { %>
                     <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
                 <% } %>
