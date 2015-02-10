@@ -19,65 +19,67 @@
             <% var weekUsed = _.indexOf(weeksInUse, weekNumber) !== -1 %>
             <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
                 <label>
-                    <input type="checkbox" value="<%- weekNumber %>" <% if (weekUsed) { %>checked<% } %>><%- gh.api.utilAPI.addLeadingZero(weekNumber) %> <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
+                    <input type="checkbox" value="<%- weekNumber %>" <% if (weekUsed) { %>checked<% } %>>W<%- weekNumber %> <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
                 </label>
             </div>
         <% } %>
     </div>
-    <div id="gh-batch-edit-time-picker" class="form-inline">
-        <select id="gh-batch-edit-day-picker" class="pull-left form-control">
-            <option value="4">Thursdays</option>
-            <option value="5">Fridays</option>
-            <option value="1">Mondays</option>
-            <option value="2">Tuesdays</option>
-            <option value="3">Wednesdays</option>
-        </select>
-        <div id="gh-batch-edit-date-start" class="pull-left">
-            <select id="gh-batch-edit-hours-start" class="form-control gh-batch-edit-hours-picker">
-                <option value="7">07</option>
-                <option value="8">08</option>
-                <option value="9">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
+    <% _.each(daysInUse, function(dayInUse, index) { %>
+        <div class="form-inline gh-batch-edit-time-picker">
+            <select id="gh-batch-edit-day-picker" class="pull-left form-control">
+                <option value="4" <% if (parseInt(index, 10) === 4) { %> selected="true" <% } %>>Thursdays</option>
+                <option value="5" <% if (parseInt(index, 10) === 5) { %> selected="true" <% } %>>Fridays</option>
+                <option value="1" <% if (parseInt(index, 10) === 1) { %> selected="true" <% } %>>Mondays</option>
+                <option value="2" <% if (parseInt(index, 10) === 2) { %> selected="true" <% } %>>Tuesdays</option>
+                <option value="3" <% if (parseInt(index, 10) === 3) { %> selected="true" <% } %>>Wednesdays</option>
             </select>
-            <select id="gh-batch-edit-minutes-start" class="form-control gh-batch-edit-minutes-picker">
-                <option value="0">00</option>
-                <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="45">45</option>
-            </select>
+            <div id="gh-batch-edit-date-start" class="pull-left">
+                <select id="gh-batch-edit-hours-start" class="form-control gh-batch-edit-hours-picker">
+                    <option value="7" <% if (parseInt(dayInUse.startHour, 10) === 7 ) { %> selected="true" <% } %>>07</option>
+                    <option value="8" <% if (parseInt(dayInUse.startHour, 10) === 8 ) { %> selected="true" <% } %>>08</option>
+                    <option value="9" <% if (parseInt(dayInUse.startHour, 10) === 9 ) { %> selected="true" <% } %>>09</option>
+                    <option value="10" <% if (parseInt(dayInUse.startHour, 10) === 10 ) { %> selected="true" <% } %>>10</option>
+                    <option value="11" <% if (parseInt(dayInUse.startHour, 10) === 11 ) { %> selected="true" <% } %>>11</option>
+                    <option value="12" <% if (parseInt(dayInUse.startHour, 10) === 12 ) { %> selected="true" <% } %>>12</option>
+                    <option value="13" <% if (parseInt(dayInUse.startHour, 10) === 13 ) { %> selected="true" <% } %>>13</option>
+                    <option value="14" <% if (parseInt(dayInUse.startHour, 10) === 14 ) { %> selected="true" <% } %>>14</option>
+                    <option value="15" <% if (parseInt(dayInUse.startHour, 10) === 15 ) { %> selected="true" <% } %>>15</option>
+                    <option value="16" <% if (parseInt(dayInUse.startHour, 10) === 16 ) { %> selected="true" <% } %>>16</option>
+                    <option value="17" <% if (parseInt(dayInUse.startHour, 10) === 17 ) { %> selected="true" <% } %>>17</option>
+                    <option value="18" <% if (parseInt(dayInUse.startHour, 10) === 18 ) { %> selected="true" <% } %>>18</option>
+                    <option value="19" <% if (parseInt(dayInUse.startHour, 10) === 19 ) { %> selected="true" <% } %>>19</option>
+                </select>
+                <select id="gh-batch-edit-minutes-start" class="form-control gh-batch-edit-minutes-picker">
+                    <option value="0" <% if (parseInt(dayInUse.startMinute, 10) === 0 ) { %> selected="true" <% } %>>00</option>
+                    <option value="15" <% if (parseInt(dayInUse.startMinute, 10) === 15 ) { %> selected="true" <% } %>>15</option>
+                    <option value="30" <% if (parseInt(dayInUse.startMinute, 10) === 30 ) { %> selected="true" <% } %>>30</option>
+                    <option value="45" <% if (parseInt(dayInUse.startMinute, 10) === 45 ) { %> selected="true" <% } %>>45</option>
+                </select>
+            </div>
+            <div id="gh-batch-edit-date-end" class="pull-left">
+                <select id="gh-batch-edit-hours-end" class="form-control gh-batch-edit-hours-picker">
+                    <option value="7" <% if (parseInt(dayInUse.endHour, 10) === 7 ) { %> selected="true" <% } %>>07</option>
+                    <option value="8" <% if (parseInt(dayInUse.endHour, 10) === 8 ) { %> selected="true" <% } %>>08</option>
+                    <option value="9" <% if (parseInt(dayInUse.endHour, 10) === 9 ) { %> selected="true" <% } %>>09</option>
+                    <option value="10" <% if (parseInt(dayInUse.endHour, 10) === 10 ) { %> selected="true" <% } %>>10</option>
+                    <option value="11" <% if (parseInt(dayInUse.endHour, 10) === 11 ) { %> selected="true" <% } %>>11</option>
+                    <option value="12" <% if (parseInt(dayInUse.endHour, 10) === 12 ) { %> selected="true" <% } %>>12</option>
+                    <option value="13" <% if (parseInt(dayInUse.endHour, 10) === 13 ) { %> selected="true" <% } %>>13</option>
+                    <option value="14" <% if (parseInt(dayInUse.endHour, 10) === 14 ) { %> selected="true" <% } %>>14</option>
+                    <option value="15" <% if (parseInt(dayInUse.endHour, 10) === 15 ) { %> selected="true" <% } %>>15</option>
+                    <option value="16" <% if (parseInt(dayInUse.endHour, 10) === 16 ) { %> selected="true" <% } %>>16</option>
+                    <option value="17" <% if (parseInt(dayInUse.endHour, 10) === 17 ) { %> selected="true" <% } %>>17</option>
+                    <option value="18" <% if (parseInt(dayInUse.endHour, 10) === 18 ) { %> selected="true" <% } %>>18</option>
+                    <option value="19" <% if (parseInt(dayInUse.endHour, 10) === 19 ) { %> selected="true" <% } %>>19</option>
+                </select>
+                <select id="gh-batch-edit-minutes-end" class="form-control gh-batch-edit-minutes-picker">
+                    <option value="0" <% if (parseInt(dayInUse.endMinute, 10) === 0 ) { %> selected="true" <% } %>>00</option>
+                    <option value="15" <% if (parseInt(dayInUse.endMinute, 10) === 15 ) { %> selected="true" <% } %>>15</option>
+                    <option value="30" <% if (parseInt(dayInUse.endMinute, 10) === 30 ) { %> selected="true" <% } %>>30</option>
+                    <option value="45" <% if (parseInt(dayInUse.endMinute, 10) === 45 ) { %> selected="true" <% } %>>45</option>
+                </select>
+            </div>
         </div>
-        <div id="gh-batch-edit-date-end" class="pull-left">
-            <select id="gh-batch-edit-hours-end" class="form-control gh-batch-edit-hours-picker">
-                <option value="7">07</option>
-                <option value="8">08</option>
-                <option value="9">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-            </select>
-            <select id="gh-batch-edit-minutes-end" class="form-control gh-batch-edit-minutes-picker">
-                <option value="0">00</option>
-                <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="45">45</option>
-            </select>
-        </div>
-    </div>
+    <% }); %>
     <button type="button" class="btn btn-default gh-btn-secondary gh-batch-edit-date-add-day"><i class="fa fa-plus-square"></i> Add another day</button>
 </div>

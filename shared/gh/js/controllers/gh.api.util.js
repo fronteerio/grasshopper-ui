@@ -195,7 +195,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                 var termStartDate = new Date(term.start).getTime();
 
                 // Calculate the week offset in milliseconds
-                var weekOffset = weekNumber * ONE_WEEK;
+                var weekOffset = (weekNumber - 1) * ONE_WEEK;
                 // Calculate the start date of the week
                 weekOffset = termStartDate + weekOffset;
 
