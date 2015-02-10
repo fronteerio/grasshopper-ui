@@ -161,6 +161,36 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Get the Date of the first day of the specified term
+     *
+     * @param  {String}    termName    The name of the term to get the Date of the first day for
+     * @return {Date}                  The Date of the first day of the term
+     */
+    var getFirstDayOfTerm = exports.getFirstDayOfTerm = function(termName) {
+        if (!_.isString(termName)) {
+            throw new Error('A valid term name should be provided');
+        }
+
+        // Get the configuration
+        var config = require('gh.core').config;
+        // Get the correct terms associated to the current application
+        var terms = config.terms[config.academicYear];
+        // Variable used to assign the Date of the first day of the term to
+        var startDate = null;
+
+        // Loop over the terms
+        _.each(terms, function(term) {
+            if (term.name === termName) {
+                // Parse the start date into the variable to return
+                startDate = new Date(term.start);
+            }
+        });
+
+        // Return the first day's date
+        return startDate;
+    };
+
+    /**
      * Get a date by specifying the term it's in, the week number it's in and the day of the week it is
      *
      * @param  {String}    termName      The name of the term to look for the date
