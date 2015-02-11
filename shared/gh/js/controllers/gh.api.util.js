@@ -177,6 +177,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         var terms = config.terms[config.academicYear];
         // Find the term to get the first day's date for
         var term =_.find(terms, function(term) {
+            /* istanbul ignore else */
             if (term.name === termName) {
                 // Return the term
                 return term;
