@@ -36,16 +36,18 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
      */
     var addNewEventRow = function(ev, data) {
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
+        var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
+        var termStart = utilAPI.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
         eventObj.ev = data && data.eventObj ? data.eventObj : {
             'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
             'isNew': true, // Used in the template to know this one needs special handling
-            'displayName': '',
-            'end': moment(new Date()).add(1, 'hours').utc().format(),
+            'displayName': $('.gh-jeditable-series-title').text(),
+            'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
             'location': '',
             'notes': 'Lecture',
             'organisers': 'organiser',
-            'start': moment(new Date()).utc().format()
+            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
         };
         eventObj['utilAPI'] = utilAPI;
 
@@ -53,6 +55,8 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
+        // Show the save button
+        toggleSubmit();
     };
 
     /**
@@ -614,7 +618,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 updatedEventObjs.push(updatedEventObj);
@@ -631,7 +635,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'location': $('.gh-event-location', $eventContainer).text(),
                     // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text(),
+                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 newEventObjs.push(newEventObj);
