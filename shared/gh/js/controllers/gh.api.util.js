@@ -175,10 +175,10 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         var config = require('gh.core').config;
         // Get the correct terms associated to the current application
         var terms = config.terms[config.academicYear];
-        // Find the date of the first day of the term
+        // Find the term to get the first day's date for
         var term =_.find(terms, function(term) {
             if (term.name === termName) {
-                // Parse the start date into the variable to return
+                // Return the term
                 return term;
             }
         });
