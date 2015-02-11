@@ -155,6 +155,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
         // Render the editable parts template
         gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
             'data': editableParts,
+            'gh': gh,
             'hideVideo': gh.api.utilAPI.localDataStorage().get('hideVideo')
         }, $('#gh-main'));
     };
