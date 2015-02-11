@@ -46,7 +46,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      */
     var buildBatchDateObject = function() {
         // Get the checked events from the batch edit container
-        var $rows = $('.gh-batch-edit-events-container tr.info');
+        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
         // Get the maximum number of weeks in a term
         var maxNumberOfWeeks = getMaxNumberOfWeeks();
         // Get the weeks that are in use by the selection
@@ -72,7 +72,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      */
     var removeEventsInWeek = function(weekNumber) {
         // Get the checked events from the batch edit container
-        var $rows = $('.gh-batch-edit-events-container tr.info');
+        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
         // For each row, check if the event is taking place in the week that is to be removed
         _.each($rows, function($row) {
             $row = $($row);
@@ -193,7 +193,13 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                     termsInUse.push(term);
                 }
             });
+
+            // If the `select all` checkbox is checked, include this term
+            if ($('.gh-batch-edit-events-container[data-term="' + term.name + '"] .gh-select-all').is(':checked')) {
+                termsInUse.push(term);
+            }
         });
+
         return _.uniq(termsInUse);
     };
 
@@ -237,6 +243,64 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         });
         // Return the maximum number of weeks in the term
         return maxWeeks;
+    };
+
+    /**
+     * Batch edit the time on which events start and finish
+     *
+     * @private
+     */
+    var batchEditTime = function() {
+        // Get the container in which the edits where made
+        var $timeContainer = $($(this).closest('.gh-batch-edit-time-picker'));
+        // Get the values that changed
+        var prevEventDay = parseInt($('#gh-batch-edit-day-picker', $timeContainer).attr('data-prev'), 10);
+        var eventDay = parseInt($('#gh-batch-edit-day-picker', $timeContainer).val(), 10);
+        var eventStartHour = parseInt($('#gh-batch-edit-hours-start', $timeContainer).val(), 10);
+        var eventStartMinute = parseInt($('#gh-batch-edit-minutes-start', $timeContainer).val(), 10);
+        var eventEndHour = parseInt($('#gh-batch-edit-hours-end', $timeContainer).val(), 10);
+        var eventEndMinute = parseInt($('#gh-batch-edit-minutes-end', $timeContainer).val(), 10);
+
+        // Loop over the selected events and change the ones that match the previous eventDay
+        // value (assuming it was changed)
+        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
+        _.each($rows, function($row) {
+            $row = $($row);
+            // Get the date the event starts on
+            var eventStart = new Date($row.find('.gh-event-date').attr('data-start'));
+
+            // Only update the date when the event takes place on the day that was selected in the picker
+            var dayNumberToEdit = prevEventDay || eventDay;
+            if (eventStart.getDay() === dayNumberToEdit) {
+                // Get the date the event finishes on
+                var eventEnd = new Date($row.find('.gh-event-date').attr('data-end'));
+                // Get which week of the term this event takes place in 
+                var weekInTerm = utilAPI.getWeekInTerm(eventStart);
+                // Get the name of the term this date is in
+                var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
+                // Get the date the event would be on after the change
+                var newDate = utilAPI.getDateByWeekAndDay(termName, weekInTerm, eventDay);
+
+                // Create the new date for the row
+                eventStart = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventStartHour, eventStartMinute, 0, 0]).utc().format();
+                eventEnd = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventEndHour, eventEndMinute, 0, 0]).utc().format();
+
+                // Re-render the date fields
+                var content = utilAPI.renderTemplate($('#gh-edit-date-field-template'), {
+                    'data': {
+                        'start': eventStart,
+                        'end': eventEnd
+                    },
+                    'utilAPI': utilAPI
+                });
+
+                // Update the trigger
+                $row.find('.gh-event-date').attr('data-start', eventStart).attr('data-end', eventEnd).html(content);
+
+                // Trigger a change of the datepicker
+                $(document).trigger('gh.datepicker.change', $row.find('.gh-event-date'));
+            }
+        });
     };
 
     /**
@@ -309,10 +373,26 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             }, 1);
         });
 
+        $('body').on('change', '.gh-select-all', function() {
+            if ($('.gh-select-single:checked').length) {
+                buildBatchDateObject();
+            }
+        });
+
         // Week checkbox related events
         $('body').on('change', '#gh-batch-edit-date-picker-container input', batchEditDateWeeks);
         $('body').on('focus', '#gh-batch-edit-date-picker-container input', focusEditDateWeeks);
         $('body').on('blur', '#gh-batch-edit-date-picker-container input', blurEditDateWeeks);
+
+        // Time selectors
+        $('body').on('focus click', '#gh-batch-edit-day-picker', function() {
+            $(this).attr('data-prev', $(this).val());
+        });
+        $('body').on('change', '#gh-batch-edit-day-picker', batchEditTime);
+        $('body').on('change', '#gh-batch-edit-hours-start', batchEditTime);
+        $('body').on('change', '#gh-batch-edit-hours-end', batchEditTime);
+        $('body').on('change', '#gh-batch-edit-minutes-start', batchEditTime);
+        $('body').on('change', '#gh-batch-edit-minutes-end', batchEditTime);
 
         // Adding a new day
         $('body').on('click', '.gh-batch-edit-date-add-day', function() {

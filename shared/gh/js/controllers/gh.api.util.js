@@ -215,25 +215,30 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Loop over the terms
         _.each(terms, function(term) {
             if (term.name === termName) {
-                // The number of milliseconds in one week
-                var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-                // The number of milliseconds in one day
-                var ONE_DAY = 1000 * 60 * 60 * 24;
                 // Get the date on which the term starts
                 var termStartDate = new Date(term.start).getTime();
 
                 // Calculate the week offset in milliseconds
-                var weekOffset = (weekNumber - 1) * ONE_WEEK;
+                var weekOffset = (weekNumber - 1) * PERIODS['week'];
                 // Calculate the start date of the week
-                weekOffset = termStartDate + weekOffset;
+                var startOfWeekDate = new Date(termStartDate + weekOffset);
+                // Find out what day this day is
+                var startOfWeekDay = startOfWeekDate.getDay();
 
-                // Now calculate the day offset in this week
-                var dayOffset = dayNumber - new Date(weekOffset).getDay();
-                // Calculate the week offset in milliseconds
-                dayOffset = dayOffset * ONE_DAY;
+                // If the dayNumber is smaller than the day the week starts on,
+                // add a week to the weekOffset and substract the difference in days
+                if (dayNumber < startOfWeekDay) {
+                    startOfWeekDate = startOfWeekDate.getTime() + PERIODS['week'];
+                    // Remove x days from the week to get to the final date to return
+                    dateByWeekAndDay = startOfWeekDate - ((startOfWeekDay - dayNumber) * PERIODS['day']);
 
-                // Calculate the day of the week to return
-                dateByWeekAndDay = new Date(weekOffset + dayOffset);
+                // If the dayNumber is larger than the day, just add the difference
+                } else {
+                    // Add x days to the week to get to the final date to return
+                    dateByWeekAndDay = startOfWeekDate.getTime() + ((dayNumber - startOfWeekDay) * PERIODS['day']);
+                }
+
+                dateByWeekAndDay = new Date(dateByWeekAndDay);
             }
         });
 

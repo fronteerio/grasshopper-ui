@@ -1,7 +1,7 @@
 <% if (ev && !ev.isNew) { %>
 <tr data-eventid="<%= ev.id %>">
 <% } else { %>
-<tr data-tempid="<%= ev.tempId %>" class="active gh-new-event-row">
+<tr data-tempid="<%= ev.tempId %>" class="<% if (ev.selected) { %>info<% } %> active gh-new-event-row">
 <% } %>
     <td class="col-xs-1">
         <div class="checkbox">
