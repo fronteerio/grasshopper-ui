@@ -621,6 +621,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                     'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
+                updatedEventObjs.push(updatedEventObj);
             });
 
             // Loop over each new event in the term and create the event object
