@@ -198,10 +198,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         }, 'Verify that a valid term name needs to be provided');
 
         // Verify that the correct date is returned
-        var testDate = new Date('Tue Oct 21 2014 01:00:00 GMT+0100 (BST)');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
+        var testDate = new Date('Wed Oct 22 2014 01:00:00 GMT+0100 (BST)');
+        var testDate2 = new Date('Mon Oct 20 2014 01:00:00 GMT+0100 (BST)');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 3).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 3).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
+        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 1).getFullYear(), testDate2.getFullYear(), 'Verify that the correct year is returned');
     });
 
     // Test the 'dateDisplay' functionality
