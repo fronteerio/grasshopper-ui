@@ -139,6 +139,35 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     /**
      * Return the current academic week number if the current date is within a term
      *
+     *  * To calculate the academic week number we first need to calculate
+     *  * the difference between the current calendar date and the start of the term.
+     *  *
+     *  * Note that a term always start on a Tuesday and academic weeks start on Thursdays!
+     *  *
+     *  * E.g: calendar date: Wed 2015-02-11T13:54:35.000Z => 1423662834000 (week 1)
+     *  *      start of term: Thu 2015-01-13T00:00:00.000Z => 1421107200000 (week 5)
+     *  *
+     *  * This means that the first academic week start on Tuesday, 13/01/2015 and ends on Wednesday, 14/01/2015.
+     *  * The second week will start on Thursday, 15/01/2015 and end on Wednesday 21/01/2015.
+     *  *
+     *  * After we calculated the difference between the current date and the start of the term,
+     *  * we need the number of weeks:
+     *  *
+     *  *   weeks = (calendar date - term start) / (week in milliseconds)
+     *  *   weeks = (1423662834000 - 1421107200000) / (1000 * 60 * 60 * 24 * 7)
+     *  *   weeks = 4.226...
+     *  *
+     *  * We need to subtract an offset from our result, since there is a difference of
+     *  * 2 days between the start of the term (Tue) and the start of the academic weeks (Thu).
+     *  *
+     *  *   offset = ((1 / 7) * 2)
+     *  *   offset = 0.286...
+     *  *
+     *  * To determine which week we're currently in, we subtract the offset from the number of weeks.
+     *  * We need to add one week, since we're doing a zero-based numbering.
+     *  *
+     *  *   week = (weeks - offset) + 1
+     *
      * @param  {Number}    date     The date where the academic week number needs to be returned for
      * @return {Number}             The academic week number
      */
@@ -161,15 +190,18 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Get the start date of the corresponding term
         var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format());
 
-        // Return the current academic week number
-        return Math.ceil((date - startDate) / (PERIODS['week']) - 0.25) + 1;
+        // Since the terms start on a Tuesday, we have an offset of 2 days.
+        var dayOffset = ((1 / 7) * 2) - 0.01;
+
+        // Calculate and return the current academic week number
+        return Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
     };
 
     /**
      * Return the current term if the current date is within a term
      *
      * @param  {Number}    date     The date in a UNIX time format
-     * @return {String}             The name of the term that has the specified date in its range
+     * @return {Object}             The term that has the specified date in its range
      */
     var getTerm = exports.getTerm = function(date) {
         if (!_.isNumber(date)) {
@@ -200,7 +232,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
             // Return the term where the specified date is within the range
             if (isDateInRange(date, startDate, endDate)) {
-                return term.name;
+                return term;
             }
         });
     };

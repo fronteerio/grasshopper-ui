@@ -71,7 +71,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Get the current term
-        var currentTerm = gh.api.utilAPI.getTerm(terms, getCurrentViewDate());
+        var currentTerm = gh.api.utilAPI.getTerm(getCurrentViewDate());
 
         // Retrieve the term to navigate to, based on the current term
         var term = null;
