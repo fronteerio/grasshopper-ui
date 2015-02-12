@@ -275,6 +275,15 @@
     background-color: #92308A;
 }
 
+/* Terms */
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot tr {
+    background-color: #F7F7F7;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container:not(.gh-ot) + .gh-ot {
+    border-top-color: #DDD;
+}
+
 /* Calendar icon */
 .gh-event-calendar-icon {
     border-color: #888;

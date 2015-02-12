@@ -448,8 +448,8 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-time-picker::after {
-    content: '';
     clear: both;
+    content: '';
     display: block;
 }
 
@@ -479,7 +479,22 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container:first-child.gh-ot td {
+    border-top: none;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container:not(.gh-ot) + .gh-ot {
+    border-top-width: 2px;
+    border-top-style: solid;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
+    margin-bottom: 0;
+    margin-top: 0;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
