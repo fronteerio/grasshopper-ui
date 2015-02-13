@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.util'], function(gh, adminConstants, orgunitAPI, seriesAPI, utilAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.util'], function(gh, constants, orgunitAPI, seriesAPI, utilAPI) {
 
     /**
      * Create a new series
@@ -95,7 +95,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
             var partId = $(this).closest('#gh-modules-list-container').data('partid');
             // Dispatch an event to the admin view controller
             $(document).trigger('gh.admin.changeView', {
-                'name': adminConstants.views.NEW_SERIES,
+                'name': constants.views.NEW_SERIES,
                 'data': {
                     'groupId': groupId,
                     'parentId': parentId,
@@ -106,7 +106,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
 
         // Cancel creating a new series
         $('body').on('click', '#gh-create-series-cancel', function() {
-            $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.EDITABLE_PARTS});
+            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
         });
 
         // Toggle the enabled status of the submit button

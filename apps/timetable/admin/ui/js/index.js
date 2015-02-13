@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, adminConstants) {
+define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, constants) {
 
     var state = $.bbq.getState() || {};
 
@@ -331,10 +331,10 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
      */
     var setView = function(view, data) {
         switch(view) {
-            case adminConstants.views.NEW_SERIES:
+            case constants.views.NEW_SERIES:
                 renderNewSeriesForm(data);
                 break;
-            case adminConstants.views.BATCH_EDIT:
+            case constants.views.BATCH_EDIT:
                 renderBatchEdit(data);
                 break;
             // Show the editable parts for the admin by default

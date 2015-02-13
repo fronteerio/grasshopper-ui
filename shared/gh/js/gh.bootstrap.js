@@ -43,6 +43,10 @@ requirejs.config({
         'gh.bootstrap': 'gh/js/gh.bootstrap',
         'gh.core': 'gh/js/gh.core',
 
+        // GH utils
+        'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
+        'gh.utils.time': 'gh/js/utils/gh.utils.time',
+
         // GH API controllers
         'gh.api': 'gh/js/controllers/gh.api',
         'gh.api.admin': 'gh/js/controllers/gh.api.admin',
@@ -59,7 +63,7 @@ requirejs.config({
         'gh.api.util': 'gh/js/controllers/gh.api.util',
 
         // GH constants
-        'gh.admin-constants': 'gh/js/constants/gh.admin',
+        'gh.constants': 'gh/js/constants/gh.constants',
 
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
+define(['gh.constants', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(constants, eventAPI, groupAPI, seriesAPI, utilAPI, moment) {
 
 
     ///////////////
@@ -772,7 +772,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
 
                 // Load up the batch edit page and provide the events and series data
                 $(document).trigger('gh.admin.changeView', {
-                    'name': adminConstants.views.BATCH_EDIT,
+                    'name': constants.views.BATCH_EDIT,
                     'data': {
                         'events': events,
                         'series': series

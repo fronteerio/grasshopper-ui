@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(utilAPI, adminConstants, orgunitAPI) {
+define(['gh.api.util', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(utilAPI, constants, orgunitAPI) {
 
     var triposData = null;
 
@@ -168,7 +168,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
                 // If there is no preselected series, the module and series should be removed from the hash
                 $.bbq.removeState('module', 'series');
                 // Show the editable parts in the UI
-                $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.EDITABLE_PARTS});
+                $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
             }
         }
     };
