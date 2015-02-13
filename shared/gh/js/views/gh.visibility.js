@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util'], function(utilAPI) {
+define(['gh.core'], function(gh) {
 
     /**
      * Highlight the selected visibility types
@@ -32,7 +32,7 @@ define(['gh.api.util'], function(utilAPI) {
      */
     var showVisibilityModal = function() {
         // Render the modal
-        utilAPI.renderTemplate($('#gh-visibility-modal-template'), {'data': {
+        gh.utils.renderTemplate($('#gh-visibility-modal-template'), {'data': {
             // TODO: make this dynamic once the functionality is available in the back-end
             'visibility': 'draft'
         }}, $('#gh-visibility-modal-container'));

@@ -15,18 +15,6 @@
 
 define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, templates, time) {
 
-    // Extend the utils with specific functionality
-    var utilClasses = [
-        templates,
-        time
-    ];
-
-    var that = {};
-    _.each(utilClasses, function(utilClass) {
-        _.extend(that, utilClass);
-    });
-    _.extend(this, that);
-
 
     ///////////////
     //  GENERAL  //
@@ -399,4 +387,30 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
 
     // Initialise Google Analytics
     googleAnalytics();
+
+
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
+
+    /**
+     * Extend the basic utils with specific functionality
+     *
+     * @private
+     */
+    var initialise = function(that) {
+
+        // Gather all the specific funtionality classes
+        var utilClasses = [
+            templates,
+            time
+        ];
+
+        // Extend the util class
+        _.each(utilClasses, function(utilClass) {
+            _.extend(that, utilClass);
+        });
+    };
+
+    initialise(this);
 });

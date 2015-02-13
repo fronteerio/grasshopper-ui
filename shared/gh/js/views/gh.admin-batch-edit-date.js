@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment, utilAPI, configAPI) {
+define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh, configAPI) {
 
 
     ///////////////
@@ -29,7 +29,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      * @private
      */
     var renderBatchDate = function(maxNumberOfWeeks, weeksInUse, termsInUse) {
-        utilAPI.renderTemplate($('#gh-batch-edit-date-template'), {
+        gh.utils.renderTemplate($('#gh-batch-edit-date-template'), {
             'gh': require('gh.core'),
             'numberOfWeeks': maxNumberOfWeeks,
             'weeksInUse': weeksInUse,
@@ -75,7 +75,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             // Get the start date of the event
             var startDate = $row.find('.gh-event-date').data('start');
             // Get the week in which the event takes place
-            var dateWeek = utilAPI.getWeekInTerm(startDate);
+            var dateWeek = gh.utils.getWeekInTerm(startDate);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
                 $row.find('.gh-event-delete').click();
@@ -98,7 +98,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                 // Get the day number
                 var eventDay = parseInt($('#gh-batch-edit-day-picker').val(), 10);
                 // Get the date by week and day
-                var dateByWeekAndDay = utilAPI.getDateByWeekAndDay(termName, eventWeek, eventDay);
+                var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
 
                 var eventYear = dateByWeekAndDay.getFullYear();
                 var eventMonth = dateByWeekAndDay.getMonth();
@@ -117,7 +117,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                 $(document).trigger('gh.batchedit.addevent', {
                     'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
                     'eventObj': {
-                        'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+                        'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
                         'isNew': true, // Used in the template to know this one needs special handling
                         'displayName': $('.gh-jeditable-series-title').text(),
                         'end': moment(endDate).utc().format(),
@@ -157,7 +157,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
 
     /**
      * Get the week numbers that are in use by the checked event rows
-     * 
+     *
      * @param  {Object[]}    $rows    Array of rows that are selected for batch edit
      * @return {Number[]}             Array week numbers that are in use by the checked event rows
      * @private
@@ -168,7 +168,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         // Extract the weeks from the batch
         _.each($rows, function(row) {
             var start = $(row).find('.gh-event-date').data('start');
-            weeksInUse.push(utilAPI.getWeekInTerm(start));
+            weeksInUse.push(gh.utils.getWeekInTerm(start));
         });
         return _.uniq(weeksInUse);
     };
@@ -188,7 +188,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         var maxWeeks = 0;
         // Loop over the terms and cache the highest number of weeks
         _.each(terms, function(term) {
-            var weeksInTerm = utilAPI.getWeeksInTerm(term);
+            var weeksInTerm = gh.utils.getWeeksInTerm(term);
             if (weeksInTerm > maxWeeks) {
                 maxWeeks = weeksInTerm;
             }

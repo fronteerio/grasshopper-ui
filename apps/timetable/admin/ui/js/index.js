@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, constants) {
-
+define(['gh.core', 'gh.constants', 'gh.utils', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, constants, utils) {
     var state = $.bbq.getState() || {};
 
     // Cache the tripos data
@@ -33,9 +32,9 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
     var getTriposData = function() {
 
         // Fetch the triposes
-        gh.api.utilAPI.getTriposStructure(function(err, data) {
+        utils.getTriposStructure(function(err, data) {
             if (err) {
-                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
             }
 
             // Cache the tripos data
@@ -55,7 +54,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var renderHeader = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
+        utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
     };
@@ -66,7 +65,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var renderHelp = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-help-template'), {
+        utils.renderTemplate($('#gh-help-template'), {
             'gh': gh
         }, $('#gh-main'));
     };
@@ -78,7 +77,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      */
     var renderLoginForm = function() {
         $('#gh-subheader, #gh-content-description').height(350);
-        gh.api.utilAPI.renderTemplate($('#gh-login-template'), {
+        utils.renderTemplate($('#gh-login-template'), {
             'gh': gh
         }, $('#gh-subheader'));
     };
@@ -89,7 +88,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var renderPickers = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
+        utils.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
     };
@@ -153,10 +152,10 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
         });
 
         // Render the editable parts template
-        gh.api.utilAPI.renderTemplate($('#gh-editable-parts-template'), {
+        utils.renderTemplate($('#gh-editable-parts-template'), {
             'data': editableParts,
             'gh': gh,
-            'hideVideo': gh.api.utilAPI.localDataStorage().get('hideVideo')
+            'hideVideo': utils.localDataStorage().get('hideVideo')
         }, $('#gh-main'));
     };
 
@@ -167,7 +166,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var renderNewSeriesForm = function(data) {
-        gh.api.utilAPI.renderTemplate($('#gh-new-series-template'), {
+        utils.renderTemplate($('#gh-new-series-template'), {
             'gh': gh,
             'data': data
         }, $('#gh-main'));
@@ -181,10 +180,10 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      */
     var renderBatchEdit = function(data) {
         // Split the events by term
-        data.eventsByTerm = gh.api.utilAPI.splitEventsByTerm(data.events);
+        data.eventsByTerm = utils.splitEventsByTerm(data.events);
         // Delete the events object as it's been parsed into a different object
         delete data.events;
-        gh.api.utilAPI.renderTemplate($('#gh-batch-edit-template'), {
+        utils.renderTemplate($('#gh-batch-edit-template'), {
             'gh': gh,
             'data': data
         }, $('#gh-main'));
@@ -199,7 +198,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var showTriposHelp = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-container'));
+        utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-container'));
         $('.gh-tripos-help').show();
     };
 
@@ -227,7 +226,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 if (!err) {
                     window.location = '/admin';
                 } else {
-                    gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
+                    utils.notification('Login failed', 'Logging in to the application failed', 'error');
                 }
             });
 
@@ -252,7 +251,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
             if (!err) {
                 window.location = '/admin';
             } else {
-                gh.api.utilAPI.notification('Logout failed', 'Logging out of the application failed', 'error');
+                utils.notification('Logout failed', 'Logging out of the application failed', 'error');
             }
         });
     };
@@ -273,7 +272,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
         // Hide the video on the top
         $('#gh-main-tripos .gh-video:first-child').hide();
         // Do not show the video next time
-        gh.api.utilAPI.localDataStorage().store('hideVideo', true);
+        utils.localDataStorage().store('hideVideo', true);
         // Stop the video
         $(document).trigger('gh.video.stop');
     };

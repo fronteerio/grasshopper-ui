@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.util'], function(gh, constants, orgunitAPI, seriesAPI, utilAPI) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'], function(gh, constants, utils, orgunitAPI, seriesAPI) {
 
     /**
      * Create a new series
@@ -36,15 +36,15 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.ut
         // Create a new series
         seriesAPI.createSeries(appId, displayName, null, groupId, function(err, series) {
             if (err) {
-                return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
             }
 
             // Link the created series to the module
             orgunitAPI.addOrgUnitSeries(parentId, series.id, function(err) {
                 if (err) {
-                    return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                    return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
                 }
-                utilAPI.notification('Series created.', 'The series was successfully created.', 'success');
+                utils.notification('Series created.', 'The series was successfully created.', 'success');
 
                 // Create a new state object that will take care of opening the new series for us
                 var state = $.bbq.getState();

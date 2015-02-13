@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
+define(['gh.core', 'gh.api.orgunit'], function(orgunitAPI) {
 
     // Cache the tripos data
     var triposData = null;
@@ -51,7 +51,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         });
 
         // Render the results in the part picker
-        utilAPI.renderTemplate($('#gh-borrow-series-part-template'), {
+        gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
             'data': parts
         }, $('#gh-borrow-series-part'));
 
@@ -80,7 +80,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         var partId = $(this).closest('#gh-modules-list-container').data('partid');
 
         // Fetch the triposes
-        utilAPI.getTriposStructure(function(err, _triposData) {
+        gh.utils.getTriposStructure(function(err, _triposData) {
             // Cache the triposdata for use in the other picker
             triposData = _triposData;
 
@@ -97,7 +97,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
             });
 
             // Render the modal and pickers
-            utilAPI.renderTemplate($('#gh-borrow-series-modal-template'), {
+            gh.utils.renderTemplate($('#gh-borrow-series-modal-template'), {
                 'data': triposPickerData,
                 'moduleId': moduleId,
                 'partId': partId
@@ -153,9 +153,9 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         orgunitAPI.addOrgUnitSeries(moduleId, seriesIDs, function(err, data) {
             // Show a success or failure notification
             if (err) {
-                return utilAPI.notification('Series not borrowed.', 'The series could not be successfully borrowed.', 'error');
+                return gh.utils.notification('Series not borrowed.', 'The series could not be successfully borrowed.', 'error');
             }
-            utilAPI.notification('Series borrowed.', 'The series were successfully borrowed.', 'success');
+            gh.utils.notification('Series borrowed.', 'The series were successfully borrowed.', 'success');
             // Hide the module modal
             $('#gh-borrow-series-modal').modal('hide');
             // Refresh the modules list
