@@ -42,7 +42,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'start': startDate,
                 'end': endDate
             },
-            'utilAPI': gh.utils
+            'utils': gh.utils
         });
 
         // Update the trigger

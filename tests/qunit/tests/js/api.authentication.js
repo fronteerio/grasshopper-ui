@@ -33,9 +33,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             }
 
             var appId = testAPI.getTestApp().id;
-            var displayName = gh.api.utilAPI.generateRandomString();
-            var email = gh.api.utilAPI.generateRandomString() + '@' + gh.api.utilAPI.generateRandomString() + '.com';
-            var password = gh.api.utilAPI.generateRandomString();
+            var displayName = gh.utils.generateRandomString();
+            var email = gh.utils.generateRandomString() + '@' + gh.utils.generateRandomString() + '.com';
+            var password = gh.utils.generateRandomString();
 
             // Create a new user
             gh.api.userAPI.createUser(appId, displayName, email, password, null, false, null, null, function(err, user) {
@@ -82,7 +82,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Mock an error from the back-end
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/auth/login', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/auth/login', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.authenticationAPI.login('administrator', 'administrator', function(err, data) {
                                 assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                                 assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -138,7 +138,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                 // Mock an error from the back-end
                 var body = {'code': 400, 'msg': 'Bad Request'};
-                gh.api.utilAPI.mockRequest('POST', '/api/auth/logout', 400, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('POST', '/api/auth/logout', 400, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.authenticationAPI.logout(function(err) {
                         assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                     });

@@ -49,7 +49,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             'organisers': 'organiser',
             'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
         };
-        eventObj['utilAPI'] = utils;
+        eventObj['utils'] = utils;
 
         // Append a new event row
         $eventContainer.append(utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));

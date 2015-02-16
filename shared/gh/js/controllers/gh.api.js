@@ -31,8 +31,7 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
                 'orgunitAPI': orgunitAPI,
                 'seriesAPI': seriesAPI,
                 'tenantAPI': tenantAPI,
-                'userAPI': userAPI,
-                'utilAPI': utils
+                'userAPI': userAPI
             },
             'config': {},
             'utils': utils,
