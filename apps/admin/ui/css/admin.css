@@ -61,6 +61,14 @@ main h2 {
     padding: 0;
 }
 
+.panel .panel-body button {
+    min-width: 100px;
+}
+
+.panel .panel-body button:not(:first-child) {
+    margin-left: 10px;
+}
+
 form, table {
     margin-bottom: 0 !important;
 }
