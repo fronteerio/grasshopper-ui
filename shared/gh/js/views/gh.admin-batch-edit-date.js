@@ -91,16 +91,11 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      * Add another day to the terms based on the selection of weeks
      *
      * @param {Number}    [weekNumber]    The optional number of the week to add the events to
-     * 
      * @private
      */
-    var addAnotherDay = function(weekNumber) {
+    var addAnotherDay = function() {
         // Default the container to look for selected weeks in
         var $weeks = $('#gh-batch-edit-date-picker input:checked');
-        // If a weeknumber is defined, only add events to that week
-        if (weekNumber) {
-            $weeks = $('#gh-batch-edit-date-picker input[value="' + weekNumber + '"]');
-        }
 
         // For each term selected, add events
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
@@ -129,20 +124,23 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                     var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
 
                     // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                    $(document).trigger('gh.batchedit.addevent', {
-                        'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
-                        'eventObj': {
-                            'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
-                            'isNew': true, // Used in the template to know this one needs special handling
-                            'selected': true,
-                            'displayName': $('.gh-jeditable-series-title').text(),
-                            'end': moment(endDate).utc().format(),
-                            'location': '',
-                            'notes': 'Lecture',
-                            'organisers': null,
-                            'start': moment(startDate).utc().format()
-                        }
-                    });
+                    var alreadyAdded = $('.info .gh-event-date[data-start="' + utilAPI.convertUnixDatetoISODate(startDate.utc().format()) + '"]').length;
+                    if (!alreadyAdded) {
+                        $(document).trigger('gh.batchedit.addevent', {
+                            'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
+                            'eventObj': {
+                                'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+                                'isNew': true, // Used in the template to know this one needs special handling
+                                'selected': true,
+                                'displayName': $('.gh-jeditable-series-title').text(),
+                                'end': utilAPI.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                'location': '',
+                                'notes': 'Lecture',
+                                'organisers': null,
+                                'start': utilAPI.convertUnixDatetoISODate(moment(startDate).utc().format())
+                            }
+                        });
+                    }
                 });
             });
         });
@@ -304,7 +302,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
     };
 
     /**
-     * Add a helper class to the checked checkbox container to visually indicate selection
+     * Batch edit weeks by adding and removing events based on the selection
      *
      * @private
      */
@@ -314,7 +312,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             // Add the class
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
             // Add all events to the associated week
-            addAnotherDay(parseInt($(this).val(), 10));
+            addAnotherDay();
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
@@ -395,11 +393,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         $('body').on('change', '#gh-batch-edit-minutes-end', batchEditTime);
 
         // Adding a new day
-        $('body').on('click', '.gh-batch-edit-date-add-day', function() {
-            // This function takes arguments but we don't need to supply any here, so we
-            // call it inside of a function wrapper
-            addAnotherDay();
-        });
+        $('body').on('click', '.gh-batch-edit-date-add-day', addAnotherDay);
     };
 
     addBinding();
