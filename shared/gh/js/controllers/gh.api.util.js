@@ -453,7 +453,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      *  *           'events': [Object, Object]
      *  *       },
      *  *       'OT': {
-     *  *           'events': [Object, Object]
+     *  *           'events': [Object, Object, Object, Object]
      *  *       },
      *  *
      *  *   }
@@ -464,7 +464,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      *  *   [
      *  *       {
      *  *           'name'  : 'OT'
-     *  *           'events': [Object]
+     *  *           'events': [Object, Object]
      *  *       },
      *  *       {
      *  *           'name'  : 'Michaelmas'
@@ -472,7 +472,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      *  *       },
      *  *       {
      *  *           'name'  : 'OT'
-     *  *           'events': [Object]
+     *  *           'events': [Object, Object]
      *  *       },
      *  *       {
      *  *           'name'  : 'Lent'
@@ -512,14 +512,39 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                 _terms.push({
                     'name': 'OT',
                     'start': moment(event.start).utc().format(),
-                    'end': moment(event.end).utc().format(),
                     'events': [event]
                 });
             });
         }
 
         // Order the terms chronologically
-        return _.sortBy(_terms, function(term) { return convertISODatetoUnixDate(term.start); });
+        terms = _.sortBy(_terms, function(term) { return convertISODatetoUnixDate(term.start); });
+
+        // Group the OT events
+        var _eventsGroup = null;
+        var _tempTerms = [];
+        _.each(terms, function(term, index) {
+            if (term['name'] === 'OT') {
+                /* istanbul ignore else */
+                if (!_eventsGroup) {
+                    _eventsGroup = [];
+                }
+                _eventsGroup = _.union(_eventsGroup, term.events);
+                /* istanbul ignore else */
+                if (!terms[index + 1] || terms[index + 1]['name'] !== 'OT') {
+                    _tempTerms.push({
+                        'name': 'OT',
+                        'start':  _.first(_eventsGroup)['start'],
+                        'end': _.last(_eventsGroup)['end'],
+                        'events': _eventsGroup
+                    });
+                    _eventsGroup = null;
+                }
+            } else {
+                _tempTerms.push(term);
+            }
+        });
+        return _tempTerms;
     };
 
     /**

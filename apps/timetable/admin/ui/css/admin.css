@@ -480,11 +480,7 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
     margin-bottom: 30px;
-    margin-top: 50px;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container:first-child.gh-ot td {
-    border-top: none;
+    margin-top: 60px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
