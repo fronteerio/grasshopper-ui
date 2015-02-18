@@ -144,8 +144,8 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      *  *
      *  * Note that a term always start on a Tuesday and academic weeks start on Thursdays!
      *  *
-     *  * E.g: calendar date: Wed 2015-02-11T13:54:35.000Z => 1423662834000 (week 1)
-     *  *      start of term: Thu 2015-01-13T00:00:00.000Z => 1421107200000 (week 5)
+     *  * E.g: calendar date: Wed 2015-02-11T13:54:35.000Z => 1423662834000 (week 5)
+     *  *      start of term: Thu 2015-01-13T00:00:00.000Z => 1421107200000 (week 1)
      *  *
      *  * This means that the first academic week start on Tuesday, 13/01/2015 and ends on Wednesday, 14/01/2015.
      *  * The second week will start on Thursday, 15/01/2015 and end on Wednesday 21/01/2015.
@@ -154,12 +154,13 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      *  * we need the number of weeks:
      *  *
      *  *   weeks = (calendar date - term start) / (week in milliseconds)
-     *  *   weeks = (1423662834000 - 1421107200000) / (1000 * 60 * 60 * 24 * 7)
+     *  *   weeks = (1423662834000 - 1421107200000) / (week in milliseconds)
      *  *   weeks = 4.226...
      *  *
      *  * We need to subtract an offset from our result, since there is a difference of
      *  * 2 days between the start of the term (Tue) and the start of the academic weeks (Thu).
      *  *
+     *  *   offset = ((1 / 7) * (day number))
      *  *   offset = ((1 / 7) * 2)
      *  *   offset = 0.286...
      *  *
@@ -190,8 +191,14 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Get the start date of the corresponding term
         var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format());
 
-        // Since the terms start on a Tuesday, we have an offset of 2 days.
-        var dayOffset = ((1 / 7) * 2) - 0.01;
+        // Retrieve the day number of the first day of the term
+        var dayNumber = parseInt(moment(startDate).format('E'), 10);
+
+        // Since the terms start on a Tuesday we have an offset of 2 days.
+        // The 0.01 we subtract is just a hack that allows us to ceil
+        // the result of the last calculation before returning the week number,
+        // since this will always result in a integer value
+        var dayOffset = ((1 / 7) * dayNumber) - 0.01;
 
         // Calculate and return the current academic week number
         return Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
@@ -276,15 +283,13 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             throw new Error('A valid term should be provided');
         }
 
-        // The number of milliseconds in one week
-        var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
         // Convert the term start and end date to milliseconds
         var termStartDate = new Date(term.start).getTime();
         var termEndDate = new Date(term.end).getTime();
         // Calculate the time difference
         var timeDifference = Math.abs(termEndDate - termStartDate);
         // Convert to weeks and return
-        return Math.floor(timeDifference / ONE_WEEK) + 1;
+        return Math.floor(timeDifference / PERIODS['week']) + 1;
     };
 
     /**
