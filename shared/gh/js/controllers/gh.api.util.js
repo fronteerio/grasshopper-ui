@@ -437,7 +437,52 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
-     * Order the terms and split up the out of term events
+     * Put the terms and their events into an chronologically ordered array.
+     *
+     *  *   Instead of using the following object in our view, where all the
+     *  *   out of term events are grouped into a single object;
+     *  *
+     *  *   {
+     *  *       'Michaelmas': {
+     *  *           'events': [Object, Object, Object]
+     *  *       },
+     *  *       'Lent': {
+     *  *           'events': [Object]
+     *  *       },
+     *  *       'Easter': {
+     *  *           'events': [Object, Object]
+     *  *       },
+     *  *       'OT': {
+     *  *           'events': [Object, Object]
+     *  *       },
+     *  *
+     *  *   }
+     *  *
+     *  *   We want to have an array where all the terms and events
+     *  *   are ordered chronologically;
+     *  *
+     *  *   [
+     *  *       {
+     *  *           'name'  : 'OT'
+     *  *           'events': [Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Michaelmas'
+     *  *           'events': [Object, Object, Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'OT'
+     *  *           'events': [Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Lent'
+     *  *           'events': [Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Easter'
+     *  *           'events': [Object, Object]
+     *  *       }
+     *  *   ]
      *
      * @param  {terms}     terms    The terms that should be reordered
      * @return {Object}             Object containing the reordered terms and events
