@@ -65,10 +65,6 @@ main h2 {
     min-width: 100px;
 }
 
-.panel .panel-body button:not(:first-child) {
-    margin-left: 10px;
-}
-
 form, table {
     margin-bottom: 0 !important;
 }
