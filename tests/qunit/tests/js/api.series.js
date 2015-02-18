@@ -792,7 +792,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         var testSeries = testAPI.getRandomSeries(app.id);
 
         // Create a new organisational unit
-        gh.api.orgunitAPI.createOrgUnit(parseInt(app.id, 10), 'displayName', 'part', null, null, null, function(err, orgUnit) {
+        gh.api.orgunitAPI.createOrgUnit(parseInt(app.id, 10), 'displayName', 'part', null, null, null, null, null, function(err, orgUnit) {
             assert.ok(!err, 'Verify that an organisational unit can be created without errors');
 
             // Add the series to the organisational unit

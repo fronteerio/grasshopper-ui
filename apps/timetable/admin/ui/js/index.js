@@ -126,7 +126,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
                             'canManage': course.canManage,
                             'part': part,
                             'isEditing': false, // TODO: Replace when locking is supported in the backend
-                            'isDraft': false // TODO: Replace when drafts are supported in the backend
+                            'isDraft': part.published
                         });
                     });
                 });
@@ -146,7 +146,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
                         'canManage': course.canManage,
                         'part': part,
                         'isEditing': part.Group.LockedBy || false,
-                        'isDraft': false // TODO: Replace when drafts are supported in the backend
+                        'isDraft': part.published
                     });
                 });
             }
