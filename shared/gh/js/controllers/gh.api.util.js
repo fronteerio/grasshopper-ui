@@ -231,7 +231,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
 
         // Loop over the terms and check if the given date is in the range of one of the terms
         var eventDate = convertISODatetoUnixDate(date);
-        for (var i=0; i<terms.length; i++) {
+        for (var i = 0; i < terms.length; i++) {
             var termStart = convertISODatetoUnixDate(moment(terms[i].start).utc().format());
             var termEnd = convertISODatetoUnixDate(moment(terms[i].end).utc().format());
             if ((eventDate >= termStart) && (eventDate <= termEnd)) {

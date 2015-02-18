@@ -84,9 +84,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * Return the fully constructed date based on the entries
      *
      * @return  {Object}    Object containing the full start- and end dates
+     * @private
      */
     var getFullDates = function() {
-
         // Retrieve the entered values
         var entries = getFormValues();
 
@@ -161,11 +161,18 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var showPopover = function(ev, trigger) {
+        // Calculate the number of weeks in a term based on the date
+        var numWeeks = 0;
+        var term = gh.api.utilAPI.getTermByDate($(trigger).data('start'));
+        if (term) {
+            numWeeks = gh.api.utilAPI.getWeeksInTerm(term);
+        }
 
         // Render the popover template
         var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {
             'data': {
                 'gh': gh,
+                'numWeeks': numWeeks,
                 'interval': {
                     'hours': 1,
                     'minutes': 15
@@ -196,7 +203,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                         $('#gh-module-day')
                     ];
 
-                    renderDatePicker();
+                    initialiseDatePicker();
                     setCalendarDate();
 
                     // Set the focus on current day of the calendar
@@ -213,11 +220,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     ///////////////////
 
     /**
-     * Render the date picker
+     * Initialise the date picker
      *
      * @private
      */
-    var renderDatePicker = function() {
+    var initialiseDatePicker = function() {
         $('.popover #gh-datepicker').datepicker({
             'dateFormat': "yy-mm-dd",
             'dayNamesMin': ['S','M','T','W','T','F','S'],
@@ -272,7 +279,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var onDatepickerChange = function() {
-        updateDateComponents($('#gh-datepicker'));
+        updateDateComponents('#gh-datepicker');
         validateEntry();
     };
 
@@ -288,7 +295,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var onWeekChange = function() {
-        updateDateComponents($('#gh-module-week'));
+        updateDateComponents('#gh-module-week');
         validateEntry();
     };
 
@@ -298,7 +305,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var onDayChange = function() {
-        updateDateComponents($('#gh-module-day'));
+        updateDateComponents('#gh-module-day');
         validateEntry();
     };
 
@@ -310,56 +317,48 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     /**
      * Update the date components
      *
-     * @param  {Object}    trigger    jQuery object representing the component that invoked the change
+     * @param  {String}    trigger    The ID of the component that invoked the change
      * @private
      */
     var updateDateComponents = function(trigger) {
-
         // Get the form values
         var dates = getFullDates();
 
-        // var date = null;
         var week = gh.api.utilAPI.getWeekInTerm(dates.start);
         var day = moment(dates.start).day();
 
         // Re calculate the date based on the selected week
-        if ($(trigger).selector === '#gh-module-week') {
-
+        if (trigger === '#gh-module-week') {
             // Retrieve the chosen week
             var weekVal = parseInt($('#gh-module-week').val(), 10);
             if (weekVal) {
-
                 // Retrieve the term
                 var term = gh.api.utilAPI.getTermByDate(dates.start);
                 if (term) {
-
                     // Retrieve the day of the week
                     var dayOfTheWeek = parseInt(moment(dates.start).format('E'));
 
-                    // Calculate the date based on the term, week number and day of the week
+                    // Set the date based on the term, week number and day of the week
                     setDate(moment(gh.api.utilAPI.getDateByWeekAndDay(term.name, weekVal, dayOfTheWeek)).utc().format('YYYY-MM-DD'));
                 }
             }
 
         // Recalculate the date based on the selected day
-        } else if ($(trigger).selector === '#gh-module-day') {
-
+        } else if (trigger === '#gh-module-day') {
             // Calculate the start of the week
             var startOfTheWeek = moment(dates.start).startOf('week').subtract({'days': 3});
 
             // Retrieve the selected day value
             var dayVal = parseInt($('#gh-module-day option:selected').attr('data-day'), 10);
 
-            // Set the calendar
+            // Set the date
             setDate(moment(startOfTheWeek).add({'days': dayVal}).utc().format('YYYY-MM-DD'));
         }
 
         // Update all the components except the trigger
         _.each(components, function(component) {
             if ($(component).selector !== $(trigger).selector) {
-                if ($(component).selector === '#gh-datepicker') {
-                    //setDate(moment(date).utc().format('YYYY-MM-DD'));
-                } else if ($(component).selector === '#gh-module-week') {
+                if ($(component).selector === '#gh-module-week') {
                     $(component).val(week);
                 } else if ($(component).selector === '#gh-module-day') {
                     $(component).val(day);
