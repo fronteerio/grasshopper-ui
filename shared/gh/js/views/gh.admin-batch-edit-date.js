@@ -90,7 +90,6 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
     /**
      * Add another day to the terms based on the selection of weeks
      *
-     * @param {Number}    [weekNumber]    The optional number of the week to add the events to
      * @private
      */
     var addAnotherDay = function() {
