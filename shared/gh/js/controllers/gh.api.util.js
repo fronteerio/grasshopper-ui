@@ -437,6 +437,117 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     };
 
     /**
+     * Put the terms and their events into an chronologically ordered array.
+     *
+     *  *   Instead of using the following object in our view, where all the
+     *  *   out of term events are grouped into a single object;
+     *  *
+     *  *   {
+     *  *       'Michaelmas': {
+     *  *           'events': [Object, Object, Object]
+     *  *       },
+     *  *       'Lent': {
+     *  *           'events': [Object]
+     *  *       },
+     *  *       'Easter': {
+     *  *           'events': [Object, Object]
+     *  *       },
+     *  *       'OT': {
+     *  *           'events': [Object, Object, Object, Object]
+     *  *       },
+     *  *
+     *  *   }
+     *  *
+     *  *   We want to have an array where all the terms and events
+     *  *   are ordered chronologically;
+     *  *
+     *  *   [
+     *  *       {
+     *  *           'name'  : 'OT'
+     *  *           'events': [Object, Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Michaelmas'
+     *  *           'events': [Object, Object, Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'OT'
+     *  *           'events': [Object, Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Lent'
+     *  *           'events': [Object]
+     *  *       },
+     *  *       {
+     *  *           'name'  : 'Easter'
+     *  *           'events': [Object, Object]
+     *  *       }
+     *  *   ]
+     *
+     * @param  {terms}     terms    The terms that should be reordered
+     * @return {Object}             Object containing the reordered terms and events
+     */
+    var orderEventsByTerm = exports.orderEventsByTerm = function(terms) {
+        if (!_.isObject(terms)) {
+            throw new Error('An invalid value for terms has been provided');
+        }
+
+        // Create a temporary array for the terms
+        var _terms = [];
+        _.each(terms, function(term, name) {
+            if (name !== 'OT') {
+                _terms.push({
+                    'name': name,
+                    'start': moment(term.start).utc().format(),
+                    'end': moment(term.end).utc().format(),
+                    'events': term.events
+                });
+            }
+        });
+
+        // Create a term for every out of term event
+        /* istanbul ignore else */
+        if (terms['OT']) {
+            _.each(terms['OT'].events, function(event) {
+                _terms.push({
+                    'name': 'OT',
+                    'start': moment(event.start).utc().format(),
+                    'events': [event]
+                });
+            });
+        }
+
+        // Order the terms chronologically
+        terms = _.sortBy(_terms, function(term) { return convertISODatetoUnixDate(term.start); });
+
+        // Group the OT events
+        var _eventsGroup = null;
+        var _tempTerms = [];
+        _.each(terms, function(term, index) {
+            if (term['name'] === 'OT') {
+                /* istanbul ignore else */
+                if (!_eventsGroup) {
+                    _eventsGroup = [];
+                }
+                _eventsGroup = _.union(_eventsGroup, term.events);
+                /* istanbul ignore else */
+                if (!terms[index + 1] || terms[index + 1]['name'] !== 'OT') {
+                    _tempTerms.push({
+                        'name': 'OT',
+                        'start':  _.first(_eventsGroup)['start'],
+                        'end': _.last(_eventsGroup)['end'],
+                        'events': _eventsGroup
+                    });
+                    _eventsGroup = null;
+                }
+            } else {
+                _tempTerms.push(term);
+            }
+        });
+        return _tempTerms;
+    };
+
+    /**
      * Split up a given Array of events into separate Arrays per term. Returns an object with
      * keys being the term label and values the Array of events associated to that term
      *
@@ -444,6 +555,10 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * @return {Object}               Object representing the split up terms and events
      */
     var splitEventsByTerm = exports.splitEventsByTerm = function(events) {
+        if (!_.isObject(events)) {
+            throw new Error('An invalid value for events has been provided');
+        }
+
         // Get the configuration
         var config = require('gh.core').config;
         // Get the correct terms associated to the current application
@@ -459,11 +574,16 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             term.start = new Date(term.start);
             term.end = new Date(term.end);
             // Add an Array to the object to return with the term label as the key
-            eventsByTerm[term.label] = [];
+            eventsByTerm[term.label] = {
+                'start': term.start,
+                'end': term.end,
+                'events': []
+            };
         });
 
         // Loop over the array of events to triage them
         _.each(events.results, function(ev) {
+            var outOfTerm = true;
             // Convert start date into proper date for comparison
             var evStart = new Date(ev.start);
             // Loop over the terms and check whether the event start date
@@ -471,10 +591,21 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             // it into the term's Array
             _.each(terms, function(term) {
                 if (evStart >= term.start && evStart <= term.end) {
+                    outOfTerm = false;
                     // The event takes place in this term, push it into the Array
-                    eventsByTerm[term.label].push(ev);
+                    eventsByTerm[term.label]['events'].push(ev);
                 }
             });
+            // Add the out of terms to a separate array
+            if (outOfTerm) {
+                /* istanbul ignore else */
+                if (!eventsByTerm['OT']) {
+                    eventsByTerm['OT'] = {
+                        'events': []
+                    };
+                }
+                eventsByTerm['OT']['events'].push(ev);
+            }
         });
 
         // Return the resulting object
