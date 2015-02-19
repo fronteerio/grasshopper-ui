@@ -860,3 +860,37 @@
 #gh-visibility-modal #gh-visibility-form label:not(.checked) small p.warning {
     display: none;
 }
+
+
+/***************/
+/* AUTOSUGGEST */
+/***************/
+
+.as-selections {
+    -webkit-box-shadow: none !important;
+       -moz-box-shadow: none !important;
+            box-shadow: none !important;
+    border: 1px solid #CCC !important;
+    height: 39px;
+    padding: 0 !important;
+}
+
+.as-selections .as-selection-item {
+    margin: 5px;
+}
+
+.as-selections .as-original {
+    margin: 0 !important;
+    width: 100%;
+}
+
+.as-selections .as-original input {
+    font-size: 15px !important;
+    height: 100% !important;
+    width: 100% !important;
+    border: none !important;
+}
+
+.as-results {
+    position: absolute;
+}

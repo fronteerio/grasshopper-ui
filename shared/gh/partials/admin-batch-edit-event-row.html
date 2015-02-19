@@ -17,7 +17,19 @@
             'utilAPI': utilAPI
         }) %>
     </td>
-    <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- ev.organisers %></td>
+    <td class="gh-event-organisers-fields hide">
+        <% var organiserString = []; %>
+        <% _.each(ev.organisers, function(organiser) { %>
+            <% if (_.isObject(organiser)) { %>
+                <input type="hidden" name="gh-event-organiser" value="<%- organiser.displayName %>" data-id="<%- organiser.id %>" data-add="true">
+                <% organiserString.push(organiser.displayName) %>
+            <% } else { %>
+                <input type="hidden" name="gh-event-organiser" value="<%- organiser %>" data-add="true">
+                <% organiserString.push(organiser) %>
+            <% } %>
+        <% }); %>
+    </td>
+    <td class="col-xs-2 gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- organiserString.join(', ') %></td>
     <td class="col-xs-2 gh-jeditable-events gh-event-location" tabindex="0" title="Click to edit the event location"><%- ev.location %></td>
     <td class="col-xs-2 gh-jeditable-events-select gh-event-type" data-type="<%- ev.notes %>" data-first="<% if (ev.notes) { %><%- ev.notes.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event notes">
     <%- ev.notes %></td>

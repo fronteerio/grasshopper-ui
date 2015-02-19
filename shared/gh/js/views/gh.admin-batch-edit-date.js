@@ -123,7 +123,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                         'end': moment(endDate).utc().format(),
                         'location': '',
                         'notes': 'Lecture',
-                        'organisers': null,
+                        'organisers': [],
                         'start': moment(startDate).utc().format()
                     }
                 });

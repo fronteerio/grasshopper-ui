@@ -28,6 +28,7 @@ requirejs.config({
         'clickover': 'vendor/js/bootstrapx-clickover',
         'chosen': 'vendor/js/chosen.jquery',
         'fullcalendar': 'vendor/js/fullcalendar',
+        'jquery-autosuggest': 'vendor/js/jquery.autosuggest',
         'jquery-bbq': 'vendor/js/jquery-bbq',
         'jquery-datepicker': 'vendor/js/jquery-datepicker',
         'jquery-ui': 'vendor/js/jquery-ui',
@@ -64,8 +65,10 @@ requirejs.config({
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',
         'gh.admin-batch-edit-date': 'gh/js/views/gh.admin-batch-edit-date',
+        'gh.admin-batch-edit-organiser': 'gh/js/views/gh.admin-batch-edit-organiser',
         'gh.admin-event-type-select': 'gh/js/views/gh.admin-event-type-select',
         'gh.admin-listview': 'gh/js/views/gh.admin-listview',
+        'gh.admin-edit-organiser': 'gh/js/views/gh.admin-edit-organiser',
         'gh.borrow-series': 'gh/js/views/gh.borrow-series',
         'gh.calendar': 'gh/js/views/gh.calendar',
         'gh.datepicker': 'gh/js/views/gh.datepicker',

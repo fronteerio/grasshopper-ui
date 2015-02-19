@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
         <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
         <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
+        <link rel="stylesheet" href="/shared/vendor/css/jquery.autosuggest.css">
         <link rel="stylesheet" href="/shared/vendor/css/fullcalendar.css">
         <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
         <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
@@ -202,6 +203,11 @@
         <div id="gh-visibility-modal-container"><!-- --></div>
         <script id="gh-visibility-modal-template" type="text/template">
             <%= _.partial('visibility-modal', {'data': data}) %>
+        </script>
+
+        <!-- Autosuggest template -->
+        <script id="gh-organiser-template" type="text/template">
+            <input class="gh-organiser-autosuggest" type="text" placeholder="Lecturers">
         </script>
 
         <div id="gh-modal"><!-- --></div>
