@@ -77,9 +77,9 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         _.each($rows, function($row) {
             $row = $($row);
             // Get the start date of the event
-            var startDate = $row.find('.gh-event-date').attr('data-start');
+            var startDate = utilAPI.convertISODatetoUnixDate($row.find('.gh-event-date').attr('data-start'));
             // Get the week in which the event takes place
-            var dateWeek = utilAPI.getWeekInTerm(startDate);
+            var dateWeek = utilAPI.getAcademicWeekNumber(startDate);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
                 $row.find('.gh-event-delete').click();
@@ -203,7 +203,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
 
     /**
      * Get the week numbers that are in use by the checked event rows
-     * 
+     *
      * @param  {Object[]}    $rows    Array of rows that are selected for batch edit
      * @return {Number[]}             Array week numbers that are in use by the checked event rows
      * @private
@@ -213,9 +213,10 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         var weeksInUse = [];
         // Extract the weeks from the batch
         _.each($rows, function(row) {
-            var start = $(row).find('.gh-event-date').attr('data-start');
-            weeksInUse.push(utilAPI.getWeekInTerm(start));
+            var start = utilAPI.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
+            weeksInUse.push(utilAPI.getAcademicWeekNumber(start));
         });
+        console.log(_.uniq(weeksInUse));
         return _.uniq(weeksInUse);
     };
 
@@ -273,7 +274,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                 // Get the date the event finishes on
                 var eventEnd = new Date($row.find('.gh-event-date').attr('data-end'));
                 // Get which week of the term this event takes place in 
-                var weekInTerm = utilAPI.getWeekInTerm(eventStart);
+                var weekInTerm = utilAPI.getAcademicWeekNumber(utilAPI.convertISODatetoUnixDate(moment(eventStart).utc().format()));
                 // Get the name of the term this date is in
                 var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
                 // Get the date the event would be on after the change
