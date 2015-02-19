@@ -210,7 +210,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * Return the current term if the current date is within a term
      *
      * @param  {Number}     date          The date in a UNIX time format
-     * @param  {Boolean}    usePrecise    Whether of not an offset should be used
+     * @param  {Boolean}    usePrecise    Whether of not an offset should be used. (Default: false)
      * @return {Object}                   The term that has the specified date in its range
      */
     var getTerm = exports.getTerm = function(date, usePrecise) {
