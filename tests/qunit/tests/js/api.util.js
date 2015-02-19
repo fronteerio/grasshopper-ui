@@ -385,9 +385,71 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(2, numWeeks);
     });
 
+    // Test the 'orderEventsByTerm' functionality
+    QUnit.test('orderEventsByTerm', function(assert) {
+        expect(8);
+
+        // Verify that an error is thrown when no events were provided
+        assert.throws(function() {
+            gh.api.utilAPI.orderEventsByTerm();
+        }, 'Verify that an error is thrown when no terms were provided');
+
+        // Verify that an error is thrown when an invalid value for events was provided
+        assert.throws(function() {
+            gh.api.utilAPI.orderEventsByTerm('invalid_value');
+        }, 'Verify that an error is thrown when an invalid value for events was provided');
+
+        // Split the events by term
+        var eventsByTerm = gh.api.utilAPI.splitEventsByTerm({
+            "results": [
+                { // OT after Easter
+                    "end": "2015-08-30T14:00:00.000Z",
+                    "start": "2015-08-30T13:00:00.000Z"
+                },
+                { // OT before Michaelmas
+                    "end": "2014-01-01T14:00:00.000Z",
+                    "start": "2014-01-01T13:00:00.000Z"
+                },
+                { // Michaelmas
+                    "end": "2014-10-20T14:00:00.000Z",
+                    "start": "2014-10-20T13:00:00.000Z"
+                },
+                { // Lent
+                    "end": "2015-01-30T11:00:00.000Z",
+                    "start": "2015-01-30T10:00:00.000Z"
+                },
+                { // Easter
+                    "end": "2015-04-30T14:00:00.000Z",
+                    "start": "2015-04-30T13:00:00.000Z"
+                }
+            ]
+        });
+
+        // Order the events
+        var events = gh.api.utilAPI.orderEventsByTerm(eventsByTerm);
+
+        // Verify that the events are returned in a correct order
+        assert.strictEqual(events.length, 5, 'Verify that the events are returned in a correct order');
+        assert.strictEqual(events[0].name, 'OT');
+        assert.strictEqual(events[1].name, 'Michaelmas');
+        assert.strictEqual(events[2].name, 'Lent');
+        assert.strictEqual(events[3].name, 'Easter');
+        assert.strictEqual(events[4].name, 'OT');
+    });
+
     // Test the 'splitEventsByTerm' functionality
     QUnit.test('splitEventsByTerm', function(assert) {
-        expect(4);
+        expect(6);
+
+        // Verify that an error is thrown when no events were provided
+        assert.throws(function() {
+            gh.api.utilAPI.splitEventsByTerm();
+        }, 'Verify that an error is thrown when no events were provided');
+
+        // Verify that an error is thrown when an invalid value for events was provided
+        assert.throws(function() {
+            gh.api.utilAPI.splitEventsByTerm('invalid_value');
+        }, 'Verify that an error is thrown when an invalid value for events was provided');
 
         // Mock an Array of events to test with
         var events = {
@@ -412,9 +474,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that the returning events were correctly split by term
         assert.ok(eventsByTerm, 'Verify that events can be successfully split by term');
-        assert.equal(eventsByTerm['Michaelmas'].length, 1, 'Verify that 1 event was triaged into Michaelmas');
-        assert.equal(eventsByTerm['Lent'].length, 1, 'Verify that 1 event was triaged into Lent');
-        assert.equal(eventsByTerm['Easter'].length, 1, 'Verify that 1 event was triaged into Easter');
+        assert.equal(eventsByTerm['Michaelmas'].events.length, 1, 'Verify that 1 event was triaged into Michaelmas');
+        assert.equal(eventsByTerm['Lent'].events.length, 1, 'Verify that 1 event was triaged into Lent');
+        assert.equal(eventsByTerm['Easter'].events.length, 1, 'Verify that 1 event was triaged into Easter');
     });
 
 
