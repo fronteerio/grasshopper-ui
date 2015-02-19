@@ -310,7 +310,6 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
      * @return {Date}                    Date object of the day in the term
      */
     var getDateByWeekAndDay = exports.getDateByWeekAndDay = function(termName, weekNumber, dayNumber) {
-        console.log(termName, weekNumber, dayNumber);
         if (!_.isString(termName)) {
             throw new Error('A valid term name should be provided');
         } else if (!_.isNumber(weekNumber)) {

@@ -228,7 +228,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         }, 'Verify that a valid term needs to be provided');
 
         // Verify that the correct number of weeks is returned
-        assert.strictEqual(gh.api.utilAPI.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 9, 'Verify that the correct number of weeks is returned');
+        assert.strictEqual(gh.api.utilAPI.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 10, 'Verify that the correct number of weeks is returned');
     });
 
     // Test the 'getFirstDayOfTerm' functionality

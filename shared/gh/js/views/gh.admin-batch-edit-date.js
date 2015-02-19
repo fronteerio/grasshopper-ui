@@ -215,7 +215,6 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             var start = utilAPI.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
             weeksInUse.push(utilAPI.getAcademicWeekNumber(start));
         });
-        console.log(_.uniq(weeksInUse));
         return _.uniq(weeksInUse);
     };
 
