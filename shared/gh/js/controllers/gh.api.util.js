@@ -95,11 +95,13 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             throw new Error('A valid end date should be provided');
         }
 
-        var weekNumber = getAcademicWeekNumber(convertISODatetoUnixDate(moment(startDate).utc().format()));
-        if (!weekNumber) {
-            weekNumber = 'OT';
-        } else {
-            weekNumber = 'W' + weekNumber;
+        var weekNumber = 'OT';
+        if (getTerm(convertISODatetoUnixDate(moment(startDate).utc().format('YYYY-MM-DD')), true)) {
+            weekNumber = getAcademicWeekNumber(convertISODatetoUnixDate(moment(startDate).utc().format('YYYY-MM-DD')));
+            /* istanbul ignore else */
+            if (weekNumber) {
+                weekNumber = 'W' + weekNumber;
+            }
         }
 
         // Retrieve the day
@@ -207,12 +209,15 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
     /**
      * Return the current term if the current date is within a term
      *
-     * @param  {Number}    date     The date in a UNIX time format
-     * @return {Object}             The term that has the specified date in its range
+     * @param  {Number}     date          The date in a UNIX time format
+     * @param  {Boolean}    usePrecise    Whether of not an offset should be used
+     * @return {Object}                   The term that has the specified date in its range
      */
-    var getTerm = exports.getTerm = function(date) {
+    var getTerm = exports.getTerm = function(date, usePrecise) {
         if (!_.isNumber(date)) {
             throw new Error('A valid date should be provided');
+        } else if (usePrecise && !_.isBoolean(usePrecise)) {
+            throw new Error('A valid value for usePrecise should be provided');
         }
 
         // Get the configuration
@@ -227,14 +232,18 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             var startDate = convertISODatetoUnixDate(moment(term.start).utc().format());
             var endDate = convertISODatetoUnixDate(moment(term.end).utc().format());
 
-            // We consider weeks that only count 2 days as full academic weeks.
-            // E.g. A term starts on Tuesday 13th February, but the academic weeks always start on a Thursday.
-            //      This means that the first academic week of that term starts on the 13th and ends on the 14th.
-            //      The second academic week will start on Thursday 15th February.
-            var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).utc().format());
-            /* istanbul ignore else */
-            if (date < startDate && datePlus >= startDate) {
-                date = datePlus;
+            // Only use an offset for the week calculation when specified
+            if (!usePrecise) {
+
+                // We consider weeks that only count 2 days as full academic weeks.
+                // E.g. A term starts on Tuesday 13th February, but the academic weeks always start on a Thursday.
+                //      This means that the first academic week of that term starts on the 13th and ends on the 14th.
+                //      The second academic week will start on Thursday 15th February.
+                var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).utc().format());
+                /* istanbul ignore else */
+                if (date < startDate && datePlus >= startDate) {
+                    date = datePlus;
+                }
             }
 
             // Return the term where the specified date is within the range
@@ -650,7 +659,8 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
             // falls between the term start and end date. If it does, push
             // it into the term's Array
             _.each(terms, function(term) {
-                if (evStart >= term.start && evStart <= term.end) {
+                var eventStartDay = convertISODatetoUnixDate(moment(evStart).utc().format('YYYY-MM-DD'));
+                if (evStart >= term.start && eventStartDay <= term.end) {
                     outOfTerm = false;
                     // The event takes place in this term, push it into the Array
                     eventsByTerm[term.label]['events'].push(ev);
