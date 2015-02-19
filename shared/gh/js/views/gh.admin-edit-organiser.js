@@ -116,6 +116,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                     } else {
                         // Create the hidden field element
                         $field = $('<input type="hidden" name="gh-event-organiser" value="' + user.displayName + '" data-add="true">');
+
                         // Try to parse the ID, if it fails that means we have a new user, not in the system
                         var hasId = false;
                         try {
@@ -123,13 +124,15 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                         } catch (err) {
                             hasId = false;
                         }
+
                         // If the user exists in the system, add the ID to the hidden field
                         if (hasId) {
                             $field.attr('data-id', user.id);
                         }
+
+                        // Add the hidden field
+                        $(elem).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').append($field);
                     }
-                    // Add the hidden field
-                    $(elem).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').append($field);
                 },
                 'selectionRemoved': function(elem) {
                     // Construct the user object that was removed
@@ -143,7 +146,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
 
                     // Update the hidden field if it exists already
                     if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
-                        // The hidden field exists already, make sure it's marked as 'to add'
+                        // The hidden field exists already, make sure it's NOT marked as 'to add'
                         $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', false);
                     }
 

@@ -881,13 +881,11 @@
 
 .as-selections .as-original {
     margin: 0 !important;
-    width: 100%;
 }
 
 .as-selections .as-original input {
     font-size: 15px !important;
     height: 100% !important;
-    width: 100% !important;
     border: none !important;
 }
 

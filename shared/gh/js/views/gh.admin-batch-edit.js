@@ -353,30 +353,30 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         return value;
     };
 
-        /**
-         * Parse the AutoSuggest input and display a list of organisers
-         *
-         * @private
-         */
-        var editableOrganiserSubmitted = function() {
-            // Retrieve the values from the AutoSuggest field and create a String to show
-            var $hiddenFields = $(this).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').find('input[data-add="true"]');
-            var organisers = [];
+    /**
+     * Parse the AutoSuggest input and display a list of organisers
+     *
+     * @private
+     */
+    var editableOrganiserSubmitted = function() {
+        // Retrieve the values from the AutoSuggest field and create a String to show
+        var $hiddenFields = $(this).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').find('input[data-add="true"]');
+        var organisers = [];
 
-            // Create the stringified organiser Array
-            _.each($hiddenFields, function(hiddenField) {
-                organisers.push(hiddenField.value);
-            });
+        // Create the stringified organiser Array
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push(hiddenField.value);
+        });
 
-            // Mark the row as edited
-            $(this).closest('tr').addClass('active');
+        // Mark the row as edited
+        $(this).closest('tr').addClass('active');
 
-            // Toggle the submit button
-            toggleSubmit();
+        // Toggle the submit button
+        toggleSubmit();
 
-            // Return the stringified organisers
-            return organisers.join(', ');
-        };
+        // Return the stringified organisers
+        return organisers.join(', ');
+    };
 
     /**
      * Set up editable fields in the batch edit tables
@@ -922,6 +922,7 @@ console.log(newEventObjs);
         // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
         $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
+        $(document).on('gh.batchedit.togglesubmit', toggleSubmit);
 
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
