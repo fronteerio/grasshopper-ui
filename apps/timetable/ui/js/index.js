@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh, utils) {
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
     var state = $.bbq.getState() || {};
 
     // Cache the tripos data
@@ -32,12 +32,12 @@ define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listvi
      */
     var setUpHeader = function() {
         // Render the header template
-        utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
 
         // Render the tripos pickers
-        utils.renderTemplate($('#gh-subheader-pickers-template'), {
+        gh.utils.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
 
@@ -55,7 +55,7 @@ define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listvi
      */
     var setUpCalendar = function() {
         // Render the calendar template
-        utils.renderTemplate($('#gh-calendar-template'), {
+        gh.utils.renderTemplate($('#gh-calendar-template'), {
             'gh': gh
         }, $('#gh-main'));
 
@@ -76,7 +76,7 @@ define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listvi
      * @private
      */
     var renderLoginModal = function() {
-        utils.renderTemplate($('#gh-modal-template'), {
+        gh.utils.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
     };
@@ -109,7 +109,7 @@ define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listvi
                     }
                     window.location = '/';
                 } else {
-                    utils.notification('Login failed', 'Logging in to the application failed', 'error');
+                    gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
                 }
             });
 
@@ -127,9 +127,9 @@ define(['gh.core', 'gh.utils', 'gh.subheader', 'gh.calendar', 'gh.student-listvi
      */
     var fetchTriposData = function(callback) {
         // Fetch the triposes
-        utils.getTriposStructure(function(err, data) {
+        gh.utils.getTriposStructure(function(err, data) {
             if (err) {
-                return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return gh.utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
             }
 
             // Cache the tripos data

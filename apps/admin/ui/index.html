@@ -115,7 +115,7 @@
                                             <th>App name</th>
                                             <th>App Host</th>
                                             <th>App Enabled</th>
-                                            <th></th>
+                                            <th colspan="2"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,7 +131,10 @@
                                                     <input id="gh-app-enabled-<%- app.id %>" type="checkbox"<% if (app.enabled) { %> checked<% } %>/>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary gh-update-app" data-appid="<%- app.id %>">Update app</button>
+                                                    <button type="button" class="btn btn-success gh-launch-app pull-left" data-host="<%- app.host %>"><i class="fa fa-external-link"></i> Open app</button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary gh-update-app pull-left" data-appid="<%- app.id %>">Update app</button>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -145,8 +148,9 @@
                                             <td>
                                                 <input type="checkbox" checked disabled/>
                                             </td>
+                                            <td></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary gh-create-app" data-tenantid="<%- tenant.id %>">Create app</button>
+                                                <button type="button" class="btn btn-primary gh-create-app pull-left" data-tenantid="<%- tenant.id %>">Create app</button>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
+define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -30,7 +30,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      * @private
      */
     var renderAdmins = function(administrators) {
-        utils.renderTemplate($('#gh-administrators-template'), {
+        gh.utils.renderTemplate($('#gh-administrators-template'), {
             'gh': gh,
             'administrators': administrators
         }, $('#gh-administrators-container'));
@@ -43,7 +43,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      * @private
      */
     var renderConfig = function(tenants) {
-        utils.renderTemplate($('#gh-configuration-template'), {
+        gh.utils.renderTemplate($('#gh-configuration-template'), {
             'gh': gh,
             'tenants': tenants
         }, $('#gh-configuration-container'));
@@ -56,7 +56,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      * @private
      */
     var renderHeader = function() {
-        utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
     };
@@ -67,7 +67,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      * @private
      */
     var renderNavigation = function() {
-        utils.renderTemplate($('#gh-navigation-template'), {
+        gh.utils.renderTemplate($('#gh-navigation-template'), {
             'gh': gh,
             'currentPage': currentPage
         }, $('#gh-navigation-container'));
@@ -80,7 +80,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      * @private
      */
     var renderTenants = function(tenants) {
-        utils.renderTemplate($('#gh-tenants-template'), {
+        gh.utils.renderTemplate($('#gh-tenants-template'), {
             'gh': gh,
             'tenants': tenants
         }, $('#gh-tenants-container'));
@@ -112,7 +112,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
                 }
                 window.location = '/';
             } else {
-                utils.notification('Login failed', 'Logging in to the application failed', 'error');
+                gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
             }
         });
     };
@@ -140,7 +140,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
         var getConfigForApps = function(apps, _callback) {
             gh.api.configAPI.getConfig(apps[appsDone].id, function(err, config) {
                 if (err) {
-                    return utils.notification('Configuration not retrieved.', 'The configuration could not be successfully retrieved.', 'error');
+                    return gh.utils.notification('Configuration not retrieved.', 'The configuration could not be successfully retrieved.', 'error');
                 }
 
                 // Remove unwanted properties from the configuration object
@@ -212,7 +212,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
     var getTenantData = function(callback) {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
             if (err) {
-                utils.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
+                gh.utils.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
             }
 
             var todo = tenants.length;
@@ -221,11 +221,11 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
             var getApps = function(tenantId, _callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     if (err) {
-                        utils.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
+                        gh.utils.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
                     }
 
                     // Sort the apps by host
-                    apps.sort(utils.sortByHost);
+                    apps.sort(gh.utils.sortByHost);
                     // Cache the apps on the tenants object
                     tenants[done].apps = apps;
 
@@ -244,7 +244,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
             // Otherwise we get the apps for each tenant
             } else {
                 getApps(tenants[done].id, function(tenants) {
-                    tenants.sort(utils.sortByDisplayName);
+                    tenants.sort(gh.utils.sortByDisplayName);
                     callback(tenants);
                 });
             }
@@ -259,7 +259,7 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
     var getAdminUserData = function(callback) {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
             if (err) {
-                utils.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
+                gh.utils.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
             }
 
             callback(administrators.rows);
@@ -287,10 +287,10 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
             // Create a new app
             gh.api.appAPI.createApp(newAppDisplayName, newAppHost, tenantId, 'timetable', function(err, data) {
                 if (err) {
-                    return utils.notification('App not created.', 'The app could not be successfully created.', 'error');
+                    return gh.utils.notification('App not created.', 'The app could not be successfully created.', 'error');
                 }
                 setUpTenants();
-                utils.notification('App created.', 'The app was successfully created.', 'success');
+                gh.utils.notification('App created.', 'The app was successfully created.', 'success');
             });
         } else if (updateApp) {
             var appId = parseInt($submitButton.data('appid'), 10);
@@ -300,19 +300,19 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
             // Update the app
             gh.api.appAPI.updateApp(appId, updatedAppDisplayName, updatedAppEnabled, updatedAppHost, function(err, data) {
                 if (err) {
-                    return utils.notification('App not updated.', 'The app could not be successfully updated.', 'error');
+                    return gh.utils.notification('App not updated.', 'The app could not be successfully updated.', 'error');
                 }
                 setUpTenants();
-                utils.notification('App updated.', 'The app was successfully updated.', 'success');
+                gh.utils.notification('App updated.', 'The app was successfully updated.', 'success');
             });
         } else if (createTenant) {
             var newTenantDisplayName = $('#gh-app-tenant-new').val();
             gh.api.tenantAPI.createTenant(newTenantDisplayName, function(err, data) {
                 if (err) {
-                    return utils.notification('Tenant not created.', 'The tenant could not be successfully created.', 'error');
+                    return gh.utils.notification('Tenant not created.', 'The tenant could not be successfully created.', 'error');
                 }
                 setUpTenants();
-                utils.notification('Tenant updated.', 'The tenant was successfully updated.', 'success');
+                gh.utils.notification('Tenant updated.', 'The tenant was successfully updated.', 'success');
             });
         }
     };
@@ -336,10 +336,10 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
 
             gh.api.adminAPI.createAdmin(newAdminUserName, newAdminDisplayName, newAdminPassword, function(err, administrator) {
                 if (err) {
-                    return utils.notification('Administrator not created.', 'The administrator could not be successfully created.', 'error');
+                    return gh.utils.notification('Administrator not created.', 'The administrator could not be successfully created.', 'error');
                 }
                 setUpUsers();
-                utils.notification('Administrator created.', 'The administrator was successfully created.', 'success');
+                gh.utils.notification('Administrator created.', 'The administrator was successfully created.', 'success');
             });
         } else if (updateAdmin) {
             var adminId = parseInt($submitButton.data('adminid'), 10);
@@ -347,10 +347,10 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
 
             gh.api.adminAPI.updateAdmin(adminId, updateAdminDisplayName, function(err, administrator) {
                 if (err) {
-                    return utils.notification('Administrator not updated.', 'The administrator could not be successfully updated.', 'error');
+                    return gh.utils.notification('Administrator not updated.', 'The administrator could not be successfully updated.', 'error');
                 }
                 setUpUsers();
-                utils.notification('Administrator updated.', 'The administrator was successfully updated.', 'success');
+                gh.utils.notification('Administrator updated.', 'The administrator was successfully updated.', 'success');
             });
         }
     };
@@ -376,9 +376,9 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
         // Update the configuration
         gh.api.configAPI.updateConfig($form.data('appid'), configValues, function(err) {
             if (err) {
-                return utils.notification('Configuration not updated.', 'The configuration could not be successfully updated.', 'error');
+                return gh.utils.notification('Configuration not updated.', 'The configuration could not be successfully updated.', 'error');
             }
-            return utils.notification('Configuration updated.', 'The configuration was successfully updated.', 'success');
+            return gh.utils.notification('Configuration updated.', 'The configuration was successfully updated.', 'success');
         });
 
         return false;
@@ -428,6 +428,16 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
         $(this).val($(this).is(':checked'));
     };
 
+    /**
+     * Launch the selected application
+     *
+     * @private
+     */
+    var launchApp = function() {
+        var host = $(this).data('host');
+        window.open('//' + host, '_blank');
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -440,7 +450,8 @@ define(['gh.core', 'gh.utils', 'chosen', 'jquery-bbq'], function(gh, utils) {
      */
     var addBinding = function() {
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
-        $('body').on('click', '#gh-tenants-apps-form button', submitTenantForm);
+        $('body').on('click', '#gh-tenants-apps-form .gh-update-app', submitTenantForm);
+        $('body').on('click', '#gh-tenants-apps-form .gh-launch-app', launchApp);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
         $('body').on('submit', '#gh-signin-form', doLogin);

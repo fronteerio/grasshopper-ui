@@ -73,9 +73,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         _.each($rows, function($row) {
             $row = $($row);
             // Get the start date of the event
-            var startDate = $row.find('.gh-event-date').data('start');
+            var startDate = utilAPI.convertISODatetoUnixDate($row.find('.gh-event-date').data('start'));
             // Get the week in which the event takes place
-            var dateWeek = gh.utils.getWeekInTerm(startDate);
+            var dateWeek = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
                 $row.find('.gh-event-delete').click();
@@ -168,7 +168,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         // Extract the weeks from the batch
         _.each($rows, function(row) {
             var start = $(row).find('.gh-event-date').data('start');
-            weeksInUse.push(gh.utils.getWeekInTerm(start));
+            weeksInUse.push(gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(start)));
         });
         return _.uniq(weeksInUse);
     };
