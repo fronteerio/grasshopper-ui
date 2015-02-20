@@ -191,7 +191,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         }
 
         // Get the start date of the corresponding term
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format());
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
         var dayNumber = parseInt(moment(startDate).format('E'), 10);
@@ -203,7 +203,16 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         var dayOffset = ((1 / 7) * dayNumber) - 0.01;
 
         // Calculate and return the current academic week number
-        return Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
+        // If the term in which the date is can be retrieved, we need to calculate the exact
+        // week in that term. If it can't be retrieved the date is out of term and 0 should
+        // be returned
+        var weekNumber = 0;
+        if (getTerm(date, true)) {
+            weekNumber = Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
+        }
+
+        // Return the week number
+        return weekNumber;
     };
 
     /**

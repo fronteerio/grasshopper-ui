@@ -10,6 +10,12 @@
     <!-- Show the number of weeks that are selected --> 
     <small><%- weeksInUse.length %> week<% if (weeksInUse.length !== 1) { %>s<% } %> selected</small>
     <div id="gh-batch-edit-date-picker">
+        <% var weekUsed = _.indexOf(weeksInUse, 0) !== -1 %>
+        <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
+            <label>
+                <input type="checkbox" value="0" <% if (weekUsed) { %>checked<% } %>>OT <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
+            </label>
+        </div>
         <% var totalWeeks = numberOfWeeks%>
         <!-- Keep rendering new weeks until the amount of weeks left to render is 0 -->
         <% while (numberOfWeeks) { %>
@@ -29,6 +35,8 @@
             <select id="gh-batch-edit-day-picker" class="pull-left form-control">
                 <option value="4" <% if (parseInt(index, 10) === 4) { %> selected="true" <% } %>>Thursdays</option>
                 <option value="5" <% if (parseInt(index, 10) === 5) { %> selected="true" <% } %>>Fridays</option>
+                <option value="5" <% if (parseInt(index, 10) === 6) { %> selected="true" <% } %>>Saturday</option>
+                <option value="5" <% if (parseInt(index, 10) === 7) { %> selected="true" <% } %>>Sunday</option>
                 <option value="1" <% if (parseInt(index, 10) === 1) { %> selected="true" <% } %>>Mondays</option>
                 <option value="2" <% if (parseInt(index, 10) === 2) { %> selected="true" <% } %>>Tuesdays</option>
                 <option value="3" <% if (parseInt(index, 10) === 3) { %> selected="true" <% } %>>Wednesdays</option>
