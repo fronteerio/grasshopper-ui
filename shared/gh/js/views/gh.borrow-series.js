@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.api.orgunit'], function(orgunitAPI) {
+define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
 
     // Cache the tripos data
     var triposData = null;
