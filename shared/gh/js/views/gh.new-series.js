@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.util'], function(gh, adminConstants, orgunitAPI, seriesAPI, utilAPI) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'], function(gh, constants, utils, orgunitAPI, seriesAPI) {
 
     /**
      * Create a new series
@@ -36,15 +36,15 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
         // Create a new series
         seriesAPI.createSeries(appId, displayName, null, groupId, function(err, series) {
             if (err) {
-                return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
             }
 
             // Link the created series to the module
             orgunitAPI.addOrgUnitSeries(parentId, series.id, function(err) {
                 if (err) {
-                    return utilAPI.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                    return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
                 }
-                utilAPI.notification('Series created.', 'The series was successfully created.', 'success');
+                utils.notification('Series created.', 'The series was successfully created.', 'success');
 
                 // Create a new state object that will take care of opening the new series for us
                 var state = $.bbq.getState();
@@ -95,7 +95,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
             var partId = $(this).closest('#gh-modules-list-container').data('partid');
             // Dispatch an event to the admin view controller
             $(document).trigger('gh.admin.changeView', {
-                'name': adminConstants.views.NEW_SERIES,
+                'name': constants.views.NEW_SERIES,
                 'data': {
                     'groupId': groupId,
                     'parentId': parentId,
@@ -106,7 +106,7 @@ define(['gh.core', 'gh.admin-constants', 'gh.api.orgunit', 'gh.api.series', 'gh.
 
         // Cancel creating a new series
         $('body').on('click', '#gh-create-series-cancel', function() {
-            $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.EDITABLE_PARTS});
+            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
         });
 
         // Toggle the enabled status of the submit button

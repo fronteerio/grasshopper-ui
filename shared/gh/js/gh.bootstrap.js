@@ -57,10 +57,14 @@ requirejs.config({
         'gh.api.tenant': 'gh/js/controllers/gh.api.tenant',
         'gh.api.tests': 'gh/js/controllers/gh.api.tests',
         'gh.api.user': 'gh/js/controllers/gh.api.user',
-        'gh.api.util': 'gh/js/controllers/gh.api.util',
 
         // GH constants
-        'gh.admin-constants': 'gh/js/constants/gh.admin',
+        'gh.constants': 'gh/js/constants/gh.constants',
+
+        // GH utilities
+        'gh.utils': 'gh/js/utils/gh.utils',
+        'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
+        'gh.utils.time': 'gh/js/utils/gh.utils.time',
 
         // GH view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',

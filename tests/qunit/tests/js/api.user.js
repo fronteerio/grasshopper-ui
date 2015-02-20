@@ -34,9 +34,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
             var appId = testAPI.getTestApp().id;
             var user = {
-                'displayName': gh.api.utilAPI.generateRandomString(),
-                'email': gh.api.utilAPI.generateRandomString(),
-                'password': gh.api.utilAPI.generateRandomString()
+                'displayName': gh.utils.generateRandomString(),
+                'email': gh.utils.generateRandomString(),
+                'password': gh.utils.generateRandomString()
             };
 
             // Create a new user
@@ -94,7 +94,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                         // Verify that the error is handled when the users can't be retrieved
                                         body = {'code': 400, 'msg': 'Bad Request'};
-                                        gh.api.utilAPI.mockRequest('GET', '/api/users?app=' + app.id + '&limit=&offset=&q=', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.utils.mockRequest('GET', '/api/users?app=' + app.id + '&limit=&offset=&q=', 400, {'Content-Type': 'application/json'}, body, function() {
                                             gh.api.userAPI.getUsers(app.id, null, null, null, function(err, data) {
                                                 assert.ok(err, 'Verify that the error is handled when the users can\'t be successfully retrieved');
 
@@ -165,13 +165,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             // Verify that the me feed can be successfully retrieved
             // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
             var body = {'code': 200, 'msg': 'OK'};
-            gh.api.utilAPI.mockRequest('GET', '/api/me', 200, {'Content-Type': 'application/json'}, body, function() {
+            gh.utils.mockRequest('GET', '/api/me', 200, {'Content-Type': 'application/json'}, body, function() {
                 gh.api.userAPI.getMe(function(err, data) {
                     assert.ok(!err, 'Verify that the me feed can be successfully retrieved');
 
                     // Verify that the error is handled when the calendar can't be retrieved
                     body = {'code': 400, 'msg': 'Bad Request'};
-                    gh.api.utilAPI.mockRequest('GET', '/api/me', 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.utils.mockRequest('GET', '/api/me', 400, {'Content-Type': 'application/json'}, body, function() {
                         gh.api.userAPI.getMe(function(err, data) {
                             assert.ok(err, 'Verify that the error is handled when the me feed can\'t be successfully retrieved');
                             assert.ok(!data, 'Verify that no data returns when the me feed can\'t be successfully retrieved');
@@ -224,7 +224,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                     // Mock an error from the back-end
                                     var body = {'code': 400, 'msg': 'Bad Request'};
-                                    gh.api.utilAPI.mockRequest('GET', '/api/users/' + user.id + '?start=2010-01-01&end=2015-12-31', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('GET', '/api/users/' + user.id + '?start=2010-01-01&end=2015-12-31', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.userAPI.getUserCalendar(user.id, '2010-01-01', '2015-12-31', function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the user\'s calendar can\'t be successfully retrieved');
                                             assert.ok(!data, 'Verify that no data returns when the user\'s calendar can\'t be successfully retrieved');
@@ -277,7 +277,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                 // Mock an error from the back-end
                                 var body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/users/' + user.id + '/' + user.calendarToken + '/calendar.ical', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/users/' + user.id + '/' + user.calendarToken + '/calendar.ical', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.userAPI.getUserCalendarIcal(user.id, user.calendarToken, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the user\'s calendar can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the user\'s calendar can\'t be successfully retrieved');
@@ -326,7 +326,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             gh.api.userAPI.getUserCalendarRss(user.id, user.calendarToken, function(err, data) {
                                 // Mock an error from the back-end
                                 var body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/users/' + user.id + '/' + user.calendarToken + '/calendar.rss', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/users/' + user.id + '/' + user.calendarToken + '/calendar.rss', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.userAPI.getUserCalendarRss(user.id, user.calendarToken, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the user\'s calendar can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the user\'s calendar can\'t be successfully retrieved');
@@ -376,7 +376,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Mock an error from the back-end
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/users/' + user.id + '/token', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/users/' + user.id + '/token', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.userAPI.resetToken(user.id, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the user\'s token can\'t be successfully reset');
                                 assert.ok(!data, 'Verify that no data returns when the user\'s token can\'t be successfully reset');
@@ -509,9 +509,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         var appId = testAPI.getTestApp().id;
         var user = {
-            'displayName': gh.api.utilAPI.generateRandomString(),
-            'email': gh.api.utilAPI.generateRandomString(),
-            'password': gh.api.utilAPI.generateRandomString()
+            'displayName': gh.utils.generateRandomString(),
+            'email': gh.utils.generateRandomString(),
+            'password': gh.utils.generateRandomString()
         };
 
         // Verify that an error is thrown when no app id was provided
@@ -562,7 +562,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                                 // Mock an error from the back-end
                                                 var body = {'code': 400, 'msg': 'Bad Request'};
-                                                gh.api.utilAPI.mockRequest('POST', '/api/users', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                gh.utils.mockRequest('POST', '/api/users', 400, {'Content-Type': 'application/json'}, body, function() {
                                                     gh.api.userAPI.createUser(appId, user.displayName, user.email, user.password, null, null, null, null, function(err, data) {
                                                         assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully created');
                                                         assert.ok(!data, 'Verify that no data returns when the user can\'t be successfully created');
@@ -673,13 +673,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             assert.ok(err, 'Verify that an error is thrown when an invalid value for emailPreference was provided');
 
                             // Verify that a user can be updated without errors when only specifying a new display name
-                            var displayName = gh.api.utilAPI.generateRandomString();
+                            var displayName = gh.utils.generateRandomString();
                             gh.api.userAPI.updateUser(user.id, displayName, null, null, function(err, data) {
                                 assert.ok(!err, 'Verify that a user can be updated without errors');
                                 assert.strictEqual(data.displayName, displayName, 'Verify that the user was updated successfully');
 
                                 // Verify that a user can be updated without errors when only specifying a new email address
-                                var emailAddress = gh.api.utilAPI.generateRandomString() + '@name.com';
+                                var emailAddress = gh.utils.generateRandomString() + '@name.com';
                                 gh.api.userAPI.updateUser(user.id, null, emailAddress, null, function(err, data) {
                                     assert.ok(!err, 'Verify that a user can be updated without errors');
                                     assert.strictEqual(data.email, emailAddress, 'Verify that the user was updated successfully');
@@ -691,12 +691,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                         assert.strictEqual(data.emailPreference, emailPreference, 'Verify that the user was updated successfully');
 
                                         // Verify that a user can be updated without errors when all the parameters have been specified
-                                        gh.api.userAPI.updateUser(user.id, 'someDisplayName', gh.api.utilAPI.generateRandomString() + '@name.com', 'no', function(err, data) {
+                                        gh.api.userAPI.updateUser(user.id, 'someDisplayName', gh.utils.generateRandomString() + '@name.com', 'no', function(err, data) {
                                             assert.ok(!err, 'Verify that a user can be updated without errors');
 
                                             // Mock an error from the back-end
                                             var body = {'code': 400, 'msg': 'Bad Request'};
-                                            gh.api.utilAPI.mockRequest('POST', '/api/users/' + user.id + '?displayName=testdisplayname&email=display@name.com&emailPreference=no', 400, {'Content-Type': 'application/json'}, body, function() {
+                                            gh.utils.mockRequest('POST', '/api/users/' + user.id + '?displayName=testdisplayname&email=display@name.com&emailPreference=no', 400, {'Content-Type': 'application/json'}, body, function() {
                                                 gh.api.userAPI.updateUser(user.id, 'testdisplayname', 'display@name.com', 'no', function(err, data) {
                                                     assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully updated');
                                                     assert.ok(!data, 'Verify that no data returns when the user can\'t be successfully updated');

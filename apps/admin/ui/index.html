@@ -56,7 +56,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
-                                        <% var randomId = gh.api.utilAPI.generateRandomString(true); %>
+                                        <% var randomId = gh.utils.generateRandomString(true); %>
                                         <a data-toggle="collapse" data-parent="#accordion" href="#<%= randomId %>" aria-expanded="false" aria-controls="<%= randomId %>">
                                             <%- tenant.displayName %> - <%- app.displayName %> - <%- app.host %>
                                         </a>

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(utilAPI, adminConstants, orgunitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(gh, constants, orgunitAPI) {
 
     var triposData = null;
 
@@ -35,7 +35,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
         $.bbq.pushState(state);
 
         // Track the part picker change in GA
-        utilAPI.sendTrackingEvent('picker', 'change', 'part picker', partId);
+        gh.utils.sendTrackingEvent('picker', 'change', 'part picker', partId);
 
         $(document).trigger('gh.listview.setup', {
             'partId': partId,
@@ -58,7 +58,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
         $.bbq.pushState(state);
 
         // Track the tripos picker change in GA
-        utilAPI.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
+        gh.utils.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
@@ -66,7 +66,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
         });
 
         // Render the results in the part picker
-        utilAPI.renderTemplate($('#gh-subheader-part-template'), {
+        gh.utils.renderTemplate($('#gh-subheader-part-template'), {
             'data': parts
         }, $('#gh-subheader-part'));
 
@@ -101,7 +101,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
 
         // Massage the data so that courses are linked to their child subjects
         // Render the results in the tripos picker
-        utilAPI.renderTemplate($('#gh-subheader-picker-template'), {
+        gh.utils.renderTemplate($('#gh-subheader-picker-template'), {
             'data': triposPickerData
         }, $('#gh-subheader-tripos'));
 
@@ -154,7 +154,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
             // If there is no preselected part the part, module and series should be removed from the hash
             $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
-            utilAPI.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+            gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
         }
 
         state = $.bbq.getState() || {};
@@ -168,7 +168,7 @@ define(['gh.api.util', 'gh.admin-constants', 'gh.api.orgunit', 'gh.visibility', 
                 // If there is no preselected series, the module and series should be removed from the hash
                 $.bbq.removeState('module', 'series');
                 // Show the editable parts in the UI
-                $(document).trigger('gh.admin.changeView', {'name': adminConstants.views.EDITABLE_PARTS});
+                $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
             }
         }
     };
