@@ -64,15 +64,15 @@
     </div>
 
     <div id="gh-batch-edit-term-container">
-        <% _.each(data.eventsByTerm, function(term, name) { %>
-            <div class="gh-batch-edit-events-container" data-term="<%- name.toLowerCase().replace(/\ /g, '') %>">
+        <% _.each(data.eventsByTerm, function(term) { %>
+            <div class="gh-batch-edit-events-container <% if (term.name == 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
                 <table class="table">
                     <thead>
                         <tr>
                             <th class="col-xs-1" colspan="6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" class="gh-select-all"> <%- name %>
+                                        <input type="checkbox" class="gh-select-all"> <%- term.name %>
                                     </label>
                                 </div>
                             </th>
@@ -82,7 +82,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <% _.each(term, function(ev) { %>
+                    <% _.each(term.events, function(ev) { %>
                         <%= _.partial('admin-batch-edit-event-row', {
                             'ev': ev,
                             'gh': gh,

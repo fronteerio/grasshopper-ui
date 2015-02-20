@@ -24,7 +24,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     "name": "michaelmas",
                     "label": "Michaelmas",
                     "start": "2014-10-07T00:00:00.000Z",
-                    "end": "2014-12-04T00:00:00.000Z"
+                    "end": "2014-12-05T00:00:00.000Z"
                 },
                 {
                     "name": "lent",
@@ -152,6 +152,71 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W6 · Wed 10:30-11am');
         assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W6 · Wed 10:30am-1:30pm');
         assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
+    });
+
+    // Test the 'getAcademicWeekNumber' functionality
+    QUnit.test('getAcademicWeekNumber', function(assert) {
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getAcademicWeekNumber();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getAcademicWeekNumber('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that no week number is returned when specifying an out-of-term date
+        var weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 0, 'Verify that no week number is returned when specifying an out-of-term date');
+
+        // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
+
+        // Verify that a valid week number is returned when specifying an in-term date
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
+
+        // Verify that a valid week number is returned when specifying an in-term date
+        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-15T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 2, 'Verify that a valid week number is returned when specifying an in-term date');
+    });
+
+    // Test the 'getTerm' functionality
+    QUnit.test('getTerm', function(assert) {
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTerm();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTerm('invalid_date');
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid value for useOffset needs to be provided
+        assert.throws(function() {
+            gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'), 'invalid_value');
+        }, 'Verify that a valid value for useOffset needs to be provided');
+
+        // Verify that the corresponding term is returned when specifying an in-term date
+        var term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'));
+        assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
+
+        // Verify that the corresponding term is returned when specifying an out-of-term date that leans close to the start of a term
+        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
+        assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
+
+        // Verify that no term is returned when specifying an out-of-term date that leans close to the start of a term
+        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'), true);
+        assert.ok(!term);
+
+        // Verify that no term is returned when specifying an out-of-term date
+        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        assert.ok(!term);
     });
 
     // Test the 'getWeeksInTerm' functionality
@@ -384,24 +449,139 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(2, numWeeks);
     });
 
+    // Test the 'orderEventsByTerm' functionality
+    QUnit.test('orderEventsByTerm', function(assert) {
+        expect(8);
+
+        // Verify that an error is thrown when no events were provided
+        assert.throws(function() {
+            gh.api.utilAPI.orderEventsByTerm();
+        }, 'Verify that an error is thrown when no terms were provided');
+
+        // Verify that an error is thrown when an invalid value for events was provided
+        assert.throws(function() {
+            gh.api.utilAPI.orderEventsByTerm('invalid_value');
+        }, 'Verify that an error is thrown when an invalid value for events was provided');
+
+        // Split the events by term
+        var eventsByTerm = gh.api.utilAPI.splitEventsByTerm({
+            "results": [
+
+                // OT before Michaelmas
+                {
+                    "end": "2014-10-06T14:00:00.000Z",
+                    "start": "2014-10-06T13:00:00.000Z"
+                },
+
+                // OT after Easter
+                {
+                    "end": "2015-06-13T14:00:00.000Z",
+                    "start": "2015-06-13T13:00:00.000Z"
+                },
+
+                // Michaelmas
+                {
+                    "end": "2014-10-07T14:00:00.000Z",
+                    "start": "2014-10-07T13:00:00.000Z"
+                },
+                {
+                    "end": "2014-12-05T14:00:00.000Z",
+                    "start": "2014-12-05T13:00:00.000Z"
+                },
+
+                // Lent
+                {
+                    "end": "2015-01-13T11:00:00.000Z",
+                    "start": "2015-01-13T10:00:00.000Z"
+                },
+                {
+                    "end": "2015-03-13T11:00:00.000Z",
+                    "start": "2015-03-13T10:00:00.000Z"
+                },
+
+                // Easter
+                {
+                    "end": "2015-04-21T14:00:00.000Z",
+                    "start": "2015-04-21T13:00:00.000Z"
+                },
+                {
+                    "end": "2015-06-12T14:00:00.000Z",
+                    "start": "2015-06-12T13:00:00.000Z"
+                }
+            ]
+        });
+
+        // Order the events
+        var events = gh.api.utilAPI.orderEventsByTerm(eventsByTerm);
+
+        // Verify that the events are returned in a correct order
+        assert.strictEqual(events.length, 5, 'Verify that the events are returned in a correct order');
+        assert.strictEqual(events[0].name, 'OT');
+        assert.strictEqual(events[1].name, 'Michaelmas');
+        assert.strictEqual(events[2].name, 'Lent');
+        assert.strictEqual(events[3].name, 'Easter');
+        assert.strictEqual(events[4].name, 'OT');
+    });
+
     // Test the 'splitEventsByTerm' functionality
     QUnit.test('splitEventsByTerm', function(assert) {
-        expect(4);
+        expect(7);
+
+        // Verify that an error is thrown when no events were provided
+        assert.throws(function() {
+            gh.api.utilAPI.splitEventsByTerm();
+        }, 'Verify that an error is thrown when no events were provided');
+
+        // Verify that an error is thrown when an invalid value for events was provided
+        assert.throws(function() {
+            gh.api.utilAPI.splitEventsByTerm('invalid_value');
+        }, 'Verify that an error is thrown when an invalid value for events was provided');
 
         // Mock an Array of events to test with
         var events = {
             "results": [
-                { // Michaelmas
-                    "end": "2014-10-20T14:00:00.000Z",
-                    "start": "2014-10-20T13:00:00.000Z"
+                // Michaelmas
+                {
+                    "end": "2014-10-07T14:00:00.000Z",
+                    "start": "2014-10-07T13:00:00.000Z"
                 },
-                { // Lent
-                    "end": "2015-01-30T11:00:00.000Z",
-                    "start": "2015-01-30T10:00:00.000Z"
+                {
+                    "end": "2014-12-05T12:45:00.000Z",
+                    "start": "2014-12-05T11:15:00.000Z"
                 },
-                { // Easter
-                    "end": "2015-04-30T14:00:00.000Z",
-                    "start": "2015-04-30T13:00:00.000Z"
+
+                // Lent
+                {
+                    "end": "2015-01-13T11:00:00.000Z",
+                    "start": "2015-01-13T10:00:00.000Z"
+                },
+                {
+                    "end": "2015-03-13T16:45:00.000Z",
+                    "start": "2015-03-13T14:15:00.000Z"
+                },
+
+                // Easter
+                {
+                    "end": "2015-04-21T:14:00.000Z",
+                    "start": "2015-04-21T13:00:00.000Z"
+                },
+                {
+                    "end": "2015-06-12T15:30:00.000Z",
+                    "start": "2015-06-12T14:30:00.000Z"
+                },
+
+                // Out of term
+                {
+                    "end": "2015-12-13T13:00:00.000Z",
+                    "start": "2015-12-13T11:00:00.000Z"
+                },
+                {
+                    "end": "2015-03-14T14:00:00.000Z",
+                    "start": "2015-03-14T13:00:00.000Z"
+                },
+                {
+                    "end": "2015-06-13T14:00:00.000Z",
+                    "start": "2015-06-13T13:00:00.000Z"
                 }
             ]
         };
@@ -411,9 +591,10 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that the returning events were correctly split by term
         assert.ok(eventsByTerm, 'Verify that events can be successfully split by term');
-        assert.equal(eventsByTerm['Michaelmas'].length, 1, 'Verify that 1 event was triaged into Michaelmas');
-        assert.equal(eventsByTerm['Lent'].length, 1, 'Verify that 1 event was triaged into Lent');
-        assert.equal(eventsByTerm['Easter'].length, 1, 'Verify that 1 event was triaged into Easter');
+        assert.equal(eventsByTerm['Michaelmas'].events.length, 2, 'Verify that 2 events were triaged into Michaelmas');
+        assert.equal(eventsByTerm['Lent'].events.length, 2, 'Verify that 2 events were triaged into Lent');
+        assert.equal(eventsByTerm['Easter'].events.length, 2, 'Verify that 2 events were triaged into Easter');
+        assert.equal(eventsByTerm['OT'].events.length, 3, 'Verify that 3 event were triaged into OT');
     });
 
 

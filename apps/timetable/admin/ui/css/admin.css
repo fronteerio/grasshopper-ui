@@ -448,8 +448,8 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-time-picker::after {
-    content: '';
     clear: both;
+    content: '';
     display: block;
 }
 
@@ -480,6 +480,7 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
     margin-bottom: 30px;
+    margin-top: 60px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
@@ -498,6 +499,28 @@
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
+    margin-bottom: -20px;
+    margin-top: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead {
+    visibility: hidden;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead tr th {
+    border-bottom-width: 0 !important;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead button,
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead label {
+    height: 1px;
+    overflow: hidden;
+    visibility: hidden;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {

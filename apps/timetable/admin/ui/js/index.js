@@ -184,6 +184,9 @@ define(['gh.core', 'gh.admin-constants', 'gh.admin-listview', 'gh.admin-batch-ed
         data.eventsByTerm = gh.api.utilAPI.splitEventsByTerm(data.events);
         // Delete the events object as it's been parsed into a different object
         delete data.events;
+        // Order the events and split up the out of term events
+        data.eventsByTerm = gh.api.utilAPI.orderEventsByTerm(data.eventsByTerm);
+        // Render the batch edit template
         gh.api.utilAPI.renderTemplate($('#gh-batch-edit-template'), {
             'gh': gh,
             'data': data

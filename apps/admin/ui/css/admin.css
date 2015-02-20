@@ -61,6 +61,10 @@ main h2 {
     padding: 0;
 }
 
+.panel .panel-body button {
+    min-width: 100px;
+}
+
 form, table {
     margin-bottom: 0 !important;
 }

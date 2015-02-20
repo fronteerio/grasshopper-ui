@@ -71,7 +71,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Get the current term
-        var currentTerm = getCurrentTerm(getCurrentViewDate());
+        var currentTerm = gh.api.utilAPI.getTerm(getCurrentViewDate());
 
         // Retrieve the term to navigate to, based on the current term
         var term = null;
@@ -242,7 +242,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
-            var weekNumber = getCurrentAcademicWeekNumber();
+            var weekNumber = gh.api.utilAPI.getAcademicWeekNumber(getCurrentViewDate());
 
             // Set the label
             label = 'Outside term';
@@ -261,7 +261,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var setTermLabel = function() {
 
         // Get the current term
-        var term = getCurrentTerm(getCurrentViewDate());
+        var term = gh.api.utilAPI.getTerm(getCurrentViewDate());
 
         // Set the label
         var label = 'Outside term';
@@ -319,49 +319,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     ////////////
 
     /**
-     * Return the current academic week number if the current date is within a term
-     *
-     * @return {Number}    The academic week number
-     * @private
-     */
-    var getCurrentAcademicWeekNumber = function() {
-        var currentViewDate = getCurrentViewDate();
-        var currentTerm = getCurrentTerm(currentViewDate);
-        if (!currentTerm) {
-            return null;
-        }
-
-        // Current term
-        var startDate = gh.api.utilAPI.convertISODatetoUnixDate(currentTerm.start);
-
-        // Return the current academic week number
-        var weekNumber = Math.floor((currentViewDate - startDate) / (1000 * 60 * 60 * 24 * 7)) + 1;
-
-        if (weekNumber > 8) {
-            weekNumber = null;
-        }
-        return weekNumber;
-    };
-
-    /**
-     * Return the current term if the current date is within a term
-     *
-     * @param  {Number}    date    The date in a UNIX time format
-     * @return {String}            The term
-     * @private
-     */
-    var getCurrentTerm = function(date) {
-        // Get the current term and return its name
-        return _.find(terms, function(term) {
-            var startDate = gh.api.utilAPI.convertISODatetoUnixDate(term.start);
-            var endDate = gh.api.utilAPI.convertISODatetoUnixDate(term.end);
-            if (gh.api.utilAPI.isDateInRange(date, startDate, endDate)) {
-                return term.name;
-            }
-        });
-    };
-
-    /**
      * Return the current view
      *
      * @return {String}    The calendar's current view (e.g. 'month', 'week', 'day'...)
@@ -379,9 +336,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var getCurrentViewDate = function() {
         // Get the start date from the current calendar view
-        var viewStartDate = calendar.fullCalendar('getDate')['_d'];
+        var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return moment(viewStartDate).utc().valueOf();
+        return gh.api.utilAPI.convertISODatetoUnixDate(moment(viewStartDate).utc().format());
     };
 
     /**
