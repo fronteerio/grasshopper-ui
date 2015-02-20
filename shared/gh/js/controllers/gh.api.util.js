@@ -191,7 +191,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         }
 
         // Get the start date of the corresponding term
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format());
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
         var dayNumber = parseInt(moment(startDate).format('E'), 10);
@@ -203,7 +203,16 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         var dayOffset = ((1 / 7) * dayNumber) - 0.01;
 
         // Calculate and return the current academic week number
-        return Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
+        // If the term in which the date is can be retrieved, we need to calculate the exact
+        // week in that term. If it can't be retrieved the date is out of term and 0 should
+        // be returned
+        var weekNumber = 0;
+        if (getTerm(date, true)) {
+            weekNumber = Math.ceil(((date - startDate) / PERIODS['week']) - (dayOffset)) + 1;
+        }
+
+        // Return the week number
+        return weekNumber;
     };
 
     /**
@@ -298,7 +307,7 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
         // Calculate the time difference
         var timeDifference = Math.abs(termEndDate - termStartDate);
         // Convert to weeks and return
-        return Math.floor(timeDifference / PERIODS['week']) + 1;
+        return Math.ceil(timeDifference / PERIODS['week']) + 1;
     };
 
     /**
@@ -332,17 +341,26 @@ define(['exports', 'moment', 'bootstrap-notify'], function(exports, moment) {
                 var termStartDate = new Date(term.start).getTime();
 
                 // Calculate the week offset in milliseconds
-                var weekOffset = weekNumber * PERIODS['week'];
+                var weekOffset = (weekNumber - 1) * PERIODS['week'];
                 // Calculate the start date of the week
-                weekOffset = termStartDate + weekOffset;
+                var startOfWeekDate = new Date(termStartDate + weekOffset);
+                // Find out what day this day is
+                var startOfWeekDay = startOfWeekDate.getDay();
 
-                // Now calculate the day offset in this week
-                var dayOffset = dayNumber - new Date(weekOffset).getDay();
-                // Calculate the week offset in milliseconds
-                dayOffset = dayOffset * PERIODS['day'];
+                // If the dayNumber is smaller than the day the week starts on,
+                // add a week to the weekOffset and substract the difference in days
+                if (dayNumber < startOfWeekDay) {
+                    startOfWeekDate = startOfWeekDate.getTime() + PERIODS['week'];
+                    // Remove x days from the week to get to the final date to return
+                    dateByWeekAndDay = startOfWeekDate - ((startOfWeekDay - dayNumber) * PERIODS['day']);
 
-                // Calculate the day of the week to return
-                dateByWeekAndDay = new Date(weekOffset + dayOffset);
+                // If the dayNumber is larger than the day, just add the difference
+                } else {
+                    // Add x days to the week to get to the final date to return
+                    dateByWeekAndDay = startOfWeekDate.getTime() + ((dayNumber - startOfWeekDay) * PERIODS['day']);
+                }
+
+                dateByWeekAndDay = new Date(dateByWeekAndDay);
             }
         });
 
