@@ -45,7 +45,6 @@ define([
         'gh.api.tenant',
         'gh.api.tests',
         'gh.api.user',
-        'gh.api.util',
 
         /**
          * Grasshopper plugins

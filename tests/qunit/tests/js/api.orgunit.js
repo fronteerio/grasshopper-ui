@@ -60,7 +60,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Verify that the error is handled when the organisational units can't be successfully retrieved
                             var body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.api.utilAPI.mockRequest('GET', '/api/orgunit', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('GET', '/api/orgunit', 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.orgunitAPI.getOrgUnits(null, false, true, 1, 'module', function(err, data) {
                                     assert.ok(err, 'Verify that the error is handled when the organisational units can\'t be successfully retrieved');
                                     assert.ok(!data, 'Verify that no data returns when the organisational units can\'t be successfully retrieved');
@@ -111,7 +111,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Verify that the error is handled when the organisational unit can't be successfully retrieved
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/1', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('GET', '/api/orgunit/1', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.getOrgUnit(testApp.id, false, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the organisational unit can\'t be successfully retrieved');
                                 assert.ok(!data, 'Verify that no data returns when the organisational unit can\'t be successfully retrieved');
@@ -167,7 +167,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                 // Verify that the error is handled when the organisational unit event series can't be successfully retrieved
                                 var body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.orgunitAPI.getOrgUnitSeries(testOrgUnit.id, 0, 0, true, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the organisational unit event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the organisational unit event series can\'t be successfully retrieved');
@@ -226,13 +226,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the calendar can be successfully retrieved
                                 // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                                 var body = {'code': 200, 'msg': 'OK'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 200, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
                                         assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
 
                                         // Verify that the error is handled when the calendar can't be retrieved
                                         body = {'code': 400, 'msg': 'Bad Request'};
-                                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 400, {'Content-Type': 'application/json'}, body, function() {
                                             gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
                                                 assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
                                                 assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
@@ -277,13 +277,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 // Verify that the calendar can be successfully retrieved
                 // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                 var body = {'code': 200, 'msg': 'OK'};
-                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 200, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 200, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.orgunitAPI.getOrgUnitCalendarICal(testOrgUnit.id, function(err, data) {
                         assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
 
                         // Verify that the error is handled when the calendar can't be retrieved
                         body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.ical', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.getOrgUnitCalendarICal(testOrgUnit.id, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
                                 assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
@@ -324,13 +324,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 // Verify that the calendar can be successfully retrieved
                 // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                 var body = {'code': 200, 'msg': 'OK'};
-                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 200, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 200, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.orgunitAPI.getOrgUnitCalendarRSS(testOrgUnit.id, function(err, data) {
                         assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
 
                         // Verify that the error is handled when the calendar can't be retrieved
                         body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar.rss', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.getOrgUnitCalendarRSS(testOrgUnit.id, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
                                 assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');
@@ -379,13 +379,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                         // Verify that the upcoming events in an organisational unit can be retrieved successfully
                         // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                         var body = {'code': 200, 'msg': 'OK'};
-                        gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=0&offset=0', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=0&offset=0', 200, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, 0, 0, function(err, data) {
                                 assert.ok(!err, 'Verify that the upcoming events in an organisational unit can be retrieved successfully');
 
                                 // Verify that the error is handled when the upcoming events in an organisational unit can't be retrieved
                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, 0, 0, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the upcoming events in an organisational unit can\'t be retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the upcoming events in an organisational unit can\'t be retrieved');
@@ -603,13 +603,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Verify that an event series can be added to an organisational unit
                             var body = {'code': 200, 'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testEvent.id, function(err, data) {
                                     assert.ok(!err, 'Verify that an event series can be added to an organisational unit');
 
                                     // Verify that the error is handled when the event could not be successfully added to the organisational unit
                                     body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
-                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.orgunitAPI.addOrgUnitSeries(testOrgUnit.id, testEvent.id, function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the event series could not be successfully added to the organisational unit');
                                             assert.ok(!data, 'Verify that no data returns when the event series could not be successfully added to the organisational unit');
@@ -660,13 +660,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Verify that an event can be successfully added to an organisational unit
                             var body = {'code': 200, 'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
                                     assert.ok(!err, 'Verify that an event can be successfully added to an organisational unit');
 
                                     // Verify that the error is handled when the event could not be successfully added to the organisational unit
                                     body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
-                                    gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.orgunitAPI.addOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the event could not be successfully added to the organisational unit');
                                             assert.ok(!data, 'Verify that no data returns when the event could not be successfully added to the organisational unit');
@@ -717,13 +717,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                         // Verify that an event series can be successfully deleted from an organisational unit
                         // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
                         var body = {'code': 200, 'msg': 'OK'};
-                        gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 200, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
                                 assert.ok(!err, 'Verify that an event series can be successfully deleted from an organisational unit');
 
                                 // Verify that the error is handled when the event series could not be successfully deleted from the organisational unit
                                 body = {'code': 400, 'msg': 'One or more of the specified series are not part of the organisational unit'};
-                                gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.orgunitAPI.deleteOrgUnitSeries(testOrgUnit.id, testSeries.id, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the event series could not be successfully deleted from the organisational unit');
                                         assert.ok(!data, 'Verify that no data returns when the event series could not be successfully deleted from the organisational unit');
@@ -774,13 +774,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             // Verify that an event can be successfully deleted from an organisational unit
                             // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
                             var body = {'code': 200, 'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
                                     assert.ok(!err, 'Verify that an event can be successfully deleted from an organisational unit');
 
                                     // Verify that the error is handled when the event could not be successfully deleted from the organisational unit
                                     body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
-                                    gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id + '/events', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.orgunitAPI.deleteOrgUnitEvent(testOrgUnit.id, testEvent.id, function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the event could not be successfully deleted from the organisational unit');
                                             assert.ok(!data, 'Verify that no data returns when the event could not be successfully deleted from the organisational unit');
@@ -822,13 +822,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 // Verify that an organisational unit can be successfully deleted
                 // We need to mock this as phantomjs doesn't support sending Arrays as part of the body in a DELETE operation
                 var body = {'code': 200, 'msg': 'OK'};
-                gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 200, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 200, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.orgunitAPI.deleteOrgUnit(testOrgUnit.id, function(err, data) {
                         assert.ok(!err, 'Verify that an organisational unit can be successfully deleted');
 
                         // Verify that the error is handled when the organisational unit could not be successfully updated
                         body = {'code': 400, 'msg': 'One or more of the specified events are not part of the organisational unit'};
-                        gh.api.utilAPI.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('DELETE', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.orgunitAPI.deleteOrgUnit(testOrgUnit.id, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully deleted');
                                 assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully deleted');

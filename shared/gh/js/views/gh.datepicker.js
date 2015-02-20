@@ -37,12 +37,12 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
 
         // Render the content
-        var content = gh.api.utilAPI.renderTemplate($('#gh-edit-date-field-template'), {
+        var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
             'data': {
                 'start': startDate,
                 'end': endDate
             },
-            'utilAPI': gh.api.utilAPI
+            'utils': gh.utils
         });
 
         // Update the trigger
@@ -144,8 +144,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         $('.popover #gh-datepicker').datepicker('setDate', dayValue);
 
         // Set the correct select box values
-        var startDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-start')));
-        var endDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-end')));
+        var startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-start')));
+        var endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-end')));
 
         $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
         $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
@@ -184,7 +184,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var showPopover = function(ev, trigger) {
 
         // Render the popover template
-        var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {
+        var content = gh.utils.renderTemplate($('#gh-datepicker-popover-template'), {
             'data': {
                 'gh': gh,
                 'interval': {

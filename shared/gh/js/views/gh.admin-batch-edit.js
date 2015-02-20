@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.admin-constants', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(eventAPI, groupAPI, seriesAPI, utilAPI, adminConstants, moment) {
+define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
 
 
     ///////////////
@@ -37,10 +37,10 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
     var addNewEventRow = function(ev, data) {
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
-        var termStart = utilAPI.getFirstDayOfTerm(termName);
+        var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
         eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+            'tempId': utils.generateRandomString(), // The actual ID hasn't been generated yet
             'isNew': true, // Used in the template to know this one needs special handling
             'displayName': $('.gh-jeditable-series-title').text(),
             'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
@@ -49,10 +49,10 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             'organisers': 'organiser',
             'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
         };
-        eventObj['utilAPI'] = utilAPI;
+        eventObj['utils'] = utils;
 
         // Append a new event row
-        $eventContainer.append(utilAPI.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
+        $eventContainer.append(utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
         // Show the save button
@@ -278,14 +278,14 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
             seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
-                    return utilAPI.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
+                    return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
                 }
 
                 // Update the series in the sidebar
                 $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
 
                 // Show a success notification
-                return utilAPI.notification('Series title updated.', 'The series title was successfully updated.');
+                return utils.notification('Series title updated.', 'The series title was successfully updated.');
             });
         }
         return value;
@@ -662,11 +662,11 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
                 // Delete events
                 deleteEvents(eventsToDelete, function(deleteErr) {
                     if (updateErr || newErr || deleteErr) {
-                        return utilAPI.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
+                        return utils.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
                     }
                     // Hide the save button
                     toggleSubmit();
-                    return utilAPI.notification('Events updated.', 'The events where successfully updated.');
+                    return utils.notification('Events updated.', 'The events where successfully updated.');
                 });
             });
         });
@@ -758,13 +758,13 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
         // Get the information about the series
         seriesAPI.getSeries(seriesId, function(err, series) {
             if (err) {
-                return gh.api.utilAPI.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                return gh.utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
             }
 
             // Get the information about the events in the series
             seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
                 if (err) {
-                    return gh.api.utilAPI.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                    return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
                 }
 
                 // Unlock the currently locked group
@@ -772,7 +772,7 @@ define(['gh.api.event', 'gh.api.groups', 'gh.api.series', 'gh.api.util', 'gh.adm
 
                 // Load up the batch edit page and provide the events and series data
                 $(document).trigger('gh.admin.changeView', {
-                    'name': adminConstants.views.BATCH_EDIT,
+                    'name': constants.views.BATCH_EDIT,
                     'data': {
                         'events': events,
                         'series': series

@@ -52,40 +52,40 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('addLeadingZero', function(assert) {
         // Verify that a digit needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.addLeadingZero();
+            gh.utils.addLeadingZero();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a digit needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.addLeadingZero('invalid_digit');
+            gh.utils.addLeadingZero('invalid_digit');
         }, 'Verify that a date needs to be provided');
 
         // Verify that no leading zero is added when unnecessary
-        assert.strictEqual(gh.api.utilAPI.addLeadingZero(10), '10', 'Verify that no leading zero is added when unnecessary');
+        assert.strictEqual(gh.utils.addLeadingZero(10), '10', 'Verify that no leading zero is added when unnecessary');
 
         // Verify that a leading zero is added when necessary
-        assert.strictEqual(gh.api.utilAPI.addLeadingZero(1), '01', 'Verify that a leading zero is added when necessary');
+        assert.strictEqual(gh.utils.addLeadingZero(1), '01', 'Verify that a leading zero is added when necessary');
     });
 
     // Test the 'convertISODatetoUnixDate' functionality
     QUnit.test('convertISODatetoUnixDate', function(assert) {
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.convertISODatetoUnixDate(null);
+            gh.utils.convertISODatetoUnixDate(null);
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid string should be provided
         assert.throws(function() {
-            gh.api.utilAPI.convertISODatetoUnixDate(9999);
+            gh.utils.convertISODatetoUnixDate(9999);
         }, 'Verify that a valid string should be provided');
 
         // Verify that a valid date format should be provided
         assert.throws(function() {
-            gh.api.utilAPI.convertISODatetoUnixDate('12-3456-78');
+            gh.utils.convertISODatetoUnixDate('12-3456-78');
         }, 'Verify that a valid date format should be provided');
 
         var date = '2014-11-28T10:50:49.000Z';
-        var convertedDate = gh.api.utilAPI.convertISODatetoUnixDate(date);
+        var convertedDate = gh.utils.convertISODatetoUnixDate(date);
 
         // Verify that the date is converted correctly
         assert.strictEqual(convertedDate, 1417171849000, 'Verify that the date is converted correctly');
@@ -95,16 +95,16 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('convertUnixDatetoISODate', function(assert) {
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.convertUnixDatetoISODate(null);
+            gh.utils.convertUnixDatetoISODate(null);
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid numeric date should be provided
         assert.throws(function() {
-            gh.api.utilAPI.convertUnixDatetoISODate('invalid_date');
+            gh.utils.convertUnixDatetoISODate('invalid_date');
         }, 'Verify that a valid numeric date should be provided');
 
         var date = 1417171849000;
-        var convertedDate = gh.api.utilAPI.convertUnixDatetoISODate(date);
+        var convertedDate = gh.utils.convertUnixDatetoISODate(date);
 
         // Verify that the date is converted correctly
         assert.strictEqual(convertedDate, '2014-11-28T10:50:49.000Z', 'Verify that the date is converted correctly');
@@ -117,41 +117,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a start date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate(null, endDate);
+            gh.utils.generateDisplayDate(null, endDate);
         }, 'Verify that a start date needs to be provided');
 
         // Verify that a valid start date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate(99999, endDate);
+            gh.utils.generateDisplayDate(99999, endDate);
         }, 'Verify that a valid start date needs to be provided');
 
         // Verify that a valid start date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate('invalid_start_date', endDate);
+            gh.utils.generateDisplayDate('invalid_start_date', endDate);
         }, 'Verify that a valid start date needs to be provided');
 
         // Verify that an and date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate(startDate, null);
+            gh.utils.generateDisplayDate(startDate, null);
         }, 'Verify that an end date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate(startDate, 99999);
+            gh.utils.generateDisplayDate(startDate, 99999);
         }, 'Verify that a valid end date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.generateDisplayDate(startDate, 'invalid_end_date');
+            gh.utils.generateDisplayDate(startDate, 'invalid_end_date');
         }, 'Verify that a valid end date needs to be provided');
 
         // Verify that all the cases are covered
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 10am-5:30pm');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 4-5:30pm');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W6 · Wed 10-11:30am');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W6 · Wed 10:30-11am');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W6 · Wed 10:30am-1:30pm');
-        assert.strictEqual(gh.api.utilAPI.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 10am-5:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 4-5:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W6 · Wed 10-11:30am');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W6 · Wed 10:30-11am');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W6 · Wed 10:30am-1:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
     });
 
     // Test the 'getAcademicWeekNumber' functionality
@@ -159,28 +159,28 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getAcademicWeekNumber();
+            gh.utils.getAcademicWeekNumber();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getAcademicWeekNumber('invalid_date');
+            gh.utils.getAcademicWeekNumber('invalid_date');
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that no week number is returned when specifying an out-of-term date
-        var weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        var weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
         assert.strictEqual(weekNumber, 0, 'Verify that no week number is returned when specifying an out-of-term date');
 
         // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term
-        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
+        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
+        assert.strictEqual(weekNumber, 0, 'Verify that a valid week number is returned when specifying an out-of-term date');
+
+        // Verify that a valid week number is returned when specifying an in-term date
+        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
         assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
 
         // Verify that a valid week number is returned when specifying an in-term date
-        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
-        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
-
-        // Verify that a valid week number is returned when specifying an in-term date
-        weekNumber = gh.api.utilAPI.getAcademicWeekNumber(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-15T10:30:00.000Z'));
+        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-15T10:30:00.000Z'));
         assert.strictEqual(weekNumber, 2, 'Verify that a valid week number is returned when specifying an in-term date');
     });
 
@@ -189,33 +189,33 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getTerm();
+            gh.utils.getTerm();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getTerm('invalid_date');
+            gh.utils.getTerm('invalid_date');
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid value for useOffset needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'), 'invalid_value');
+            gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'), 'invalid_value');
         }, 'Verify that a valid value for useOffset needs to be provided');
 
         // Verify that the corresponding term is returned when specifying an in-term date
-        var term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'));
+        var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'));
         assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
 
         // Verify that the corresponding term is returned when specifying an out-of-term date that leans close to the start of a term
-        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
         assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
 
         // Verify that no term is returned when specifying an out-of-term date that leans close to the start of a term
-        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'), true);
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'), true);
         assert.ok(!term);
 
         // Verify that no term is returned when specifying an out-of-term date
-        term = gh.api.utilAPI.getTerm(gh.api.utilAPI.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
         assert.ok(!term);
     });
 
@@ -224,49 +224,50 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Get the first term of 2014 which has 9 weeks in it
         // Verify that a valid term needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getWeeksInTerm();
+            gh.utils.getWeeksInTerm();
         }, 'Verify that a valid term needs to be provided');
 
         // Verify that the correct number of weeks is returned
-        assert.strictEqual(gh.api.utilAPI.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 9, 'Verify that the correct number of weeks is returned');
+        assert.strictEqual(gh.utils.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 10, 'Verify that the correct number of weeks is returned');
     });
 
     // Test the 'getFirstDayOfTerm' functionality
     QUnit.test('getFirstDayOfTerm', function(assert) {
         // Verify that a valid term name needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getFirstDayOfTerm(null);
+            gh.utils.getFirstDayOfTerm(null);
         }, 'Verify that a valid term name needs to be provided');
 
         // Use the first day of Michaelmas to test with
         var testDate = new Date('2014-10-07T00:00:00.000Z');
-        assert.strictEqual(gh.api.utilAPI.getFirstDayOfTerm('michaelmas').getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.api.utilAPI.getFirstDayOfTerm('michaelmas').getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.api.utilAPI.getFirstDayOfTerm('michaelmas').getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
+        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getDay(), testDate.getDay(), 'Verify that the correct day is returned');
+        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
+        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
     });
 
     // Test the 'getDateByWeekAndDay' functionality
     QUnit.test('getDateByWeekAndDay', function(assert) {
         // Verify that a valid term name needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getDateByWeekAndDay(null, 1, 1);
+            gh.utils.getDateByWeekAndDay(null, 1, 1);
         }, 'Verify that a valid term name needs to be provided');
 
         // Verify that a valid week number needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getDateByWeekAndDay('michaelmas', null, 1);
+            gh.utils.getDateByWeekAndDay('michaelmas', null, 1);
         }, 'Verify that a valid term name needs to be provided');
 
         // Verify that a valid day number needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 1, null);
+            gh.utils.getDateByWeekAndDay('michaelmas', 1, null);
         }, 'Verify that a valid term name needs to be provided');
 
         // Verify that the correct date is returned
-        var testDate = new Date('Tue Oct 21 2014 01:00:00 GMT+0100 (BST)');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.api.utilAPI.getDateByWeekAndDay('michaelmas', 2, 2).getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
+        var testDate = new Date('Wed Oct 22 2014 01:00:00 GMT+0100 (BST)');
+        var testDate2 = new Date('Mon Oct 20 2014 01:00:00 GMT+0100 (BST)');
+        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
+        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
+        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 1).getFullYear(), testDate2.getFullYear(), 'Verify that the correct year is returned');
     });
 
     // Test the 'dateDisplay' functionality
@@ -277,41 +278,41 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay(null).dayNumber();
+            gh.utils.dateDisplay(null).dayNumber();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay(9999).dayNumber();
+            gh.utils.dateDisplay(9999).dayNumber();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay('invalid_date').dayNumber();
+            gh.utils.dateDisplay('invalid_date').dayNumber();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that the corret day is returned
-        assert.strictEqual(gh.api.utilAPI.dateDisplay(date).dayNumber(), 18, 'Verify that the correct day is returned');
+        assert.strictEqual(gh.utils.dateDisplay(date).dayNumber(), 18, 'Verify that the correct day is returned');
 
         /* MONTH */
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay(null).monthName();
+            gh.utils.dateDisplay(null).monthName();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay(9999).monthName();
+            gh.utils.dateDisplay(9999).monthName();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.dateDisplay('invalid_date').monthName();
+            gh.utils.dateDisplay('invalid_date').monthName();
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that the correct month is returned
-        assert.strictEqual(gh.api.utilAPI.dateDisplay(date).monthName(), 'Feb', 'Verify that the correct month is returned');
+        assert.strictEqual(gh.utils.dateDisplay(date).monthName(), 'Feb', 'Verify that the correct month is returned');
     });
 
     // Test the 'fixDateToGMT' functionality
@@ -319,24 +320,24 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.fixDateToGMT();
+            gh.utils.fixDateToGMT();
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.fixDateToGMT(9999);
+            gh.utils.fixDateToGMT(9999);
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.fixDateToGMT('invalid_date');
+            gh.utils.fixDateToGMT('invalid_date');
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a correct date is returned when a GMT+0 is specified
-        assert.strictEqual(gh.api.utilAPI.fixDateToGMT('2015-02-11T16:00:00.000Z'), 1423670400000, 'Verify that a correct date is returned when a GMT+0 is specified');
+        assert.strictEqual(gh.utils.fixDateToGMT('2015-02-11T16:00:00.000Z'), 1423670400000, 'Verify that a correct date is returned when a GMT+0 is specified');
 
         // Verify that a correct date is returned when a BST+1 is specified
-        assert.strictEqual(gh.api.utilAPI.fixDateToGMT('2014-11-11T10:00:00.000Z'), 1415700000000, 'Verify that a correct date is returned when a BST+1 is specified');
+        assert.strictEqual(gh.utils.fixDateToGMT('2014-11-11T10:00:00.000Z'), 1415700000000, 'Verify that a correct date is returned when a BST+1 is specified');
     });
 
     // Test the 'fixDatesToGMT' functionality
@@ -344,12 +345,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an array needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.fixDatesToGMT();
+            gh.utils.fixDatesToGMT();
         }, 'Verify that an array needs to be provided');
 
         // Verify that a valid parameter needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.fixDatesToGMT('invalid_parameter');
+            gh.utils.fixDatesToGMT('invalid_parameter');
         }, 'Verify that a valid parameter needs to be provided');
 
         // Convert some test event dates
@@ -357,7 +358,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             'start': '2015-02-11T16:00:00.000Z',
             'end': '2014-11-11T10:00:00.000Z'
         }];
-        gh.api.utilAPI.fixDatesToGMT(events);
+        gh.utils.fixDatesToGMT(events);
 
         // Verify that the dates have been successfully converted
         assert.strictEqual(events[0].start, 1423670400000, 'Verify that the start date has been converted successfully');
@@ -373,44 +374,44 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(null, startDate, endDate);
+            gh.utils.isDateInRange(null, startDate, endDate);
         }, 'Verify that a date needs to be provided');
 
         // Verify that a valid date needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange('invalid_date', startDate, endDate);
+            gh.utils.isDateInRange('invalid_date', startDate, endDate);
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that a startDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, null, endDate);
+            gh.utils.isDateInRange(date, null, endDate);
         }, 'Verify that a startDate needs to be provided');
 
         // Verify that a valid startDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, 'invalid_date', endDate);
+            gh.utils.isDateInRange(date, 'invalid_date', endDate);
         }, 'Verify that a valid startDate needs to be provided');
 
         // Verify that a endDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, startDate, null);
+            gh.utils.isDateInRange(date, startDate, null);
         }, 'Verify that an endDate needs to be provided');
 
         // Verify that a valid endDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, startDate, 'invalid_date');
+            gh.utils.isDateInRange(date, startDate, 'invalid_date');
         }, 'Verify that a valid endDate needs to be provided');
 
         // Verify that en error is thrown when the startDate is after the endDate
         assert.throws(function() {
-            gh.api.utilAPI.isDateInRange(date, endDate, startDate);
+            gh.utils.isDateInRange(date, endDate, startDate);
         }, 'Verify that en error is thrown when the startDate is after the endDate');
 
         // Verify that true is returned when a date is within a range of dates
-        assert.ok(gh.api.utilAPI.isDateInRange(date, startDate, endDate));
+        assert.ok(gh.utils.isDateInRange(date, startDate, endDate));
 
         // Verify that false is returned when a date is outside a range of dates
-        assert.ok(!gh.api.utilAPI.isDateInRange(startDate, date, endDate));
+        assert.ok(!gh.utils.isDateInRange(startDate, date, endDate));
     });
 
     // Test the 'weeksInDateRange' functionality
@@ -421,31 +422,31 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a startDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange(null, endDate);
+            gh.utils.weeksInDateRange(null, endDate);
         }, 'Verify that a startDate needs to be provided');
 
         // Verify that a valid startDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange('invalid_date', endDate);
+            gh.utils.weeksInDateRange('invalid_date', endDate);
         }, 'Verify that a valid startDate needs to be provided');
 
         // Verify that an endDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange(startDate, null);
+            gh.utils.weeksInDateRange(startDate, null);
         }, 'Verify that an endDate needs to be provided');
 
         // Verify that a valid endDate needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange(startDate, 'invalid_date');
+            gh.utils.weeksInDateRange(startDate, 'invalid_date');
         }, 'Verify that a valid endDate needs to be provided');
 
         // Verify that en error is thrown when the startDate is after the endDate
         assert.throws(function() {
-            gh.api.utilAPI.weeksInDateRange(endDate, startDate);
+            gh.utils.weeksInDateRange(endDate, startDate);
         }, 'Verify that en error is thrown when the startDate is after the endDate');
 
         // Verify that the correct number of weeks are returned
-        var numWeeks = gh.api.utilAPI.weeksInDateRange(startDate, endDate);
+        var numWeeks = gh.utils.weeksInDateRange(startDate, endDate);
         assert.equal(2, numWeeks);
     });
 
@@ -455,16 +456,16 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no events were provided
         assert.throws(function() {
-            gh.api.utilAPI.orderEventsByTerm();
+            gh.utils.orderEventsByTerm();
         }, 'Verify that an error is thrown when no terms were provided');
 
         // Verify that an error is thrown when an invalid value for events was provided
         assert.throws(function() {
-            gh.api.utilAPI.orderEventsByTerm('invalid_value');
+            gh.utils.orderEventsByTerm('invalid_value');
         }, 'Verify that an error is thrown when an invalid value for events was provided');
 
         // Split the events by term
-        var eventsByTerm = gh.api.utilAPI.splitEventsByTerm({
+        var eventsByTerm = gh.utils.splitEventsByTerm({
             "results": [
 
                 // OT before Michaelmas
@@ -512,7 +513,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
 
         // Order the events
-        var events = gh.api.utilAPI.orderEventsByTerm(eventsByTerm);
+        var events = gh.utils.orderEventsByTerm(eventsByTerm);
 
         // Verify that the events are returned in a correct order
         assert.strictEqual(events.length, 5, 'Verify that the events are returned in a correct order');
@@ -529,12 +530,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no events were provided
         assert.throws(function() {
-            gh.api.utilAPI.splitEventsByTerm();
+            gh.utils.splitEventsByTerm();
         }, 'Verify that an error is thrown when no events were provided');
 
         // Verify that an error is thrown when an invalid value for events was provided
         assert.throws(function() {
-            gh.api.utilAPI.splitEventsByTerm('invalid_value');
+            gh.utils.splitEventsByTerm('invalid_value');
         }, 'Verify that an error is thrown when an invalid value for events was provided');
 
         // Mock an Array of events to test with
@@ -587,7 +588,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         };
 
         // Split the events by term
-        var eventsByTerm = gh.api.utilAPI.splitEventsByTerm(events);
+        var eventsByTerm = gh.utils.splitEventsByTerm(events);
 
         // Verify that the returning events were correctly split by term
         assert.ok(eventsByTerm, 'Verify that events can be successfully split by term');
@@ -607,17 +608,17 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that only boolean values are allowed as a parameter
         assert.throws(function() {
-            gh.api.utilAPI.generateRandomString('invalid_value');
+            gh.utils.generateRandomString('invalid_value');
         }, 'Verify that only boolean values are allowed as a parameter');
 
         // Verify that the returned string has exactly 10 characters
-        assert.strictEqual(gh.api.utilAPI.generateRandomString().length, 10, 'Verify that the returned string has exactly 10 characters');
+        assert.strictEqual(gh.utils.generateRandomString().length, 10, 'Verify that the returned string has exactly 10 characters');
 
         // Verify that the returned string does not contain any uppercase characters when lowercase is specified
-        assert.ok((/^[a-z0-9]*$/).test(gh.api.utilAPI.generateRandomString(true)));
+        assert.ok((/^[a-z0-9]*$/).test(gh.utils.generateRandomString(true)));
 
         // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
-        assert.ok((/[A-Z0-9]/g).test(gh.api.utilAPI.generateRandomString()));
+        assert.ok((/[A-Z0-9]/g).test(gh.utils.generateRandomString()));
     });
 
     // Test the 'mockRequest' functionality
@@ -638,36 +639,36 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no type was provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(null, url, statusCode, headers, body, mockFunc);
+            gh.utils.mockRequest(null, url, statusCode, headers, body, mockFunc);
         }, 'Verify that an error is thrown when no type was provided');
 
         // Verify that an error is thrown when no url was provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(type, null, statusCode, headers, body, mockFunc);
+            gh.utils.mockRequest(type, null, statusCode, headers, body, mockFunc);
         }, 'Verify that an error is thrown when no url was provided');
 
         // Verify that an error is thrown when no statusCode was provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(type, url, null, headers, body, mockFunc);
+            gh.utils.mockRequest(type, url, null, headers, body, mockFunc);
         }, 'Verify that an error is thrown when no statusCode was provided');
 
         // Verify that an error is thrown when no headers were provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(type, url, statusCode, null, body, mockFunc);
+            gh.utils.mockRequest(type, url, statusCode, null, body, mockFunc);
         }, 'Verify that an error is thrown when no headers were provided');
 
         // Verify that an error is thrown when no body was provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(type, url, statusCode, headers, null, mockFunc);
+            gh.utils.mockRequest(type, url, statusCode, headers, null, mockFunc);
         }, 'Verify that an error is thrown when no body was provided');
 
         // Verify that an error is thrown when no function was provided
         assert.throws(function() {
-            gh.api.utilAPI.mockRequest(type, url, statusCode, headers, body, null);
+            gh.utils.mockRequest(type, url, statusCode, headers, body, null);
         }, 'Verify that an error is thrown when no function was provided');
 
         // Verify that a request can be successfully mocked
-        gh.api.utilAPI.mockRequest(type, url, statusCode, headers, body, function() {
+        gh.utils.mockRequest(type, url, statusCode, headers, body, function() {
             $.ajax({
                 'type': type,
                 'url': url,
@@ -699,7 +700,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             'displayName': 'aaa'
         }];
 
-        testArr.sort(gh.api.utilAPI.sortByDisplayName);
+        testArr.sort(gh.utils.sortByDisplayName);
 
         var sorted1 = testArr[0].displayName === '1234';
         var sorted2 = testArr[1].displayName === 'a1z2';
@@ -724,7 +725,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             'host': 'aaa'
         }];
 
-        testArr.sort(gh.api.utilAPI.sortByHost);
+        testArr.sort(gh.utils.sortByHost);
 
         var sorted1 = testArr[0].host === '1234';
         var sorted2 = testArr[1].host === 'a1z2';
@@ -744,26 +745,26 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('sendTrackingEvent', function(assert) {
         // Verify that an error is thrown when no category was provided
         assert.throws(function() {
-            gh.api.utilAPI.sendTrackingEvent(null, 'action', 'label', 1);
+            gh.utils.sendTrackingEvent(null, 'action', 'label', 1);
         }, 'Verify that an error is thrown when no category was provided');
 
         // Verify that an error is thrown when no action was provided
         assert.throws(function() {
-            gh.api.utilAPI.sendTrackingEvent('category', null, 'label', 1);
+            gh.utils.sendTrackingEvent('category', null, 'label', 1);
         }, 'Verify that an error is thrown when no action was provided');
 
         // Verify that an error is thrown when no label was provided
         assert.throws(function() {
-            gh.api.utilAPI.sendTrackingEvent('category', 'action', null, 1);
+            gh.utils.sendTrackingEvent('category', 'action', null, 1);
         }, 'Verify that an error is thrown when no label was provided');
 
         // Verify that an error is thrown when an invalid `value` was provided
         assert.throws(function() {
-            gh.api.utilAPI.sendTrackingEvent('category', 'action', 'label', 'invalid_value');
+            gh.utils.sendTrackingEvent('category', 'action', 'label', 'invalid_value');
         }, 'Verify that an error is thrown when an invalid `value` was provided');
 
         // Verify that GA tracking succeeds with correct values
-        assert.ok(gh.api.utilAPI.sendTrackingEvent('category', 'action', 'label', 1), 'Verify that GA tracking succeeds with correct values');
+        assert.ok(gh.utils.sendTrackingEvent('category', 'action', 'label', 1), 'Verify that GA tracking succeeds with correct values');
     });
 
 
@@ -775,40 +776,40 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('get', function(assert) {
 
         // Stora a local test value
-        gh.api.utilAPI.localDataStorage().store('foo', 'bar');
+        gh.utils.localDataStorage().store('foo', 'bar');
 
         // Verify that an error is thrown when no key was provided
         assert.throws(function() {
-            gh.api.utilAPI.localDataStorage().get();
+            gh.utils.localDataStorage().get();
         });
 
         // Verify that an error is thrown when an invalid key was provided
         assert.throws(function() {
-            gh.api.utilAPI.localDataStorage().get({'invalid': 'value'});
+            gh.utils.localDataStorage().get({'invalid': 'value'});
         });
 
         // Verify that a value can be retrieved successfully
-        assert.strictEqual('bar', gh.api.utilAPI.localDataStorage().get('foo'));
+        assert.strictEqual('bar', gh.utils.localDataStorage().get('foo'));
     });
 
     // Test the 'remove' functionality
     QUnit.test('remove', function(assert) {
 
         // Stora a local test value
-        gh.api.utilAPI.localDataStorage().store('some_crazy_key', 'some_crazy_value');
+        gh.utils.localDataStorage().store('some_crazy_key', 'some_crazy_value');
 
         // Verify that an error is thrown when no key was provided
         assert.throws(function() {
-            gh.api.utilAPI.localDataStorage().remove();
+            gh.utils.localDataStorage().remove();
         }, 'Verify that an error is thrown when no key was provided');
 
         // Verify that an error is thrown when an invalid value for key was provided
         assert.throws(function() {
-            gh.api.utilAPI.localDataStorage().remove({'invalid': 'value'});
+            gh.utils.localDataStorage().remove({'invalid': 'value'});
         }, 'Verify that an error is thrown when an invalid value for \'key\' was provided');
 
         // Verify that an entry can be removed without errors
-        assert.ok('undefined', gh.api.utilAPI.localDataStorage().remove('some_crazy_key'), 'Verify that an entry can be removed without errors');
+        assert.ok('undefined', gh.utils.localDataStorage().remove('some_crazy_key'), 'Verify that an entry can be removed without errors');
     });
 
     // Test the 'store' functionality
@@ -816,18 +817,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no key was provided
         assert.throws(function() {
-            gh.api.utilAPI.localDataStorage().store(null, 'bar');
+            gh.utils.localDataStorage().store(null, 'bar');
         }, 'Verify that an error is thrown when no key was provided');
 
         // Verify that an error is thrown when an invalid value was provided
         assert.throws(function() {
             var foo = {};
             foo.bar = foo;
-            gh.api.utilAPI.localDataStorage().store('some_key', foo);
+            gh.utils.localDataStorage().store('some_key', foo);
         }, 'Verify that an error is thrown when an invalid value was provided');
 
         // Verify that a value can be stored locally
-        assert.ok('undefined', gh.api.utilAPI.localDataStorage().store('some_key', 'bar'), 'Verify that a value can be stored locally');
+        assert.ok('undefined', gh.utils.localDataStorage().store('some_key', 'bar'), 'Verify that a value can be stored locally');
     });
 
 
@@ -839,20 +840,20 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('notification', function(assert) {
         // Verify that a message for the notification needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.notification();
+            gh.utils.notification();
         }, 'Verify that a message for the notification needs to be provided');
 
         // Verify that a notification can be triggered with only a message
-        assert.ok(gh.api.utilAPI.notification(null, 'Notification message'), 'Verify that a notification can be triggered with only a message');
+        assert.ok(gh.utils.notification(null, 'Notification message'), 'Verify that a notification can be triggered with only a message');
 
         // Verify that a notification can be triggered with a title and a message
-        assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');
+        assert.ok(gh.utils.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');
 
         // Verify that a notification can be triggered with a title, a message and an ID
-        assert.ok(gh.api.utilAPI.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification can be triggered with a title, a message and an ID');
+        assert.ok(gh.utils.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification can be triggered with a title, a message and an ID');
 
         // Verify that a notification with the same ID can't be triggered
-        assert.ok(!gh.api.utilAPI.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification with the same ID can\'t be triggered');
+        assert.ok(!gh.utils.notification('Notification title', 'Notification message', 'info', 'test-message'), 'Verify that a notification with the same ID can\'t be triggered');
 
         // Verify that a notification with the same ID won't be shown twice
         assert.ok($('#test-message').length === 1, 'Verify that a notification with the same ID won\'t be shown twice');
@@ -876,18 +877,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a template needs to be provided
         assert.throws(function() {
-            gh.api.utilAPI.renderTemplate(null, templateData, $('#qunit-template-target'));
+            gh.utils.renderTemplate(null, templateData, $('#qunit-template-target'));
         }, 'Verify that a template needs to be provided');
 
         // Verify that template data is optional
-        assert.ok(gh.api.utilAPI.renderTemplate($('#qunit-template'), null, $('#qunit-template-target')), 'Verify that template data is optional');
+        assert.ok(gh.utils.renderTemplate($('#qunit-template'), null, $('#qunit-template-target')), 'Verify that template data is optional');
 
         // Verify that the template renders in the target container
-        gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
+        gh.utils.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
         assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu', 'Verify the template HTML is rendered in the target container when specified');
 
         // Verify that the rendered HTML is returned when no target is specified
-        var returnedHTML = gh.api.utilAPI.renderTemplate($('#qunit-template'), templateData);
+        var returnedHTML = gh.utils.renderTemplate($('#qunit-template'), templateData);
         assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
     });
 
@@ -902,7 +903,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         // Add a target container to the page
         $('body').append('<div id="qunit-template-partial-target" style="display: none;"></div>');
         // Verify that the template renders in the target container
-        gh.api.utilAPI.renderTemplate($('#qunit-template-partial'), data, $('#qunit-template-partial-target'));
+        gh.utils.renderTemplate($('#qunit-template-partial'), data, $('#qunit-template-partial-target'));
         assert.ok($('#qunit-template-partial-target').html(), 'Verify the template partial HTML is rendered in the target container');
     });
 
@@ -916,12 +917,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
-            gh.api.utilAPI.getTriposStructure();
+            gh.utils.getTriposStructure();
         }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.api.utilAPI.getTriposStructure('invalid_callback');
+            gh.utils.getTriposStructure('invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         QUnit.start();
