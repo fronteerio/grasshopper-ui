@@ -275,7 +275,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             assert.ok(!err, 'Verify that the administrator is logged in successfully');
 
             var displayName = gh.utils.generateRandomString();
-            var email = gh.utils.generateRandomString();
+            var email = gh.utils.generateRandomString() + '@mail.com';
             var password = gh.utils.generateRandomString();
 
             // Create a new user

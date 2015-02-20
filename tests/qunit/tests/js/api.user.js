@@ -35,7 +35,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             var appId = testAPI.getTestApp().id;
             var user = {
                 'displayName': gh.utils.generateRandomString(),
-                'email': gh.utils.generateRandomString(),
+                'email': gh.utils.generateRandomString() + '@mail.com',
                 'password': gh.utils.generateRandomString()
             };
 
@@ -510,7 +510,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         var appId = testAPI.getTestApp().id;
         var user = {
             'displayName': gh.utils.generateRandomString(),
-            'email': gh.utils.generateRandomString(),
+            'email': gh.utils.generateRandomString() + '@mail.com',
             'password': gh.utils.generateRandomString()
         };
 
