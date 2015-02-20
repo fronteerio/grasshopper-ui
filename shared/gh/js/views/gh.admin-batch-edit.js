@@ -761,12 +761,41 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 return gh.utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
             }
 
-            // Get the information about the events in the series
-            seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
-                if (err) {
-                    return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
-                }
+            // Object used to aggregate the events between pages
+            var events = {
+                'results': []
+            };
 
+            /**
+             * Get the events in a series per page of 25. Calls itself when it feels like there might be more
+             *
+             * @param  {Number}      offset      The paging number of the results to retrieve
+             * @param  {Function}    callback    Standard callback function
+             * @private
+             */
+            var getSeriesEvents = function(offset, callback) {
+                // Get the information about the events in the series
+                seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
+                    if (err) {
+                        return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                    }
+
+                    // Aggregate the results
+                    events.results = _.union(events.results, _events.results);
+
+                    // If the length of the Array of _events is 25 there might be other results so
+                    // we increase the offset and fetch again
+                    if (_events.results.length === 25) {
+                        offset = offset + 25;
+                        getSeriesEvents(offset, callback);
+                    } else {
+                        callback();
+                    }
+                });
+            };
+
+            // Get the first page of events
+            getSeriesEvents(0, function() {
                 // Unlock the currently locked group
                 unlockGroup();
 
