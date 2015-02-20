@@ -781,7 +781,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     }
 
                     // Aggregate the results
-                    events.results = events.results.concat(_events.results);
+                    events.results = _.union(events.results, _events.results);
 
                     // If the length of the Array of _events is 25 there might be other results so
                     // we increase the offset and fetch again
