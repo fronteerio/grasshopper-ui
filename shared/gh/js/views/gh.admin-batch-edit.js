@@ -387,7 +387,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable to the series title
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
-            'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'cssclass': 'gh-jeditable-form gh-jeditable-form-with-submit',
             'height': '38px',
             'maxlength': 255,
             'onblur': 'submit',
@@ -398,7 +398,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable for inline editing of event rows
         $('.gh-jeditable-events').editable(editableEventSubmitted, {
-            'cssclass' : 'gh-jeditable-form',
+            'cssclass': 'gh-jeditable-form',
             'height': '38px',
             'onblur': 'submit',
             'placeholder': '',
@@ -414,7 +414,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable to the event notes
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
-            'cssclass' : 'gh-jeditable-form',
+            'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit event notes',
@@ -430,7 +430,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable to the organisers
         $('.gh-event-organisers').editable(editableOrganiserSubmitted, {
-            'cssclass' : 'gh-jeditable-form',
+            'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit organisers',
@@ -659,6 +659,14 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         return organisers;
     };
 
+    /**
+     * Get the Array of organiser user IDs (or strings if no existing user was selected) selected
+     * in the AutoSuggest field
+     *
+     * @param  {jQuery}               $container     The container to look for the AutoSuggest field in
+     * @return {Number[]|String[]}                   The Array of organiser IDs
+     * @private
+     */
     var getOrganiserList = function($container) {
         var organiserFields = $('.gh-event-organisers-fields input', $container);
         var organisers = {
@@ -716,7 +724,6 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 updatedEventObjs.push(updatedEventObj);
             });
 
-
             // Loop over each new event in the term and create the event object
             _.each($('tbody tr.active.gh-new-event-row', $termContainer), function($eventContainer) {
                 $eventContainer = $($eventContainer);
@@ -737,7 +744,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 };
                 newEventObjs.push(newEventObj);
             });
-console.log(newEventObjs);
+
             // Loop over each deleted event in the term and create the event object
             _.each($('tbody tr.gh-event-deleted', $termContainer), function($eventContainer) {
                 $eventContainer = $($eventContainer);

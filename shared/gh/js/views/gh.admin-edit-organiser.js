@@ -19,6 +19,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
      * Get all organisers that were previously added to the AutoSuggest field
      *
      * @param  {String}    original    The containing HTML element
+     * @return {User[]}                Array of User objects of all organisers previously added to the AutoSuggest field
      * @private
      */
     var getDefaultAutoSuggestUsers = function(original) {
@@ -52,7 +53,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          */
         'element' : function(settings, original) {
             // Render the organiser template
-            var content = gh.api.utilAPI.renderTemplate($('#gh-organiser-template'), {
+            var content = gh.utils.renderTemplate($('#gh-organiser-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000))
                 }
@@ -63,6 +64,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
 
         /**
          * Set the default jEditable field content
+         *
          * @private
          */
         'content': function() {
@@ -81,7 +83,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
 
             // Initialise the autosuggest plugin on the editable field
             $('.gh-organiser-autosuggest', this).autoSuggest('/api/users', {
-                'asHtmlID': gh.api.utilAPI.generateRandomString(),
+                'asHtmlID': gh.utils.generateRandomString(),
                 'minChars': 2,
                 'neverSubmit': true,
                 'onblur': 'submit',

@@ -895,9 +895,9 @@ ul.as-list {
 }
 
 .as-selections .as-original input {
+    border: none !important;
     font-size: 15px !important;
     height: 100% !important;
-    border: none !important;
 }
 
 .as-results {
