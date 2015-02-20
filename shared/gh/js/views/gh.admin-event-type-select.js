@@ -30,7 +30,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             // Add a class to the table cell
             $(original).addClass('gh-editing');
             // Render the event type select box template
-            var content = gh.api.utilAPI.renderTemplate($('#gh-event-type-template'), {
+            var content = gh.utils.renderTemplate($('#gh-event-type-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
                     'types': gh.config.events.types

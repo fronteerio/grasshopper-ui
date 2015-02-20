@@ -14,7 +14,7 @@
     <td class="col-xs-2 gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0" title="Click to edit the event start and end times">
         <%= _.partial('admin-edit-date-field', {
             'data': ev,
-            'utilAPI': utilAPI
+            'utils': utils
         }) %>
     </td>
     <td class="col-xs-2 gh-jeditable-events gh-event-organisers" tabindex="0" title="Click to edit the event organisers"><%- ev.organisers %></td>

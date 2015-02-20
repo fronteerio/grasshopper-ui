@@ -16,9 +16,9 @@
 /**
  * Initialises the grasshopper APIs
  */
-define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.groups',
-        'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'],
-    function(adminAPI, appAPI, authenticationAPI, configAPI, eventAPI, groupsAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI, utilAPI) {
+define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 'gh.api.event', 'gh.api.groups',
+        'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user'],
+    function(utils, adminAPI, appAPI, authenticationAPI, configAPI, eventAPI, groupsAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI) {
 
         var gh = {
             'api': {
@@ -31,10 +31,10 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 'orgunitAPI': orgunitAPI,
                 'seriesAPI': seriesAPI,
                 'tenantAPI': tenantAPI,
-                'userAPI': userAPI,
-                'utilAPI': utilAPI
+                'userAPI': userAPI
             },
             'config': {},
+            'utils': utils,
             'data': {
                 'me': null
             }
@@ -56,14 +56,14 @@ define(['gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.api.config', 
                 } else {
                     // Intercept 503 status indicating that the server is down
                     if (err.code === 503) {
-                        gh.api.utilAPI.redirect().unavailable();
+                        utils.redirect().unavailable();
                     }
                 }
 
                 // Get the app configuration
                 getConfig(function() {
                     // Cache the partials
-                    utilAPI.cachePartials(function() {
+                    utils.cachePartials(function() {
                         // The APIs have now fully initialised. All javascript that
                         // depends on the initialised core APIs can now execute
                         return callback(gh);

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment, utilAPI, configAPI) {
+define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh, configAPI) {
 
 
     ///////////////
@@ -30,7 +30,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
      * @private
      */
     var renderBatchDate = function(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse) {
-        utilAPI.renderTemplate($('#gh-batch-edit-date-template'), {
+        gh.utils.renderTemplate($('#gh-batch-edit-date-template'), {
             'gh': require('gh.core'),
             'numberOfWeeks': maxNumberOfWeeks,
             'weeksInUse': weeksInUse,
@@ -77,9 +77,9 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         _.each($rows, function($row) {
             $row = $($row);
             // Get the start date of the event
-            var startDate = utilAPI.convertISODatetoUnixDate($row.find('.gh-event-date').attr('data-start'));
+            var startDate = gh.utils.convertISODatetoUnixDate($row.find('.gh-event-date').attr('data-start'));
             // Get the week in which the event takes place
-            var dateWeek = utilAPI.getAcademicWeekNumber(startDate);
+            var dateWeek = gh.utils.getAcademicWeekNumber(startDate);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
                 $row.find('.gh-event-delete').click();
@@ -107,7 +107,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                     // Get the day number
                     var eventDay = parseInt($('#gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
                     // Get the date by week and day
-                    var dateByWeekAndDay = utilAPI.getDateByWeekAndDay(termName, eventWeek, eventDay);
+                    var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
 
                     var eventYear = dateByWeekAndDay.getFullYear();
                     var eventMonth = dateByWeekAndDay.getMonth();
@@ -123,20 +123,20 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
                     var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
 
                     // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                    var alreadyAdded = $('.info .gh-event-date[data-start="' + utilAPI.convertUnixDatetoISODate(startDate.utc().format()) + '"]').length;
+                    var alreadyAdded = $('.info .gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(startDate.utc().format()) + '"]').length;
                     if (!alreadyAdded) {
                         $(document).trigger('gh.batchedit.addevent', {
                             'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
                             'eventObj': {
-                                'tempId': utilAPI.generateRandomString(), // The actual ID hasn't been generated yet
+                                'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
                                 'isNew': true, // Used in the template to know this one needs special handling
                                 'selected': true,
                                 'displayName': $('.gh-jeditable-series-title').text(),
-                                'end': utilAPI.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
                                 'location': '',
                                 'notes': 'Lecture',
                                 'organisers': null,
-                                'start': utilAPI.convertUnixDatetoISODate(moment(startDate).utc().format())
+                                'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
                             }
                         });
                     }
@@ -212,8 +212,8 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         var weeksInUse = [];
         // Extract the weeks from the batch
         _.each($rows, function(row) {
-            var start = utilAPI.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
-            weeksInUse.push(utilAPI.getAcademicWeekNumber(start));
+            var start = gh.utils.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
+            weeksInUse.push(gh.utils.getAcademicWeekNumber(start));
         });
         return _.uniq(weeksInUse);
     };
@@ -233,7 +233,7 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
         var maxWeeks = 0;
         // Loop over the terms and cache the highest number of weeks
         _.each(terms, function(term) {
-            var weeksInTerm = utilAPI.getWeeksInTerm(term);
+            var weeksInTerm = gh.utils.getWeeksInTerm(term);
             if (weeksInTerm > maxWeeks) {
                 maxWeeks = weeksInTerm;
             }
@@ -271,24 +271,24 @@ define(['lodash', 'moment', 'gh.api.util', 'gh.api.config'], function(_, moment,
             if (eventStart.getDay() === dayNumberToEdit) {
                 // Get the date the event finishes on
                 var eventEnd = new Date($row.find('.gh-event-date').attr('data-end'));
-                // Get which week of the term this event takes place in 
-                var weekInTerm = utilAPI.getAcademicWeekNumber(utilAPI.convertISODatetoUnixDate(moment(eventStart).utc().format()));
+                // Get which week of the term this event takes place in
+                var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(eventStart).utc().format()));
                 // Get the name of the term this date is in
                 var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
                 // Get the date the event would be on after the change
-                var newDate = utilAPI.getDateByWeekAndDay(termName, weekInTerm, eventDay);
+                var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
 
                 // Create the new date for the row
                 eventStart = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventStartHour, eventStartMinute, 0, 0]).utc().format();
                 eventEnd = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventEndHour, eventEndMinute, 0, 0]).utc().format();
 
                 // Re-render the date fields
-                var content = utilAPI.renderTemplate($('#gh-edit-date-field-template'), {
+                var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
                     'data': {
                         'start': eventStart,
                         'end': eventEnd
                     },
-                    'utilAPI': utilAPI
+                    'utils': gh.utils
                 });
 
                 // Update the trigger

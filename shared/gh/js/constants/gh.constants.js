@@ -21,4 +21,19 @@ define(['exports'], function(exports) {
         'EDITABLE_PARTS': 'editableParts',
         'NEW_SERIES': 'newSeries'
     };
+
+    // Time constants
+    var time = exports.time = {
+
+        // Store the shorthand names of the weekdays
+        'DAYS': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        'MONTHS': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
+        // Keep track of number of milliseconds in a day, week and month for use in the calendar
+        'PERIODS': {
+            'day': 1000 * 60 * 60 * 24,
+            'week': 1000 * 60 * 60 * 24 * 7,
+            'month': 1000 * 60 * 60 * 24 * 7 * 30
+        }
+    };
 });
