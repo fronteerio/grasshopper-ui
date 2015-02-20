@@ -1,12 +1,12 @@
 <% if (ev && !ev.isNew) { %>
 <tr data-eventid="<%= ev.id %>">
 <% } else { %>
-<tr data-tempid="<%= ev.tempId %>" class="active gh-new-event-row">
+<tr data-tempid="<%= ev.tempId %>" class="<% if (ev.selected) { %>info<% } %> active gh-new-event-row">
 <% } %>
     <td class="col-xs-1">
         <div class="checkbox">
             <label>
-                <input type="checkbox" class="gh-select-single" title="Click to select the event"> <span class="sr-only">Select</span>
+                <input type="checkbox" class="gh-select-single" title="Click to select the event" <% if (ev.selected) { %> checked="checked" <% } %>> <span class="sr-only">Select</span>
             </label>
         </div>
     </td>

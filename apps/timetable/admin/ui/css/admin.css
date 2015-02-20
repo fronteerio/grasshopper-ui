@@ -354,7 +354,7 @@
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-bottom: 0px;
+    border-bottom: none !important;
     border-style: solid;
     border-width: 2px;
     height: 51px !important;
@@ -375,7 +375,7 @@
 }
 
 .gh-batch-edit-time-open + #gh-batch-edit-date-container {
-    height: 190px !important;
+    height: auto !important;
     opacity: 1 !important;
     padding: 20px 50px 0 !important;
 }
@@ -447,23 +447,27 @@
     display: inline-block;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker::after {
+#gh-batch-edit-container .gh-batch-edit-time-picker::after {
     clear: both;
     content: '';
     display: block;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-day-picker {
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker {
     width: 120px;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
-#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
+#gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
+    height: 30px;
+}
+
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
     width: 50px;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-start,
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-end {
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-start,
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-end {
     margin: 0 0 7px 17px;
 }
 
