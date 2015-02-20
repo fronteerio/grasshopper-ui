@@ -161,10 +161,10 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
 
                     // Update the organiser field
                     updateOrganiserField($row.find('.gh-event-organisers'));
-
-                    // Remove the element from the AutoSuggest field
-                    elem.remove();
                 });
+
+                // Remove the element from the AutoSuggest field
+                elem.remove();
 
                 // Let the batch edit know that updates happened
                 $(document).trigger('gh.batchedit.togglesubmit');
