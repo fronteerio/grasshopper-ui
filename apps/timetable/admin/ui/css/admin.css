@@ -324,7 +324,14 @@
     cursor: pointer;
     font-size: 25px;
     font-weight: 400;
+    height: 40px;
+    padding-top: 7px;
     width: 80%;
+}
+
+#gh-batch-edit-container h1 form {
+    margin-left: -3px;
+    margin-top: -6px;
 }
 
 #gh-batch-edit-settings + ul .btn {
