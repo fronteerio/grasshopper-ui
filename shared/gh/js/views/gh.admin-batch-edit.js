@@ -200,13 +200,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
+                // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
-                // Set the margin of the batch edit container to the height of the sticky header
-                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
             } else {
-                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
                 // Reset the margin of the batch edit container
                 $('#gh-batch-edit-term-container').css('margin-top', 0);
+                // Remove the sticky class from the header
+                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
         }
     };
