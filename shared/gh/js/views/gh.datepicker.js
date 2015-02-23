@@ -162,15 +162,30 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     /**
      * Dismiss the popover window
      *
+     * @param {Event}    [ev]    Standard jQuery object
      * @private
      */
-    var dismissPopover = function() {
-        $trigger.trigger('click');
-        $trigger.focus();
+    var dismissPopover = function(ev) {
+        if($trigger && $trigger.attr('aria-describedby')) {
+            // If the function was called by an event, check if the target was inside or outside
+            // the popover. If inside, the popover cannot be closed unless cancel was clicked
+            if (ev) {
+                var clickedTrigger = !!$(ev.target).closest('.gh-event-date').length || $(ev.target).hasClass('gh-event-date');
+                var clickedPopover = !!$(ev.target).closest('.popover').length || $(ev.target).hasClass('.popover');
+                var clickedCancel = !!$(ev.target).attr('data-dismiss');
 
-        // Toggle the submit button in the batch edit
-        if (hasChanges) {
-            $(document).trigger('gh.datepicker.change', $trigger);
+                if ((clickedPopover || clickedTrigger) && !clickedCancel) {
+                    return;
+                }
+            }
+
+            $trigger.trigger('click');
+            $trigger.focus();
+
+            // Toggle the submit button in the batch edit
+            if (hasChanges) {
+                $(document).trigger('gh.datepicker.change', $trigger);
+            }
         }
     };
 
@@ -247,13 +262,13 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var addBinding = function() {
         // Form submission
         $('body').on('click', '#gh-edit-dates-apply', applyDateChange);
-        $('body').on('click', '#gh-edit-dates-cancel', dismissPopover);
 
         // Keyboard accessibility
         $('body').on('keypress', '.gh-event-date', handleKeyPress);
 
         // Utilities
         $('body').on('change', '#gh-edit-dates-form select', validateEntry);
+        $('body').click(dismissPopover);
 
         // Setup
         $(document).on('gh.datepicker.show', showPopover);
