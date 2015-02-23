@@ -68,18 +68,30 @@ casper.test.begin('Prepare environment for tests', function(test) {
         test.done();
     };
 
-    // Set some configuration values for the application
-    casper.start(configAPI.tenantUI, function() {
-        // Create a tenant admin
-        userAPI.createUsers(1, true,  function(user1) {
-            // Log in with the tenant admin
-            userAPI.doLogin(user1, function(err) {
+    // Create a tenant admin
+    userAPI.createUsers(1, true, function(tenantAdmin) {
+        if (!tenantAdmin) {
+            return casper.echo('X Failed to create a tenant admin', 'ERROR');
+        }
+
+        // Open the tenant UI
+        casper.thenOpen(configAPI.tenantUI, function() {
+
+            // Login with the tenant admin
+            userAPI.doLogin(tenantAdmin, function(err) {
+                if (err) {
+                    return casper.echo('X Failed to login with the tenant administrator', 'ERROR');
+                }
+
                 // Persist the academicYear configuration value
-                configAPI.updateConfig(1, {'academicYear': 2014}, function(err, config) {
+                configAPI.updateConfig(1, {'academicYear': 2013}, function(err, config) {
                     if (err) {
                         return casper.echo('X Set the academicYear config to 2014', 'ERROR');
                     }
                     casper.echo('✓ Set the academicYear configuration value to 2014', 'INFO');
+
+                    // Log out
+                    userAPI.doLogOut();
                 });
             });
         });
