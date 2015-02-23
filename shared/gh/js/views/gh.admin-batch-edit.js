@@ -634,10 +634,11 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
-     * Get the organisers for an event row and their status (added or removed from the event)
+     * Get the organisers and their status for an event row (added or removed from the event). Returns null
+     * when no organisers where found in the container
      *
      * @param  {jQuery}    $container    jQuery selector of the event row to get organisers for
-     * @return {Object}                  Object containing all organisers to add or remove from the event. e.g., {'21': true, 'john doe': false}
+     * @return {Object}                  Object containing all organisers to add or remove from the event. e.g., {'21': true, 'john doe': false} or `null` when no organisers where found in the container
      * @private
      */
     var getOrganiserState = function($container) {
@@ -659,7 +660,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             }
         });
 
-        return organisers;
+        return _.isEmpty(organisers) ? null : organisers;
     };
 
     /**
