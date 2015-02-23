@@ -79,6 +79,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 $row.remove();
             });
         }
+        // Let other components know that an event was deleted
+        $(document).trigger('gh.event.deleted');
     };
 
     /**
