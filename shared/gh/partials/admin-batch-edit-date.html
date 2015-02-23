@@ -1,9 +1,11 @@
 <% var termNames = _.pluck(termsInUse, 'name'); %>
-<% var termLabels = _.pluck(termsInUse, 'label'); %>
+
 <div id="gh-batch-edit-date-term-description">
     <small>Selected</small>
     <h2>
-        <%- termLabels.join(', ') %>
+    <% _.each(termsInUse, function(term) { %>
+        <%- term.label %><br/>
+    <% }); %>
     </h2>
 </div>
 <div id="gh-batch-edit-date-picker-container" data-terms="<%- termNames.join(',') %>">
