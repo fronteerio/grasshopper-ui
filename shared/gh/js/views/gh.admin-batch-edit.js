@@ -40,14 +40,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
         eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'tempId': utils.generateRandomString(), // The actual ID hasn't been generated yet
-            'isNew': true, // Used in the template to know this one needs special handling
             'displayName': $('.gh-jeditable-series-title').text(),
             'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
+            'isNew': true, // Used in the template to know this one needs special handling
             'location': '',
             'notes': 'Lecture',
             'organisers': [],
-            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
+            'selected': true,
+            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
+            'tempId': utils.generateRandomString() // The actual ID hasn't been generated yet
         };
         eventObj['utils'] = utils;
 
@@ -57,6 +58,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         setUpJEditable();
         // Show the save button
         toggleSubmit();
+        // Enable batch editing of dates
+        toggleBatchEditDateEnabled();
     };
 
     /**
