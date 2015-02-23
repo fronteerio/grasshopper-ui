@@ -163,6 +163,34 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Toggles each and every action in the UI to be disabled or enabled based on
+     * the parameter passed in to the function
+     *
+     * @param  {Boolean}    [disable]    Whether or not to disable all elements. Defaults to `false`
+     * @private
+     */
+    var disableEnableAll = function(disable) {
+        disable = disable || false;
+
+        // Disable input elements and fire off an event for Chosen to be able to adjust itself
+        $('button, input, select, textarea').attr('disabled', disable).trigger('chosen:updated.chosen');
+
+        if (disable) {
+            // Disable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('disable');
+
+            // Disable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').addClass('gh-disabled');
+        } else {
+            // Enable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('enable');
+
+            // Enable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').removeClass('gh-disabled');
+        }
+    };
+
+    /**
      * Show/hide the date batch editing functionality
      *
      * @private
@@ -704,6 +732,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
      * @private
      */
     var submitBatchEdit = function() {
+        // Disable all elements in the UI to avoid data changing halfway through the update
+        disableEnableAll(true);
+
         var updatedEventObjs = [];
         var newEventObjs = [];
         var eventsToDelete = [];
@@ -776,6 +807,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     }
                     // Hide the save button
                     toggleSubmit();
+                    // Re-enable all elements in the UI
+                    disableEnableAll(false);
+                    // Show a success notification to the user
                     return utils.notification('Events updated.', 'The events where successfully updated.');
                 });
             });
@@ -946,7 +980,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);
-        $('body').on('click', '.gh-event-date', function() {
+        $('body').on('click', '.gh-event-date:not(.gh-disabled)', function() {
             $(document).trigger('gh.datepicker.show', this);
         });
 
@@ -959,7 +993,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $(document).on('gh.batchedit.addevent', addNewEventRow);
-        $('body').on('click', '.gh-event-delete', deleteEvent);
+        $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
