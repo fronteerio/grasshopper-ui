@@ -975,6 +975,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
     };
 
     addBinding();
