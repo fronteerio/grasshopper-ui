@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
+define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
 
     /**
      * Create the module using the provided title
@@ -33,9 +33,9 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
         orgUnitAPI.createOrgUnit(appId, displayName, 'module', partId, groupId, null, function(err, module) {
             // Show a success or failure notification
             if (err) {
-                return utilAPI.notification('Module not created.', 'The module could not be successfully created.', 'error');
+                return gh.utils.notification('Module not created.', 'The module could not be successfully created.', 'error');
             }
-            utilAPI.notification('Module created.', 'The module was successfully created.', 'success');
+            gh.utils.notification('Module created.', 'The module was successfully created.', 'success');
             // Hide the module modal
             $('#gh-new-module-modal').modal('hide');
             // Refresh the modules list
@@ -54,7 +54,7 @@ define(['gh.api.orgunit', 'gh.api.util'], function(orgUnitAPI, utilAPI) {
      */
     var showNewModuleModal = function() {
         // Render the modal
-        utilAPI.renderTemplate($('#gh-new-module-modal-template'), {
+        gh.utils.renderTemplate($('#gh-new-module-modal-template'), {
             'partId': $(this).data('partid'),
             'groupId': $(this).data('groupid')
         }, $('#gh-new-module-modal-container'));

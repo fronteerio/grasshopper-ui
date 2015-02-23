@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -27,9 +27,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     var _generateRandomAdmin = function(callback) {
 
         var user = {
-            'username': gh.api.utilAPI.generateRandomString(),
-            'displayName': gh.api.utilAPI.generateRandomString(),
-            'password': gh.api.utilAPI.generateRandomString()
+            'username': gh.utils.generateRandomString(),
+            'displayName': gh.utils.generateRandomString(),
+            'password': gh.utils.generateRandomString()
         };
 
         // Create a new user
@@ -73,7 +73,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Mock an error from the back-end
                             var body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.api.utilAPI.mockRequest('GET', '/api/admins?limit=1&offset=1', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('GET', '/api/admins?limit=1&offset=1', 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.adminAPI.getAdmins(1, 1, function(err, data) {
                                     assert.ok(err, 'Verify that the error is handled when the global admins can\'t be successfully retrieved');
                                     assert.ok(!data, 'Verify that no data returns when the global admins can\'t be successfully retrieved');
@@ -93,9 +93,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         expect(10);
 
         var user = {
-            'username': gh.api.utilAPI.generateRandomString(),
-            'displayName': gh.api.utilAPI.generateRandomString(),
-            'password': gh.api.utilAPI.generateRandomString()
+            'username': gh.utils.generateRandomString(),
+            'displayName': gh.utils.generateRandomString(),
+            'password': gh.utils.generateRandomString()
         };
 
         // Verify that an error is thrown when an invalid value for 'username' was provided
@@ -124,7 +124,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Mock an error from the back-end
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.adminAPI.createAdmin(user.username, user.displayName, user.password, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully created');
                                 assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully created');
@@ -155,7 +155,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     assert.ok(err, 'Verify that an error is thrown when an invalid value for displayName was provided');
 
                     // Generate a new display name for the administrator
-                    var newDisplayName = gh.api.utilAPI.generateRandomString();
+                    var newDisplayName = gh.utils.generateRandomString();
 
                     // Verify that an error is thrown when an invalid callback was provided
                     assert.throws(function() {
@@ -172,7 +172,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Mock an error from the back-end
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/admins', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully updated');
                                 assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully updated');

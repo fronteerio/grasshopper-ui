@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -32,7 +32,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
             // Mock an error from the back-end
             var body = {'code': 400, 'msg': 'Bad Request'};
-            gh.api.utilAPI.mockRequest('GET', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
+            gh.utils.mockRequest('GET', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
                 gh.api.tenantAPI.getTenants(function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                     assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -66,7 +66,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                 // Mock an error from the back-end
                 var body = {'code': 400, 'msg': 'Bad Request'};
-                gh.api.utilAPI.mockRequest('GET', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('GET', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.tenantAPI.getTenant(tenant.id, function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                         assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -83,7 +83,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         expect(7);
 
         // Generate a display name
-        var displayName = gh.api.utilAPI.generateRandomString(true);
+        var displayName = gh.utils.generateRandomString(true);
 
         // Verify that an error is thrown when an invalid displayName was provided
         gh.api.tenantAPI.createTenant(null, function(err, data) {
@@ -102,7 +102,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                 // Mock an error from the back-end
                 var body = {'code': 400, 'msg': 'Bad Request'};
-                gh.api.utilAPI.mockRequest('POST', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
+                gh.utils.mockRequest('POST', '/api/tenants', 400, {'Content-Type': 'application/json'}, body, function() {
                     gh.api.tenantAPI.createTenant(displayName, function(err, data) {
                         assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                         assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -122,7 +122,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         var tenant = testAPI.getRandomTenant();
 
         // Generate a display name
-        var displayName = gh.api.utilAPI.generateRandomString(true);
+        var displayName = gh.utils.generateRandomString(true);
 
         // Verify that an error is thrown when an invalid tenantId was provided
         gh.api.tenantAPI.updateTenant(null, displayName, function(err, data) {
@@ -145,7 +145,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                     // Mock an error from the back-end
                     var body = {'code': 400, 'msg': 'Bad Request'};
-                    gh.api.utilAPI.mockRequest('POST', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.utils.mockRequest('POST', '/api/tenants/' + tenant.id, 400, {'Content-Type': 'application/json'}, body, function() {
                         gh.api.tenantAPI.updateTenant(tenant.id, displayName, function(err, data) {
                             assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                             assert.ok(!data, 'Verify that no data is returned when an error is thrown');

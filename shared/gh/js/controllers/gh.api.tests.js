@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user', 'gh.api.util'], function(exports, appAPI, authenticationAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI, utilAPI) {
+define(['exports', 'gh.utils', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.api.series', 'gh.api.tenant', 'gh.api.user'], function(exports, utils, appAPI, authenticationAPI, orgunitAPI, seriesAPI, tenantAPI, userAPI) {
 
     // Cache the test tenants and apps
     var _apps = null;
@@ -239,7 +239,7 @@ define(['exports', 'gh.api.app', 'gh.api.authentication', 'gh.api.orgunit', 'gh.
      * @param  {Object}      callback.response    The created user
      */
     var createTestUser = exports.createTestUser = function(appId, isAdmin, callback) {
-        userAPI.createUser(appId, utilAPI.generateRandomString() + ' user', utilAPI.generateRandomString(true) + '@test.com', 'testtest', 'immediate', isAdmin, null, null, callback);
+        userAPI.createUser(appId, utils.generateRandomString() + ' user', utils.generateRandomString(true) + '@test.com', 'testtest', 'immediate', isAdmin, null, null, callback);
     };
 
     /**

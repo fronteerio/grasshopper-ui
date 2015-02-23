@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -53,7 +53,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Set the term label
         setTermLabel();
         // Track the week change in GA
-        gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
+        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
 
         // Fetch the user's events
         getUserEvents();
@@ -71,7 +71,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Retrieve the button's action
         var action = $button.attr('data-action');
         // Get the current term
-        var currentTerm = getCurrentTerm(getCurrentViewDate());
+        var currentTerm = gh.utils.getTerm(getCurrentViewDate());
 
         // Retrieve the term to navigate to, based on the current term
         var term = null;
@@ -100,7 +100,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Set the term label
         setTermLabel();
         // Track the term change in GA
-        gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
+        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
 
         // Fetch the user's events
         getUserEvents();
@@ -132,7 +132,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
 
         // Track the view change in GA
-        gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
+        gh.utils.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
 
         // Fetch the user's events
         getUserEvents();
@@ -154,7 +154,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
 
         // Track the today click in GA
-        gh.api.utilAPI.sendTrackingEvent('calendar', 'view', 'Navigate to today');
+        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to today');
 
         // Fetch the user's events
         getUserEvents();
@@ -170,10 +170,10 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         if (!gh.data.me.anon) {
 
             // Determine the date range for which to get the user's events
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
+            gh.utils.getCalendarDateRange(function(range) {
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
                     if (err) {
-                        return gh.api.utilAPI.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                        return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
                     }
 
                     // Update the calendar
@@ -215,7 +215,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Remove the existing events
         calendar.fullCalendar('removeEvents');
         // Manipulate the dates so they always display in GMT+0
-        gh.api.utilAPI.fixDatesToGMT(events);
+        gh.utils.fixDatesToGMT(events);
         // Get the event context
         getEventContext(events);
         // Replace the calendar's events
@@ -242,7 +242,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
-            var weekNumber = getCurrentAcademicWeekNumber();
+            var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate());
 
             // Set the label
             label = 'Outside term';
@@ -261,7 +261,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var setTermLabel = function() {
 
         // Get the current term
-        var term = getCurrentTerm(getCurrentViewDate());
+        var term = gh.utils.getTerm(getCurrentViewDate());
 
         // Set the label
         var label = 'Outside term';
@@ -309,7 +309,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var printCalendar = function() {
         // Track the print event in GA
-        gh.api.utilAPI.sendTrackingEvent('export', 'print', 'Print the calendar');
+        gh.utils.sendTrackingEvent('export', 'print', 'Print the calendar');
         return window.print();
     };
 
@@ -317,49 +317,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     ////////////
     //  UTIL  //
     ////////////
-
-    /**
-     * Return the current academic week number if the current date is within a term
-     *
-     * @return {Number}    The academic week number
-     * @private
-     */
-    var getCurrentAcademicWeekNumber = function() {
-        var currentViewDate = getCurrentViewDate();
-        var currentTerm = getCurrentTerm(currentViewDate);
-        if (!currentTerm) {
-            return null;
-        }
-
-        // Current term
-        var startDate = gh.api.utilAPI.convertISODatetoUnixDate(currentTerm.start);
-
-        // Return the current academic week number
-        var weekNumber = Math.floor((currentViewDate - startDate) / (1000 * 60 * 60 * 24 * 7)) + 1;
-
-        if (weekNumber > 8) {
-            weekNumber = null;
-        }
-        return weekNumber;
-    };
-
-    /**
-     * Return the current term if the current date is within a term
-     *
-     * @param  {Number}    date    The date in a UNIX time format
-     * @return {String}            The term
-     * @private
-     */
-    var getCurrentTerm = function(date) {
-        // Get the current term and return its name
-        return _.find(terms, function(term) {
-            var startDate = gh.api.utilAPI.convertISODatetoUnixDate(term.start);
-            var endDate = gh.api.utilAPI.convertISODatetoUnixDate(term.end);
-            if (gh.api.utilAPI.isDateInRange(date, startDate, endDate)) {
-                return term.name;
-            }
-        });
-    };
 
     /**
      * Return the current view
@@ -379,9 +336,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var getCurrentViewDate = function() {
         // Get the start date from the current calendar view
-        var viewStartDate = calendar.fullCalendar('getDate')['_d'];
+        var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return moment(viewStartDate).utc().valueOf();
+        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).utc().format());
     };
 
     /**
@@ -445,7 +402,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         var termDates = _.map(terms, function(term) {
             return {
                 'name': term.name,
-                'date': gh.api.utilAPI.convertISODatetoUnixDate(term[property])
+                'date': gh.utils.convertISODatetoUnixDate(term[property])
             };
         });
 
@@ -608,7 +565,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
         // Manipulate the dates so they always display in GMT+0
-        gh.api.utilAPI.fixDatesToGMT(events);
+        gh.utils.fixDatesToGMT(events);
 
         if (calendarData && calendarData.triposData) {
             // Cache the triposData for later use
@@ -637,7 +594,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             'slotDuration': '00:30:00',
             'events': events,
             'eventRender': function(data) {
-                return gh.api.utilAPI.renderTemplate($('#gh-event-template'), {
+                return gh.utils.renderTemplate($('#gh-event-template'), {
                     'data': data
                 });
             }
@@ -669,7 +626,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                         hidePopoverOnResize($trigger);
 
                         // Track the event details lookup in GA
-                        gh.api.utilAPI.sendTrackingEvent('event', 'view', 'View event details', eventId);
+                        gh.utils.sendTrackingEvent('event', 'view', 'View event details', eventId);
                     }
                 };
 

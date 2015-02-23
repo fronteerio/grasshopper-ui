@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -48,7 +48,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Verify that the error is handled
                             body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.api.utilAPI.mockRequest('GET', '/api/groups/' + 1 + '/members?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('GET', '/api/groups/' + 1 + '/members?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.groupsAPI.getGroupMembers(1, 0, 0, function(err, data) {
                                     assert.ok(err, 'Verify that the error is handled when the group members can\'t be successfully retrieved');
                                     assert.ok(!data, 'Verify that no data returns when the group members can\'t be successfully retrieved');
@@ -98,13 +98,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Mock a successful response from the server
                             body = {'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/groups/' + 1 + '/members', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('POST', '/api/groups/' + 1 + '/members', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.groupsAPI.updateGroupMembers(1, updates, function(err) {
                                     assert.ok(!err, 'Verify that group members can be successfully updated');
 
                                     // Mock a failed response from the server
                                     body = {'code': 400, 'msg': 'Bad Request'};
-                                    gh.api.utilAPI.mockRequest('POST', '/api/groups/' + 1 + '/members', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('POST', '/api/groups/' + 1 + '/members', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.groupsAPI.updateGroupMembers(1, updates, function(err) {
                                             assert.ok(err, 'Verify that an error is thrown when group members can\'t be updated successfully');
                                             QUnit.start();

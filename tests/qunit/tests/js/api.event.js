@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -41,7 +41,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             }
 
             opts = _.extend({
-                'displayName': gh.api.utilAPI.generateRandomString(true),
+                'displayName': gh.utils.generateRandomString(true),
                 'start': '2014-12-31',
                 'end': '2015-01-01',
                 'description': null,
@@ -100,7 +100,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Verify that a thrown is handled successfully
                         var body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('GET', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('GET', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.eventAPI.getEvent(evt.id, function(err, data) {
                                 assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                                 assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -189,14 +189,14 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                                                 // Verify that an event can be created without errors
                                                                 var body = {'code': 200, 'msg': 'OK'};
-                                                                gh.api.utilAPI.mockRequest('POST', '/api/events', 200, {'Content-Type': 'application/json'}, body, function() {
+                                                                gh.utils.mockRequest('POST', '/api/events', 200, {'Content-Type': 'application/json'}, body, function() {
                                                                     gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', 'description', 1, 'location', 'notes', ['John Doe', 'Jane Doe'], ['jd232', 'jd539'], data.id, function(err, data) {
                                                                         assert.ok(!err, 'Verify that an event can be created without errors');
                                                                         assert.ok(data, 'Verify that the created event is returned');
 
                                                                         // Verify that a thrown error is handled successfully
                                                                         var body = {'code': 400, 'msg': 'Bad Request'};
-                                                                        gh.api.utilAPI.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                                        gh.utils.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
                                                                             gh.api.eventAPI.createEvent('displayName', '2014-12-31', '2015-01-01', null, null, null, null, null, null, null, function(err, data) {
                                                                                 assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                                                                                 assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -310,7 +310,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                                                             // Verify that a thrown error is handled successfully
                                                                             var body = {'code': 400, 'msg': 'Bad Request'};
-                                                                            gh.api.utilAPI.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                                            gh.utils.mockRequest('POST', '/api/events', 400, {'Content-Type': 'application/json'}, body, function() {
                                                                                 gh.api.eventAPI.createEventByApp(app.id, 'displayName', '2014-12-31', '2015-01-01', 'description', null, 'location', 'notes', null, null, null, function(err, data) {
                                                                                     assert.ok(err, 'Verify that an error is thrown when the back-end errored');
                                                                                     assert.ok(!data, 'Verify that no data is returned when an error is thrown');
@@ -403,7 +403,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                                         // Verify that a thrown error is handled successfully
                                                         body = {'code': 400, 'msg': 'Bad Request'};
-                                                        gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                                        gh.utils.mockRequest('POST', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
                                                             gh.api.eventAPI.updateEvent(evt.id, 'displayName', 'description', null, '2014-12-31', '2015-01-01', 'location', 'notes', function(err, data) {
                                                                 assert.ok(err, 'Verify that a thrown error is handled successfully');
                                                                 assert.ok(!data, 'Verity that no event is returned');
@@ -473,14 +473,14 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                  * Mock a successful response from the server
                                  */
                                 var body = {'code': 200, 'msg': 'OK'};
-                                gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/organisers', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/organisers', 200, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.eventAPI.updateEventOrganisers(evt.id, updates, function(err, data) {
                                         assert.ok(!err, 'Verify that an error is thrown when the back-end errored');
                                     });
 
                                     // Verify that a thrown error is handled successfully
                                     body = {'code': 400, 'msg': 'Bad Request'};
-                                    gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/organisers', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/organisers', 400, {'Content-Type': 'application/json'}, body, function() {
                                         gh.api.eventAPI.updateEventOrganisers(evt.id, updates, function(err, data) {
                                             assert.ok(err, 'Verify that a thrown error is handled successfully');
                                         });
@@ -536,14 +536,14 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                              * Mock a successful response from the server
                              */
                             var body = {'code': 200, 'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/picture', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/picture', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.eventAPI.setEventPicture(evt.id, {'some': 'file'}, function(err, data) {
                                     assert.ok(!err, 'Verify that an error is thrown when the back-end errored');
                                 });
 
                                 // Verify that a thrown error is handled successfully
                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/picture', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/picture', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.eventAPI.setEventPicture(evt.id, {'some': 'file'}, function(err, data) {
                                         assert.ok(err, 'Verify that a thrown error is handled successfully');
                                     });
@@ -614,14 +614,14 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                              * Mock a successful response from the server
                                              */
                                             var body = {'code': 200, 'msg': 'OK'};
-                                            gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/picture/crop', 200, {'Content-Type': 'application/json'}, body, function() {
+                                            gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/picture/crop', 200, {'Content-Type': 'application/json'}, body, function() {
                                                 gh.api.eventAPI.cropPicture(evt.id, 10, 0, 0, function(err, data) {
                                                     assert.ok(!err, 'Verify that an error is thrown when the back-end errored');
                                                 });
 
                                                 // Verify that a thrown error is handled successfully
                                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                                gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/picture/crop', 400, {'Content-Type': 'application/json'}, body, function() {
+                                                gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/picture/crop', 400, {'Content-Type': 'application/json'}, body, function() {
                                                     gh.api.eventAPI.cropPicture(evt.id, 10, 0, 0, function(err, data) {
                                                         assert.ok(err, 'Verify that a thrown error is handled successfully');
                                                     });
@@ -663,7 +663,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                     // Verify that an event can be deleted without errors
                     var body = {'code': 200, 'msg': 'OK'};
-                    gh.api.utilAPI.mockRequest('DELETE', '/api/events/' + evt.id, 200, {'Content-Type': 'application/json'}, body, function() {
+                    gh.utils.mockRequest('DELETE', '/api/events/' + evt.id, 200, {'Content-Type': 'application/json'}, body, function() {
                         gh.api.eventAPI.deleteEvent(evt.id, function(err, data) {
                             assert.ok(!err, 'Verify that an event can be deleted without errors');
                         });
@@ -672,7 +672,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Verify that a thrown error is handled successfully
                         body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('DELETE', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('DELETE', '/api/events/' + evt.id, 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.eventAPI.deleteEvent(evt.id, function(err, data) {
                                 assert.ok(err, 'Verify that a thrown error is handled successfully');
                             });
@@ -725,7 +725,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                              * Mock a successful response from the server
                              */
                             var body = {'code': 200, 'msg': 'OK'};
-                            gh.api.utilAPI.mockRequest('GET', '/api/events/' + evt.id + '/subscribers?limit=0&offset=0', 200, {'Content-Type': 'application/json'}, body, function() {
+                            gh.utils.mockRequest('GET', '/api/events/' + evt.id + '/subscribers?limit=0&offset=0', 200, {'Content-Type': 'application/json'}, body, function() {
                                 gh.api.eventAPI.getEventSubscribers(evt.id, 0, 0, function(err, data) {
                                     assert.ok(!err, 'Verify that an error is thrown when the back-end errored');
                                     assert.ok(data, 'Verify that the requested subscribers are returned');
@@ -733,7 +733,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                 // Verify that a thrown error is handled successfully
                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.api.utilAPI.mockRequest('GET', '/api/events/' + evt.id + '/subscribers?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/events/' + evt.id + '/subscribers?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.eventAPI.getEventSubscribers(evt.id, 0, 0, function(err, data) {
                                         assert.ok(err, 'Verify that a thrown error is handled successfully');
                                         assert.ok(!data, 'Verify that no subscribers are returned');
@@ -776,7 +776,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                      * Mock a successful response from the server
                      */
                     var body = {'code': 200, 'msg': 'OK'};
-                    gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/subscribe', 200, {'Content-Type': 'application/json'}, body, function() {
+                    gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/subscribe', 200, {'Content-Type': 'application/json'}, body, function() {
                         gh.api.eventAPI.subscribeEvent(evt.id, function(err) {
                             assert.ok(!err, 'Verify that an error is thrown when the back-end errored');
                         });
@@ -786,7 +786,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Verify that a thrown error is handled successfully
                         body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/events/' + evt.id + '/subscribe', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/events/' + evt.id + '/subscribe', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.eventAPI.subscribeEvent(evt.id, function(err) {
                                 assert.ok(err, 'Verify that a thrown error is handled successfully');
                             });

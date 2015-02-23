@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -20,5 +20,20 @@ define(['exports'], function(exports) {
         'BATCH_EDIT': 'batchEdit',
         'EDITABLE_PARTS': 'editableParts',
         'NEW_SERIES': 'newSeries'
+    };
+
+    // Time constants
+    var time = exports.time = {
+
+        // Store the shorthand names of the weekdays
+        'DAYS': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        'MONTHS': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
+        // Keep track of number of milliseconds in a day, week and month for use in the calendar
+        'PERIODS': {
+            'day': 1000 * 60 * 60 * 24,
+            'week': 1000 * 60 * 60 * 24 * 7,
+            'month': 1000 * 60 * 60 * 24 * 7 * 30
+        }
     };
 });

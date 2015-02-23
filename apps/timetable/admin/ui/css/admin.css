@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -354,7 +354,7 @@
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-bottom: 0px;
+    border-bottom: none !important;
     border-style: solid;
     border-width: 2px;
     height: 51px !important;
@@ -375,7 +375,7 @@
 }
 
 .gh-batch-edit-time-open + #gh-batch-edit-date-container {
-    height: 190px !important;
+    height: auto !important;
     opacity: 1 !important;
     padding: 20px 50px 0 !important;
 }
@@ -447,23 +447,27 @@
     display: inline-block;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker::after {
-    content: '';
+#gh-batch-edit-container .gh-batch-edit-time-picker::after {
     clear: both;
+    content: '';
     display: block;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-day-picker {
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker {
     width: 120px;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
-#gh-batch-edit-container #gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
+#gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
+    height: 30px;
+}
+
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
     width: 50px;
 }
 
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-start,
-#gh-batch-edit-container #gh-batch-edit-time-picker #gh-batch-edit-date-end {
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-start,
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-end {
     margin: 0 0 7px 17px;
 }
 
@@ -480,6 +484,7 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
     margin-bottom: 30px;
+    margin-top: 60px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
@@ -498,6 +503,28 @@
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
+    margin-bottom: -20px;
+    margin-top: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead {
+    visibility: hidden;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead tr th {
+    border-bottom-width: 0 !important;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead button,
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead label {
+    height: 1px;
+    overflow: hidden;
+    visibility: hidden;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
@@ -836,4 +863,74 @@
 
 #gh-visibility-modal #gh-visibility-form label:not(.checked) small p.warning {
     display: none;
+}
+
+
+/***************/
+/* AUTOSUGGEST */
+/***************/
+
+ul.as-selections li.as-selection-item,
+ul.as-selections li.as-selection-item a.as-close,
+ul.as-list {
+    font-family: 'Myriad Pro', helvetica, sans-serif;
+}
+
+.as-selections {
+    border-style: solid;
+    border-width: 1px;
+    border-top-width: 1px !important;
+    height: 39px;
+    padding: 0 !important;
+}
+
+.as-selections .as-selection-item {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 5px 0;
+}
+
+.as-selections .as-original {
+    margin: 0 !important;
+}
+
+.as-selections .as-original input {
+    border: none !important;
+    font-size: 15px !important;
+    height: 100% !important;
+}
+
+.as-results {
+    position: absolute;
+}
+
+.as-results .as-list .as-message {
+    border: none !important;
+}
+
+.as-results .as-list .as-result-item,
+.as-results .as-list .as-result-item.active {
+    border: none;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    font-size: 15px;
+    padding: 10px 5px;
+    text-shadow: none;
+}
+
+.as-results .as-list {
+    -webkit-border-radius: 0 0 4px 4px;
+       -moz-border-radius: 0 0 4px 4px;
+            border-radius: 0 0 4px 4px;
+    border-style: solid;
+    border-top: none;
+    border-width: 1px;
+    margin: 0;
+    padding: 8px;
+}
+
+.as-results .as-list .as-result-item.active em,
+.as-results .as-list .as-result-item em {
+    padding: 2px 0 1px;
 }

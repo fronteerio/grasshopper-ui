@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util'], function(utilAPI) {
+define(['gh.core'], function(gh) {
 
     /**
      * Highlight the selected visibility types
@@ -32,7 +32,7 @@ define(['gh.api.util'], function(utilAPI) {
      */
     var showVisibilityModal = function() {
         // Render the modal
-        utilAPI.renderTemplate($('#gh-visibility-modal-template'), {'data': {
+        gh.utils.renderTemplate($('#gh-visibility-modal-template'), {'data': {
             // TODO: make this dynamic once the functionality is available in the back-end
             'visibility': 'draft'
         }}, $('#gh-visibility-modal-container'));

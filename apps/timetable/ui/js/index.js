@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  */
 
 define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
-
     var state = $.bbq.getState() || {};
 
     // Cache the tripos data
@@ -33,12 +32,12 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      */
     var setUpHeader = function() {
         // Render the header template
-        gh.api.utilAPI.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
 
         // Render the tripos pickers
-        gh.api.utilAPI.renderTemplate($('#gh-subheader-pickers-template'), {
+        gh.utils.renderTemplate($('#gh-subheader-pickers-template'), {
             'gh': gh
         }, $('#gh-subheader'));
 
@@ -56,7 +55,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      */
     var setUpCalendar = function() {
         // Render the calendar template
-        gh.api.utilAPI.renderTemplate($('#gh-calendar-template'), {
+        gh.utils.renderTemplate($('#gh-calendar-template'), {
             'gh': gh
         }, $('#gh-main'));
 
@@ -77,7 +76,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      * @private
      */
     var renderLoginModal = function() {
-        gh.api.utilAPI.renderTemplate($('#gh-modal-template'), {
+        gh.utils.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
     };
@@ -110,7 +109,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
                     }
                     window.location = '/';
                 } else {
-                    gh.api.utilAPI.notification('Login failed', 'Logging in to the application failed', 'error');
+                    gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
                 }
             });
 
@@ -128,9 +127,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      */
     var fetchTriposData = function(callback) {
         // Fetch the triposes
-        gh.api.utilAPI.getTriposStructure(function(err, data) {
+        gh.utils.getTriposStructure(function(err, data) {
             if (err) {
-                return gh.api.utilAPI.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return gh.utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
             }
 
             // Cache the tripos data

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -30,7 +30,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             // Add a class to the table cell
             $(original).addClass('gh-editing');
             // Render the event type select box template
-            var content = gh.api.utilAPI.renderTemplate($('#gh-event-type-template'), {
+            var content = gh.utils.renderTemplate($('#gh-event-type-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
                     'types': gh.config.events.types

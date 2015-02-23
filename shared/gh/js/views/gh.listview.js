@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
+define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
 
     /**
      * Set up the modules of events in the sidebar. Note that context-specific handling should be done
@@ -32,26 +32,26 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         // Retrieve the organisational unit information for the modules
         orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, null, data.partId, ['module'], function(err, modules) {
             if (err) {
-                utilAPI.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
             }
 
             // Sort the data before displaying it
-            modules.results.sort(utilAPI.sortByDisplayName);
+            modules.results.sort(utils.sortByDisplayName);
             $.each(modules.results, function(i, module) {
-                module.Series.sort(utilAPI.sortByDisplayName);
+                module.Series.sort(utils.sortByDisplayName);
             });
 
             // Decorate the modules with their expanded status if LocalStorage is supported
             var expandedIds = [];
             if (Storage) {
-                expandedIds = _.compact(utilAPI.localDataStorage().get('expanded'));
+                expandedIds = _.compact(utils.localDataStorage().get('expanded'));
                 _.each(modules.results, function(module) {
                     module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
                 });
             }
 
             // Render the series in the sidebar
-            utilAPI.renderTemplate($(data.template), {
+            utils.renderTemplate($(data.template), {
                 'data': modules.results,
                 'state': $.bbq.getState()
             }, $('#gh-modules-container', $(data.container)));
@@ -60,7 +60,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
             $('.gh-series-active').focus();
 
             // Clear local storage
-            utilAPI.localDataStorage().remove('expanded');
+            utils.localDataStorage().remove('expanded');
 
             // Add the current expanded module(s) back to the local storage
             expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
@@ -68,7 +68,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
             });
 
             expandedIds = _.map(expandedIds, function(id) { return id; });
-            utilAPI.localDataStorage().store('expanded', expandedIds);
+            utils.localDataStorage().store('expanded', expandedIds);
         });
     };
 
@@ -85,7 +85,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
      */
     var updateListExpandedStatus = function(items) {
         // Fetch and parse the collapse listIds from the local storage
-        var expandedIds = utilAPI.localDataStorage().get('expanded') || [];
+        var expandedIds = utils.localDataStorage().get('expanded') || [];
 
         _.each(items, function(item) {
 
@@ -100,7 +100,7 @@ define(['gh.api.util', 'gh.api.orgunit'], function(utilAPI, orgunitAPI) {
         });
 
         // Store the expanded listIds
-        utilAPI.localDataStorage().store('expanded', _.uniq(_.compact(expandedIds)));
+        utils.localDataStorage().store('expanded', _.uniq(_.compact(expandedIds)));
     };
 
     /**

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -37,7 +37,7 @@ define(['gh.core'], function(gh) {
         gh.api.orgunitAPI.subscribeOrgUnit(moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+                return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
             // Add `gh-list-group-item-added` to the list item
@@ -52,16 +52,16 @@ define(['gh.core'], function(gh) {
             $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
             // Track the subscription in GA
-            gh.api.utilAPI.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
+            gh.utils.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
 
             // Determine the date range for which to get the user's events
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
+            gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                            gh.utils.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
                         },
                         'events': events.results
                     }]);
@@ -90,7 +90,7 @@ define(['gh.core'], function(gh) {
         gh.api.orgunitAPI.unsubscribeOrgUnit(moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.api.utilAPI.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
+                return gh.utils.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
             }
 
             // Remove `gh-list-group-item-added` from the list item
@@ -105,16 +105,16 @@ define(['gh.core'], function(gh) {
             $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
 
             // Track the subscription in GA
-            gh.api.utilAPI.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
+            gh.utils.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
             // Determine the date range for which to get the user's events
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
+            gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.api.utilAPI.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
+                            gh.utils.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);
@@ -143,7 +143,7 @@ define(['gh.core'], function(gh) {
         gh.api.seriesAPI.subscribeSeries(seriesId, null, moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.api.utilAPI.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+                return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
             // Toggle the event's item-added class
@@ -173,16 +173,16 @@ define(['gh.core'], function(gh) {
             }
 
             // Track the subscription in GA
-            gh.api.utilAPI.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
+            gh.utils.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
             // Determine the date range for which to get the user's events
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
+            gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.api.utilAPI.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                            gh.utils.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
                         },
                         'events': events.results
                     }]);
@@ -210,7 +210,7 @@ define(['gh.core'], function(gh) {
         gh.api.seriesAPI.unsubscribeSeries(seriesId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.api.utilAPI.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
+                return gh.utils.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
             }
 
             // Toggle the event's item-added class
@@ -241,17 +241,17 @@ define(['gh.core'], function(gh) {
             }
 
             // Track the subscription in GA
-            gh.api.utilAPI.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
+            gh.utils.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Determine the date range for which to get the user's events
-            gh.api.utilAPI.getCalendarDateRange(function(range) {
+            gh.utils.getCalendarDateRange(function(range) {
 
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.api.utilAPI.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
+                            gh.utils.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);

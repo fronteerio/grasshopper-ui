@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -69,7 +69,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that the error is handled when the static config file can't be loaded successfully
         body = {'code': 400, 'msg': 'Bad Request'};
-        gh.api.utilAPI.mockRequest('GET', '/shared/gh/files/config.json', 400, {'Content-Type': 'application/json'}, body, function() {
+        gh.utils.mockRequest('GET', '/shared/gh/files/config.json', 400, {'Content-Type': 'application/json'}, body, function() {
             gh.api.configAPI.getStaticConfig(function(err, data) {
                 assert.ok(err, 'Verify that the error is handled when the static config can\'t be successfully loaded');
                 assert.ok(!data, 'Verify that no data returns when the static config can\'t be successfully loaded');
@@ -110,7 +110,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                         // Verify that the error is handled when a config value can't be updated successfully
                         body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.api.utilAPI.mockRequest('POST', '/api/config', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.utils.mockRequest('POST', '/api/config', 400, {'Content-Type': 'application/json'}, body, function() {
                             gh.api.configAPI.updateConfig(testApp.id, {'enableGoogleAnalytics': false}, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the config can\'t be successfully updated');
                                 assert.ok(!data, 'Verify that no data returns when the config can\'t be successfully updated');

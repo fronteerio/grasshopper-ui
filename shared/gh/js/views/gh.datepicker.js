@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -35,12 +35,12 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var dates = getFullDates();
 
         // Render the content
-        var content = gh.api.utilAPI.renderTemplate($('#gh-edit-date-field-template'), {
+        var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
             'data': {
                 'start': dates.start,
                 'end': dates.end
             },
-            'utilAPI': gh.api.utilAPI
+            'utils': gh.utils
         });
 
         // Update the trigger
@@ -169,7 +169,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         }
 
         // Render the popover template
-        var content = gh.api.utilAPI.renderTemplate($('#gh-datepicker-popover-template'), {
+        var content = gh.utils.renderTemplate($('#gh-datepicker-popover-template'), {
             'data': {
                 'gh': gh,
                 'numWeeks': numWeeks,
@@ -246,6 +246,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var setDate = function(date) {
         $('.popover #gh-datepicker').datepicker('setDate', date);
     };
+
 
     /**
      * Set the original date and time
