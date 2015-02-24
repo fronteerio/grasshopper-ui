@@ -150,10 +150,11 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *  *
      *  *   week = (weeks - offset) + 1
      *
-     * @param  {Number}    date     The date where the academic week number needs to be returned for
-     * @return {Number}             The academic week number
+     * @param  {Number}     date          The date where the academic week number needs to be returned for
+     * @param  {Boolean}    usePrecise    Whether of not an offset should be used. (Default: false)
+     * @return {Number}                   The academic week number
      */
-    var getAcademicWeekNumber = exports.getAcademicWeekNumber = function(date) {
+    var getAcademicWeekNumber = exports.getAcademicWeekNumber = function(date, usePrecise) {
         if (!_.isNumber(date)) {
             throw new Error('A valid date should be provided');
         }
@@ -163,8 +164,11 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         // Get the correct terms associated to the current application
         var terms = config.terms[config.academicYear];
 
+        // The default value for 'usePrecise' is false
+        usePrecise = usePrecise || false;
+
         // Retrieve the corresponding term of the specified date
-        var currentTerm = getTerm(date);
+        var currentTerm = getTerm(date, usePrecise);
         if (!currentTerm) {
             return 0;
         }
