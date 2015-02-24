@@ -372,6 +372,7 @@
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container {
+    clear: both;
     height: 0;
     opacity: 0;
     overflow: hidden;
@@ -510,6 +511,18 @@
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 0px;
+    padding-top: 7px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title] {
+    overflow: hidden;
+    padding: 0;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
@@ -887,24 +900,56 @@ ul.as-list {
     border-style: solid;
     border-width: 1px;
     border-top-width: 1px !important;
-    height: 39px;
+    height: auto !important;
+    overflow: visible !important;
     padding: 0 !important;
 }
 
-.as-selections .as-selection-item {
+.as-selections::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.as-selections .as-selection-item.blur,
+ul.as-selections li.as-selection-item {
     border: none !important;
-    box-shadow: none !important;
-    margin: 5px 0;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: none !important;
+       -moz-box-shadow: none !important;
+            box-shadow: none !important;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1;
+    margin: 2px;
+    padding: 4px 5px 0px;
 }
 
 .as-selections .as-original {
     margin: 0 !important;
+    width: 100%;
 }
 
 .as-selections .as-original input {
     border: none !important;
+    border-top-style: solid !important;
+    border-top-width: 1px !important;
     font-size: 15px !important;
-    height: 100% !important;
+    height: 37px !important;
+    padding: 0 10px;
+    width: 100% !important;
+}
+
+.gh-batch-event-collapsed .as-selections .as-selection-item {
+    display: none;
+}
+
+.gh-batch-event-collapsed .as-selections .as-original input,
+.as-selections .as-original:first-child input {
+    border-top: none !important;
+    display: block;
 }
 
 .as-results {
