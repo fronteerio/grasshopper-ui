@@ -28,74 +28,89 @@ var userAPI = (function() {
      */
     var createUsers = function(numToCreate, isAdmin, callback) {
 
-        // Point casper to the admin UI
-        casper.start(configAPI.adminUI, function() {
+        /**
+         * Start creating test users
+         */
+        var _createUsers = function() {
+            casper.then(function() {
+                var toCreate = numToCreate || 1;
+                var created = 0;
+                var userProfiles = [];
 
-            // Log in as the global administrator
-            doLogin({'email': 'administrator', 'password': 'administrator'}, function(err) {
-                if (err) {
-                    return casper.echo('X Failed to login with the global administrator', 'ERROR');
-                }
+                // Default isAdmin to false when it's not provided
+                isAdmin = isAdmin || false;
 
-                // Start creating test users
-                casper.then(function() {
-                    var toCreate = numToCreate || 1;
-                    var created = 0;
-                    var userProfiles = [];
-                    // Default isAdmin to false when it's not provided
-                    isAdmin = isAdmin || false;
+                /**
+                 * Create a user
+                 */
+                var _createUser = function() {
+                    var rndString = mainUtil.generateRandomString();
+                    var rndPassword = mainUtil.generateRandomString();
+                    var params = [1, 'user-' + rndString, 'user-' + rndString + '@example.com', rndPassword, 'no', isAdmin, null, null];
 
-                    /**
-                     * Create a user
-                     */
-                    var createUser = function() {
-                        var rndString = mainUtil.generateRandomString();
-                        var rndPassword = mainUtil.generateRandomString();
-                        var params = [1, 'user-' + rndString, 'user-' + rndString + '@example.com', rndPassword, 'no', isAdmin, null, null];
-
-                        mainUtil.callInternalAPI('user', 'createUser', params, function(err, userProfile) {
-                            if (err) {
-                                return casper.echo('Could not create user-' + rndString + '. Error ' + err.code + ': ' + err.msg, 'ERROR');
-                            } else {
-                                userProfile.password = rndPassword;
-                                userProfiles.push(userProfile);
-
-                                created++;
-                            }
-                        });
-                    };
-
-                    // Get the me object
-                    var me = null;
-                    mainUtil.callInternalAPI('user', 'getMe', null, function(err, _me) {
+                    mainUtil.callInternalAPI('user', 'createUser', params, function(err, userProfile) {
                         if (err) {
-                            return casper.echo(JSON.stringify(err, null, 4), 'ERROR');
-                        }
-                        me = _me;
-
-                        // Only start creating users the global administrator is logged in
-                        if (!me.anon) {
-                            casper.then(function() {
-                                casper.repeat(toCreate, createUser);
-                            });
+                            return casper.echo('Could not create user-' + rndString + '. Error ' + err.code + ': ' + err.msg, 'ERROR');
                         } else {
-                            casper.then(function() {
-                                doLogOut();
-                            });
+                            userProfile.password = rndPassword;
+                            userProfiles.push(userProfile);
+
+                            created++;
                         }
                     });
+                };
 
-                    // Wait until all user profiles have been created and execute the callback
-                    // passing in the created user profiles
-                    casper.waitFor(function() {
-                        return userProfiles.length === toCreate;
-                    }, function() {
-                        doLogOut();
-                        return callback.apply(this, userProfiles);
-                    });
+                // Get the me object
+                var me = null;
+                mainUtil.callInternalAPI('user', 'getMe', null, function(err, _me) {
+                    if (err) {
+                        return casper.echo(JSON.stringify(err, null, 4), 'ERROR');
+                    }
+                    me = _me;
+
+                    // Only start creating users the global administrator is logged in
+                    if ((isAdmin && !me.anon) || (!isAdmin && me.anon)) {
+                        casper.then(function() {
+                            casper.repeat(toCreate, _createUser);
+                        });
+                    } else {
+                        casper.then(function() {
+                            doLogOut();
+                        });
+                    }
+                });
+
+                // Wait until all user profiles have been created and execute the callback
+                // passing in the created user profiles
+                casper.waitFor(function() {
+                    return userProfiles.length === toCreate;
+                }, function() {
+                    doLogOut();
+                    return callback.apply(this, userProfiles);
                 });
             });
-        });
+        };
+
+        // Point Casper to the admin UI if tenant admins need to be created
+        if (isAdmin) {
+            casper.start(configAPI.adminUI, function() {
+
+                // Log in as the global administrator
+                doLogin({'email': 'administrator', 'password': 'administrator'}, function(err) {
+                    if (err) {
+                        return casper.echo('X Failed to login with the global administrator', 'ERROR');
+                    }
+
+                    _createUsers();
+                });
+            });
+
+        // Point Casper to the tenant UI if normal users need to be created
+        } else {
+            casper.start(configAPI.tenantUI, function() {
+                _createUsers();
+            });
+        }
     };
 
     /**

@@ -83,12 +83,12 @@ casper.test.begin('Prepare environment for tests', function(test) {
                     return casper.echo('X Failed to login with the tenant administrator', 'ERROR');
                 }
 
-                // Persist the academicYear configuration value
-                configAPI.updateConfig(1, {'academicYear': 2013}, function(err, config) {
+                // Persist the academicYear and the allowLocalAccountCreation configuration value
+                configAPI.updateConfig(1, {'academicYear': 2013, 'allowLocalAccountCreation': true}, function(err, config) {
                     if (err) {
-                        return casper.echo('X Set the academicYear config to 2014', 'ERROR');
+                        return casper.echo('X Set the academicYear config to 2013', 'ERROR');
                     }
-                    casper.echo('✓ Set the academicYear configuration value to 2014', 'INFO');
+                    casper.echo('✓ Set the academicYear configuration value to 2013', 'INFO');
 
                     // Log out
                     userAPI.doLogOut();
