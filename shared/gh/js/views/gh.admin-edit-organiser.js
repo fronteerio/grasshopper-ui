@@ -158,22 +158,39 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             });
 
             /**
+             * Submit the AutoSuggest field and detach all event handlers from it
+             *
+             * @param  {[type]}    _this       The AutoSuggest container object
+             * @param  {String}    original    The containing HTML element
+             * @private
+             */
+            var submitAutoSuggest = function(_this, original) {
+                // Remove event handlers from the AutoSuggest field
+                $(document).off('click', 'body', closeAutoSuggest);
+                $('input', _this).off('focusout', closeAutoSuggest);
+                // Submit the form
+                $(original).find('form').submit();
+            };
+
+            /**
              * Close the autosuggest
              *
              * @param  {Event}    ev    Standard jQuery event
              * @private
              */
             var closeAutoSuggest = function(ev) {
-                // Only close the input if the focus was lost on an element outside
-                // of the organiser container
-                if (!$(ev.target).closest('.gh-event-organisers').length) {
-
-                    // Remove event handlers from the AutoSuggest field
-                    $(document).off('click', 'body', closeAutoSuggest);
-                    $('input', this).off('focusout', closeAutoSuggest);
-                    // Reset the form
-                    // original.reset(this);
-                    $(original).find('form').submit();
+                // Only close the input if the focus was lost on an element outside of the organiser container
+                if (!$(ev.target).closest('.gh-event-organisers').length || !$(ev.relatedTarget).closest('.gh-event-organisers').length) {
+                    // Submit the AutoSuggest field
+                    submitAutoSuggest(this, original);
+                    // If there is a relatedTarget set on the event that triggered the function, focus on it
+                    if ($(ev.relatedTarget).length) {
+                        $(ev.relatedTarget).focus();
+                    }
+                // If the relatedTarget that was tabbed to has the `gh-event-organisers` class we submit the form
+                } else if ($(ev.relatedTarget).hasClass('gh-event-organisers')) {
+                    // Submit the AutoSuggest field
+                    submitAutoSuggest(this, original);
                 }
             };
 
