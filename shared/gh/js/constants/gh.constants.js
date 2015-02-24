@@ -31,6 +31,7 @@ define(['exports'], function(exports) {
 
         // Keep track of number of milliseconds in a day, week and month for use in the calendar
         'PERIODS': {
+            'hour': 1000 * 60 * 60,
             'day': 1000 * 60 * 60 * 24,
             'week': 1000 * 60 * 60 * 24 * 7,
             'month': 1000 * 60 * 60 * 24 * 7 * 30

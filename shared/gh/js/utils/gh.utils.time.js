@@ -169,8 +169,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             return 0;
         }
 
-        // Get the start date of the corresponding term
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format('YYYY-MM-DD'));
+        // Get the start date of the corresponding term (and add one hour to catch the summer time difference)
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).add({'hours': 1}).utc().format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
         var dayNumber = parseInt(moment(startDate).format('E'), 10);
@@ -186,7 +186,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         // week in that term. If it can't be retrieved the date is out of term and 0 should
         // be returned
         var weekNumber = 0;
-        if (getTerm(date, true)) {
+        if (currentTerm) {
             weekNumber = Math.ceil(((date - startDate) / constants.time.PERIODS['week']) - (dayOffset)) + 1;
         }
 
