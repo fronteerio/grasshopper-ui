@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -50,6 +50,6 @@ var configAPI = (function() {
         'adminUI': 'http://admin.grasshopper.com',
         'tenantUI': 'http://2013.timetable.cam.ac.uk',
         'updateConfig': updateConfig,
-        'waitTimeout': 20000
+        'waitTimeout': 30000
     };
 })();

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -110,9 +110,11 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
         });
     };
 
-    casper.start(configAPI.tenantUI, function() {
-        // Create a user to test with
-        userAPI.createUsers(1, false, function(user1) {
+    // Create a user to test with
+    userAPI.createUsers(1, false, function(user1) {
+
+        // Open the tenant UI
+        casper.thenOpen(configAPI.tenantUI, function() {
             casper.then(function() {
                 casper.echo('# Verify the login modal', 'INFO');
                 verifyLogInModal(user1);

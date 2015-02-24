@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
+define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
 
 
     ///////////////
@@ -40,14 +40,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
         eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'tempId': utils.generateRandomString(), // The actual ID hasn't been generated yet
-            'isNew': true, // Used in the template to know this one needs special handling
             'displayName': $('.gh-jeditable-series-title').text(),
             'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
+            'isNew': true, // Used in the template to know this one needs special handling
             'location': '',
             'notes': 'Lecture',
-            'organisers': 'organiser',
-            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
+            'organisers': [],
+            'selected': true,
+            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
+            'tempId': utils.generateRandomString() // The actual ID hasn't been generated yet
         };
         eventObj['utils'] = utils;
 
@@ -57,6 +58,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         setUpJEditable();
         // Show the save button
         toggleSubmit();
+        // Enable batch editing of dates
+        toggleBatchEditDateEnabled();
     };
 
     /**
@@ -160,6 +163,34 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Toggles each and every action in the UI to be disabled or enabled based on
+     * the parameter passed in to the function
+     *
+     * @param  {Boolean}    [disable]    Whether or not to disable all elements. Defaults to `false`
+     * @private
+     */
+    var disableEnableAll = function(disable) {
+        disable = disable || false;
+
+        // Disable input elements and fire off an event for Chosen to be able to adjust itself
+        $('button, input, select, textarea').attr('disabled', disable).trigger('chosen:updated.chosen');
+
+        if (disable) {
+            // Disable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('disable');
+
+            // Disable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').addClass('gh-disabled');
+        } else {
+            // Enable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('enable');
+
+            // Enable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').removeClass('gh-disabled');
+        }
+    };
+
+    /**
      * Show/hide the date batch editing functionality
      *
      * @private
@@ -197,13 +228,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
+                // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
-                // Set the margin of the batch edit container to the height of the sticky header
-                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
             } else {
-                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
                 // Reset the margin of the batch edit container
                 $('#gh-batch-edit-term-container').css('margin-top', 0);
+                // Remove the sticky class from the header
+                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
         }
     };
@@ -354,6 +387,31 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Parse the AutoSuggest input and display a list of organisers
+     *
+     * @private
+     */
+    var editableOrganiserSubmitted = function() {
+        // Retrieve the values from the AutoSuggest field and create a String to show
+        var $hiddenFields = $(this).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').find('input[data-add="true"]');
+        var organisers = [];
+
+        // Create the stringified organiser Array
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push(hiddenField.value);
+        });
+
+        // Mark the row as edited
+        $(this).closest('tr').addClass('active');
+
+        // Toggle the submit button
+        toggleSubmit();
+
+        // Return the stringified organisers
+        return organisers.join(', ');
+    };
+
+    /**
      * Set up editable fields in the batch edit tables
      *
      * @private
@@ -362,7 +420,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable to the series title
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
-            'cssclass' : 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'cssclass': 'gh-jeditable-form gh-jeditable-form-with-submit',
             'height': '38px',
             'maxlength': 255,
             'onblur': 'submit',
@@ -373,7 +431,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable for inline editing of event rows
         $('.gh-jeditable-events').editable(editableEventSubmitted, {
-            'cssclass' : 'gh-jeditable-form',
+            'cssclass': 'gh-jeditable-form',
             'height': '38px',
             'onblur': 'submit',
             'placeholder': '',
@@ -389,11 +447,27 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // Apply jEditable to the event notes
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
-            'cssclass' : 'gh-jeditable-form',
+            'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit event notes',
             'type': 'event-type-select',
+            'callback': function(value, settings) {
+                // Focus the edited field td element after submitting the value
+                // for improved keyboard accessibility
+                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                    $(this).focus();
+                }
+            }
+        });
+
+        // Apply jEditable to the organisers
+        $('.gh-event-organisers').editable(editableOrganiserSubmitted, {
+            'cssclass': 'gh-jeditable-form',
+            'placeholder': '',
+            'select': true,
+            'tooltip': 'Click to edit organisers',
+            'type': 'organiser-autosuggest',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
@@ -436,13 +510,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 }
 
                 if (updatedEvent.organisers) {
-                    // Create an object of the organisers
-                    // TODO: Implement lookup to handle organisers properly
-                    // The current implementation in the UI doesn't allow for the removal of organisers but it wouldn't
-                    // make sense to implement this, waiting for lookup to be hooked in
-                    var organisers = _.object([updatedEvent.organisers], [true]);
                     // Update the event organisers
-                    eventAPI.updateEventOrganisers(updatedEvent.id, organisers, function(orgErr, data) {
+                    eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
                         if (orgErr) {
                             hasError = true;
                             // Mark the row so it's visually obvious that the update failed
@@ -517,7 +586,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
             var seriesId = parseInt($.bbq.getState()['series'], 10);
-            eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organisers, null, seriesId, function(evErr, data) {
+            eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                     // Mark the row so it's visually obvious that the creation failed
@@ -595,30 +664,98 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Get the organisers and their status for an event row (added or removed from the event). Returns null
+     * when no organisers where found in the container
+     *
+     * @param  {jQuery}    $container    jQuery selector of the event row to get organisers for
+     * @return {Object}                  Object containing all organisers to add or remove from the event. e.g., {'21': true, 'john doe': false} or `null` when no organisers where found in the container
+     * @private
+     */
+    var getOrganiserState = function($container) {
+        var organiserFields = $('.gh-event-organisers-fields input', $container);
+        var organisers = {};
+
+        _.each(organiserFields, function($organiserField) {
+            $organiserField = $($organiserField);
+            var userId = $organiserField.attr('data-id');
+            var displayName = $organiserField.val();
+            var toAdd = $organiserField.attr('data-add') === "true";
+
+            // If the ID is defined, use that as the key. Otherwise,
+            // use the display name as the key
+            if (userId) {
+                organisers[userId] = toAdd;
+            } else {
+                organisers[displayName] = toAdd;
+            }
+        });
+
+        return _.isEmpty(organisers) ? null : organisers;
+    };
+
+    /**
+     * Get the Array of organiser user IDs (or strings if no existing user was selected) selected
+     * in the AutoSuggest field
+     *
+     * @param  {jQuery}               $container     The container to look for the AutoSuggest field in
+     * @return {Number[]|String[]}                   The Array of organiser IDs
+     * @private
+     */
+    var getOrganiserList = function($container) {
+        var organiserFields = $('.gh-event-organisers-fields input', $container);
+        var organisers = {
+            organiserOthers: [],
+            organiserUsers: []
+        };
+
+        _.each(organiserFields, function($organiserField) {
+            $organiserField = $($organiserField);
+            var userId = $organiserField.attr('data-id');
+            var displayName = $organiserField.val();
+
+            // If the userID is present, push it into the user Array. If no ID
+            // is available for the user this user does not have an account and we
+            // push the displayName in the others Array
+            if (userId) {
+                organisers.organiserUsers.push(userId);
+            } else {
+                organisers.organiserOthers.push(displayName);
+            }
+        });
+
+        return organisers;
+    };
+
+    /**
      * Submit all changes made in batch edit mode
      *
      * @private
      */
     var submitBatchEdit = function() {
+        // Disable all elements in the UI to avoid data changing halfway through the update
+        disableEnableAll(true);
+
         var updatedEventObjs = [];
         var newEventObjs = [];
         var eventsToDelete = [];
 
         // For each term, go over each event and create an event object to persist
-        // TODO: Only persist the events that have changed
         _.each($('.gh-batch-edit-events-container'), function($termContainer) {
             // Loop over each (non-new) event in the term and create the event object
             _.each($('tbody tr.active:not(.gh-new-event-row)', $termContainer), function($eventContainer) {
                 $eventContainer = $($eventContainer);
+
+                // Gather the organisers for the field
+                var organisers = getOrganiserState($eventContainer);
+
+                // Create the updated event object
                 var updatedEventObj = {
                     'id': $eventContainer.data('eventid'),
-                    // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
+                    'organisers': organisers || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 updatedEventObjs.push(updatedEventObj);
@@ -627,15 +764,19 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             // Loop over each new event in the term and create the event object
             _.each($('tbody tr.active.gh-new-event-row', $termContainer), function($eventContainer) {
                 $eventContainer = $($eventContainer);
+
+                // Gather the organisers for the field
+                var organisers = getOrganiserList($eventContainer);
+
+                // Create the new event object
                 var newEventObj = {
                     'tempId': $eventContainer.data('tempid'),
-                    // 'description': '',
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    // 'group': '',
                     'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
-                    'organisers': $('.gh-event-organisers', $eventContainer).text() || null,
+                    'organiserOther': organisers.organiserOthers || null,
+                    'organiserUsers': organisers.organiserUsers || null,
                     'start': $('.gh-event-date', $eventContainer).attr('data-start')
                 };
                 newEventObjs.push(newEventObj);
@@ -666,6 +807,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     }
                     // Hide the save button
                     toggleSubmit();
+                    // Re-enable all elements in the UI
+                    disableEnableAll(false);
+                    // Show a success notification to the user
                     return utils.notification('Events updated.', 'The events where successfully updated.');
                 });
             });
@@ -761,12 +905,41 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 return gh.utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
             }
 
-            // Get the information about the events in the series
-            seriesAPI.getSeriesEvents(seriesId, 100, 0, false, function(err, events) {
-                if (err) {
-                    return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
-                }
+            // Object used to aggregate the events between pages
+            var events = {
+                'results': []
+            };
 
+            /**
+             * Get the events in a series per page of 25. Calls itself when it feels like there might be more
+             *
+             * @param  {Number}      offset      The paging number of the results to retrieve
+             * @param  {Function}    callback    Standard callback function
+             * @private
+             */
+            var getSeriesEvents = function(offset, callback) {
+                // Get the information about the events in the series
+                seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
+                    if (err) {
+                        return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                    }
+
+                    // Aggregate the results
+                    events.results = _.union(events.results, _events.results);
+
+                    // If the length of the Array of _events is 25 there might be other results so
+                    // we increase the offset and fetch again
+                    if (_events.results.length === 25) {
+                        offset = offset + 25;
+                        getSeriesEvents(offset, callback);
+                    } else {
+                        callback();
+                    }
+                });
+            };
+
+            // Get the first page of events
+            getSeriesEvents(0, function() {
                 // Unlock the currently locked group
                 unlockGroup();
 
@@ -784,6 +957,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
                 // TODO: Remove this and only trigger when button is clicked/expanded
                 $(document).trigger('gh.batchdate.setup');
+                $(document).trigger('gh.batchorganiser.setup');
             });
         });
     };
@@ -806,7 +980,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);
-        $('body').on('click', '.gh-event-date', function() {
+        $('body').on('click', '.gh-event-date:not(.gh-disabled)', function() {
             $(document).trigger('gh.datepicker.show', this);
         });
 
@@ -819,11 +993,12 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $(document).on('gh.batchedit.addevent', addNewEventRow);
-        $('body').on('click', '.gh-event-delete', deleteEvent);
+        $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
         $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
+        $(document).on('gh.batchedit.togglesubmit', toggleSubmit);
 
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
@@ -834,6 +1009,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
     };
 
     addBinding();

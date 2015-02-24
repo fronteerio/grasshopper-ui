@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -35,7 +35,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             var appId = testAPI.getTestApp().id;
             var user = {
                 'displayName': gh.utils.generateRandomString(),
-                'email': gh.utils.generateRandomString(),
+                'email': gh.utils.generateRandomString() + '@mail.com',
                 'password': gh.utils.generateRandomString()
             };
 
@@ -510,7 +510,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         var appId = testAPI.getTestApp().id;
         var user = {
             'displayName': gh.utils.generateRandomString(),
-            'email': gh.utils.generateRandomString(),
+            'email': gh.utils.generateRandomString() + '@mail.com',
             'password': gh.utils.generateRandomString()
         };
 

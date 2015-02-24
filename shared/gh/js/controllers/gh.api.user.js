@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -300,7 +300,7 @@ define(['exports'], function(exports) {
     /**
      * Create a new user with a local authentication strategy
      *
-     * @param  {Number}      appId                   The ID of the app on which the user should be created
+     * @param  {Number}      app                     The ID of the app on which the user should be created
      * @param  {String}      displayName             The display name of the user
      * @param  {String}      email                   The email address for the user. This will be used as the username for the user
      * @param  {String}      password                The password with which the user will authenticate
@@ -312,11 +312,11 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err            Error object containing the error code and error message
      * @param  {Object}      callback.response       The created user
      */
-    var createUser = exports.createUser = function(appId, displayName, email, password, emailPreference, isAdmin, recaptchaChallenge, recaptchaResponse, callback) {
+    var createUser = exports.createUser = function(app, displayName, email, password, emailPreference, isAdmin, recaptchaChallenge, recaptchaResponse, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(appId)) {
-            return callback({'code': 400, 'msg': 'A valid value for app id should be provided'});
+        } else if (!_.isNumber(app)) {
+            return callback({'code': 400, 'msg': 'A valid value for app should be provided'});
         } else if (!_.isString(displayName)) {
             return callback({'code': 400, 'msg': 'A valid display name should be provided'});
         } else if (!_.isString(email)) {
@@ -335,7 +335,7 @@ define(['exports'], function(exports) {
 
         // Request data object
         var data = {
-            'appId': appId,
+            'app': app,
             'displayName': displayName,
             'email': email,
             'password': password

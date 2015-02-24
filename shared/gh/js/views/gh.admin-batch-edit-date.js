@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -310,14 +310,14 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         if ($(this).is(':checked')) {
             // Add the class
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
-            // Add all events to the associated week
-            addAnotherDay();
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
             // Remove all events associated to the week
             removeEventsInWeek(parseInt($(this).val(), 10));
         }
+        // Add all events to the associated week
+        addAnotherDay();
         // Get the weeks that are in use by the selection
         var weeksInUse = $('#gh-batch-edit-date-picker input:checked').length;
         // Update the weeks in use label

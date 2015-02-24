@@ -1,5 +1,5 @@
 /*!
- * Copyright 2014 Digital Services, University of Cambridge Licensed
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
  * License. You may obtain a copy of the License at
@@ -156,7 +156,7 @@ module.exports = function(callback) {
         if (node.type === 'module') {
             groupId = parent.GroupId;
         }
-        OrgUnitAPI.createOrgUnit(ctx, appId, node.name.substring(0, 255), node.type, null, null, false, groupId, parentId, function(err, orgunit) {
+        OrgUnitAPI.createOrgUnit(ctx, appId, node.name.substring(0, 255), node.type, null, null, null, groupId, parentId, function(err, orgunit) {
             if (err) {
                 console.error("DisplayName: '%s'", node.name);
                 console.error("type: '%s'", node.type);
