@@ -451,6 +451,7 @@ define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
     var addBinding = function() {
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
         $('body').on('click', '#gh-tenants-apps-form .gh-update-app', submitTenantForm);
+        $('body').on('click', '#gh-tenants-apps-form .gh-create-app', submitTenantForm);
         $('body').on('click', '#gh-tenants-apps-form .gh-launch-app', launchApp);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
