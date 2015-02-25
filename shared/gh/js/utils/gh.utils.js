@@ -255,14 +255,15 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
      * This function is mostly just a wrapper around jQuery.bootstrap.notify.js and supports all of the options documented
      * at https://github.com/goodybag/bootstrap-notify.
      *
-     * @param  {String}    [title]    The notification title
-     * @param  {String}    message    The notification message that will be shown underneath the title
-     * @param  {String}    [type]     The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
-     * @param  {String}    [id]       Unique identifier for the notification, in case a notification can be triggered twice due to some reason. If a second notification with the same id is triggered it will be ignored
-     * @throws {Error}                Error thrown when no message has been provided
-     * @return {Boolean}              Returns true when the notification has been shown
+     * @param  {String}    [title]     The notification title
+     * @param  {String}    message     The notification message that will be shown underneath the title
+     * @param  {String}    [type]      The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
+     * @param  {String}    [id]        Unique identifier for the notification, in case a notification can be triggered twice due to some reason. If a second notification with the same id is triggered it will be ignored
+     * @param  {String}    [sticky]    Whether or not the notification should be sticky. Defaults to `false`
+     * @throws {Error}                 Error thrown when no message has been provided
+     * @return {Boolean}               Returns true when the notification has been shown
      */
-    var notification = exports.notification = function(title, message, type, id) {
+    var notification = exports.notification = function(title, message, type, id, sticky) {
         if (!message) {
             throw new Error('A valid notification message should be provided');
         }
@@ -288,7 +289,7 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
         // Show the actual notification
         $notificationContainer.notify({
             'fadeOut': {
-                'enabled': true,
+                'enabled': sticky ? false : true,
                 'delay': 5000
             },
             'type': type,

@@ -110,9 +110,11 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
         });
     };
 
-    casper.start(configAPI.tenantUI, function() {
-        // Create a user to test with
-        userAPI.createUsers(1, false, function(user1) {
+    // Create a user to test with
+    userAPI.createUsers(1, false, function(user1) {
+
+        // Open the tenant UI
+        casper.thenOpen(configAPI.tenantUI, function() {
             casper.then(function() {
                 casper.echo('# Verify the login modal', 'INFO');
                 verifyLogInModal(user1);

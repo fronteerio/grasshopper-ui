@@ -46,7 +46,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      */
     var buildBatchDateObject = function() {
         // Get the checked events from the batch edit container
-        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
+        var $rows = $('.gh-batch-edit-events-container tr.info:visible:not(".gh-event-deleted")');
         // Get the maximum number of weeks in a term
         var maxNumberOfWeeks = getMaxNumberOfWeeks();
         // Get the weeks that are in use by the selection
@@ -55,8 +55,14 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         var termsInUse = getTermsInUse($rows);
         // Get the unique days in the week to render time pickers for
         var daysInUse = getDaysInUse($rows);
-        // Render the batch date editor
-        renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse);
+        // Render the batch date editor if at least one week was selected
+        if (weeksInUse.length) {
+            renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse);
+        // If no weeks where selected, close the batch date edit header
+        } else {
+            $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
+            $('#gh-batch-edit-time').attr('disabled', 'disabled');
+        }
     };
 
 
@@ -82,7 +88,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             var dateWeek = gh.utils.getAcademicWeekNumber(startDate);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
-                $row.find('.gh-event-delete').click();
+                $row.addClass('gh-event-deleted').find('.gh-event-delete').click();
             }
         });
     };
@@ -310,19 +316,16 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         if ($(this).is(':checked')) {
             // Add the class
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
+            // Add all events to the associated week
+            addAnotherDay();
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
             // Remove all events associated to the week
             removeEventsInWeek(parseInt($(this).val(), 10));
         }
-        // Add all events to the associated week
-        addAnotherDay();
-        // Get the weeks that are in use by the selection
-        var weeksInUse = $('#gh-batch-edit-date-picker input:checked').length;
-        // Update the weeks in use label
-        weeksInUse = weeksInUse + (weeksInUse === 1 ? ' week' : ' weeks') + ' selected';
-        $('#gh-batch-edit-date-picker-container > small').text(weeksInUse);
+        // Update the batch edit header
+        buildBatchDateObject();
     };
 
     /**
@@ -393,6 +396,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // Adding a new day
         $('body').on('click', '.gh-batch-edit-date-add-day', addAnotherDay);
+
+        // Removing events
+        $(document).on('gh.event.deleted', buildBatchDateObject);
     };
 
     addBinding();
