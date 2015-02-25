@@ -173,7 +173,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term
         weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
-        assert.strictEqual(weekNumber, 0, 'Verify that a valid week number is returned when specifying an out-of-term date');
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an out-of-term date');
+
+        // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term, using precise calculation
+        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'), true);
+        assert.strictEqual(weekNumber, 0, 'Verify that a valid week number is returned when specifying an out-of-term date, using precise calculation');
 
         // Verify that a valid week number is returned when specifying an in-term date
         weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
