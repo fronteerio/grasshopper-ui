@@ -163,9 +163,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var showPopover = function(ev, trigger) {
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var term = gh.api.utilAPI.getTermByDate($(trigger).data('start'));
+        var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate($(trigger).data('start')));
         if (term) {
-            numWeeks = gh.api.utilAPI.getWeeksInTerm(term);
+            numWeeks = gh.utils.getWeeksInTerm(term);
         }
 
         // Render the popover template
@@ -259,9 +259,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         setDate(dayValue);
 
         // Set the correct select box values
-        var startDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-start')));
-        var endDate = gh.api.utilAPI.convertUnixDatetoISODate(gh.api.utilAPI.fixDateToGMT($trigger.attr('data-end')));
-        var week = gh.api.utilAPI.getWeekInTerm(startDate);
+        var startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-start')));
+        var endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-end')));
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
         var day = moment(startDate).day();
 
         $('.popover #gh-module-week').val(week);
@@ -325,7 +325,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         // Get the form values
         var dates = getFullDates();
 
-        var week = gh.api.utilAPI.getWeekInTerm(dates.start);
+        var week = gh.utils.getWeekInTerm(dates.start);
         var day = moment(dates.start).day();
 
         // Re calculate the date based on the selected week
@@ -334,13 +334,13 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             var weekVal = parseInt($('#gh-module-week').val(), 10);
             if (weekVal) {
                 // Retrieve the term
-                var term = gh.api.utilAPI.getTermByDate(dates.start);
+                var term = gh.utils.getTermByDate(dates.start);
                 if (term) {
                     // Retrieve the day of the week
                     var dayOfTheWeek = parseInt(moment(dates.start).format('E'));
 
                     // Set the date based on the term, week number and day of the week
-                    setDate(moment(gh.api.utilAPI.getDateByWeekAndDay(term.name, weekVal, dayOfTheWeek)).utc().format('YYYY-MM-DD'));
+                    setDate(moment(gh.utils.getDateByWeekAndDay(term.name, weekVal, dayOfTheWeek)).utc().format('YYYY-MM-DD'));
                 }
             }
 
