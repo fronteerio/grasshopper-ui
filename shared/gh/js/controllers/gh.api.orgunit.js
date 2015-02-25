@@ -113,7 +113,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid description should be provided'});
         } else if (metadata && !_.isObject(metadata)) {
             return callback({'code': 400, 'msg': 'A valid value for metadata should be provided'});
-        } else if (published && !_.isBoolean(published)) {
+        } else if (!_.isNull(published) && !_.isBoolean(published)) {
             return callback({'code': 400, 'msg': 'A valid value for published should be provided'});
         }
 
@@ -124,7 +124,6 @@ define(['exports'], function(exports) {
         var data = {
             'app': appId,
             'displayName': displayName,
-            'published': published,
             'type': type
         };
 
@@ -140,6 +139,9 @@ define(['exports'], function(exports) {
         }
         if (metadata) {
             data['metadata'] = metadata;
+        }
+        if (!_.isNull(published)) {
+            data['published'] = published;
         }
 
         $.ajax({
@@ -610,7 +612,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid type should be provided'});
         } else if (metadata && !_.isObject(metadata)) {
             return callback({'code': 400, 'msg': 'A valid value for metadata should be provided'});
-        } else if (published && !_.isBoolean(published)) {
+        } else if (!_.isNull(published) && !_.isBoolean(published)) {
             return callback({'code': 400, 'msg': 'A valid value for published should be provided'});
         }
 
@@ -618,9 +620,7 @@ define(['exports'], function(exports) {
         callback = callback || function() {};
 
         // Request data object
-        var data = {
-            'published': published
-        };
+        var data = {};
 
         // Only add the parameters to the request object if they have been explicitly specified
         if (description) {
@@ -640,6 +640,9 @@ define(['exports'], function(exports) {
         }
         if (metadata) {
             data['metadata'] = metadata;
+        }
+        if (!_.isNull(published)) {
+            data['published'] = published;
         }
 
         $.ajax({

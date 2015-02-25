@@ -547,7 +547,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                                 // Verify that the error is handled when the organisational unit could not be successfully updated
                                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                                gh.api.utilAPI.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                                gh.utils.mockRequest('POST', '/api/orgunit/' + testOrgUnit.id, 400, {'Content-Type': 'application/json'}, body, function() {
                                                     gh.api.orgunitAPI.updateOrgUnit(testOrgUnit.id, null, null, null, null, null, null, null, function(err, data) {
                                                         assert.ok(err, 'Verify that the error is handled when the organisational unit could not be successfully updated');
                                                         assert.ok(!data, 'Verify that no data returns when the organisational unit could not be successfully updated');
