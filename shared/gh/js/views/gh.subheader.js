@@ -150,11 +150,17 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $('#gh-subheader-part').val(state.part);
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
+
+            // Dispatch an event to update the visibility button
+            $(document).trigger('gh.part.changed', {'part': state.part});
         } else {
             // If there is no preselected part the part, module and series should be removed from the hash
             $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+
+            // Dispatch an event to update the visibility button
+            $(document).trigger('gh.part.changed');
         }
 
         state = $.bbq.getState() || {};

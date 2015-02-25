@@ -368,6 +368,9 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
 
         // Change the view
         $(document).on('gh.admin.changeView', onViewChange);
+
+        // Refresh the tripos data
+        $(document).on('gh.triposdata.refresh', getTriposData);
     };
 
     /**
