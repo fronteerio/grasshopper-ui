@@ -50,6 +50,6 @@ var configAPI = (function() {
         'adminUI': 'http://admin.grasshopper.com',
         'tenantUI': 'http://2013.timetable.cam.ac.uk',
         'updateConfig': updateConfig,
-        'waitTimeout': 20000
+        'waitTimeout': 30000
     };
 })();

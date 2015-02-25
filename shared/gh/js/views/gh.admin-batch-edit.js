@@ -40,14 +40,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
         eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'tempId': utils.generateRandomString(), // The actual ID hasn't been generated yet
-            'isNew': true, // Used in the template to know this one needs special handling
             'displayName': $('.gh-jeditable-series-title').text(),
             'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
+            'isNew': true, // Used in the template to know this one needs special handling
             'location': '',
             'notes': 'Lecture',
             'organisers': [],
-            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()
+            'selected': true,
+            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
+            'tempId': utils.generateRandomString() // The actual ID hasn't been generated yet
         };
         eventObj['utils'] = utils;
 
@@ -57,6 +58,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         setUpJEditable();
         // Show the save button
         toggleSubmit();
+        // Enable batch editing of dates
+        toggleBatchEditDateEnabled();
     };
 
     /**
@@ -76,6 +79,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 $row.remove();
             });
         }
+        // Let other components know that an event was deleted
+        $(document).trigger('gh.event.deleted');
     };
 
     /**
@@ -160,6 +165,34 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Toggles each and every action in the UI to be disabled or enabled based on
+     * the parameter passed in to the function
+     *
+     * @param  {Boolean}    [disable]    Whether or not to disable all elements. Defaults to `false`
+     * @private
+     */
+    var disableEnableAll = function(disable) {
+        disable = disable || false;
+
+        // Disable input elements and fire off an event for Chosen to be able to adjust itself
+        $('button, input, select, textarea').attr('disabled', disable).trigger('chosen:updated.chosen');
+
+        if (disable) {
+            // Disable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('disable');
+
+            // Disable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').addClass('gh-disabled');
+        } else {
+            // Enable jEditable fields
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('enable');
+
+            // Enable the date picker. This one is not a jEditable field so needs special handling
+            $('.gh-event-date').removeClass('gh-disabled');
+        }
+    };
+
+    /**
      * Show/hide the date batch editing functionality
      *
      * @private
@@ -197,13 +230,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
+                // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
-                // Set the margin of the batch edit container to the height of the sticky header
-                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
             } else {
-                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
                 // Reset the margin of the batch edit container
                 $('#gh-batch-edit-term-container').css('margin-top', 0);
+                // Remove the sticky class from the header
+                $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
         }
     };
@@ -631,10 +666,11 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
-     * Get the organisers for an event row and their status (added or removed from the event)
+     * Get the organisers and their status for an event row (added or removed from the event). Returns null
+     * when no organisers where found in the container
      *
      * @param  {jQuery}    $container    jQuery selector of the event row to get organisers for
-     * @return {Object}                  Object containing all organisers to add or remove from the event. e.g., {'21': true, 'john doe': false}
+     * @return {Object}                  Object containing all organisers to add or remove from the event. e.g., {'21': true, 'john doe': false} or `null` when no organisers where found in the container
      * @private
      */
     var getOrganiserState = function($container) {
@@ -656,7 +692,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             }
         });
 
-        return organisers;
+        return _.isEmpty(organisers) ? null : organisers;
     };
 
     /**
@@ -698,6 +734,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
      * @private
      */
     var submitBatchEdit = function() {
+        // Disable all elements in the UI to avoid data changing halfway through the update
+        disableEnableAll(true);
+
         var updatedEventObjs = [];
         var newEventObjs = [];
         var eventsToDelete = [];
@@ -770,6 +809,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     }
                     // Hide the save button
                     toggleSubmit();
+                    // Re-enable all elements in the UI
+                    disableEnableAll(false);
+                    // Show a success notification to the user
                     return utils.notification('Events updated.', 'The events where successfully updated.');
                 });
             });
@@ -940,7 +982,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);
-        $('body').on('click', '.gh-event-date', function() {
+        $('body').on('click', '.gh-event-date:not(.gh-disabled)', function() {
             $(document).trigger('gh.datepicker.show', this);
         });
 
@@ -953,7 +995,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $(document).on('gh.batchedit.addevent', addNewEventRow);
-        $('body').on('click', '.gh-event-delete', deleteEvent);
+        $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
@@ -969,6 +1011,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
     };
 
     addBinding();

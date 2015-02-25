@@ -190,6 +190,10 @@ label {
 /* MODALS */
 /**********/
 
+.modal {
+    z-index: 10000;
+}
+
 .modal-header,
 .modal-body {
     padding: 25px;
