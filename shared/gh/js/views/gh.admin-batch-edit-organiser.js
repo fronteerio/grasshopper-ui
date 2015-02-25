@@ -204,7 +204,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
     };
 
     /**
-     * Open the AutoSuggest component by removing the class from it's parent that hid all selected users from view
+     * Open the AutoSuggest component by removing the class from it's parent that hides all selected users from view
      *
      * @private
      */
