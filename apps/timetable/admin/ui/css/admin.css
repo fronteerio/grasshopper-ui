@@ -339,6 +339,11 @@
     width: 100%;
 }
 
+#gh-batch-edit-header input[type="text"] {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
 #gh-batch-edit-header > div > * {
     height: 39px;
     width: 100%;
