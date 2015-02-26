@@ -23,10 +23,12 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var originalStartDate = null;
     var originalEndDate = null;
 
+    var _term = null;
 
-    /////////////////////
-    //  DATA HANDLING  //
-    /////////////////////
+
+    /////////////////
+    //  UTILITIES  //
+    /////////////////
 
     /**
      * Apply the date change
@@ -187,9 +189,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(originalStartDate).utc().format('YYYY-MM-DD')));
-        if (term) {
-            numWeeks = gh.utils.getWeeksInTerm(term);
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(originalStartDate).utc().format('YYYY-MM-DD')), true);
+        if (_term) {
+            numWeeks = gh.utils.getWeeksInTerm(_term);
         }
 
         // Render the popover template
@@ -335,11 +337,6 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         validateEntry();
     };
 
-
-    ///////////////
-    //  BINDING  //
-    ///////////////
-
     /**
      * Update the date components
      *
@@ -361,21 +358,29 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 // Retrieve the term
                 var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dates.start).utc().format('YYYY-MM-DD')), true);
                 if (term) {
+                    _term = term;
 
                     // Jump to the start of the term if the first week was chosen
                     if (weekVal === 1) {
-                        setDatePicker(moment(term.start).utc().format('YYYY-MM-DD'));
+                        setDatePicker(moment(_term.start).utc().format('YYYY-MM-DD'));
                     } else {
 
                         // Calculate the offset
-                        var offset = moment(term.start).day();
+                        var offset = moment(_term.start).day();
 
                         // Calculate the start date of the first full week
-                        var startDate = moment(term.start).add({'days': offset});
+                        var startDate = moment(_term.start).add({'days': offset});
 
                         // Change the date picker
                         setDatePicker(moment(startDate).add({'weeks': (weekVal - 2)}).utc().format('YYYY-MM-DD'));
                     }
+                } else {
+                    var dayNumber = 2;
+                    if (weekVal !== 1) {
+                        dayNumber = 4;
+                        weekVal -= 1;
+                    }
+                    setDatePicker(moment(gh.utils.getDateByWeekAndDay(_term.name, weekVal, dayNumber)).utc().format('YYYY-MM-DD'));
                 }
             }
 
@@ -386,19 +391,19 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             var currentDay = moment(dates.start).format('E');
 
             // Calculate the start of the week
-            var offset = -3;
+            var dayOffset = -3;
             if (currentDay > 3) {
-                offset = 4;
+                dayOffset = 4;
             }
-            offset = currentDay - offset;
+            dayOffset = currentDay - dayOffset;
 
-            var weekStart = moment(dates.start).subtract({'days': offset}).utc().format('YYYY-MM-DD');
+            var weekStart = moment(dates.start).add({'hours': 1}).subtract({'days': dayOffset}).utc().format('YYYY-MM-DD');
 
             // Retrieve the selected day value
             var dayVal = parseInt($('#gh-module-day option:selected').attr('data-day'), 10);
 
             // Calculate the new date
-            setDatePicker(moment(weekStart).add({'days': (dayVal + 1)}).utc().format('YYYY-MM-DD'));
+            setDatePicker(moment(weekStart).add({'days': dayVal, 'hours': 1}).utc().format('YYYY-MM-DD'));
         }
 
         // Refetch the dates
@@ -421,6 +426,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             }
         });
     };
+
+
+    ///////////////
+    //  BINDING  //
+    ///////////////
 
     /**
      * Handles keypress events when focus is set to the editable event date field
