@@ -78,9 +78,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Initialise the Chosen plugin on the part picker
         $('#gh-subheader-part').chosen({
-            'no_results_text': 'No matches for',
-            'disable_search_threshold': 10
+            'disable_search': true
         }).on('change', setUpModules);
+
+        // Chosen has a bug where search sometimes isn't disabled properly
+        $('#gh_subheader_part_chosen .chosen-search').hide();
     };
 
     /**
@@ -115,6 +117,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         $('#gh-subheader-tripos').chosen({
             'no_results_text': 'No matches for'
         }).change(setUpPartPicker);
+
+        // Set the default placeholder text
+        $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search triposes');
     };
 
     /**
