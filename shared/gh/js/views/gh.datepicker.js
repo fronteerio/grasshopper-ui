@@ -171,7 +171,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             // the popover. If inside, the popover cannot be closed unless cancel was clicked
             if (ev) {
                 var clickedTrigger = !!$(ev.target).closest('.gh-event-date').length || $(ev.target).hasClass('gh-event-date');
-                var clickedPopover = !!$(ev.target).closest('.popover').length || $(ev.target).hasClass('.popover');
+                var clickedPopover = !!$(ev.target).closest('.popover').length || $(ev.target).hasClass('.popover') || !!$(ev.target).closest('.ui-datepicker-header').length;
                 var clickedCancel = !!$(ev.target).attr('data-dismiss');
 
                 if ((clickedPopover || clickedTrigger) && !clickedCancel) {

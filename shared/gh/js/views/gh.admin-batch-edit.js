@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
+define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
 
 
     ///////////////
@@ -902,9 +902,9 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var seriesId = parseInt($.bbq.getState()['series'], 10);
 
         // Get the information about the series
-        seriesAPI.getSeries(seriesId, function(err, series) {
+        seriesAPI.getSeries(seriesId, null, function(err, series) {
             if (err) {
-                return gh.utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
             }
 
             // Object used to aggregate the events between pages
@@ -923,7 +923,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 // Get the information about the events in the series
                 seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
                     if (err) {
-                        return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                        return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
                     }
 
                     // Aggregate the results

@@ -334,33 +334,33 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
-            gh.api.seriesAPI.getSeries(testSeries.id);
+            gh.api.seriesAPI.getSeries(testSeries.id, null);
         }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.api.seriesAPI.getSeries(testSeries.id, 'not_a_callback');
+            gh.api.seriesAPI.getSeries(testSeries.id, null, 'not_a_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         // Verify that an error is thrown when no serieId was provided
-        gh.api.seriesAPI.getSeries(null, function(err, data) {
+        gh.api.seriesAPI.getSeries(null, null, function(err, data) {
             assert.ok(err, 'Verify that an error is thrown when no serie id was provided');
 
             // Verify that an error is thrown when an invalid serieId was provided
-            gh.api.seriesAPI.getSeries('invalid_series_id', function(err, data) {
+            gh.api.seriesAPI.getSeries('invalid_series_id', null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
 
                 // Verify that event series can be successfully retrieved
                 // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                 var body = {'code': 200, 'msg': 'OK'};
                 gh.utils.mockRequest('GET', '/api/series/' + testSeries.id, 200, {'Content-Type': 'application/json'}, body, function() {
-                    gh.api.seriesAPI.getSeries(testSeries.id, function(err, data) {
+                    gh.api.seriesAPI.getSeries(testSeries.id, null, function(err, data) {
                         assert.ok(!err, 'Verify that event series can be successfully retrieved');
 
                         // Verify that the error is handled
                         body = {'code': 400, 'msg': 'Bad Request'};
                         gh.utils.mockRequest('GET', '/api/series/' + testSeries.id, 400, {'Content-Type': 'application/json'}, body, function() {
-                            gh.api.seriesAPI.getSeries(testSeries.id, function(err, data) {
+                            gh.api.seriesAPI.getSeries(testSeries.id, null, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the event series can\'t be successfully retrieved');
                                 assert.ok(!data, 'Verify that no data returns when the event series can\'t be successfully retrieved');
 

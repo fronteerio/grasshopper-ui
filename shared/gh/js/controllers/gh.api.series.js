@@ -213,20 +213,30 @@ define(['exports'], function(exports) {
      * Get an event series
      *
      * @param  {Number}      serieId              The ID of the event series to retrieve
+     * @param  {Boolean}     [includeOrgUnits]    Whether the organisational units that this serie is a part of should be included in the response
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the event series
      */
-    var getSeries = exports.getSeries = function(serieId, callback) {
+    var getSeries = exports.getSeries = function(serieId, includeOrgUnits, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid series ID should be provided'});
+        } else if (includeOrgUnits && !_.isBoolean(includeOrgUnits)) {
+            return callback({'code': 400, 'msg': 'A valid includeOrgUnits should be provided'});
+        }
+
+        var data = {};
+
+        if (includeOrgUnits) {
+            data['includeOrgUnits'] = includeOrgUnits;
         }
 
         $.ajax({
             'url': '/api/series/' + serieId,
             'type': 'GET',
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
