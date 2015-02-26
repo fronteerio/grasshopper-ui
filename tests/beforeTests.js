@@ -156,7 +156,7 @@ module.exports = function(callback) {
         if (node.type === 'module') {
             groupId = parent.GroupId;
         }
-        OrgUnitAPI.createOrgUnit(ctx, appId, node.name.substring(0, 255), node.type, null, null, null, groupId, parentId, function(err, orgunit) {
+        OrgUnitAPI.createOrgUnit(ctx, appId, node.name.substring(0, 255), node.type, null, null, true, groupId, parentId, function(err, orgunit) {
             if (err) {
                 console.error("DisplayName: '%s'", node.name);
                 console.error("type: '%s'", node.type);
