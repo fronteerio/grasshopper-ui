@@ -574,8 +574,10 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                         }
                 }
 
-                // Fade the row colours
-                fadeRowColour($row);
+                // Fade the row colours if there were no errors
+                if (!hasError) {
+                    fadeRowColour($row);
+                }
             });
         };
 
@@ -627,8 +629,10 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     $row.data('eventid', data.id).attr('data-eventid', data.id).removeClass('gh-new-event-row');
                 }
 
-                // Fade the row colours
-                fadeRowColour($row);
+                // Fade the row colours if there were no errors
+                if (!hasError) {
+                    fadeRowColour($row);
+                }
 
                 // If we're done, execute the callback, otherwise call the function again with
                 // the next event to create
