@@ -70,7 +70,8 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/subheader-part.html',
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityModal) {
+                 'text!gh/partials/visibility-button.html',
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityButton, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
@@ -96,6 +97,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             _.declarePartial('subheader-part', subheaderPart);
             _.declarePartial('subheader-picker', subheaderPicker);
             _.declarePartial('subheader-pickers', subheaderPickers);
+            _.declarePartial('visibility-button', visibilityButton);
             _.declarePartial('visibility-modal', visibilityModal);
 
             callback();

@@ -10,6 +10,26 @@
     },
     "terms":
         {
+            "2013": [
+                {
+                    "name": "michaelmas",
+                    "label": "Michaelmas",
+                    "start": "2013-10-08",
+                    "end": "2013-12-06"
+                },
+                {
+                    "name": "lent",
+                    "label": "Lent",
+                    "start": "2014-01-14",
+                    "end": "2014-03-14"
+                },
+                {
+                    "name": "easter",
+                    "label": "Easter",
+                    "start": "2014-04-22",
+                    "end": "2014-06-13"
+                }
+            ],
             "2014": [
                 {
                     "name": "michaelmas",

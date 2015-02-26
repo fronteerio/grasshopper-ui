@@ -15,6 +15,11 @@
 
 define(['gh.core'], function(gh) {
 
+
+    /////////////
+    //  MODAL  //
+    /////////////
+
     /**
      * Highlight the selected visibility types
      *
@@ -26,18 +31,39 @@ define(['gh.core'], function(gh) {
     };
 
     /**
+     * Dismiss the 'visibility' modal dialog
+     *
+     * @private
+     */
+    var dismissVisibilityModal = function() {
+        $('#gh-visibility-modal').modal('hide');
+    };
+
+    /**
      * Render and show the 'visibility' modal dialog
      *
      * @private
      */
     var showVisibilityModal = function() {
-        // Render the modal
-        gh.utils.renderTemplate($('#gh-visibility-modal-template'), {'data': {
-            // TODO: make this dynamic once the functionality is available in the back-end
-            'visibility': 'draft'
-        }}, $('#gh-visibility-modal-container'));
-        // Show the modal
-        $('#gh-visibility-modal').modal();
+        // Cache the trigger
+        var $trigger = $(this);
+        // Retrieve the organisational unit ID
+        var orgUnitId = parseInt($.bbq.getState().part, 10);
+
+        // Retrieve the published status
+        gh.api.orgunitAPI.getOrgUnit(orgUnitId, false, function(err, data) {
+            if (err) {
+                return gh.utils.notification('Request error.', 'An error occurred while requesting the unit information.', 'error');
+            }
+
+            // Render the modal
+            gh.utils.renderTemplate($('#gh-visibility-modal-template'), {'data': {
+                'published': data.published
+            }}, $('#gh-visibility-modal-container'));
+
+            // Show the modal
+            $('#gh-visibility-modal').modal();
+        });
     };
 
     /**
@@ -46,8 +72,77 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var updateVisibilityStatus = function() {
-        // TODO: Incorporate when back-end functionality has been implemented
-        return false;
+        // Retrieve the organisational unit ID
+        var orgUnitId = parseInt($.bbq.getState().part, 10);
+        // Retrieve the published status
+        var published = $('#gh-visibility-modal').find('.gh-visibility-label.checked').data('published');
+
+        // Update the published status for the organisational unit
+        gh.api.orgunitAPI.updateOrgUnit(orgUnitId, null, null, null, null, null, null, published, function(err, orgUnit) {
+            if (err) {
+                return gh.utils.notification('Publishing failed.', 'The part could not be successfully published.', 'error');
+            }
+
+            // Only show a notification when the draft has been published
+            if (published) {
+                gh.utils.notification('"' + orgUnit.displayName + '" has been published.', 'Students and Lecturers can now access the information in the timetable.');
+            }
+
+            // Render the visibility button
+            renderVisibilityButton(orgUnit.id, orgUnit.published);
+
+            // Trigger a refresh
+            $(document).trigger('gh.triposdata.refresh');
+
+            // Hide the modal
+            return dismissVisibilityModal();
+        });
+    };
+
+
+    //////////////
+    //  BUTTON  //
+    //////////////
+
+    /**
+     * Initialise the visibility button
+     *
+     * @param  {Event}     ev           Standard jQuery event
+     * @param  {Object}    data         Data object containing the organisational unit
+     * @param  {Number}    data.part    The ID of the organisational unit
+     * @private
+     */
+    var setUpVisibilityButton = function(ev, data) {
+        if (data && data.part) {
+
+            // Retrieve the published status
+            gh.api.orgunitAPI.getOrgUnit(data.part, false, function(err, orgUnit) {
+                if (err) {
+                    return gh.utils.notification('Request error.', 'An error occurred while requesting the unit information.', 'error');
+                }
+
+                // Render the visibility button
+                renderVisibilityButton(orgUnit.id, orgUnit.published);
+            });
+        } else {
+            $('#gh-subheader-visibility').empty();
+        }
+    };
+
+    /**
+     * Render the visibility button
+     *
+     * @param  {Number}     id           The id of the organisational unit
+     * @param  {Boolean}    published    Whether or not the unit has been published
+     * @private
+     */
+    var renderVisibilityButton = function(id, published) {
+
+        // Render the visibility button
+        gh.utils.renderTemplate($('#gh-visibility-button-template'), {'data': {
+            'id': id,
+            'published': published
+        }}, $('#gh-subheader-visibility'));
     };
 
 
@@ -61,6 +156,8 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var addBinding = function() {
+        // Initialise the visibility button
+        $(document).on('gh.part.changed', setUpVisibilityButton);
         // Change the visibility mode
         $('body').on('change', '#gh-visibility-form input[type="radio"]', selectVisibilityType);
         // Update the visibility status
