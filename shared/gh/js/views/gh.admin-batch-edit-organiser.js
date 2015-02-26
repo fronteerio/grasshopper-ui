@@ -26,7 +26,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
         var batchSelection = [];
 
         // Loop over each item in the AutoSuggest field and create a basic user object
-        _.each($('#gh-batch-edit-header .as-selection-item'), function($user) {
+        _.each($('.gh-batch-event-organisers .as-selection-item'), function($user) {
             $user = $($user);
 
             batchSelection.push({
@@ -78,7 +78,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
             'searchObjProps': 'id, displayName',
             'selectedItemProp': 'displayName',
             'selectedValuesProp': 'id',
-            'startText': 'Lecturers',
+            'startText': 'Lecturers (0)',
             'usePlaceholder': true,
             'retrieveComplete': function(data) {
                 return data.results;
@@ -134,6 +134,9 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                     updateOrganiserField($row.find('.gh-event-organisers'));
                 });
 
+                // Update the lecture count in the placeholder
+                updateAutoSuggestPlaceholder();
+
                 // Let the batch edit know that updates happened
                 $(document).trigger('gh.batchedit.togglesubmit');
             },
@@ -166,10 +169,49 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                 // Remove the element from the AutoSuggest field
                 elem.remove();
 
+                // Update the lecture count in the placeholder
+                updateAutoSuggestPlaceholder();
+
                 // Let the batch edit know that updates happened
                 $(document).trigger('gh.batchedit.togglesubmit');
             }
         });
+    };
+
+    /**
+     * Update the AutoSuggest component placeholder text with 'Lecturers (x)' where `x` is the number
+     * of selected lecturers in the AutoSuggest component
+     *
+     * @private
+     */
+    var updateAutoSuggestPlaceholder = function() {
+        $('.gh-batch-event-organisers .as-original input').attr('placeholder', 'Lecturers (' + $('.gh-batch-event-organisers .as-selection-item').length + ')');
+    };
+
+    /**
+     * Close the AutoSuggest component by adding a class to it's parent that will hide all selected users from view
+     *
+     * @param  {Event}    ev    Standard jQuery event
+     * @private
+     */
+    var closeAutoSuggest = function(ev) {
+        // Only close the input if the focus was lost on an element outside of the organiser container
+        if (!$(ev.target).closest('.gh-batch-event-organisers').length || (ev.relatedTarget && !$(ev.relatedTarget).closest('.gh-batch-event-organisers').length)) {
+            $('.gh-batch-event-organisers').addClass('gh-batch-event-collapsed');
+            // Update the lecture count in the placeholder
+            updateAutoSuggestPlaceholder();
+        }
+    };
+
+    /**
+     * Open the AutoSuggest component by removing the class from it's parent that hides all selected users from view
+     *
+     * @private
+     */
+    var openAutoSuggest = function() {
+        $('.gh-batch-event-organisers').removeClass('gh-batch-event-collapsed');
+        // Update the lecture count in the placeholder
+        updateAutoSuggestPlaceholder();
     };
 
     /**
@@ -179,6 +221,12 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
      */
     var addBinding = function() {
         $(document).on('gh.batchorganiser.setup', setUpAutoSuggest);
+        // Close the AutoSuggest when the body is clicked
+        $(document).on('click', 'body', closeAutoSuggest);
+        // Close the AutoSuggest when the component loses focus
+        $(document).on('focusout', '.gh-batch-event-organisers .as-original input', closeAutoSuggest);
+        // Open the AutoSuggest when the component gains focus
+        $(document).on('focusin', '.gh-batch-event-organisers .as-original input', openAutoSuggest);
     };
 
     addBinding();
