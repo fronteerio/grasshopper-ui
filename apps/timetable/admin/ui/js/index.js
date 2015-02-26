@@ -124,8 +124,8 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                             'hash': '#tripos=' + subject.id + '&part=' + part.id,
                             'canManage': course.canManage,
                             'part': part,
-                            'isEditing': false, // TODO: Replace when locking is supported in the backend
-                            'isDraft': false // TODO: Replace when drafts are supported in the backend
+                            'isEditing': part.Group.LockedBy || false,
+                            'isDraft': part.published
                         });
                     });
                 });
@@ -145,7 +145,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                         'canManage': course.canManage,
                         'part': part,
                         'isEditing': part.Group.LockedBy || false,
-                        'isDraft': false // TODO: Replace when drafts are supported in the backend
+                        'isDraft': part.published
                     });
                 });
             }
@@ -368,6 +368,9 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
 
         // Change the view
         $(document).on('gh.admin.changeView', onViewChange);
+
+        // Refresh the tripos data
+        $(document).on('gh.triposdata.refresh', getTriposData);
     };
 
     /**

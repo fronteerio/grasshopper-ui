@@ -62,12 +62,18 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
-            return parseInt(data.selected, 10) === part.ParentId;
+            // Only add the parts that are published for the normal users
+            if (part.published || (!part.published && gh.data.me && gh.data.me.isAdmin)) {
+                return parseInt(data.selected, 10) === part.ParentId;
+            }
         });
 
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-subheader-part-template'), {
-            'data': parts
+            'data': {
+                'gh': gh,
+                'parts': parts
+            }
         }, $('#gh-subheader-part'));
 
         // Show the subheader part picker
@@ -150,11 +156,17 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $('#gh-subheader-part').val(state.part);
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
+
+            // Dispatch an event to update the visibility button
+            $(document).trigger('gh.part.changed', {'part': state.part});
         } else {
             // If there is no preselected part the part, module and series should be removed from the hash
             $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+
+            // Dispatch an event to update the visibility button
+            $(document).trigger('gh.part.changed');
         }
 
         state = $.bbq.getState() || {};
