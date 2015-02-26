@@ -424,6 +424,21 @@ ul.as-selections.loading {
     background-color: transparent !important;
 }
 
+.as-selections .as-original input {
+    background-color: #EEE;
+    border-top-color: #BEBEBE !important;
+}
+
+.as-selections .as-selection-item.blur,
+ul.as-selections li.as-selection-item {
+    background-color: #E7F8F0 !important;
+}
+
+.gh-batch-event-collapsed .as-selections .as-original input,
+.as-selections .as-original:first-child input {
+    background-color: #FFF;
+}
+
 .as-selections .as-selection-item {
     background-color: transparent !important;
     background-image: none !important;
