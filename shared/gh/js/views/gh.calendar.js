@@ -291,6 +291,13 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $('#gh-btn-calendar-export > div').toggle();
         // Set focus to the Subscribe button
         $('#gh-export-subscribe').focus();
+        // If the export panel is opened, disable all actions on the page
+        if ($('#gh-calendar-view').hasClass('gh-export-enabled')) {
+            disableEnableAll(true);
+        // If the export panel is closed, enable all actions on the page
+        } else {
+            disableEnableAll();
+        }
     };
 
     /**
@@ -317,6 +324,34 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     ////////////
     //  UTIL  //
     ////////////
+
+    /**
+     * Toggles each and every action in the UI to be disabled or enabled based on
+     * the parameter passed in to the function
+     *
+     * @param  {Boolean}    [disable]    Whether or not to disable all elements. Defaults to `false`
+     * @private
+     */
+    var disableEnableAll = function(disable) {
+        disable = disable || false;
+
+        // Disable input elements and fire off an event for Chosen to be able to adjust itself
+        $('button, input, select, textarea, .fc-event').attr('disabled', disable).trigger('chosen:updated.chosen');
+
+        if (disable) {
+            // Disable opening of popovers
+            $('#gh-calendar-container').off('click', '.fc-event', setUpEventPopover);
+        } else {
+            // Enable opening of popovers
+            $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
+        }
+
+        // Never disable the export buttons
+        $('#gh-btn-calendar-export').attr('disabled', false);
+        $('button, textarea', $('#gh-export-container')).attr('disabled', false);
+        // Never disable log out
+        $('button', $('#gh-signout-form')).attr('disabled', false);
+    };
 
     /**
      * Return the current view
@@ -493,6 +528,45 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         });
     };
 
+    /**
+     * Set up and show the event popover
+     *
+     * @private
+     */
+    var setUpEventPopover = function() {
+        var eventId = $(this).data('id');
+        var $trigger = $(this);
+        var $content = $('.popover[data-id="' + eventId + '"]');
+
+        // Wait until the current call stack cleared so we're sure
+        // all popovers are hidden before adding a new one
+        _.defer(function() {
+            var options = {
+                'container': 'body',
+                'content': $content.html(),
+                'global_close': true,
+                'html': true,
+                'placement': calculatePopoverPosition($trigger),
+                'title': '',
+                'onHidden': function() {
+                    $trigger.removeClass('highlighted');
+                },
+                'onShown': function() {
+                    $trigger.addClass('highlighted');
+
+                    // Hide the popover on resize
+                    hidePopoverOnResize($trigger);
+
+                    // Track the event details lookup in GA
+                    gh.utils.sendTrackingEvent('event', 'view', 'View event details', eventId);
+                }
+            };
+
+            $trigger.clickover(options);
+            $trigger.trigger('click');
+        });
+    };
+
 
     ///////////////
     //  BINDING  //
@@ -551,15 +625,15 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         $(window).on('resize', setCalendarHeight);
     };
 
-     /**
-      * Initialise FullCalendar on the page and bind event handlers for navigating it
-      *
-      * @param  {Event}       ev                         Standard event object
-      * @param  {Object}      calendarData               The data associated to the calendar to render
-      * @param  {Object[]}    calendarData.triposData    An Array of tripos data
-      * @param  {Object[]}    calendarData.events        An Array of events to add to the calendar on initialisation
-      * @private
-      */
+    /**
+     * Initialise FullCalendar on the page and bind event handlers for navigating it
+     *
+     * @param  {Event}       ev                         Standard event object
+     * @param  {Object}      calendarData               The data associated to the calendar to render
+     * @param  {Object[]}    calendarData.triposData    An Array of tripos data
+     * @param  {Object[]}    calendarData.events        An Array of events to add to the calendar on initialisation
+     * @private
+     */
     var setUpCalendar = function(ev, calendarData) {
         // Create an empty array if there are no events yet
         var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
@@ -601,39 +675,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         });
 
         // Show extra information for the event in a popover when it's clicked
-        $('#gh-calendar-container').on('click', '.fc-event', function() {
-            var eventId = $(this).data('id');
-            var $trigger = $(this);
-            var $content = $('.popover[data-id="' + eventId + '"]');
-
-            // Wait until the current call stack cleared so we're sure
-            // all popovers are hidden before adding a new one
-            _.defer(function() {
-                var options = {
-                    'container': 'body',
-                    'content': $content.html(),
-                    'global_close': true,
-                    'html': true,
-                    'placement': calculatePopoverPosition($trigger),
-                    'title': '',
-                    'onHidden': function() {
-                        $trigger.removeClass('highlighted');
-                    },
-                    'onShown': function() {
-                        $trigger.addClass('highlighted');
-
-                        // Hide the popover on resize
-                        hidePopoverOnResize($trigger);
-
-                        // Track the event details lookup in GA
-                        gh.utils.sendTrackingEvent('event', 'view', 'View event details', eventId);
-                    }
-                };
-
-                $trigger.clickover(options);
-                $trigger.trigger('click');
-            });
-        });
+        $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
 
         // Add binding to various elements
         addBinding();
