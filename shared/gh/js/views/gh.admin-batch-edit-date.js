@@ -88,7 +88,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             var dateWeek = gh.utils.getAcademicWeekNumber(startDate);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
-                $row.addClass('gh-event-deleted').find('.gh-event-delete').click();
+                $row.addClass('gh-event-deleted').find('.gh-event-delete button').click();
             }
         });
     };

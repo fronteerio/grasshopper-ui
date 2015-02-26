@@ -517,6 +517,13 @@
     white-space: nowrap;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.danger.gh-fade td,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
+    -webkit-transition: background-color 2s;
+       -moz-transition: background-color 2s;
+            transition: background-color 2s;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
     margin-bottom: -20px;
     margin-top: 0;
