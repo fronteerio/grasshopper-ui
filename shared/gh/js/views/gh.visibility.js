@@ -80,7 +80,7 @@ define(['gh.core'], function(gh) {
         // Update the published status for the organisational unit
         gh.api.orgunitAPI.updateOrgUnit(orgUnitId, null, null, null, null, null, null, published, function(err, orgUnit) {
             if (err) {
-                return gh.utils.notification('Update error.', 'An error occurred while updating the published status.', 'error');
+                return gh.utils.notification('Publishing failed.', 'The part could not be successfully published.', 'error');
             }
 
             // Only show a notification when the draft has been published
@@ -112,7 +112,7 @@ define(['gh.core'], function(gh) {
      * @param  {Number}    data.part    The ID of the organisational unit
      * @private
      */
-    var initialiseVisibilityButton = function(ev, data) {
+    var setUpVisibilityButton = function(ev, data) {
         if (data && data.part) {
 
             // Retrieve the published status
@@ -157,7 +157,7 @@ define(['gh.core'], function(gh) {
      */
     var addBinding = function() {
         // Initialise the visibility button
-        $(document).on('gh.part.changed', initialiseVisibilityButton);
+        $(document).on('gh.part.changed', setUpVisibilityButton);
         // Change the visibility mode
         $('body').on('change', '#gh-visibility-form input[type="radio"]', selectVisibilityType);
         // Update the visibility status
