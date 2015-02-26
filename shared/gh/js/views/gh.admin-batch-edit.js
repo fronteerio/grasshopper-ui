@@ -21,6 +21,26 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     ///////////////
 
     /**
+     * Fade the colourisation of a row over 2 seconds and remove the `gh-fade` class
+     * after the animation completes
+     *
+     * @param  {Object|String}    $row    jQuery object or selector of the row to fade
+     * @private
+     */
+    var fadeRowColour = function($row) {
+        // Make sure we're dealing with a jQuery object
+        $row = $($row);
+        // Set a timeout of 2 seconds before fading out the row colour
+        setTimeout(function() {
+            $row.addClass('gh-fade');
+            // Set a timeout of 2 seconds before removing the `gh-fade` animation class
+            setTimeout(function() {
+                $row.removeClass('danger active success gh-fade');
+            }, 2000);
+        }, 2000);
+    };
+
+    /**
      * Enable editing of the series title
      *
      * @private
@@ -511,16 +531,18 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                     hasError = true;
                 }
 
+                var $row = $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]');
+
                 if (updatedEvent.organisers) {
                     // Update the event organisers
                     eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
                         if (orgErr) {
                             hasError = true;
                             // Mark the row so it's visually obvious that the update failed
-                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                            $row.addClass('danger');
                         } else {
                             // Mark the row so it's visually obvious that the update was successful
-                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                            $row.removeClass('danger active').addClass('success');
                         }
 
                         // If we're done, execute the callback, otherwise call the function again with
@@ -536,10 +558,10 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                         if (evErr) {
                             hasError = true;
                             // Mark the row so it's visually obvious that the update failed
-                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').addClass('danger');
+                            $row.addClass('danger');
                         } else {
                             // Mark the row so it's visually obvious that the update was successful
-                            $('.gh-batch-edit-events-container tbody tr[data-eventid="' + updatedEvent.id + '"]').removeClass('danger active').addClass('success');
+                            $row.removeClass('danger active').addClass('success');
                         }
 
                         // If we're done, execute the callback, otherwise call the function again with
@@ -550,6 +572,11 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                         } else {
                             submitEventUpdate(updatedEventObjs[done], _callback);
                         }
+                }
+
+                // Fade the row colours if there were no errors
+                if (!hasError) {
+                    fadeRowColour($row);
                 }
             });
         };
@@ -589,17 +616,22 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             // Get the ID of the series this event is added to
             var seriesId = parseInt($.bbq.getState()['series'], 10);
             eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
+                var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
                     // Mark the row so it's visually obvious that the creation failed
-                    $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]').addClass('danger');
+                    $row.addClass('danger');
                 } else {
-                    var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                     // Mark the row so it's visually obvious that the creation was successful
                     $row.removeClass('danger active').addClass('success');
                     // Replace the temporary ID with the real one
                     $row.data('tempid', null).removeAttr('data-tempid');
                     $row.data('eventid', data.id).attr('data-eventid', data.id).removeClass('gh-new-event-row');
+                }
+
+                // Fade the row colours if there were no errors
+                if (!hasError) {
+                    fadeRowColour($row);
                 }
 
                 // If we're done, execute the callback, otherwise call the function again with
@@ -804,13 +836,15 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             createNewEvents(newEventObjs, function(newErr) {
                 // Delete events
                 deleteEvents(eventsToDelete, function(deleteErr) {
+                    // Re-enable all elements in the UI
+                    disableEnableAll(false);
+
                     if (updateErr || newErr || deleteErr) {
+                        // Show an error notification
                         return utils.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
                     }
                     // Hide the save button
                     toggleSubmit();
-                    // Re-enable all elements in the UI
-                    disableEnableAll(false);
                     // Show a success notification to the user
                     return utils.notification('Events updated.', 'The events where successfully updated.');
                 });
