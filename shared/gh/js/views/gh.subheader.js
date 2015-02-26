@@ -62,12 +62,18 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
-            return parseInt(data.selected, 10) === part.ParentId;
+            // Only add the parts that are published for the normal users
+            if (part.published || (!part.published && gh.data.me && gh.data.me.isAdmin)) {
+                return parseInt(data.selected, 10) === part.ParentId;
+            }
         });
 
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-subheader-part-template'), {
-            'data': parts
+            'data': {
+                'gh': gh,
+                'parts': parts
+            }
         }, $('#gh-subheader-part'));
 
         // Show the subheader part picker

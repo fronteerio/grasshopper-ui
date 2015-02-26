@@ -1,4 +1,4 @@
 <option value=""></option>
-<%_.each(data, function(part) { %>
+<%_.each(data.parts, function(part) { %>
     <option value="<%- part.id %>"><%- part.displayName %><% if(!part.published) { %> - Draft<% } %></option>
 <% }); %>
