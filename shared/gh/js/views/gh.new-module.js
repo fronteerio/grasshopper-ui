@@ -30,7 +30,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
         // Get the ID of the group that this new module belongs to
         var groupId = $(this).find('button[type="submit"]').data('groupid');
 
-        orgUnitAPI.createOrgUnit(appId, displayName, 'module', partId, groupId, null, function(err, module) {
+        orgUnitAPI.createOrgUnit(appId, displayName, 'module', partId, groupId, null, null, null,function(err, module) {
             // Show a success or failure notification
             if (err) {
                 return gh.utils.notification('Module not created.', 'The module could not be successfully created.', 'error');
