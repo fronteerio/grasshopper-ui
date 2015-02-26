@@ -376,11 +376,14 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var initIndex = function() {
-        addBinding();
-        renderHeader();
-
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {
+            // Add event handlers
+            addBinding();
+
+            // Render the header
+            renderHeader();
+
             // Only show the login form is local authentication is enabled
             if (gh.config.enableLocalAuth) {
 
@@ -390,7 +393,14 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 // Render the login form
                 renderLoginForm();
             }
+        } else if (gh.data.me && !gh.data.me.isAdmin) {
+            gh.utils.redirect().accessdenied();
         } else {
+            // Add event handlers
+            addBinding();
+
+            // Render the header
+            renderHeader();
 
             // Render the picker container
             renderPickers();

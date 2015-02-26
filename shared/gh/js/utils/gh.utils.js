@@ -312,6 +312,14 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
     var redirect = exports.redirect = function() {
 
         /**
+         * Redirect the current user to the 401 page. This can be used when the user requests a page or entity
+         * to which no access should be granted.
+         */
+        var accessdenied = function() {
+            window.location = '/accessdenied';
+        };
+
+        /**
          * Redirect the current user to the 404 page. This can be used when the user requests a page or entity
          * that cannot be found.
          */
@@ -328,6 +336,7 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
         };
 
         return {
+            'accessdenied': accessdenied,
             'notfound': notfound,
             'unavailable': unavailable
         };
