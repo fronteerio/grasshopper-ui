@@ -171,6 +171,10 @@
     background-color: #62326E;
 }
 
+.modal-header.gh-warning {
+    background-color: #D92751;
+}
+
 .modal-header button,
 .modal-header .modal-title {
     color: #FFF;
@@ -198,6 +202,25 @@
 
 #gh-new-series-form .form-group label {
     color: #8D8D8D;
+}
+
+
+/*****************/
+/* DELETE SERIES */
+/*****************/
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+    border-bottom-color: #CCC;
+    border-top-color: #CCC;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+    border-bottom-color: #CCC;
+}
+
+#gh-delete-series-modal small,
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p:first-child {
+    color: #6C6C6C;
 }
 
 
