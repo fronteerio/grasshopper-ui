@@ -630,7 +630,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .chosen-container .chosen-single span,
 .chosen-container .chosen-single b {
-    margin-top: 11px;
+    margin-top: 9px;
 }
 
 .chosen-container .chosen-single b {
@@ -661,7 +661,7 @@ tbody tr:last-child > td.fc-widget-content {
 .chosen-container .chosen-results {
     margin: 0 8px 0 0;
     max-height: 320px;
-    padding: 0 0 0 8px;
+    padding: 0 0 5px 8px;
 }
 
 .chosen-container .chosen-results li {
