@@ -19,6 +19,15 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
     var isBorrowedFrom = false;
 
     /**
+     * Remove the series from the current hash state
+     *
+     * @private
+     */
+    var removeSeriesFromState = function() {
+        $.bbq.removeState('series');
+    };
+
+    /**
      * Remove a series from the module
      *
      * @private
@@ -39,10 +48,8 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
 
-            // Refresh the modules list
-            $(document).trigger('gh.listview.refresh', {
-                'partId': parseInt($.bbq.getState().part, 10)
-            });
+            // Remove the series from the state
+            removeSeriesFromState();
 
             // Show a success notification
             gh.utils.notification('Series removed.', 'The series was successfully removed.');
@@ -68,10 +75,8 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
 
-            // Refresh the modules list
-            $(document).trigger('gh.listview.refresh', {
-                'partId': parseInt($.bbq.getState().part, 10)
-            });
+            // Remove the series from the state
+            removeSeriesFromState();
 
             // Show a success notification
             gh.utils.notification('Series deleted.', 'The series was successfully deleted.');
