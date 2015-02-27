@@ -328,7 +328,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the `getSeries` functionality
     QUnit.asyncTest('getSeries', function(assert) {
-        expect(7);
+        expect(8);
 
         var testSeries = testAPI.getRandomSeries();
 
@@ -350,21 +350,26 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.seriesAPI.getSeries('invalid_series_id', null, function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
 
-                // Verify that event series can be successfully retrieved
-                // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-                var body = {'code': 200, 'msg': 'OK'};
-                gh.utils.mockRequest('GET', '/api/series/' + testSeries.id, 200, {'Content-Type': 'application/json'}, body, function() {
-                    gh.api.seriesAPI.getSeries(testSeries.id, null, function(err, data) {
-                        assert.ok(!err, 'Verify that event series can be successfully retrieved');
+                // Verify that an error is thrown when an invalid includeOrgUnits was provided
+                gh.api.seriesAPI.getSeries(testSeries.id, 'invalid_includeOrgUnits', function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid includeOrgUnits was provided');
 
-                        // Verify that the error is handled
-                        body = {'code': 400, 'msg': 'Bad Request'};
-                        gh.utils.mockRequest('GET', '/api/series/' + testSeries.id, 400, {'Content-Type': 'application/json'}, body, function() {
-                            gh.api.seriesAPI.getSeries(testSeries.id, null, function(err, data) {
-                                assert.ok(err, 'Verify that the error is handled when the event series can\'t be successfully retrieved');
-                                assert.ok(!data, 'Verify that no data returns when the event series can\'t be successfully retrieved');
+                    // Verify that event series can be successfully retrieved
+                    // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
+                    var body = {'code': 200, 'msg': 'OK'};
+                    gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '?includeOrgUnits=true', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.seriesAPI.getSeries(testSeries.id, true, function(err, data) {
+                            assert.ok(!err, 'Verify that event series can be successfully retrieved');
 
-                                QUnit.start();
+                            // Verify that the error is handled
+                            body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.utils.mockRequest('GET', '/api/series/' + testSeries.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.seriesAPI.getSeries(testSeries.id, null, function(err, data) {
+                                    assert.ok(err, 'Verify that the error is handled when the event series can\'t be successfully retrieved');
+                                    assert.ok(!data, 'Verify that no data returns when the event series can\'t be successfully retrieved');
+
+                                    QUnit.start();
+                                });
                             });
                         });
                     });
