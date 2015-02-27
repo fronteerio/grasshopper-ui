@@ -10,39 +10,46 @@
             </div>
             <div class="modal-body">
                 <form id="gh-visibility-form" class="form" role="form">
-                    <div class="col-xs-4 col-xs-offset-2 text-center">
+                    <div class="col-xs-6 col-sm-5 text-center">
                         <label for="gh-visibility-draft" class="gh-visibility-label <% if (!data.published) { %>checked<% } %>" data-published="false">
                             <div class="gh-visibility-icon-container">
                                 <i class="fa fa-eye-slash"></i>
                                 <div class="visibility-type">Draft</div>
                                 <i class="fa fa-check"></i>
                                 <input type="radio" id="gh-visibility-draft" name="gh-visibility-group" class="pull-left" <% if (!data.published) { %>checked="checked"<% } %> tabindex="0"/>
+                                <small>
+                                    <p>Part not visible to students, and events can not be added to personal calendars.</p>
+                                </small>
                             </div>
-                            <small>
-                                <p>Events are hidden and students will see a message highlighting what is going on and asked to check again later.</p>
-                            </small>
                         </label>
                     </div>
-                    <div class="col-xs-4 text-center">
+                    <div id="gh-visibility-divider" class="hidden-xs col-sm-2">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                    <div class="col-xs-6 col-sm-5 text-center">
                         <label for="gh-visibility-published" class="gh-visibility-label <% if (data.published) { %>checked<% } %>" data-published="true">
                             <div class="gh-visibility-icon-container">
                                 <i class="fa fa-eye"></i>
-                                <div class="visibility-type">Publish</div>
+                                <div class="visibility-type">Published</div>
                                 <i class="fa fa-check"></i>
                                 <input type="radio" id="gh-visibility-published" name="gh-visibility-group" class="pull-left" <% if (data.published) { %>checked="checked"<% } %> tabindex="0"/>
+                                <small>
+                                    <p>Part visible to students, and events can be added to personal calendars.</p>
+                                </small>
                             </div>
-                            <small>
-                                <p>Available to everyone</p>
-                                <p class="warning">Once clicking "Save" this can <strong>not</strong> be unpublished</p>
-                            </small>
                         </label>
                     </div>
                     <div class="clearfix"></div>
+                    <div id="gh-visibility-publish-warning" class="col-sm-10 col-sm-offset-1">
+                        <p class="warning">Once clicking &quot;Save&quot;, this <strong class="gh-warning-text">can not be unpublished</strong>.</p>
+                        <p>The data however remains editable after publishing, so <strong>updates can be made</strong></p>
+                    </div>
+                    <div class="col-sm-1 hidden-xs"></div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
-                <button type="button" id="gh-visibility-save" class="btn btn-default pull-right">Save</button>
+                <button type="button" disabled="true" id="gh-visibility-save" class="btn btn-default pull-right">Save</button>
             </div>
         </div>
     </div>

@@ -21,13 +21,17 @@ define(['gh.core'], function(gh) {
     /////////////
 
     /**
-     * Highlight the selected visibility types
+     * Highlight the selected visibility types and toggle the warning message and submit button
      *
      * @private
      */
     var selectVisibilityType = function() {
         $('.gh-visibility-label').removeClass('checked');
         $(this).parents('label').addClass('checked');
+        // Toggle the warning message
+        $('#gh-visibility-publish-warning').toggleClass('open');
+        // Toggle the submit button
+        $('#gh-visibility-save').attr('disabled', !$('#gh-visibility-published').is(':checked'));
     };
 
     /**
