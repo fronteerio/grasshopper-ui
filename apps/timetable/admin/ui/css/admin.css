@@ -70,6 +70,10 @@
 /* LAYOUT */
 /**********/
 
+#gh-right-container #gh-subheader form {
+    margin-left: 60px;
+}
+
 #gh-main {
     margin-bottom: 0;
 }
@@ -230,14 +234,23 @@
     margin-right: 4px;
 }
 
+.gh-home,
 .gh-visibility {
     display: block;
-    font-size: 16px;
-    margin-top: -20px;
     position: absolute;
-    right: 43px;
     text-decoration: none;
     top: 50%;
+}
+
+.gh-home {
+    font-size: 25px;
+    margin-top: -20px;
+}
+
+.gh-visibility {
+    font-size: 16px;
+    margin-top: -20px;
+    right: 43px;
 }
 
 .gh-visibility:hover {

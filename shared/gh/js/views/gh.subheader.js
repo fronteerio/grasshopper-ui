@@ -185,6 +185,15 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         }
     };
 
+    /**
+     * Return to the home page
+     *
+     * @private
+     */
+    var goHome = function() {
+        $.bbq.removeState();
+    };
+
 
     /////////////
     // BINDING //
@@ -206,6 +215,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             // Run the hashchange logic to put the right selections in place
             handleHashChange();
         });
+
+        $('body').on('click', '.gh-home', goHome);
     };
 
     addBinding();
