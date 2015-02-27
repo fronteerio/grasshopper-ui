@@ -889,10 +889,10 @@
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
+    border: 3px solid;
     -webkit-border-radius: 2px;
        -moz-border-radius: 2px;
             border-radius: 2px;
-    border: 3px solid;
     margin-bottom: 10px;
     padding: 0 12px;
     position: relative;
@@ -920,8 +920,8 @@
 }
 
 #gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
-    margin: 0 auto;
     display: block;
+    margin: 0 auto;
     width: 20px;
 }
 
