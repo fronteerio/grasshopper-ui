@@ -19,10 +19,6 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var components = null;
     var hasChanges = false;
 
-    // Cache the original dates
-    var originalStartDate = null;
-    var originalEndDate = null;
-
     var _term = null;
 
 
@@ -183,13 +179,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      */
     var showPopover = function(ev, trigger) {
 
-        // Cache the original start date
-        originalStartDate = $(trigger).data('start');
-        originalEndDate = $(trigger).data('end');
-
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(originalStartDate).utc().format('YYYY-MM-DD')), true);
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment($(trigger).attr('data-start')).utc().format('YYYY-MM-DD')), true);
         if (_term) {
             numWeeks = gh.utils.getWeeksInTerm(_term);
         }
@@ -279,25 +271,29 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var setComponents = function() {
+        // Retrieve the origan start and end date for the event
+        var startDate = gh.utils.convertUnixDatetoISODate($trigger.attr('data-start'));
+        var endDate = gh.utils.convertUnixDatetoISODate($trigger.attr('data-end'));
+
         // Set the datepicker value
-        var calendarDate = moment(originalStartDate).utc().format('YYYY-MM-DD');
+        var calendarDate = moment(startDate).utc().format('YYYY-MM-DD');
         setDatePicker(calendarDate);
 
         // Set the week value
-        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(originalStartDate).utc().format('YYYY-MM-DD')));
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
         $('.popover #gh-module-week').val(week);
 
         // Set the day value
-        var day = moment(originalStartDate).day();
+        var day = moment(startDate).day();
         $('.popover #gh-module-day').val(day);
 
         // Set the start time values
-        var startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(originalStartDate));
+        startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(startDate));
         $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
         $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
 
         // Set the end time values
-        var endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(originalEndDate));
+        endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(endDate));
         $('.popover #gh-module-to-hour').val(moment(endDate).utc().format('HH'));
         $('.popover #gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
     };
