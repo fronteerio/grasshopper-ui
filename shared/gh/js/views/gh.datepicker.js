@@ -16,12 +16,15 @@
 define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, moment) {
 
     var $trigger = null;
+    var components = null;
     var hasChanges = false;
 
+    var _term = null;
 
-    /////////////////////
-    //  DATA HANDLING  //
-    /////////////////////
+
+    /////////////////
+    //  UTILITIES  //
+    /////////////////
 
     /**
      * Apply the date change
@@ -29,24 +32,21 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var applyDateChange = function() {
-        // Get the form values
-        var entries = getFormValues();
 
-        // Generate the start and end dates
-        var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).utc().format();
-        var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
+        // Retrieve the entered dates
+        var dates = getFullDates();
 
         // Render the content
         var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
             'data': {
-                'start': startDate,
-                'end': endDate
+                'start': dates.start,
+                'end': dates.end
             },
             'utils': gh.utils
         });
 
         // Update the trigger
-        $trigger.attr('data-start', startDate).attr('data-end', endDate).html(content);
+        $trigger.attr('data-start', dates.start).attr('data-end', dates.end).html(content);
 
         // Close the popover window
         dismissPopover();
@@ -64,6 +64,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var date = $('.popover #gh-datepicker').datepicker('getDate');
 
         // Retrieve the form values
+        var week = parseInt($('#gh-edit-dates-form #gh-module-week').val(), 10);
+        var day = parseInt($('#gh-edit-dates-form #gh-module-day').val(), 10);
         var startHour = parseInt($('#gh-edit-dates-form #gh-module-from-hour').val(), 10);
         var startMinutes = parseInt($('#gh-edit-dates-form #gh-module-from-minutes').val(), 10);
         var endHour = parseInt($('#gh-edit-dates-form #gh-module-to-hour').val(), 10);
@@ -71,10 +73,33 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         return {
             'date': date,
+            'week': week,
+            'day': day,
             'startHour': startHour,
             'startMinutes': startMinutes,
             'endHour': endHour,
             'endMinutes': endMinutes
+        };
+    };
+
+    /**
+     * Return the fully constructed date based on the entries
+     *
+     * @return  {Object}    Object containing the full start- and end dates
+     * @private
+     */
+    var getFullDates = function() {
+        // Retrieve the entered values
+        var entries = getFormValues();
+
+        // Generate the start and end dates
+        var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).utc().format();
+        var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
+
+        // Return the full dates
+        return {
+            'start': startDate,
+            'end': endDate
         };
     };
 
@@ -108,50 +133,6 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             hasChanges = true;
             $('#gh-edit-dates-apply').removeAttr('disabled');
         }
-    };
-
-
-    ///////////////////
-    //  DATE PICKER  //
-    ///////////////////
-
-    /**
-     * Render the date picker
-     *
-     * @private
-     */
-    var renderDatePicker = function() {
-        $('.popover #gh-datepicker').datepicker({
-            'dateFormat': "yy-mm-dd",
-            'dayNamesMin': ['S','M','T','W','T','F','S'],
-            'firstDay': 4,
-            'nextText': '<i class="fa fa-chevron-right"></i>',
-            'prevText': '<i class="fa fa-chevron-left"></i>',
-            'showOtherMonths': true,
-            'selectOtherMonths': true,
-            'onSelect': validateEntry
-        });
-    };
-
-    /**
-     * Set the original date and time
-     *
-     * @private
-     */
-    var setCalendarDate = function() {
-        // Set the current date
-        var dayValue = moment($trigger.attr('data-start')).utc().format('YYYY-MM-DD');
-        $('.popover #gh-datepicker').datepicker('setDate', dayValue);
-
-        // Set the correct select box values
-        var startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-start')));
-        var endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT($trigger.attr('data-end')));
-
-        $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
-        $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
-
-        $('.popover #gh-module-to-hour').val(moment(endDate).utc().format('HH'));
-        $('.popover #gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
     };
 
 
@@ -198,10 +179,18 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      */
     var showPopover = function(ev, trigger) {
 
+        // Calculate the number of weeks in a term based on the date
+        var numWeeks = 0;
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment($(trigger).attr('data-start')).utc().format('YYYY-MM-DD')), true);
+        if (_term) {
+            numWeeks = gh.utils.getWeeksInTerm(_term);
+        }
+
         // Render the popover template
         var content = gh.utils.renderTemplate($('#gh-datepicker-popover-template'), {
             'data': {
                 'gh': gh,
+                'numWeeks': numWeeks,
                 'interval': {
                     'hours': 1,
                     'minutes': 15
@@ -225,14 +214,212 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                     // Cache the trigger
                     $trigger = $(trigger).closest('tr .gh-event-date');
 
-                    renderDatePicker();
-                    setCalendarDate();
+                    // Cache the delegating components
+                    components = [
+                        $('#gh-datepicker'),
+                        $('#gh-module-week'),
+                        $('#gh-module-day')
+                    ];
+
+                    initialiseDatePicker();
+                    setComponents();
 
                     // Set the focus on current day of the calendar
                     $('.popover .ui-state-active').focus();
                 }
             });
             $trigger.trigger('click');
+        });
+    };
+
+
+    ///////////////////
+    //  DATE PICKER  //
+    ///////////////////
+
+    /**
+     * Initialise the date picker
+     *
+     * @private
+     */
+    var initialiseDatePicker = function() {
+        $('.popover #gh-datepicker').datepicker({
+            'dateFormat': "yy-mm-dd",
+            'dayNamesMin': ['S','M','T','W','T','F','S'],
+            'firstDay': 4,
+            'nextText': '<i class="fa fa-chevron-right"></i>',
+            'prevText': '<i class="fa fa-chevron-left"></i>',
+            'showOtherMonths': true,
+            'selectOtherMonths': true,
+            'onSelect': onDatepickerChange
+        });
+    };
+
+    /**
+     * Navigate to a specific date in the calendar
+     *
+     * @param  {String}    date    The date that needs to be displayed in the calendar
+     * @private
+     */
+    var setDatePicker = function(date) {
+        $('.popover #gh-datepicker').datepicker('setDate', date);
+    };
+
+    /**
+     * Set the original date and time values for the components
+     *
+     * @private
+     */
+    var setComponents = function() {
+        // Retrieve the origan start and end date for the event
+        var startDate = gh.utils.convertUnixDatetoISODate($trigger.attr('data-start'));
+        var endDate = gh.utils.convertUnixDatetoISODate($trigger.attr('data-end'));
+
+        // Set the datepicker value
+        var calendarDate = moment(startDate).utc().format('YYYY-MM-DD');
+        setDatePicker(calendarDate);
+
+        // Set the week value
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
+        $('.popover #gh-module-week').val(week);
+
+        // Set the day value
+        var day = moment(startDate).day();
+        $('.popover #gh-module-day').val(day);
+
+        // Set the start time values
+        startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(startDate));
+        $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
+        $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
+
+        // Set the end time values
+        endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(endDate));
+        $('.popover #gh-module-to-hour').val(moment(endDate).utc().format('HH'));
+        $('.popover #gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
+    };
+
+    /**
+     * Function that is executed when the datepicker value was changed
+     *
+     * @private
+     */
+    var onDatepickerChange = function() {
+        updateComponents('#gh-datepicker');
+        validateEntry();
+    };
+
+
+    ////////////////////
+    //  FORM CHANGES  //
+    ////////////////////
+
+    /**
+     * Function that is executed when the week has been changed
+     *
+     * @private
+     */
+    var onWeekChange = function() {
+        updateComponents('#gh-module-week');
+        validateEntry();
+    };
+
+    /**
+     * Function that is exectued when the day has been changed
+     *
+     * @private
+     */
+    var onDayChange = function() {
+        updateComponents('#gh-module-day');
+        validateEntry();
+    };
+
+    /**
+     * Update the date components
+     *
+     * @param  {String}    trigger    The ID of the component that invoked the change
+     * @private
+     */
+    var updateComponents = function(trigger) {
+
+        // Collect the component dates
+        var dates = getFullDates();
+
+        // Re calculate the date based on the selected week
+        if (trigger === '#gh-module-week') {
+
+            // Retrieve the chosen week
+            var weekVal = parseInt($('#gh-module-week').val(), 10);
+            if (weekVal) {
+
+                // Retrieve the term
+                var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dates.start).utc().format('YYYY-MM-DD')), true);
+                if (term) {
+                    _term = term;
+
+                    // Jump to the start of the term if the first week was chosen
+                    if (weekVal === 1) {
+                        setDatePicker(moment(_term.start).utc().format('YYYY-MM-DD'));
+                    } else {
+
+                        // Calculate the offset
+                        var offset = moment(_term.start).day();
+
+                        // Calculate the start date of the first full week
+                        var startDate = moment(_term.start).add({'days': offset});
+
+                        // Change the date picker
+                        setDatePicker(moment(startDate).add({'weeks': (weekVal - 2)}).utc().format('YYYY-MM-DD'));
+                    }
+                } else {
+                    var dayNumber = 2;
+                    if (weekVal !== 1) {
+                        dayNumber = 4;
+                        weekVal -= 1;
+                    }
+                    setDatePicker(moment(gh.utils.getDateByWeekAndDay(_term.name, weekVal, dayNumber)).utc().format('YYYY-MM-DD'));
+                }
+            }
+
+        // Recalculate the date based on the selected day
+        } else if (trigger === '#gh-module-day') {
+
+            // Retrieve the current day
+            var currentDay = moment(dates.start).format('E');
+
+            // Calculate the start of the week
+            var dayOffset = -3;
+            if (currentDay > 3) {
+                dayOffset = 4;
+            }
+            dayOffset = currentDay - dayOffset;
+
+            var weekStart = moment(dates.start).add({'hours': 1}).subtract({'days': dayOffset}).utc().format('YYYY-MM-DD');
+
+            // Retrieve the selected day value
+            var dayVal = parseInt($('#gh-module-day option:selected').attr('data-day'), 10);
+
+            // Calculate the new date
+            setDatePicker(moment(weekStart).add({'days': dayVal, 'hours': 1}).utc().format('YYYY-MM-DD'));
+        }
+
+        // Refetch the dates
+        dates = getFullDates();
+
+        // Update all the components except the trigger
+        _.each(components, function(component) {
+            if ($(component).selector !== trigger) {
+
+                // Update the week
+                if ($(component).selector === '#gh-module-week') {
+                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(dates.start).utc().format('YYYY-MM-DD')), true);
+                    $(component).val(week);
+
+                // Update the day
+                } else if ($(component).selector === '#gh-module-day') {
+                    var day = moment(dates.start).day();
+                    $(component).val(day);
+                }
+            }
         });
     };
 
@@ -269,6 +456,10 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         // Utilities
         $('body').on('change', '#gh-edit-dates-form select', validateEntry);
         $('body').click(dismissPopover);
+
+        // Week change
+        $('body').on('change', '#gh-module-week', onWeekChange);
+        $('body').on('change', '#gh-module-day', onDayChange);
 
         // Setup
         $(document).on('gh.datepicker.show', showPopover);

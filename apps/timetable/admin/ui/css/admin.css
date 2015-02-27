@@ -70,6 +70,10 @@
 /* LAYOUT */
 /**********/
 
+#gh-right-container #gh-subheader form {
+    margin-left: 60px;
+}
+
 #gh-main {
     margin-bottom: 0;
 }
@@ -230,14 +234,23 @@
     margin-right: 4px;
 }
 
+.gh-home,
 .gh-visibility {
     display: block;
-    font-size: 16px;
-    margin-top: -20px;
     position: absolute;
-    right: 43px;
     text-decoration: none;
     top: 50%;
+}
+
+.gh-home {
+    font-size: 25px;
+    margin-top: -20px;
+}
+
+.gh-visibility {
+    font-size: 16px;
+    margin-top: -20px;
+    right: 43px;
 }
 
 .gh-visibility:hover {
@@ -720,11 +733,22 @@
     line-height: 16px;
 }
 
+.gh-event-description {
+    max-width: 220px !important;
+    min-width: 175px !important;
+    text-overflow: ellipsis;
+}
+
+.gh-event-date {
+    max-width: 250px !important;
+    min-width: 210px !important;
+}
+
 .gh-event-display-date {
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
-    max-width: 150px;
+    max-width: 170px;
     text-overflow: ellipsis;
 }
 
@@ -853,7 +877,7 @@
     text-align: right;
 }
 
-#gh-edit-dates #gh-edit-dates-form select.form-control {
+#gh-edit-dates #gh-edit-dates-form select.gh-select-time {
     margin-left: 5px;
     width: 50px;
 }
