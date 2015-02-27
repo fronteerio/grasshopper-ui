@@ -416,11 +416,22 @@
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
     background-color: #EEE;
     border-color: #EEE;
+    color: #8D8D8D;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container .visibility-type,
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye-slash,
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye,
+#gh-visibility-modal #gh-visibility-form label.checked small {
     color: #333;
 }
 
-#gh-visibility-modal #gh-visibility-form label.checked small {
-    color: #333;
+#gh-visibility-modal #gh-visibility-form label small p {
+    border-top-color: #BBB;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked small p {
+    border-top-color: #333;
 }
 
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container {
@@ -432,8 +443,13 @@
     color: #62326E;
 }
 
-#gh-visibility-modal #gh-visibility-form label small p.warning {
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
+    color: #939393;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning {
     background-color: #E0E6E4;
+    color: #555;
 }
 
 
