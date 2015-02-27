@@ -33,7 +33,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
         gh.api.orgunitAPI.deleteOrgUnitSeries(moduleId, seriesId, function(err) {
             if (err) {
                 // Show a failure notification
-                gh.utils.notification('Removing series failed.', 'An error occurred while removing the series.', 'error');
+                return gh.utils.notification('Removing series failed.', 'An error occurred while removing the series.', 'error');
             }
 
             // Hide the modal
@@ -62,7 +62,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
         gh.api.seriesAPI.deleteSeries(seriesId, function(err) {
             if (err) {
                 // Show a failure notification
-                gh.utils.notification('Deleting series failed.', 'An error occurred while deleting the series.', 'error');
+                return gh.utils.notification('Deleting series failed.', 'An error occurred while deleting the series.', 'error');
             }
 
             // Hide the modal
@@ -81,9 +81,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
     /**
      * Retrieve data for organisational units linked to a series through having borrowed the series
      *
-     * @param  {Object}      series      The series to get the associated modules' data for
-     * @param  {Function}    callback    Standard callback function
-     * @param  {Object}      series      The modified series object with a `part` and `tripos` data object on each organisational unit
+     * @param  {Object}      series             The series to get the associated modules' data for
+     * @param  {Function}    callback           Standard callback function
+     * @param  {Object}      callback.series    The modified series object with a `part` and `tripos` data object on each organisational unit
      * @private
      */
     var getModuleData = function(series, callback) {
@@ -164,19 +164,14 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @private
      */
     var getIsBorrowedTo = function(series) {
-        var isBorrowedTo = false;
-
-        if (series.OrgUnits.length > 1) {
-            isBorrowedTo = true;
-        }
-
-        return isBorrowedTo;
+        return (series.OrgUnits.length > 1);
     };
 
     /**
      * Return whether or not the series is borrowed from another module
      *
      * @param  {Object}     series     The series to determine was borrowed or not
+     * @param  {Object}     module     The module in which the series is found
      * @return {Boolean}               Return `true` if the series was borrowed from another module, `false` if not
      * @private
      */

@@ -223,7 +223,7 @@ define(['exports'], function(exports) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(serieId)) {
             return callback({'code': 400, 'msg': 'A valid series ID should be provided'});
-        } else if (includeOrgUnits && !_.isBoolean(includeOrgUnits)) {
+        } else if (!_.isNull(includeOrgUnits) && !_.isBoolean(includeOrgUnits)) {
             return callback({'code': 400, 'msg': 'A valid includeOrgUnits should be provided'});
         }
 
