@@ -35,6 +35,13 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
                 utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
             }
 
+            // Check which series are borrowed
+            _.each(modules.results, function(module) {
+                _.each(module.Series, function(serie) {
+                    serie.borrowed = (serie.GroupId !== module.GroupId);
+                });
+            });
+
             // Sort the data before displaying it
             modules.results.sort(utils.sortByDisplayName);
             $.each(modules.results, function(i, module) {
