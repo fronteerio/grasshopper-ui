@@ -71,7 +71,7 @@
 /**********/
 
 #gh-right-container #gh-subheader form {
-    margin-left: 50px;
+    margin-left: 60px;
 }
 
 #gh-main {
@@ -243,13 +243,8 @@
 }
 
 .gh-home {
-    border: none !important;
     font-size: 25px;
     margin-top: -20px;
-}
-
-.gh-home:hover {
-    background: none !important;
 }
 
 .gh-visibility {
