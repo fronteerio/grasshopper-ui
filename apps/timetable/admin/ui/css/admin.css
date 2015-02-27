@@ -841,23 +841,13 @@
     cursor: pointer;
 }
 
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
-    -webkit-border-radius: 2px;
-       -moz-border-radius: 2px;
-            border-radius: 2px;
-    border: 3px solid;
-    height: 154px;
-    margin-bottom: 10px;
-    position: relative;
-    width: 154px;
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container input {
+    margin-top: -100px;
+    visibility: hidden;
 }
 
 #gh-visibility-modal #gh-visibility-form label:not(.checked) .gh-visibility-icon-container i.fa-check {
     display: none;
-}
-
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container input {
-    visibility: hidden;
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-eye,
@@ -867,11 +857,21 @@
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
-    bottom: 6px;
     font-size: 30px;
     font-weight: 600;
     position: absolute;
     right: 8px;
+    top: 6px;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+            border-radius: 2px;
+    border: 3px solid;
+    margin-bottom: 10px;
+    padding: 0 12px;
+    position: relative;
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container .visibility-type {
@@ -883,20 +883,53 @@
     font-weight: 400;
 }
 
-#gh-visibility-modal #gh-visibility-form label small p.warning {
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
-            border-radius: 3px;
-    font-size: 14px;
+#gh-visibility-modal #gh-visibility-form label small p {
+    border-top-style: solid;
+    border-top-width: 1px;
+    margin-top: 7px;
+    padding-top: 10px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider {
+    font-size: 55px;
+    padding: 77px 0 0;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
+    margin: 0 auto;
+    display: block;
+    width: 20px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
     font-weight: 400;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 55px;
+    text-align: center;
+    -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+       -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+            transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning.open {
+    max-height: 500px;
+    opacity: 1;
+    padding: 15px 55px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning p {
+    line-height: 1.8;
     margin: 0;
-    padding: 5px 10px;
 }
 
-#gh-visibility-modal #gh-visibility-form label:not(.checked) small p.warning {
-    display: none;
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning strong {
+    font-weight: 600;
 }
-
 
 /***************/
 /* AUTOSUGGEST */
