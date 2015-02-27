@@ -119,8 +119,9 @@
 
         <!-- Subheader picker select elements -->
         <script id="gh-subheader-pickers-template" type="text/template">
-            <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-visibility pull-right"><i class="fa fa-eye-slash"></i> Visibility</button>
+            <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-home pull-left"><i class="fa fa-home"></i></button>
             <%= _.partial('subheader-pickers') %>
+            <div id="gh-subheader-visibility"><!-- --></div>
         </script>
 
         <!-- Editable parts -->
@@ -209,6 +210,11 @@
         <!-- Autosuggest template -->
         <script id="gh-organiser-template" type="text/template">
             <input class="gh-organiser-autosuggest" type="text" placeholder="Lecturers">
+        </script>
+
+        <!-- Visibility template -->
+        <script id="gh-visibility-button-template" type="text/template">
+            <%= _.partial('visibility-button', {'data': data}) %>
         </script>
 
         <div id="gh-modal"><!-- --></div>

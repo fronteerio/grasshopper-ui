@@ -618,6 +618,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .chosen-container .chosen-single {
     height: 45px !important;
+    padding-top: 2px;
 }
 
 .chosen-container .chosen-single,

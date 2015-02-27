@@ -90,11 +90,13 @@ define(['exports'], function(exports) {
      * @param  {Number}      [parentId]             The ID of the parent organisational unit
      * @param  {Number}      [groupId]              The ID of the group that can manage the organisational unit
      * @param  {String}      [description]          The description of the organisational unit
+     * @param  {Object}      [metadata]             The metadata of the organisational unit
+     * @param  {String}      [published]            The published status of the organisational unit.
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the new organisational unit in an app
      */
-    var createOrgUnit = exports.createOrgUnit = function(appId, displayName, type, parentId, groupId, description, callback) {
+    var createOrgUnit = exports.createOrgUnit = function(appId, displayName, type, parentId, groupId, description, metadata, published, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(appId)) {
@@ -109,6 +111,10 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid groupId should be provided'});
         } else if (description && !_.isString(description)) {
             return callback({'code': 400, 'msg': 'A valid description should be provided'});
+        } else if (metadata && !_.isObject(metadata)) {
+            return callback({'code': 400, 'msg': 'A valid value for metadata should be provided'});
+        } else if (!_.isNull(published) && !_.isBoolean(published)) {
+            return callback({'code': 400, 'msg': 'A valid value for published should be provided'});
         }
 
         // Set a default callback function in case no callback function has been provided
@@ -130,6 +136,12 @@ define(['exports'], function(exports) {
         }
         if (description) {
             data['description'] = description;
+        }
+        if (metadata) {
+            data['metadata'] = metadata;
+        }
+        if (!_.isNull(published)) {
+            data['published'] = published;
         }
 
         $.ajax({
@@ -577,11 +589,13 @@ define(['exports'], function(exports) {
      * @param  {Number}      [groupId]              The updated ID of the group that can manage the organisational unit
      * @param  {Number}      [parentId]             The updated ID of the parent organisational unit
      * @param  {String}      [type]                 The updated type of the organisational unit. e.g., `tripos`, `part`
+     * @param  {Object}      [metadata]             The metadata of the organisational unit
+     * @param  {String}      [published]            The published status of the organisational unit.
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the updated organisational unit
      */
-    var updateOrgUnit = exports.updateOrgUnit = function(orgUnitId, description, displayName, groupId, parentId, type, callback) {
+    var updateOrgUnit = exports.updateOrgUnit = function(orgUnitId, description, displayName, groupId, parentId, type, metadata, published, callback) {
         if (callback && !_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
@@ -596,6 +610,10 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid parentId should be provided'});
         } else if (type && !_.isString(type)) {
             return callback({'code': 400, 'msg': 'A valid type should be provided'});
+        } else if (metadata && !_.isObject(metadata)) {
+            return callback({'code': 400, 'msg': 'A valid value for metadata should be provided'});
+        } else if (!_.isNull(published) && !_.isBoolean(published)) {
+            return callback({'code': 400, 'msg': 'A valid value for published should be provided'});
         }
 
         // Set a default callback function in case no callback function has been provided
@@ -619,6 +637,12 @@ define(['exports'], function(exports) {
         }
         if (type) {
             data['type'] = type;
+        }
+        if (metadata) {
+            data['metadata'] = metadata;
+        }
+        if (!_.isNull(published)) {
+            data['published'] = published;
         }
 
         $.ajax({

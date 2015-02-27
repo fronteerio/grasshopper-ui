@@ -11,12 +11,12 @@
             <div class="modal-body">
                 <form id="gh-visibility-form" class="form" role="form">
                     <div class="col-xs-4 col-xs-offset-2 text-center">
-                        <label for="gh-visibility-draft" class="gh-visibility-label <% if (data.visibility === 'draft') { %>checked<% } %>">
+                        <label for="gh-visibility-draft" class="gh-visibility-label <% if (!data.published) { %>checked<% } %>" data-published="false">
                             <div class="gh-visibility-icon-container">
                                 <i class="fa fa-eye-slash"></i>
                                 <div class="visibility-type">Draft</div>
                                 <i class="fa fa-check"></i>
-                                <input type="radio" id="gh-visibility-draft" name="gh-visibility-group" class="pull-left" <% if (data.visibility === 'draft') { %>checked="checked"<% } %> tabindex="0"/>
+                                <input type="radio" id="gh-visibility-draft" name="gh-visibility-group" class="pull-left" <% if (!data.published) { %>checked="checked"<% } %> tabindex="0"/>
                             </div>
                             <small>
                                 <p>Events are hidden and students will see a message highlighting what is going on and asked to check again later.</p>
@@ -24,12 +24,12 @@
                         </label>
                     </div>
                     <div class="col-xs-4 text-center">
-                        <label for="gh-visibility-published" class="gh-visibility-label <% if (data.visibility === 'published') { %>checked<% } %>">
+                        <label for="gh-visibility-published" class="gh-visibility-label <% if (data.published) { %>checked<% } %>" data-published="true">
                             <div class="gh-visibility-icon-container">
                                 <i class="fa fa-eye"></i>
                                 <div class="visibility-type">Publish</div>
                                 <i class="fa fa-check"></i>
-                                <input type="radio" id="gh-visibility-published" name="gh-visibility-group" class="pull-left" <% if (data.visibility === 'published') { %>checked="checked"<% } %> tabindex="0"/>
+                                <input type="radio" id="gh-visibility-published" name="gh-visibility-group" class="pull-left" <% if (data.published) { %>checked="checked"<% } %> tabindex="0"/>
                             </div>
                             <small>
                                 <p>Available to everyone</p>

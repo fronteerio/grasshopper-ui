@@ -289,6 +289,11 @@
     border-top-color: #DDD;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.danger.gh-fade td,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
+    background-color: #FFF !important;
+}
+
 /* Calendar icon */
 .gh-event-calendar-icon {
     border-color: #888;
