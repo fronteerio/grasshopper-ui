@@ -295,6 +295,49 @@
 
 
 /*****************/
+/* DELETE SERIES */
+/*****************/
+
+#gh-delete-series-modal strong {
+    font-weight: 600;
+}
+
+#gh-delete-series-modal #gh-delete-series-borrowed-list-description {
+    margin: 20px 0 5px;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow: auto;
+    padding: 0;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    list-style: none;
+    padding: 12px;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li:last-child {
+    border-bottom: none;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p {
+    margin: 0;
+}
+
+#gh-delete-series-modal small {
+    font-size: 15px;
+}
+
+
+/*****************/
 /* BATCH EDITING */
 /*****************/
 

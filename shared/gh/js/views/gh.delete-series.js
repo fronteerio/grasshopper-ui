@@ -16,7 +16,7 @@
 define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, orgUnitAPI) {
 
     // Cache whether the series is borrowed from another module
-    var isBorrowedSeries = false;
+    var isBorrowedFrom = false;
 
     /**
      * Remove a series from the module
@@ -79,13 +79,76 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
     };
 
     /**
+     * Retrieve data for organisational units linked to a series through having borrowed the series
+     *
+     * @param  {Object}      series      The series to get the associated modules' data for
+     * @param  {Function}    callback    Standard callback function
+     * @param  {Object}      series      The modified series object with a `part` and `tripos` data object on each organisational unit
+     * @private
+     */
+    var getModuleData = function(series, callback) {
+        var todo = series.OrgUnits.length;
+        var done = 1;
+
+        /**
+         * Retrieve data for an organisational unit and its parent tripos
+         *
+         * @param  {Object}      orgUnit      The organisational unit to get data for
+         * @param  {Function}    _callback    Standard callback function
+         * @private
+         */
+        var getModule = function(orgUnit, _callback) {
+            // Get the organisational unit (part)
+            orgUnitAPI.getOrgUnit(orgUnit.ParentId, false, function(err, _orgUnit) {
+                if (err) {
+                    // Show a failure notification
+                    return gh.utils.notification('Retrieving module failed.', 'An error occurred while retrieving the module information.', 'error');
+                }
+
+                // Cache the part object on the series
+                series.OrgUnits[done].part = _orgUnit;
+
+                // Get the parent of the organisational unit (tripos)
+                orgUnitAPI.getOrgUnit(_orgUnit.ParentId, false, function(err, _orgUnit) {
+                    if (err) {
+                        // Show a failure notification
+                        return gh.utils.notification('Retrieving module failed.', 'An error occurred while retrieving the module information.', 'error');
+                    }
+
+                    // Cache the tripos object on the series
+                    series.OrgUnits[done].tripos = _orgUnit;
+
+                    done++;
+                    // When we're done, execute the callback
+                    if (todo === done) {
+                        _callback();
+                    // Call itself when more organisational units need to be fetched
+                    } else {
+                        getModule(series.OrgUnits[done], _callback);
+                    }
+                });
+            });
+        };
+
+        // The first orgunit in the series is the original module where other modules borrow from,
+        // so we start fetching data from the second orgunit on.
+        if (todo >= 2) {
+            getModule(series.OrgUnits[1], function() {
+                callback(series);
+            });
+        } else {
+            callback(series);
+        }
+    };
+
+    /**
      * Determine how to remove the series from the module
      *
      * @private
      */
     var submitDeleteSeries = function() {
         // If the series is borrowed from another module, only remove it from this series
-        if (isBorrowedSeries) {
+        if (isBorrowedFrom) {
             removeSeriesFromModule();
         // If the series is not borrowed by or from another module, it can be deleted
         } else {
@@ -100,8 +163,12 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @return {Boolean}              Return `true` if the series was borrowed to another module, `false` if not
      * @private
      */
-    var isBorrowedTo = function(series) {
+    var getIsBorrowedTo = function(series) {
         var isBorrowedTo = false;
+
+        if (series.OrgUnits.length > 1) {
+            isBorrowedTo = true;
+        }
 
         return isBorrowedTo;
     };
@@ -113,8 +180,16 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @return {Boolean}               Return `true` if the series was borrowed from another module, `false` if not
      * @private
      */
-    var isBorrowedFrom = function(series) {
+    var getIsBorrowedFrom = function(series, module) {
         var isBorrowed = false;
+
+        // The backend returns the original module as the first item in the OrgUnits Array.
+        // If that module is not the same as the module we're in, the series is borrowed from another module.
+        if (series.OrgUnits && series.OrgUnits.length) {
+            if (series.OrgUnits[0].id !== module.id) {
+                isBorrowed = true;
+            }
+        }
 
         return isBorrowed;
     };
@@ -138,19 +213,23 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
                     gh.utils.notification('Fetching module failed.', 'An error occurred while fetching the module information.', 'error');
                 }
 
-                isBorrowedSeries = isBorrowedFrom(series, module);
+                isBorrowedFrom = getIsBorrowedFrom(series, module);
+                var isBorrowedTo = getIsBorrowedTo(series, module);
 
-                // Render the modal
-                gh.utils.renderTemplate($('#gh-delete-series-modal-template'), {
-                    'data': {
-                        'series': series,
-                        'module': module,
-                        'isBorrowedSeries': isBorrowedSeries
-                    }
-                }, $('#gh-delete-series-modal-container'));
+                getModuleData(series, function(series) {
+                    // Render the modal
+                    gh.utils.renderTemplate($('#gh-delete-series-modal-template'), {
+                        'data': {
+                            'series': series,
+                            'module': module,
+                            'isBorrowedFrom': isBorrowedFrom,
+                            'isBorrowedTo': isBorrowedTo
+                        }
+                    }, $('#gh-delete-series-modal-container'));
 
-                // Show the modal
-                $('#gh-delete-series-modal').modal();
+                    // Show the modal
+                    $('#gh-delete-series-modal').modal();
+                });
             });
         });
     };
