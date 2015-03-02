@@ -72,6 +72,10 @@ a,
     color: #FFF;
 }
 
+#gh-page-container #gh-left-container #gh-content-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
 #gh-page-container #gh-left-container #gh-result-summary p {
     color: #FFF;
 }

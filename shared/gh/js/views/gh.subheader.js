@@ -146,6 +146,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $.bbq.removeState('tripos', 'part', 'module', 'series');
             // There is no state for the tripos, make sure it's reset
             setUpTriposPicker();
+            // Show the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').show();
+            }
             // Resetting the tripos means destroying the part picker and hiding it
             if ($('#gh_subheader_part_chosen').length) {
                 // Destroy the field if it's been initialised previously
@@ -161,6 +165,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $('#gh-subheader-part').val(state.part);
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
+            // Hide the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').hide();
+            }
 
             // Dispatch an event to update the visibility button
             $(document).trigger('gh.part.changed', {'part': state.part});
@@ -169,6 +177,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+            // Show the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').show();
+            }
 
             // Dispatch an event to update the visibility button
             $(document).trigger('gh.part.changed');
