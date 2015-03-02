@@ -177,6 +177,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $.bbq.removeState('part', 'module', 'series');
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+            // Empty the modules container as nothing should be in there at the moment
+            $('#gh-modules-container').empty();
             // Show the contextual help
             if (!$('body').data('isadminui')) {
                 $('#gh-content-description p').show();

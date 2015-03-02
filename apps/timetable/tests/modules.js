@@ -55,7 +55,7 @@ casper.test.begin('Student - Component - Modules', function(test) {
                 var moduleCount = casper.evaluate(function() {
                     return $('#gh-left-container #gh-modules-list > li').length;
                 });
-                test.assertSelectorHasText('#gh-left-container #gh-result-summary', 'Found ' + moduleCount + ' modules', 'Verify that the result summary shows the correct number of modules found');
+                test.assertSelectorHasText('#gh-left-container #gh-result-summary', moduleCount + ' modules in this part', 'Verify that the result summary shows the correct number of modules found');
                 // Verify the module item
                 test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list', 'Verify that the module toggle is present');
                 test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list .gh-list-icon i', 'Verify that the module toggle icon is present');
