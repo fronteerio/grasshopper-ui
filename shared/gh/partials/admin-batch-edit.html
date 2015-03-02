@@ -1,102 +1,109 @@
 <div id="gh-batch-edit-view" class="gh-main-view">
     <div id="gh-toolbar-container">
         <div class="gh-toolbar gh-toolbar-primary">
-            <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
-                <button class="btn btn-default gh-btn-secondary gh-btn-reverse active">List</button>
-                <button class="btn btn-default gh-btn-secondary gh-btn-reverse default">Calendar</button>
-            </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#gh-batch-list-view" aria-controls="gh-batch-list-view" role="tab" data-toggle="tab">List</a></li>
+                <li role="presentation"><a href="#gh-batch-calendar-view" aria-controls="gh-batch-calendar-view" role="tab" data-toggle="tab">Calendar</a></li>
+            </ul>
         </div>
     </div>
-
     <div id="gh-sticky-header-anchor"></div>
-    <div id="gh-batch-edit-container">
-        <ul class="nav nav-pills pull-right" role="tablist">
-            <li role="presentation" class="dropdown">
-                <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="sr-only">Series settings</span>
-                    <i class="fa fa-cog"></i>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
-                    <li role="presentation">
-                        <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
-                    </li>
-                    <li role="presentation">
-                        <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
-                    </li>
-                    <li role="presentation">
-                        <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
+     <div class="tab-content">
+        <div id="gh-batch-list-view" class="tab-pane active" role="tabpanel">
+            <div id="gh-batch-edit-container">
+                <ul class="nav nav-pills pull-right" role="tablist">
+                    <li role="presentation" class="dropdown">
+                        <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Series settings</span>
+                            <i class="fa fa-cog"></i>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-            </li>
-        </ul>
 
-        <h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
+                <h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
 
-        <div id="gh-batch-edit-header">
-            <div class="col-xs-1">
-                <span class="gh-batch-edit-header-description">Batch edit:</span>
-            </div>
-            <div class="col-xs-2">
-                <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
-            </div>
-            <div class="col-xs-2">
-                <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Time/dates</button>
-            </div>
-            <div class="col-xs-2 gh-batch-event-organisers">
-                <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
-            </div>
-            <div class="col-xs-2">
-                <input type="text" id="gh-batch-edit-location" placeholder="Locations">
-            </div>
-            <div class="col-xs-2">
-                <%= _.partial('admin-batch-edit-event-type', {
-                    'data': {
-                        'id': 'gh-batch-edit-type',
-                        'types': gh.config.events.types
-                    }
-                }) %>
-            </div>
-            <div class="col-xs-1"></div>
-        </div>
-        <div id="gh-batch-edit-date-container"><!-- --></div>
-    </div>
-
-    <div id="gh-batch-edit-term-container">
-        <% _.each(data.eventsByTerm, function(term) { %>
-            <div class="gh-batch-edit-events-container <% if (term.name == 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-1" colspan="6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" class="gh-select-all"> <%- term.name %>
-                                    </label>
-                                </div>
-                            </th>
-                            <th class="col-xs-1">
-                                <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% _.each(term.events, function(ev) { %>
-                        <%= _.partial('admin-batch-edit-event-row', {
-                            'ev': ev,
-                            'gh': gh,
-                            'utils': gh.utils
+                <div id="gh-batch-edit-header">
+                    <div class="col-xs-1">
+                        <span class="gh-batch-edit-header-description">Batch edit:</span>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Time/dates</button>
+                    </div>
+                    <div class="col-xs-2 gh-batch-event-organisers">
+                        <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" id="gh-batch-edit-location" placeholder="Locations">
+                    </div>
+                    <div class="col-xs-2">
+                        <%= _.partial('admin-batch-edit-event-type', {
+                            'data': {
+                                'id': 'gh-batch-edit-type',
+                                'types': gh.config.events.types
+                            }
                         }) %>
-                    <% }); %>
-                    </tbody>
-                </table>
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+                <div id="gh-batch-edit-date-container"><!-- --></div>
             </div>
-        <% }); %>
-    </div>
 
-    <div class="gh-batch-edit-actions-container" style="display: none;">
-        <p id="gh-batch-edit-change-summary" class="pull-left"></p>
-        <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
-        <button type="button" id="gh-batch-edit-cancel" class="btn btn-link pull-right">Cancel</button>
+            <div id="gh-batch-edit-term-container">
+                <% _.each(data.eventsByTerm, function(term) { %>
+                    <div class="gh-batch-edit-events-container <% if (term.name == 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1" colspan="6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" class="gh-select-all"> <%- term.name %>
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th class="col-xs-1">
+                                        <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% _.each(term.events, function(ev) { %>
+                                <%= _.partial('admin-batch-edit-event-row', {
+                                    'ev': ev,
+                                    'gh': gh,
+                                    'utils': gh.utils
+                                }) %>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="gh-batch-edit-actions-container" style="display: none;">
+                <p id="gh-batch-edit-change-summary" class="pull-left"></p>
+                <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right">Save</button>
+                <button type="button" id="gh-batch-edit-cancel" class="btn btn-link pull-right">Cancel</button>
+            </div>
+        </div>
+
+        <div id="gh-batch-calendar-view" class="tab-pane active" role="tabpanel">
+            calendar
+        </div>
     </div>
 </div>

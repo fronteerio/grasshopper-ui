@@ -64,6 +64,24 @@
 }
 
 
+/*******************/
+/* NAVIGATION TABS */
+/*******************/
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+    border: none !important;
+    -webkit-border-radius: 0 !important;
+       -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+}
+
+
 /************/
 /* CALENDAR */
 /************/
@@ -90,7 +108,8 @@
 }
 
 /* Default buttons */
-#gh-toolbar-container .btn-default {
+#gh-toolbar-container .btn-default,
+.nav-tabs > li > a {
     height: 100%;
     padding: 12px;
 }
