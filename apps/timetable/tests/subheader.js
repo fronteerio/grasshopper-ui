@@ -19,7 +19,7 @@ casper.test.begin('Student - Component - Subheader', function(test) {
      * Verify the subheader
      */
     var verifySubHeader = function() {
-        casper.waitForSelector('#gh-right-container #gh-header', function() {
+        casper.waitForSelector('#gh-right-container #gh-header h1', function() {
             test.assertExists('#gh-left-container #gh-meta-container #gh-content-description', 'Verify that the subheader has a content description');
             test.assertSelectorHasText('#gh-left-container #gh-meta-container #gh-content-description', 'Select your course and part to view available modules', 'Verify that the subheader has the correct content description');
             casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
