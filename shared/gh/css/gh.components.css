@@ -486,10 +486,18 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item p {
+    font-size: 14px;
     margin: 0;
+    opacity: 0.8;
     text-align: initial;
     white-space: pre-line;
     word-break: break-word;
+}
+
+.list-group .list-group-item p.gh-list-description-text {
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 1;
 }
 
 .list-group .list-group-item .gh-list-action,
@@ -537,14 +545,14 @@ tbody tr:last-child > td.fc-widget-content {
 .list-group .list-group-item .gh-list-description {
     display: table-cell;
     overflow: auto;
-    padding-right: 7px;
-    padding-top: 18px;
+    padding: 15px 5px 10px 0;
     width: 230px;
 }
 
 /* Nested list */
 .list-group .list-group-item .list-group .list-group-item {
-    margin-left: 60px;
+    cursor: pointer;
+    margin-left: 40px;
 }
 
 .list-group .list-group-item.gh-list-group-item-open .list-group {
@@ -561,7 +569,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    width: 210px;
+    padding: 12px 5px 12px 20px;
+    width: 230px;
 }
 
 

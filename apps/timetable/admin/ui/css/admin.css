@@ -268,7 +268,8 @@
 
 #gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description,
 .list-group .list-group-item .gh-list-group-item-container .gh-series-select {
-    padding: 0 0 0 12px;
+    border: none;
+    padding: 0;
     width: 100%;
 }
 
