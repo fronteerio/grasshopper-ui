@@ -221,15 +221,20 @@ a,
 
 /* Nested lists */
 .list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
-    background-color: #3c858e;
+    background-color: #3C858E;
+    border-bottom-color: #127077;
 }
 
 .list-group .list-group-item .list-group .list-group-item:first-child {
-    border-color: #171717;
+    border-color: #127077;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
     background-color: #07525D;
+}
+
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-description {
+    background-color: #277A81;
 }
 
 
