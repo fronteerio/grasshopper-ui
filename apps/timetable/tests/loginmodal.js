@@ -19,7 +19,7 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
      * Add some modules to the sidebar by selecting a tripos and part in the pickers
      */
     var openModules = function() {
-        casper.waitForSelector('#gh-right-container #gh-header', function() {
+        casper.waitForSelector('#gh-right-container #gh-header h1', function() {
             casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
                 // Open the tripos picker
                 casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
