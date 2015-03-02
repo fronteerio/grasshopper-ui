@@ -99,8 +99,7 @@ a,
 
 .btn-default:hover,
 .btn-default:focus,
-.btn-default:disabled,
-.btn-default#gh-btn-calendar-today {
+.btn-default:disabled {
     color: #FFF;
     background-color: #2A2A2A;
     border-color: #2A2A2A;
@@ -150,8 +149,7 @@ a,
     color: #FFF;
 }
 
-.btn-default.gh-btn-secondary.gh-btn-reverse:active,
-.btn-default#gh-btn-calendar-today:hover {
+.btn-default.gh-btn-secondary.gh-btn-reverse:active {
     background-color: #2D939C;
     border-color: #2D939C;
     color: #FFF;
@@ -176,7 +174,7 @@ a,
 .btn-default.gh-btn-tertiary:focus {
     background-color: #171717;
     border-color: #171717;
-    color: #7A7A7A;
+    color: #FFF;
 }
 
 .btn-default.gh-btn-tertiary:active {
@@ -303,12 +301,26 @@ a,
     border-bottom-color: #171717 !important;
 }
 
+.fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
+    background-color: #E0E7E4;
+}
+
 .fc-month-view .fc-bg td.fc-today:before {
     border-top-color: #414141;
 }
 
 .fc-month-view td.fc-today {
     border-top-color: #171717 !important;
+}
+
+.fc-agendaWeek-view td.fc-today,
+.fc-month-view td.fc-today {
+    background-color: #E0E7E4 !important;
+}
+
+.fc-sat,
+.fc-sun {
+    background-color: #FFF !important;
 }
 
 .fc-slats .fc-minor td {

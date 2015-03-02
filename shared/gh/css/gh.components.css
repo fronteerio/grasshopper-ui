@@ -111,7 +111,7 @@
 /* Secondary toolbar */
 #gh-toolbar-container .gh-toolbar-secondary {
     font-weight: 600;
-    padding-top: 40px;
+    padding-top: 28px;
     opacity: 1;
     position: relative;
     -webkit-transition: opacity .2s;
@@ -129,6 +129,7 @@
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
     height: auto;
+    margin-bottom: 2px;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
@@ -155,8 +156,9 @@
 
 .gh-toolbar-label {
     display: inline-block;
+    font-weight: 400;
+    min-width: 60px;
     text-align: center;
-    min-width: 100px;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
@@ -189,9 +191,13 @@
     border-bottom-style: solid !important;
     border-bottom-width: 6px;
     font-size: 16px;
-    font-weight: 600;
-    height: 50px;
+    font-weight: 400;
+    height: 40px;
     vertical-align: middle;
+}
+
+.fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today, .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
+    font-weight: 600;
 }
 
 .fc-month-view td.fc-today {
