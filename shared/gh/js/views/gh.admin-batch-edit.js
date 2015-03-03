@@ -13,7 +13,10 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
+
+    // Object used to cache the triposData
+    var triposData = null;
 
 
     ///////////////
@@ -264,6 +267,61 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
 
+    //////////////
+    // CALENDAR //
+    //////////////
+
+    /**
+     * Fetch the tripos data that the calendar needs
+     *
+     * @param  {Function}    callback    Standard callback function
+     * @private
+     */
+    var setUpPreviewCalendar = function(callback) {
+        // Fetch the triposes
+        if (!triposData) {
+            utils.getTriposStructure(function(err, data) {
+                if (err) {
+                    return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                }
+
+                // Cache the triposData for future use
+                triposData = data;
+
+                // Render the calendar
+                renderPreviewCalendar();
+            });
+        } else {
+            // Render the calendar
+            renderPreviewCalendar();
+        }
+    };
+
+    /**
+     * Render and initialise the calendar
+     *
+     * @private
+     */
+    var renderPreviewCalendar = function() {
+        // Render the calendar template
+        utils.renderTemplate($('#gh-calendar-template'), {
+            'data': {
+                'gh': gh,
+                'view': 'admin'
+            }
+        }, $('#gh-calendar-view-container'));
+
+        // Initialise the calendar
+        $(document).trigger('gh.calendar.init', {
+            'triposData': triposData,
+            'orgUnitId': $.bbq.getState().module
+        });
+
+        // Put the calendar on today's view
+        $(document).trigger('gh.calendar.navigateToToday');
+    };
+
+
     /////////////
     // LOCKING //
     /////////////
@@ -282,12 +340,12 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Get the GroupId
         lockedGroupId = $('#gh-modules-container button[data-groupid]').data('groupid');
         // Lock the group
-        groupAPI.lock(lockedGroupId);
+        gh.api.groupsAPI.lock(lockedGroupId);
         // Lock the currently edited group every 60 seconds
         lockInterval = setInterval(function() {
             // Only attempt to lock when the batch edit mode is active
             if ($('#gh-batch-edit-view').is(':visible')) {
-                groupAPI.lock(lockedGroupId);
+                gh.api.groupsAPI.lock(lockedGroupId);
             // If batch edit is not active we can unlock the group
             } else {
                 unlockGroup();
@@ -304,7 +362,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Only unlock the group if it was previously locked
         if (lockedGroupId) {
             // Unlock the group
-            groupAPI.unlock(lockedGroupId);
+            gh.api.groupsAPI.unlock(lockedGroupId);
             // Clear the interval
             clearInterval(lockInterval);
         }
@@ -330,7 +388,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             return this.revert;
         } else if (this.revert !== value) {
             var seriesId = parseInt($.bbq.getState()['series'], 10);
-            seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
+            gh.api.seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
                     return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
@@ -526,7 +584,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
          * @private
          */
         var submitEventUpdate = function(updatedEvent, _callback) {
-            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
@@ -535,7 +593,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
                 if (updatedEvent.organisers) {
                     // Update the event organisers
-                    eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
+                    gh.api.eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
                         if (orgErr) {
                             hasError = true;
                             // Mark the row so it's visually obvious that the update failed
@@ -615,7 +673,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
             var seriesId = parseInt($.bbq.getState()['series'], 10);
-            eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
+            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
@@ -676,7 +734,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
          * @private
          */
         var deleteEvent = function(eventID, _callback) {
-            eventAPI.deleteEvent(eventID, function(err) {
+            gh.api.eventAPI.deleteEvent(eventID, function(err) {
                 // Remove the row from the DOM
                 $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventID + '"]').remove();
 
@@ -936,7 +994,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var seriesId = parseInt($.bbq.getState()['series'], 10);
 
         // Get the information about the series
-        seriesAPI.getSeries(seriesId, null, function(err, series) {
+        gh.api.seriesAPI.getSeries(seriesId, null, function(err, series) {
             if (err) {
                 return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
             }
@@ -955,7 +1013,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
              */
             var getSeriesEvents = function(offset, callback) {
                 // Get the information about the events in the series
-                seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
+                gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
                     if (err) {
                         return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
                     }
@@ -994,6 +1052,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
                 // TODO: Remove this and only trigger when button is clicked/expanded
                 $(document).trigger('gh.batchdate.setup');
                 $(document).trigger('gh.batchorganiser.setup');
+
+                setUpPreviewCalendar();
             });
         });
     };

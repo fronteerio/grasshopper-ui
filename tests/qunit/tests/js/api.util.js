@@ -899,10 +899,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('renderTemplate - Partials', function(assert) {
         // Verify that a partial can be used to render a template
         // Add a template to the page
-        $('body').append('<script id="qunit-template-partial" type="text/template"><%= _.partial(\'calendar\', {\'gh\': gh}) %></script>');
+        $('body').append('<script id="qunit-template-partial" type="text/template"><%= _.partial(\'calendar\', {\'data\': data}) %></script>');
         // Create the data to use in the template
         var data = {
-            'gh': gh
+            'data': {
+                'gh': gh
+            }
         };
         // Add a target container to the page
         $('body').append('<div id="qunit-template-partial-target" style="display: none;"></div>');

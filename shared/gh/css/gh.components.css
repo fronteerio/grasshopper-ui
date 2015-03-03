@@ -136,6 +136,7 @@
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
             transition: opacity .2s;
+    z-index: 2;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,

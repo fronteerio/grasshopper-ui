@@ -29,6 +29,10 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     // Object used to cache the triposData received on initialisation
     var triposData = null;
 
+    // Used to cache the optional orgUnitId, passed in when initialising the calendar. If
+    // no orgUnitID is specified the user's personal calendar will be loaded instead.
+    var orgUnitID = null;
+
     // Get the start and end dates for the terms
     var terms = gh.api.configAPI.getAppTerm();
 
@@ -171,14 +175,25 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
-                gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
-                    if (err) {
-                        return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
-                    }
+                if (orgUnitID) {
+                    gh.api.orgunitAPI.getOrgUnitCalendar(parseInt(orgUnitID, 10), range.start, range.end, function(err, data) {
+                        if (err) {
+                            return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                        }
 
-                    // Update the calendar
-                    updateCalendar(data.results);
-                });
+                        // Update the calendar
+                        updateCalendar(data.results);
+                    });
+                } else {
+                    gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
+                        if (err) {
+                            return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                        }
+
+                        // Update the calendar
+                        updateCalendar(data.results);
+                    });
+                }
             });
         }
     };
@@ -591,38 +606,38 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var addBinding = function() {
         // Export the calendar
-        $('#gh-btn-calendar-export').on('click', exportCalendar);
+        $('#gh-btn-calendar-export').off('click', exportCalendar).on('click', exportCalendar);
         // Toggle the other options for export
-        $('#gh-export-collapsed-other-toggle').on('click', toggleExportOptions);
+        $('#gh-export-collapsed-other-toggle').off('click', toggleExportOptions).on('click', toggleExportOptions);
         // Print the calendar
-        $('#gh-btn-calendar-print').on('click', printCalendar);
+        $('#gh-btn-calendar-print').off('click', printCalendar).on('click', printCalendar);
         // Navigate to the current day
-        $('#gh-btn-calendar-today').on('click', navigateToToday);
+        $('#gh-btn-calendar-today').off('click', navigateToToday).on('click', navigateToToday);
         // Change the calendar's period
-        $('#gh-calendar-toolbar-period button').on('click', changePeriod);
+        $('#gh-calendar-toolbar-period button').off('click', changePeriod).on('click', changePeriod);
         // Change the calendar's term
-        $('#gh-calendar-toolbar-terms button').on('click', changeTerm);
+        $('#gh-calendar-toolbar-terms button').off('click', changeTerm).on('click', changeTerm);
         // Change the calendar's view
-        $('#gh-calendar-toolbar-views button').on('click', changeView);
+        $('#gh-calendar-toolbar-views button').off('click', changeView).on('click', changeView);
 
         // Return the calendar's current view
-        $(document).on('gh.calendar.getCurrentView', function(evt, callback) {
+        $(document).off('gh.calendar.getCurrentView').on('gh.calendar.getCurrentView', function(ev, callback) {
             return callback(getCurrentView());
         });
 
         // Return the calendar's current view date
-        $(document).on('gh.calendar.getCurrentViewDate', function(evt, callback) {
+        $(document).off('gh.calendar.getCurrentViewDate').on('gh.calendar.getCurrentViewDate', function(ev, callback) {
             return callback(getCurrentViewDate());
         });
 
         // Navigate to today
-        $(document).on('gh.calendar.navigateToToday', navigateToToday);
+        $(document).off('gh.calendar.navigateToToday', navigateToToday).on('gh.calendar.navigateToToday', navigateToToday);
 
         // Refresh the calendar
-        $(document).on('gh.calendar.refresh', refreshCalendar);
+        $(document).off('gh.calendar.refresh', refreshCalendar).on('gh.calendar.refresh', refreshCalendar);
 
         // Resize the calendar
-        $(window).on('resize', setCalendarHeight);
+        $(window).off('resize', setCalendarHeight).on('resize', setCalendarHeight);
     };
 
     /**
@@ -638,6 +653,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Create an empty array if there are no events yet
         var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
+        orgUnitID = calendarData.orgUnitId || null;
+
         // Manipulate the dates so they always display in GMT+0
         gh.utils.fixDatesToGMT(events);
 
@@ -646,6 +663,12 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
             triposData = calendarData.triposData;
             // Get the event context
             getEventContext(events);
+        }
+
+        // If the calendar instance is initialised while another is on the page,
+        // tear it down first
+        if (calendar) {
+            calendar.fullCalendar('destroy');
         }
 
         // Initialize the calendar object

@@ -1,14 +1,14 @@
 <div id="gh-calendar-view" class="gh-main-view">
 
     <div id="gh-toolbar-container">
-        <div class="gh-toolbar gh-toolbar-primary">
-            <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
-                <button class="btn btn-default gh-btn-secondary gh-btn-reverse active" data-view="agendaWeek">Week</button>
-                <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="month">Month</button>
-                <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="agendaDay">Day</button>
-            </div>
-            <div id="gh-calendar-toolbar-actions" class="gh-toolbar-actions pull-right">
-                <% if (!gh.data.me.anon) { %>
+        <% if (!data.gh.data.me.anon && data.view !== 'admin') { %>
+            <div class="gh-toolbar gh-toolbar-primary">
+                <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
+                    <button class="btn btn-default gh-btn-secondary gh-btn-reverse active" data-view="agendaWeek">Week</button>
+                    <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="month">Month</button>
+                    <button class="btn btn-default gh-btn-secondary gh-btn-reverse default" data-view="agendaDay">Day</button>
+                </div>
+                <div id="gh-calendar-toolbar-actions" class="gh-toolbar-actions pull-right">
                     <button id="gh-btn-calendar-print" class="btn btn-default gh-btn-secondary gh-btn-reverse default"><i class="fa fa-print"></i><span> Print</span></button>
                     <button id="gh-btn-calendar-export" class="btn btn-default">
                         <div>
@@ -18,9 +18,9 @@
                             <i class="fa fa-times-circle"></i><span> Close</span>
                         </div>
                     </button>
-                <% } %>
+                </div>
             </div>
-        </div>
+        <% } %>
         <div class="gh-toolbar gh-toolbar-secondary">
 
             <!-- Navigate through the weeks/months/days -->
@@ -51,18 +51,18 @@
     <!-- Calendar -->
     <div id="gh-calendar-container"><!-- --></div>
 
-    <% if (!gh.data.me.anon) { %>
+    <% if (!data.gh.data.me.anon) { %>
         <div id="gh-export-container">
             <div id="gh-export-main">
                 <p>Add &amp; subscribe to my timetable with my default calendar app:</p>
-                <a href="<%= 'webcal://' + window.location.hostname + '/api/users/' + gh.data.me.id + '/' + gh.data.me.calendarToken + '/calendar.ical' %>" id="gh-export-subscribe" class="btn btn-primary">Subscribe</a>
+                <a href="<%= 'webcal://' + window.location.hostname + '/api/users/' + data.gh.data.me.id + '/' + data.gh.data.me.calendarToken + '/calendar.ical' %>" id="gh-export-subscribe" class="btn btn-primary">Subscribe</a>
 
                 <button type="button" id="gh-export-collapsed-other-toggle" class="btn btn-link" data-toggle="collapse" data-target="#gh-export-collapsed-other" aria-expanded="false" aria-controls="gh-export-collapsed-other">
                     <i class="fa fa-caret-right"></i>Other ways to subscribe:
                 </button>
                 <div class="collapse" id="gh-export-collapsed-other">
                     <p class="gh-export-other-option">Copy the address of your timetable:</p>
-                    <textarea id="gh-export-subscribe-copy"><%= window.location.origin + '/api/users/' + gh.data.me.id + '/' + gh.data.me.calendarToken + '/calendar.ical' %></textarea>
+                    <textarea id="gh-export-subscribe-copy"><%= window.location.origin + '/api/users/' + data.gh.data.me.id + '/' + data.gh.data.me.calendarToken + '/calendar.ical' %></textarea>
                     <p class="gh-export-other-option">Follow the instructions to add &amp; subscribe with your favourite Calendar app:</p>
                     <ul>
                         <li><a href="https://support.google.com/calendar/answer/37100?hl=en" target="_blank" title="Google Calendar subscription instructions">Google Calendar</a> <i class="fa fa-external-link"></i></li>
