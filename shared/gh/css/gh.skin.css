@@ -161,7 +161,8 @@ a,
 
 .btn-default.gh-btn-secondary.gh-btn-reverse.active:hover,
 .btn-default.gh-btn-secondary.gh-btn-reverse.active:focus,
-.btn-default.gh-btn-secondary.gh-btn-reverse.active {
+.btn-default.gh-btn-secondary.gh-btn-reverse.active,
+ul.nav-tabs li.active {
     background-color: #FFF;
     border-color: #FFF;
     color: #171717;
@@ -185,6 +186,20 @@ a,
     background-color: #2A2A2A;
     border-color: #2A2A2A;
 }
+
+
+/*******************/
+/* NAVIGATION TABS */
+/*******************/
+
+.nav-tabs > li > a:hover {
+    background-color: transparent;
+}
+
+.nav-tabs > li > a {
+    color: #FFF;
+}
+
 
 /**************/
 /* LIST GROUP */

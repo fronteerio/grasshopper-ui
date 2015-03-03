@@ -18,6 +18,11 @@
 /* BASE STYLES */
 /***************/
 
+html, html a {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
+
 body {
     font-family: 'Myriad Pro', helvetica, sans-serif;
     font-size: 15px;
