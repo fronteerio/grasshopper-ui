@@ -252,14 +252,11 @@ label {
 }
 
 .notifications > .alert {
-    padding: 18px 20px 15px 20px;
-    border-top: none;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-       -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
     -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
+    border-top: none;
+    padding: 18px 20px 15px 20px;
 }
 
 .notifications.bottom-left {
@@ -272,9 +269,9 @@ label {
 
 .notifications.bottom-left > .alert {
     bottom: 0;
+    left: -600px;
     margin: 0 auto 12px;
     max-width: 600px;
-    left: -600px;
     opacity: 0;
     position: relative;
     text-align: left;
