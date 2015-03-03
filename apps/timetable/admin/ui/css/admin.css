@@ -753,8 +753,31 @@
     text-overflow: ellipsis;
 }
 
+.gh-event-delete,
 .gh-event-delete button {
+    cursor: default !important;
+}
+
+tr.info .gh-event-delete,
+tr.info .gh-event-delete button {
+    cursor: pointer !important;
+}
+
+.gh-event-delete button {
+    opacity: 0;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: hidden;
     width: 100%;
+}
+
+tr.info .gh-event-delete button {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: visible;
 }
 
 #gh-batch-calendar-view {
