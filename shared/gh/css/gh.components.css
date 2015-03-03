@@ -365,8 +365,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main {
-    padding: 30px;
     margin-top: 30px;
+    padding: 30px 30px 10px 40px;
     width: 370px;
 }
 
@@ -377,9 +377,15 @@ tbody tr:last-child > td.fc-widget-content {
             transition: opacity .2s;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main p#gh-export-add-description {
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
+    border: none;
     display: block;
-    padding: 15px;
+    padding: 16px 0 14px 0;
     width: 100%;
 }
 
@@ -393,21 +399,22 @@ tbody tr:last-child > td.fc-widget-content {
     font-weight: 400;
     list-style-type: decimal;
     margin-left: 18px;
+    padding-bottom: 5px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main textarea {
-    height: 70px;
     font-family: monospace;
     font-size: 13px;
-    margin-bottom: 25px;
-    padding: 7px 12px;
+    height: 100px;
+    margin: 0 0 20px 18px;
+    padding: 5px 5px;
     resize: none;
-    width: 100%;
+    width: 280px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul {
     list-style-type: circle;
-    padding: 0 0 0 25px;
+    padding: 0 0 0 33px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul li {
@@ -418,9 +425,13 @@ tbody tr:last-child > td.fc-widget-content {
     margin: 0;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main ul li i {
+    font-size: 14px;
+}
+
 #gh-calendar-view #gh-export-container > #gh-export-sync-message {
     display: block;
-    padding: 20px 20px 20px 30px;
+    padding: 20px 20px 20px 40px;
     width: 400px;
 }
 
@@ -434,9 +445,8 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view #gh-export-container > #gh-export-sync-message small {
     display: block;
-    font-size: 14px;
+    font-size: 15px;
     overflow: auto;
-    width: 210px;
 }
 
 /* Export calendar animations */
@@ -452,6 +462,7 @@ tbody tr:last-child > td.fc-widget-content {
 #gh-calendar-view.gh-export-enabled #gh-export-container {
     opacity: 1;
     width: 400px;
+    z-index: 2;
 }
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {

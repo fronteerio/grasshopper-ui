@@ -322,6 +322,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var toggleExportOptions = function() {
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
+        _.defer(function() {
+            $('#gh-export-subscribe-copy').select();
+        });
     };
 
     /**
