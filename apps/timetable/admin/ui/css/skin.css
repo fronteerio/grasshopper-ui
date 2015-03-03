@@ -244,6 +244,12 @@
 /* BATCH EDITING */
 /*****************/
 
+#gh-batch-edit-container.gh-sticky-header {
+    -webkit-box-shadow: 0 0px 15px #666;
+       -moz-box-shadow: 0 0px 15px #666;
+            box-shadow: 0 0px 15px #666;
+}
+
 #gh-batch-edit-header.gh-batch-edit-time-open,
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
     border-bottom-color: #EEE;
@@ -266,6 +272,9 @@
 .gh-batch-edit-actions-container {
     background: #FFF;
     border-top-color: #EEE;
+    -webkit-box-shadow: 0 0px 15px #666;
+       -moz-box-shadow: 0 0px 15px #666;
+            box-shadow: 0 0px 15px #666;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {

@@ -361,9 +361,6 @@
 }
 
 #gh-batch-edit-container.gh-sticky-header {
-    -webkit-box-shadow: 0 6px 37px;
-       -moz-box-shadow: 0 6px 37px;
-            box-shadow: 0 6px 37px;
     position: fixed;
     top: 0;
     width: calc(100% - 320px);
@@ -658,9 +655,6 @@
     bottom: 0;
     border-top-width: 1px;
     border-top-style: solid;
-    -webkit-box-shadow: 0 6px 37px;
-       -moz-box-shadow: 0 6px 37px;
-            box-shadow: 0 6px 37px;
     padding: 20px;
     position: fixed;
     width: -moz-calc(100% - 320px); /* Firefox */
