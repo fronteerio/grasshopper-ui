@@ -322,6 +322,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      */
     var toggleExportOptions = function() {
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
+        // Pre-select the ical URL in the textarea after the call stack clears
         _.defer(function() {
             $('#gh-export-subscribe-copy').select();
         });
