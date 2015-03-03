@@ -276,26 +276,61 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
         // If the container has not been created yet, we create it and add
         // it to the DOM.
         var $notificationContainer = $('#gh-notification-container');
+        var randomId = generateRandomString();
         if ($notificationContainer.length === 0) {
-            $notificationContainer = $('<div>').attr('id', 'gh-notification-container').addClass('notifications top-center');
+            $notificationContainer = $('<div>').attr('id', 'gh-notification-container').addClass('notifications bottom-left');
             $('body').append($notificationContainer);
         }
 
         // If a title has been provided, we wrap it in an h4 and prepend it to the message
         if (title) {
-            message = '<h4 id="' + id + '">' + title + '</h4>' + message;
+            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4><p>' + message + '</p></div>';
         }
 
-        // Show the actual notification
+        // If an ID has been provided, add the `id` attribute to the message
+        if (id) {
+            message = $(message).attr('id', id);
+        }
+
+        // Show the notification
         $notificationContainer.notify({
             'fadeOut': {
                 'enabled': sticky ? false : true,
                 'delay': 5000
             },
-            'type': type,
-            'message': {'html': message},
-            'transition': 'fade'
+            'type': type ? type : 'success',
+            'message': {'html': message}
         }).show();
+
+        // Cache the rendered notification object to refer to it later
+        var $notification = $($('[data-internal-id]', $notificationContainer).closest('.alert'));
+
+        // Wait until the call stack has cleared before animating
+        setTimeout(function() {
+            $notification.removeClass('fade in');
+            $notification.addClass('gh-notification-in');
+        }, 10);
+
+        // Fade out and remove the container after 5 seconds if it's not marked as sticky
+        var fadeTimeout = setTimeout(function() {
+            if (!sticky) {
+                $notification.addClass('gh-notification-fade');
+            }
+        }, 5000);
+
+        // Close the notification when the 'X' is clicked
+        $('a.close', $notificationContainer).off('click').on('click', function(ev) {
+            // Add the fade animation to remove the popover from view
+            $(this).closest('.alert').addClass('gh-notification-fade');
+            // Remove the notification from the DOM after the animation finishes
+            setTimeout(function() {
+                $(this).closest('.alert').remove();
+            }, 500);
+            // Clear the timeout that removes the notification
+            clearTimeout(fadeTimeout);
+            // Avoid default link click behaviour
+            return false;
+        });
 
         return true;
     };
