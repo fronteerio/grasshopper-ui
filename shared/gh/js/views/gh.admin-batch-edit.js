@@ -1052,8 +1052,6 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 // TODO: Remove this and only trigger when button is clicked/expanded
                 $(document).trigger('gh.batchdate.setup');
                 $(document).trigger('gh.batchorganiser.setup');
-
-                setUpPreviewCalendar();
             });
         });
     };
@@ -1106,6 +1104,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
+
+        // Tabs
+        $(document).on('shown.bs.tab', '#gh-batch-edit-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
+            // Only set up the calendar if that tab is active
+            if ($(ev.target).attr('aria-controls') === 'gh-batch-calendar-view') {
+                setUpPreviewCalendar();
+            }
+        });
     };
 
     addBinding();
