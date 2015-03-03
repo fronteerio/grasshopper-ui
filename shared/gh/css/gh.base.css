@@ -190,6 +190,10 @@ label {
     font-weight: 200;
 }
 
+.btn-default.gh-btn-secondary {
+    font-weight: 400;
+}
+
 
 /**********/
 /* MODALS */
