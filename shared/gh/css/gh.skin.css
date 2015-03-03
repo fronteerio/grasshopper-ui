@@ -31,17 +31,15 @@ h1, h2, h3, h4, h5 {
 }
 
 a,
-.btn-link {
+.btn-link,
+.btn-link i {
     color: #127077;
 }
 
-.btn-link i {
-    color: #171717;
-}
-
+.btn-link:hover,
 .btn-link:hover i,
 .btn-link:focus i {
-    color: #777;
+    color: #2A6496;
 }
 
 .gh-warning-text {
@@ -398,6 +396,11 @@ tbody .fc-sun {
     background-color: #FFF;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main textarea {
+    background-color: #FAFAFA;
+    border-color: #B3B3B3;
+}
+
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
     background-color: #07525D;
 }
@@ -406,8 +409,12 @@ tbody .fc-sun {
     background-color: #127077;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main ul li i {
+    color: rgba(61, 61, 61, 0.4);
+}
+
 #gh-calendar-view #gh-export-container > #gh-export-sync-message {
-    color: #777;
+    color: #6C6C6C;
 }
 
 /***********/
