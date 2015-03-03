@@ -130,8 +130,8 @@
 /* Secondary toolbar */
 #gh-toolbar-container .gh-toolbar-secondary {
     font-weight: 600;
-    padding-top: 28px;
     opacity: 1;
+    padding: 28px 20px 0;
     position: relative;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
