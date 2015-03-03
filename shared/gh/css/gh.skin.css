@@ -441,27 +441,19 @@ tbody .fc-sun {
 /*****************/
 
 .notifications .alert.alert-success,
-.notifications .alert.alert-error,
-.notifications .alert.alert-info {
+.notifications .alert.alert-error {
+    background-color: #EDDF7E;
+    border-color: #EDDF7E;
     color: #313131;
-    border-color: #BBB;
-    background-color: #E0E6E4;
 }
 
 .notifications .alert.alert-error {
-    background-color: #F2DEDE;
-    border-color: #F1D1D1;
+    background-color: #D92751;
+    border-color: #D92751;
 }
 
-.notifications .alert.alert-error h4 {
-    color: #B94A48;
-}
-
-.notifications .alert.alert-info {
-    background-color: #d9EDF7;
-    border-color: #BBE2F6;
-}
-
-.notifications .alert.alert-info h4 {
-    color: #31708F;
+.notifications > .alert {
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+       -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
 }
