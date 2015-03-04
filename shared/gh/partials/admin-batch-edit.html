@@ -35,30 +35,34 @@
                 <h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
 
                 <div id="gh-batch-edit-header">
-                    <div class="col-xs-1">
-                        <span class="gh-batch-edit-header-description">Batch edit:</span>
-                    </div>
-                    <div class="col-xs-2">
-                        <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
-                    </div>
-                    <div class="col-xs-2">
-                        <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Time/dates</button>
-                    </div>
-                    <div class="col-xs-2 gh-batch-event-organisers">
-                        <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
-                    </div>
-                    <div class="col-xs-2">
-                        <input type="text" id="gh-batch-edit-location" placeholder="Locations">
-                    </div>
-                    <div class="col-xs-2">
-                        <%= _.partial('admin-batch-edit-event-type', {
-                            'data': {
-                                'id': 'gh-batch-edit-type',
-                                'types': gh.config.events.types
-                            }
-                        }) %>
-                    </div>
-                    <div class="col-xs-1"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Batch edit:</th>
+                                <th>
+                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
+                                </th>
+                                <th>
+                                    <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Time/dates</button>
+                                </th>
+                                <th class="gh-batch-event-organisers">
+                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
+                                </th>
+                                <th>
+                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations">
+                                </th>
+                                <th>
+                                    <%= _.partial('admin-batch-edit-event-type', {
+                                        'data': {
+                                            'id': 'gh-batch-edit-type',
+                                            'types': gh.config.events.types
+                                        }
+                                    }) %>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
                 <div id="gh-batch-edit-date-container"><!-- --></div>
             </div>
@@ -69,14 +73,19 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="col-xs-1" colspan="6">
+                                    <th>
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" class="gh-select-all"> <%- term.name %>
                                             </label>
                                         </div>
                                     </th>
-                                    <th class="col-xs-1">
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
                                         <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
                                     </th>
                                 </tr>
