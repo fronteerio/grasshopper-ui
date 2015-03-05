@@ -24,7 +24,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @private
      */
     var removeSeriesFromState = function() {
-        gh.utils.removeFromState(['series']);
+        gh.utils.removeFromState(['series', 'module']);
     };
 
     /**
@@ -47,6 +47,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
 
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
+
+            // Remove the series from the navigation
+            $('.list-group-item[data-id="' + seriesId + '"').remove();
 
             // Remove the series from the state
             removeSeriesFromState();
@@ -74,6 +77,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
 
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
+
+            // Remove the series from the navigation
+            $('.list-group-item[data-id="' + seriesId + '"').remove();
 
             // Remove the series from the state
             removeSeriesFromState();
