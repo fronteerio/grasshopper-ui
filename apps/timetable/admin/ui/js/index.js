@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, constants) {
-    var state = $.bbq.getState() || {};
+define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable'], function(gh, constants) {
 
     // Cache the tripos data
     var triposData = {};
@@ -121,7 +120,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                     _.each(parts, function(part) {
                         editableParts.push({
                             'displayName': course.displayName + ' - ' + subject.displayName,
-                            'hash': '#tripos=' + subject.id + '&part=' + part.id,
+                            'hash': '?tripos=' + subject.id + '&part=' + part.id,
                             'canManage': course.canManage,
                             'part': part,
                             'isEditing': part.Group.LockedBy || false,
@@ -141,7 +140,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 _.each(parts, function(part) {
                     editableParts.push({
                         'displayName': course.displayName,
-                        'hash': '#tripos=' + course.id + '&part=' + part.id,
+                        'hash': '?tripos=' + course.id + '&part=' + part.id,
                         'canManage': course.canManage,
                         'part': part,
                         'isEditing': part.Group.LockedBy || false,

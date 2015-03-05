@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
+define(['gh.core', 'chosen'], function(gh) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -106,7 +106,7 @@ define(['gh.core', 'chosen', 'jquery-bbq'], function(gh) {
         var formValues = _.object(_.map($(this).serializeArray(), _.values));
         gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
             if (!err) {
-                var state = $.param($.bbq.getState());
+                var state = $.param(History.getState().data);
                 if (state) {
                     return window.location.reload();
                 }
