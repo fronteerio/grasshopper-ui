@@ -299,12 +299,16 @@
 }
 
 #gh-new-series-form .form-group label {
-    font-weight: 200;
+    font-weight: 400;
 }
 
 #gh-new-series-form .form-group input {
+    font-size: 28px;
+    font-weight: 400;
+    height: 41px;
     margin: 0 12px;
-    width: 80%;
+    padding: 5px 10px 3px 10px;
+    width: 55%;
 }
 
 

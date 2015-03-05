@@ -439,6 +439,13 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
     /////////////
 
     /**
+     * Refresh the state by triggering the statechange event without making modifications
+     */
+    var refreshState = exports.refreshState = function() {
+        History.Adapter.trigger(window, 'statechange');
+    };
+
+    /**
      * Add a key/value pair to the URL state
      *
      * @param {Object}    toAdd        The key of the state parameter to set
