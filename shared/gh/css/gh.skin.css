@@ -22,6 +22,10 @@ h1, h2, h3, h4, h5 {
     color: #171717;
 }
 
+input {
+    color: #171717 !important;
+}
+
 #gh-page-container #gh-subheader h1,
 #gh-page-container #gh-subheader h2,
 #gh-page-container #gh-subheader h3,

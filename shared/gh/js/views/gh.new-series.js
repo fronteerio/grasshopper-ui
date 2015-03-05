@@ -16,6 +16,15 @@
 define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'], function(gh, constants, utils, orgunitAPI, seriesAPI) {
 
     /**
+     * Cancel the creation of a new series and return to the last state
+     *
+     * @private
+     */
+    var cancelCreateNewSeries = function() {
+        gh.utils.refreshState();
+    };
+
+    /**
      * Create a new series
      *
      * @private
@@ -106,16 +115,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'
             });
         });
 
-        // Cancel creating a new series
-        $('body').on('click', '#gh-create-series-cancel', function() {
-            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
-        });
-
         // Toggle the enabled status of the submit button
         $('body').on('keyup', '#gh-series-name', toggleButton);
 
         // Create a new series
         $('body').on('submit', '#gh-new-series-form', createNewSeries);
+
+        // Cancel creating a new series
+        $('body').on('click', '#gh-create-series-cancel', cancelCreateNewSeries);
     };
 
     addBinding();
