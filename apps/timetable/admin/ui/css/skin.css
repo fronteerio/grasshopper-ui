@@ -312,24 +312,20 @@
     display: none;
 }
 
-.gh-batch-edit-events-container .gh-event-type[data-type="Field Trip"]::before {
-    background-color: #7D9D5C;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Lab"]::before {
-    background-color: #FF944D;
-}
-
 .gh-batch-edit-events-container .gh-event-type[data-type="Lecture"]::before {
     background-color: #19A3FF;
 }
 
-.gh-batch-edit-events-container .gh-event-type[data-type="Paper"]::before {
-    background-color: #FF4719;
+.gh-batch-edit-events-container .gh-event-type[data-type="Class"]::before {
+    background-color: #FF944D;
 }
 
 .gh-batch-edit-events-container .gh-event-type[data-type="Seminar"]::before {
     background-color: #92308A;
+}
+
+.gh-batch-edit-events-container .gh-event-type[data-type="Other"]::before {
+    background-color: #FF4719;
 }
 
 /* Terms */
