@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
+define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAPI, constants) {
 
     // Whether to preselect the first module and series or not
     var preselect = false;
@@ -105,6 +105,7 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
             // Reset the preselect value for the next iteration
             preselect = false;
         } else {
+            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
             preselect = true;
         }
     };
