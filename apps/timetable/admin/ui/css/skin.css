@@ -211,10 +211,11 @@
 }
 
 
-/**************/
-/* NEW SERIES */
-/**************/
+/**********************/
+/* NEW SERIES/MODULES */
+/**********************/
 
+#gh-new-module-form .form-group label,
 #gh-new-series-form .form-group label {
     color: #171717;
 }

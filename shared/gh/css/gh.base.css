@@ -208,9 +208,12 @@ label {
     z-index: 10000;
 }
 
-.modal-header,
-.modal-body {
+.modal-header {
     padding: 25px;
+}
+
+.modal-body {
+    padding: 40px 25px 25px 25px;
 }
 
 .modal-footer {
