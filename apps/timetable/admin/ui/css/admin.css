@@ -286,9 +286,9 @@
 }
 
 
-/**************/
-/* NEW SERIES */
-/**************/
+/**********************/
+/* NEW SERIES/MODULES */
+/**********************/
 
 #gh-new-series-form .form-group {
     padding: 5px 20px;
@@ -298,10 +298,12 @@
     padding: 25px;
 }
 
+#gh-new-module-form .form-group label,
 #gh-new-series-form .form-group label {
     font-weight: 400;
 }
 
+#gh-new-module-form .form-group input,
 #gh-new-series-form .form-group input {
     font-size: 28px;
     font-weight: 400;
@@ -309,6 +311,11 @@
     margin: 0 12px;
     padding: 5px 10px 3px 10px;
     width: 55%;
+}
+
+#gh-new-module-form .form-group input {
+    margin: 0;
+    width: 100%;
 }
 
 
