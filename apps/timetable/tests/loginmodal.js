@@ -20,22 +20,10 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
      */
     var openModules = function() {
         casper.waitForSelector('#gh-right-container #gh-header h1', function() {
-            casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
-                // Open the tripos picker
-                casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
-                // Verify that the tripos picker opens and a selection can be made
-                casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
-                    // Click the first item and verify that the part picker becomes available
-                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
-                    casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
-                        // Open the part picker
-                        casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
-                        // Verify that the part picker opens and a selection can be made
-                        casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
-                            // Click the first item
-                            casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
-                        });
-                    });
+            casper.evaluate(function() {
+                require('gh.core').utils.addToState({
+                    'tripos': 5,
+                    'part': 6
                 });
             });
         });

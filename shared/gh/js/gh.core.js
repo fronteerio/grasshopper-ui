@@ -28,6 +28,7 @@ define([
         'jquery',
         'lodash',
         'bootstrap',
+        'jquery-history',
 
         /*!
          * All the Grasshopper API libraries found in /shared/gh/api. By including these here, requirejs will know that the

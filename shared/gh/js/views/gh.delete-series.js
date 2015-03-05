@@ -24,7 +24,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @private
      */
     var removeSeriesFromState = function() {
-        $.bbq.removeState('series');
+        gh.utils.removeFromState(['series', 'module']);
     };
 
     /**
@@ -34,9 +34,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      */
     var removeSeriesFromModule = function() {
         // Get the ID of the series to remove
-        var seriesId = parseInt($.bbq.getState().series, 10);
+        var seriesId = parseInt(History.getState().data.series, 10);
         // Get the ID of the module to remove the series from
-        var moduleId = parseInt($.bbq.getState().module, 10);
+        var moduleId = parseInt(History.getState().data.module, 10);
 
         // Remove the series from the module
         gh.api.orgunitAPI.deleteOrgUnitSeries(moduleId, seriesId, function(err) {
@@ -47,6 +47,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
 
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
+
+            // Remove the series from the navigation
+            $('.list-group-item[data-id="' + seriesId + '"').remove();
 
             // Remove the series from the state
             removeSeriesFromState();
@@ -63,7 +66,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      */
     var deleteSeries = function() {
         // Get the ID of the series to delete
-        var seriesId = parseInt($.bbq.getState().series, 10);
+        var seriesId = parseInt(History.getState().data.series, 10);
 
         // Delete the series
         gh.api.seriesAPI.deleteSeries(seriesId, function(err) {
@@ -74,6 +77,9 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
 
             // Hide the modal
             $('#gh-delete-series-modal').modal('hide');
+
+            // Remove the series from the navigation
+            $('.list-group-item[data-id="' + seriesId + '"').remove();
 
             // Remove the series from the state
             removeSeriesFromState();
@@ -200,8 +206,8 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
      * @private
      */
     var setUpDeleteSeriesModal = function() {
-        var seriesId = parseInt($.bbq.getState().series, 10);
-        var moduleId = parseInt($.bbq.getState().module, 10);
+        var seriesId = parseInt(History.getState().data.series, 10);
+        var moduleId = parseInt(History.getState().data.module, 10);
 
         gh.api.seriesAPI.getSeries(seriesId, true, function(seriesErr, series) {
             if (seriesErr) {

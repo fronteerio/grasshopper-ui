@@ -314,7 +314,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Initialise the calendar
         $(document).trigger('gh.calendar.init', {
             'triposData': triposData,
-            'orgUnitId': $.bbq.getState().module
+            'orgUnitId': History.getState().data.module
         });
 
         // Put the calendar on today's view
@@ -339,18 +339,21 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     var lockGroup = function() {
         // Get the GroupId
         lockedGroupId = $('#gh-modules-container button[data-groupid]').data('groupid');
-        // Lock the group
-        gh.api.groupsAPI.lock(lockedGroupId);
-        // Lock the currently edited group every 60 seconds
-        lockInterval = setInterval(function() {
-            // Only attempt to lock when the batch edit mode is active
-            if ($('#gh-batch-edit-view').is(':visible')) {
-                gh.api.groupsAPI.lock(lockedGroupId);
-            // If batch edit is not active we can unlock the group
-            } else {
-                unlockGroup();
-            }
-        }, 60000);
+        // Only lock the group if the ID is defined
+        if (lockedGroupId) {
+            // Lock the group
+            gh.api.groupsAPI.lock(lockedGroupId);
+            // Lock the currently edited group every 60 seconds
+            lockInterval = setInterval(function() {
+                // Only attempt to lock when the batch edit mode is active
+                if ($('#gh-batch-edit-view').is(':visible')) {
+                    gh.api.groupsAPI.lock(lockedGroupId);
+                // If batch edit is not active we can unlock the group
+                } else {
+                    unlockGroup();
+                }
+            }, 60000);
+        }
     };
 
     /**
@@ -387,7 +390,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         if (!value) {
             return this.revert;
         } else if (this.revert !== value) {
-            var seriesId = parseInt($.bbq.getState()['series'], 10);
+            var seriesId = parseInt(History.getState().data['series'], 10);
             gh.api.seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
@@ -672,7 +675,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
          */
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
-            var seriesId = parseInt($.bbq.getState()['series'], 10);
+            var seriesId = parseInt(History.getState().data['series'], 10);
             gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
@@ -991,69 +994,71 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var loadSeriesEvents = function() {
-        var seriesId = parseInt($.bbq.getState()['series'], 10);
+        var seriesId = parseInt(History.getState().data['series'], 10);
 
         // Get the information about the series
-        gh.api.seriesAPI.getSeries(seriesId, null, function(err, series) {
-            if (err) {
-                return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
-            }
+        if (seriesId) {
+            gh.api.seriesAPI.getSeries(seriesId, null, function(err, series) {
+                if (err) {
+                    return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                }
 
-            // Object used to aggregate the events between pages
-            var events = {
-                'results': []
-            };
+                // Object used to aggregate the events between pages
+                var events = {
+                    'results': []
+                };
 
-            /**
-             * Get the events in a series per page of 25. Calls itself when it feels like there might be more
-             *
-             * @param  {Number}      offset      The paging number of the results to retrieve
-             * @param  {Function}    callback    Standard callback function
-             * @private
-             */
-            var getSeriesEvents = function(offset, callback) {
-                // Get the information about the events in the series
-                gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
-                    if (err) {
-                        return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
-                    }
+                /**
+                 * Get the events in a series per page of 25. Calls itself when it feels like there might be more
+                 *
+                 * @param  {Number}      offset      The paging number of the results to retrieve
+                 * @param  {Function}    callback    Standard callback function
+                 * @private
+                 */
+                var getSeriesEvents = function(offset, callback) {
+                    // Get the information about the events in the series
+                    gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
+                        if (err) {
+                            return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                        }
 
-                    // Aggregate the results
-                    events.results = _.union(events.results, _events.results);
+                        // Aggregate the results
+                        events.results = _.union(events.results, _events.results);
 
-                    // If the length of the Array of _events is 25 there might be other results so
-                    // we increase the offset and fetch again
-                    if (_events.results.length === 25) {
-                        offset = offset + 25;
-                        getSeriesEvents(offset, callback);
-                    } else {
-                        callback();
-                    }
+                        // If the length of the Array of _events is 25 there might be other results so
+                        // we increase the offset and fetch again
+                        if (_events.results.length === 25) {
+                            offset = offset + 25;
+                            getSeriesEvents(offset, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                };
+
+                // Get the first page of events
+                getSeriesEvents(0, function() {
+                    // Unlock the currently locked group
+                    unlockGroup();
+
+                    // Load up the batch edit page and provide the events and series data
+                    $(document).trigger('gh.admin.changeView', {
+                        'name': constants.views.BATCH_EDIT,
+                        'data': {
+                            'events': events,
+                            'series': series
+                        }
+                    });
+
+                    // Lock the currently edited group every 60 seconds
+                    lockGroup();
+
+                    // TODO: Remove this and only trigger when button is clicked/expanded
+                    $(document).trigger('gh.batchdate.setup');
+                    $(document).trigger('gh.batchorganiser.setup');
                 });
-            };
-
-            // Get the first page of events
-            getSeriesEvents(0, function() {
-                // Unlock the currently locked group
-                unlockGroup();
-
-                // Load up the batch edit page and provide the events and series data
-                $(document).trigger('gh.admin.changeView', {
-                    'name': constants.views.BATCH_EDIT,
-                    'data': {
-                        'events': events,
-                        'series': series
-                    }
-                });
-
-                // Lock the currently edited group every 60 seconds
-                lockGroup();
-
-                // TODO: Remove this and only trigger when button is clicked/expanded
-                $(document).trigger('gh.batchdate.setup');
-                $(document).trigger('gh.batchorganiser.setup');
             });
-        });
+        }
     };
 
 

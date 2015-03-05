@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
-    var state = $.bbq.getState() || {};
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], function(gh) {
 
     // Cache the tripos data
     var triposData = {};
@@ -105,7 +104,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
                 if (!err) {
-                    var state = $.param($.bbq.getState());
+                    var state = $.param(History.getState().data);
                     if (state) {
                         return window.location.reload();
                     }

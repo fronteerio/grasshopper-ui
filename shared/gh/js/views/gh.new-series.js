@@ -46,11 +46,13 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'
                 }
                 utils.notification('Series created.', 'The series was successfully created.', 'success');
 
-                // Create a new state object that will take care of opening the new series for us
-                var state = $.bbq.getState();
-                state.module = parentId;
-                state.series = series.id;
-                $.bbq.pushState(state);
+                // Push the selected module and new series in the URL
+                var moduleId = parentId;
+                var seriesId = series.id;
+                gh.utils.addToState({
+                    'module': moduleId,
+                    'series': seriesId
+                });
             });
         });
 

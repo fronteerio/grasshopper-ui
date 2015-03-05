@@ -13,7 +13,10 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
+define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAPI, constants) {
+
+    // Whether to preselect the first module and series or not
+    var preselect = false;
 
     /**
      * Set up the modules of events in the sidebar. Note that context-specific handling should be done
@@ -53,8 +56,14 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
             // Render the series in the sidebar
             utils.renderTemplate($(data.template), {
                 'data': modules.results,
-                'state': $.bbq.getState()
+                'state': History.getState().data,
+                'preselect': preselect
             }, $('#gh-modules-container', $(data.container)));
+
+            // Reset the preselect value for next iteration
+            if (preselect) {
+                preselectSeries();
+            }
 
             // Put focus on the selected series
             $('.gh-series-active').focus();
@@ -70,6 +79,35 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
             expandedIds = _.map(expandedIds, function(id) { return id; });
             utils.localDataStorage().store('expanded', expandedIds);
         });
+    };
+
+    /**
+     * Preselect the first module and first series inside of that module when the modules list has
+     * been rendered in the UI. In case it's not been rendered yet, a flag is set which will make
+     * sure the function is executed again after the list has been rendered.
+     *
+     * @private
+     */
+    var preselectSeries = function() {
+        // Preselect the series if the modules list has been loaded already. If it still
+        // needs to be rendered, set a variable indicating that preselection needs to happen
+        // Get the first available series
+        var $firstSeries = $($('#gh-modules-list li.list-group-item > ul > li:first-child')[0]);
+        // Get the first series' parent module
+        var $firstModule = $($firstSeries.parents('li.list-group-item'));
+
+        // If both module and series are defined, open them up
+        if ($firstModule.length && $firstSeries.length) {
+            utils.addToState({
+                'module': $firstModule.attr('data-id'),
+                'series': $firstSeries.attr('data-id')
+            }, true);
+            // Reset the preselect value for the next iteration
+            preselect = false;
+        } else {
+            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
+            preselect = true;
+        }
     };
 
 
@@ -114,7 +152,7 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
-        // Fetch the id's of the expanded list
+        // Fetch the ID's of the expanded list
         var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
                 'id': $(module).attr('data-id'),
@@ -143,6 +181,8 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
         $(document).on('gh.listview.setup', setUpModules);
         // Refresh the modules list
         $(document).on('gh.listview.refresh', setUpModules);
+        // Select the first module and series in the list
+        $(document).on('gh.listview.preselect', preselectSeries);
     };
 
     addBinding();
