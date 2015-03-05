@@ -271,14 +271,18 @@
 
 .gh-batch-edit-actions-container {
     background: #FFF;
-    border-top-color: #EEE;
+    border-top-color: #BEBEBE;
     -webkit-box-shadow: 0 0px 15px #666;
        -moz-box-shadow: 0 0px 15px #666;
             box-shadow: 0 0px 15px #666;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {
-    color: #999;
+    color: #6B6B6B;
+}
+
+.gh-batch-edit-actions-container #gh-batch-edit-cancel {
+    color: #171717;
 }
 
 .gh-batch-edit-events-container .gh-jeditable-form input {
