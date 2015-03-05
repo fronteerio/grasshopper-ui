@@ -576,7 +576,7 @@ tbody tr:last-child > td.fc-widget-content {
 .list-group .list-group-item .gh-list-description {
     display: table-cell;
     overflow: auto;
-    padding: 15px 5px 10px 0;
+    padding: 18px 5px 10px 0;
     width: 230px;
 }
 
