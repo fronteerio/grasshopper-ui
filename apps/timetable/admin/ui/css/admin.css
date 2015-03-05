@@ -703,7 +703,7 @@
     bottom: 0;
     border-top-width: 1px;
     border-top-style: solid;
-    padding: 20px;
+    padding: 15px 30px;
     position: fixed;
     width: -moz-calc(100% - 320px); /* Firefox */
     width: -o-calc(100% - 320px); /* Opera */
@@ -712,7 +712,12 @@
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {
-    margin: 9px 0 0px 12px;
+    font-weight: 400;
+    margin: 9px 0 0;
+}
+
+.gh-batch-edit-actions-container #gh-batch-edit-cancel {
+    font-weight: 400;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-submit {
