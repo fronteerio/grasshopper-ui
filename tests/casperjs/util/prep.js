@@ -43,6 +43,10 @@ casper.test.begin('Prepare environment for tests', function(test) {
         casper.echo('JavaScript error caught in the page: ' + msg, 'COMMENT');
     });
 
+    casper.on('remote.message', function(msg) {
+        casper.echo('JavaScript error caught in the page: ' + msg, 'COMMENT');
+    });
+
     /**
      * Catch remote callbacks and execute an event when the callback data has a callback ID
      *
