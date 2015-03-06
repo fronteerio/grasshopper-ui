@@ -842,11 +842,29 @@ tr.info .gh-event-delete button {
 /* BORROWING */
 /*************/
 
+#gh-borrow-series-modal .list-group-item .list-group {
+    margin-bottom: 30px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description p {
+    opacity: 0.75;
+}
+
 #gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    padding-bottom: 10px;
-    padding-top: 10px;
+    font-weight: 400;
+    padding: 10px 0 10px 15px;
     position: relative;
     width: 210px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description p {
+    font-size: 15.3px;
+    opacity: 1;
 }
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-list-action,

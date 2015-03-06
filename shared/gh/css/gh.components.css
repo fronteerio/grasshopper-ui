@@ -669,16 +669,9 @@ tbody tr:last-child > td.fc-widget-content {
 
 .chosen-container .chosen-single,
 .chosen-container .chosen-drop {
-    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.30);
-       -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.30);
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.30);
-}
-
-.gh-chosen-inverted .chosen-container .chosen-single,
-.gh-chosen-inverted .chosen-container .chosen-drop {
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.30);
-       -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.30);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.30);
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
 }
 
 .chosen-container .chosen-single span,
