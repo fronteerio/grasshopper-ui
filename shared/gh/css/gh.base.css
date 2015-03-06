@@ -204,16 +204,22 @@ label {
 /* MODALS */
 /**********/
 
+.modal-backdrop.in {
+    filter: alpha(opacity=75);
+    opacity: .75;
+}
+
 .modal {
     z-index: 10000;
 }
 
 .modal-header {
     padding: 25px;
+    position: relative;
 }
 
 .modal-body {
-    padding: 40px 25px 25px 25px;
+    padding: 40px 25px 25px;
 }
 
 .modal-footer {
@@ -223,8 +229,12 @@ label {
 
 .modal-header .close {
     font-weight: 200;
-    opacity: 1;
+    opacity: 0.5;
+    position: absolute;
+    right: 20px;
     text-shadow: none;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .modal-header .close:hover {

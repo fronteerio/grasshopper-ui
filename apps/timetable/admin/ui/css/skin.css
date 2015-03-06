@@ -48,11 +48,6 @@
     background-color: #92308A;
 }
 
-.chosen-container .chosen-single,
-.chosen-container .chosen-drop {
-    border-color: #FFF !important;
-}
-
 
 /***********/
 /* POPOVER */
