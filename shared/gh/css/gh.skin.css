@@ -288,6 +288,16 @@ ul.nav-tabs li.active {
     color: #171717;
 }
 
+.chosen-container .chosen-single,
+.chosen-container .chosen-drop {
+    border-color: #FFF !important;
+}
+
+.gh-chosen-inverted .chosen-container .chosen-single,
+.gh-chosen-inverted .chosen-container .chosen-drop {
+    border-color: #B8B8B8 !important;
+}
+
 .chosen-container .chosen-search input {
     color: #555 !important;
     border-color: #CCC !important;
