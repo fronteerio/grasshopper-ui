@@ -333,13 +333,22 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
     var setView = function(view, data) {
         switch(view) {
             case constants.views.NEW_SERIES:
+                // Show the home button
+                $('.gh-home').show();
+                // Render the new series form
                 renderNewSeriesForm(data);
                 break;
             case constants.views.BATCH_EDIT:
+                // Show the home button
+                $('.gh-home').show();
+                // Render the batch edit
                 renderBatchEdit(data);
                 break;
             // Show the editable parts for the admin by default
             default:
+                // Hide the home button
+                $('.gh-home').hide();
+                // Render the editable parts
                 renderEditableParts();
                 break;
         }
