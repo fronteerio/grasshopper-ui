@@ -319,7 +319,7 @@ ul.nav-tabs li.active {
 .fc-unthemed tbody,
 .fc-unthemed .fc-row,
 .fc-unthemed .fc-popover {
-    border-color: #E0E7E4;
+    border-color: #D4DFDA;
 }
 
 /* Primary toolbar */
@@ -329,7 +329,7 @@ ul.nav-tabs li.active {
 
 .fc-row.fc-widget-header thead tr th,
 .fc-month-view .fc-row.fc-widget-header thead tr th:first-child {
-    border-bottom-color: #E0E7E4;
+    border-bottom-color: #EFF4F2;
 }
 
 .fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today,
@@ -338,21 +338,17 @@ ul.nav-tabs li.active {
 }
 
 .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
-    background-color: #E0E7E4;
+    background-color: #EFF4F2;
 }
 
 .fc-agendaWeek-view td.fc-today,
 .fc-month-view td.fc-today {
-    background-color: #E0E7E4 !important;
+    background-color: #EFF4F2 !important;
 }
 
 .fc-sat,
 .fc-sun {
     background-color: #FFF !important;
-}
-
-.fc-slats .fc-minor td {
-    border-color: #E1E7E4;
 }
 
 tbody .fc-sat,
@@ -388,13 +384,13 @@ tbody .fc-sun {
 
 .fc-month-view .fc-day-number.fc-sun,
 .fc-month-view .fc-day-number.fc-sat {
-    border-left: 1px solid #E0E7E4 !important;
-    border-top: 1px solid #E0E7E4 !important;
+    border-left: 1px solid #D4DFDA !important;
+    border-top: 1px solid #D4DFDA !important;
 }
 
 .fc-month-view .fc-today.fc-day-number {
     background-color: #08525d !important;
-    border-right-color: #E0E7E4 !important;
+    border-right-color: #D4DFDA !important;
     color: #FFF;
 }
 
