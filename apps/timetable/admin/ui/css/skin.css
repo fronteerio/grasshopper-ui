@@ -281,6 +281,7 @@
 }
 
 .gh-batch-edit-events-container .gh-jeditable-form input {
+    background-color: transparent;
     border-left-color: #DDD;
     border-right-color: #DDD;
 }
@@ -494,7 +495,7 @@ ul.as-selections.loading {
 }
 
 .as-selections .as-original input {
-    background-color: #EEE;
+    background-color: #EEE !important;
     border-top-color: #BEBEBE !important;
 }
 
@@ -505,7 +506,7 @@ ul.as-selections li.as-selection-item {
 
 .gh-batch-event-collapsed .as-selections .as-original input,
 .as-selections .as-original:first-child input {
-    background-color: #FFF;
+    background-color: #FFF !important;
 }
 
 .as-selections .as-selection-item {
