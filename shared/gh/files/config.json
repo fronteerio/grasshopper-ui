@@ -5,7 +5,8 @@
             "Class",
             "Seminar",
             "Other"
-        ]
+        ],
+        "default": "Lecture"
     },
     "terms":
         {

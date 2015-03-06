@@ -53,6 +53,31 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     };
 
     /**
+     * Create and return user objects found in the provided $hiddenFields container
+     *
+     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
+     * @return {User[]}                     Array of user objects
+     * @private
+     */
+    var getOrganiserObjects = function($hiddenFields) {
+        // Get all hidden fields in the container
+        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
+        // Cache the Array of organisers to return
+        var organisers = [];
+
+        // Create a user object for each hidden field in the container
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push({
+                'displayName': hiddenField.value,
+                'id': $(hiddenField).attr('data-id')
+            });
+        });
+
+        // Return the Array of user objects
+        return organisers;
+    };
+
+    /**
      * Add a new event row to the table and initialise the editable fields in it
      *
      * @private
@@ -62,17 +87,34 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
-        eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'displayName': $('.gh-jeditable-series-title').text(),
-            'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
-            'isNew': true, // Used in the template to know this one needs special handling
-            'location': '',
-            'notes': 'Lecture',
-            'organisers': [],
-            'selected': true,
-            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
-            'tempId': utils.generateRandomString() // The actual ID hasn't been generated yet
-        };
+
+        // If an event was already added to the term, clone that event to the new event
+        var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
+        if ($lastEventInTerm.length) {
+            eventObj.ev = data && data.eventObj ? data.eventObj : {
+                'displayName': $lastEventInTerm.find('.gh-event-description').text(),
+                'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').utc().format(),
+                'location': $lastEventInTerm.find('.gh-event-location').text(),
+                'notes': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default,
+                'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
+                'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').utc().format(),
+            };
+        // If no events were previously added to the term, create a default event object
+        } else {
+            eventObj.ev = data && data.eventObj ? data.eventObj : {
+                'displayName': $('.gh-jeditable-series-title').text(),
+                'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
+                'location': '',
+                'notes': gh.config.events.default,
+                'organisers': [],
+                'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
+            };
+        }
+
+        // Add common properties to the event object
+        eventObj.ev['isNew'] = true; // Used in the template to know this one needs special handling
+        eventObj.ev['selected'] = true; // Select and highlight added events straight away
+        eventObj.ev['tempId'] = utils.generateRandomString(); // The actual ID hasn't been generated yet
         eventObj['utils'] = utils;
 
         // Append a new event row
