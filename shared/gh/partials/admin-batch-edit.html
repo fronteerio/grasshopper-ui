@@ -91,13 +91,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <% _.each(term.events, function(ev) { %>
-                                <%= _.partial('admin-batch-edit-event-row', {
-                                    'ev': ev,
-                                    'gh': gh,
-                                    'utils': gh.utils
-                                }) %>
-                            <% }); %>
+                                <tr class="gh-batch-edit-events-container-empty" <% if (term.events.length) { %>style="display: none;"<% } %>>
+                                    <td colspan="7">
+                                        <p>No events in <%- term.name %> yet</p>
+                                        <button type="button" class="btn btn-default gh-btn-secondary gh-new-events"><i class="fa fa-plus-square"></i> Add events</button>
+                                    </td>
+                                </tr>
+                                <% _.each(term.events, function(ev) { %>
+                                    <%= _.partial('admin-batch-edit-event-row', {
+                                        'ev': ev,
+                                        'gh': gh,
+                                        'utils': gh.utils
+                                    }) %>
+                                <% }); %>
                             </tbody>
                         </table>
                     </div>

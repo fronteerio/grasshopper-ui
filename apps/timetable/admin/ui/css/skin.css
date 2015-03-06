@@ -338,6 +338,11 @@
     background-color: #FFF !important;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty {
+    background-color: #F5F5F5;
+    color: #999;
+}
+
 tr.info .gh-event-delete button i {
     color: #4D4D4D;
 }

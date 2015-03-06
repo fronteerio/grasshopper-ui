@@ -675,6 +675,20 @@
     padding: 0 0 0 8px;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot .gh-batch-edit-events-container-empty {
+    display: none !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty td {
+    padding: 20px !important;
+    text-align: center;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     font-size: 16px;

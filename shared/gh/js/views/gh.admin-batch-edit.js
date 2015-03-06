@@ -24,6 +24,32 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     ///////////////
 
     /**
+     * Hide the empty term description container. The container will only be hidden if there are events left in the term
+     *
+     * @param {String}    term    The term for which to hide the empty term description container
+     * @private
+     */
+    var hideEmptyTermDescription = function(term) {
+        // If events are found in the term, hide the empty description container
+        if ($('.gh-batch-edit-events-container[data-term="' + term + '"] tbody tr:visible').length) {
+            $('.gh-batch-edit-events-container[data-term="' + term + '"] .gh-batch-edit-events-container-empty').hide();
+        }
+    };
+
+    /**
+     * Show the empty term description container. The container will only be shown if no events are left in the term
+     *
+     * @param {String}    term    The term for which to show the empty term description container
+     * @private
+     */
+    var showEmptyTermDescription = function(term) {
+        // If no events are found in the term, show the empty term description container
+        if (!$('.gh-batch-edit-events-container[data-term="' + term + '"] tbody tr:visible').length) {
+            $('.gh-batch-edit-events-container[data-term="' + term + '"] .gh-batch-edit-events-container-empty').show();
+        }
+    };
+
+    /**
      * Fade the colourisation of a row over 2 seconds and remove the `gh-fade` class
      * after the animation completes
      *
@@ -80,6 +106,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     /**
      * Add a new event row to the table and initialise the editable fields in it
      *
+     * @param {Event}     ev      Standard jQuery event
+     * @param {Object}    data    Data object containing the event object to create and its container
      * @private
      */
     var addNewEventRow = function(ev, data) {
@@ -87,6 +115,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
+
+        // Hide the empty term description
+        hideEmptyTermDescription(termName);
 
         // If an event was already added to the term, clone that event to the new event
         var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
@@ -128,6 +159,29 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     };
 
     /**
+     * Add as many new rows as it takes to fill up a term
+     *
+     * @param {Event}    ev    Standard jQuery event
+     * @private
+     */
+    var addNewEventRows = function(ev) {
+        var termLabel = $(this).closest('.gh-batch-edit-events-container').attr('data-term');
+        // Get the term from the configuration
+        var term = _.find(gh.config.terms[gh.config.academicYear], function(term) {
+            return term.label.toLowerCase() === termLabel.toLowerCase();
+        });
+        // Get the number of weeks in the term
+        var weeksInTerm = gh.utils.getWeeksInTerm(term);
+        // Add a new event row for every week in the term
+        for (weeksInTerm; weeksInTerm !== 0; weeksInTerm--) {
+            // Add new event rows
+            addNewEventRow(ev, {
+                'eventContainer': $(this).closest('.gh-batch-edit-events-container').find('tbody'),
+            });
+        }
+    };
+
+    /**
      * Delete an event from the series
      *
      * @private
@@ -136,12 +190,18 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Only soft delete the event when it hasn't been created in the first place. If the
         // row has no 'eventid' data attribute it shouldn't be deleted from the db
         var $row = $(this).closest('tr');
+        var termLabel = $row.closest('.gh-batch-edit-events-container').attr('data-term');
         if ($row.data('eventid')) {
-            $row.addClass('gh-event-deleted').fadeOut(200);
+            $row.addClass('gh-event-deleted').fadeOut(200, function() {
+                // Show the empty term description
+                showEmptyTermDescription(termLabel);
+            });
             toggleSubmit();
         } else {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 $row.remove();
+                // Show the empty term description
+                showEmptyTermDescription(termLabel);
             });
         }
         // Let other components know that an event was deleted
@@ -1134,6 +1194,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $(document).on('gh.batchedit.addevent', addNewEventRow);
+        $('body').on('click', '.gh-new-events', addNewEventRows);
         $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
