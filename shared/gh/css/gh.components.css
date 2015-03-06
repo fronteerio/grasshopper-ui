@@ -213,7 +213,7 @@
     font-size: 16px;
     font-weight: 400;
     height: 40px;
-    vertical-align: middle;
+    padding-top: 9px;
 }
 
 .fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today, .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
@@ -239,7 +239,7 @@
 }
 
 .fc-slats .fc-minor td {
-    border-top-style: dashed;
+    border: none !important;
 }
 
 .fc td.fc-today {
