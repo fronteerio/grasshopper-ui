@@ -341,14 +341,6 @@ ul.nav-tabs li.active {
     background-color: #E0E7E4;
 }
 
-.fc-month-view .fc-bg td.fc-today:before {
-    border-top-color: #414141;
-}
-
-.fc-month-view td.fc-today {
-    border-top-color: #171717 !important;
-}
-
 .fc-agendaWeek-view td.fc-today,
 .fc-month-view td.fc-today {
     background-color: #E0E7E4 !important;
@@ -392,6 +384,22 @@ tbody .fc-sun {
 
 .fc-unthemed .fc-today {
     background-color: transparent;
+}
+
+.fc-month-view .fc-day-number.fc-sun,
+.fc-month-view .fc-day-number.fc-sat {
+    border-left: 1px solid #E0E7E4 !important;
+    border-top: 1px solid #E0E7E4 !important;
+}
+
+.fc-month-view .fc-today.fc-day-number {
+    background-color: #08525d !important;
+    border-right-color: #E0E7E4 !important;
+    color: #FFF;
+}
+
+.fc-month-view .fc-bg td.fc-today:before {
+    border-top-color: #414141;
 }
 
 /* Export calendar */

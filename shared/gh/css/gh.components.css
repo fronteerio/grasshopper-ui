@@ -220,22 +220,14 @@
     font-weight: 600;
 }
 
-.fc-month-view td.fc-today {
-    border-top-style: solid !important;
-    border-top-width: 6px;
-}
-
-.fc-month-view .fc-bg td.fc-today:before {
-    border-top-width: 6px;
-    border-top-style: solid;
-    content: "";
-    width: 100%;
-    position: absolute;
+.fc-month-view .fc-today.fc-day-number {
+    border-right-style: solid !important;
+    border-right-width: 1px !important;
 }
 
 .fc-ltr .fc-basic-view .fc-day-number,
 .fc-ltr .fc-basic-view .fc-today.fc-day-number {
-    padding: 8px 8px 8px 11px;
+    padding: 10px 8px 6px 11px;
 }
 
 .fc-ltr .fc-basic-view .fc-day-number {
@@ -244,7 +236,6 @@
 
 .fc-ltr .fc-basic-view .fc-today.fc-day-number {
     font-weight: bold;
-    padding-top: 5px;
 }
 
 .fc-slats .fc-minor td {
