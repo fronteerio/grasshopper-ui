@@ -638,8 +638,8 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
     height: auto;
     overflow: visible;
-    padding-bottom: 0px;
-    padding-top: 7px;
+    padding-bottom: 4px;
+    padding-top: 3px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title] {
@@ -692,16 +692,14 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form {
-    margin: -8px -12px;
+    margin: 0 0 -8px -10px;
     height: 30px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form input {
+    background-color: transparent;
     border: none;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-style: solid;
-    border-right-width: 1px;
+    height: 31px !important;
     padding: 0 10px;
 }
 
@@ -737,7 +735,7 @@
 
 /* Event type */
 .gh-batch-edit-events-container .gh-jeditable-form select {
-    height: 40px;
+    height: 34px;
 }
 
 .gh-batch-edit-events-container .gh-event-type::before {
