@@ -298,14 +298,17 @@
     border-color: #62326E;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+    background-color: transparent;
+    color: #BEBEBE;
+}
+
 /* Event type */
 .gh-batch-edit-events-container .gh-event-type::before {
     background-color: #555;
     color: #FFF;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-first=""]::before {
-    display: none;
 }
 
 .gh-batch-edit-events-container .gh-event-type[data-type="Lecture"]::before {
