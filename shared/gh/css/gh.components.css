@@ -465,18 +465,19 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 
-/*********/
-/* EMPTY */
-/*********/
+/**************/
+/* EMPTY PART */
+/**************/
 
 #gh-empty {
+    margin-left: -320px;
     text-align: center;
 }
 
 .gh-empty-icons {
+    height: 200px;
     margin-bottom: 30px;
     margin-top: 70px;
-    height: 200px;
     position: relative;
 }
 
@@ -489,14 +490,18 @@ tbody tr:last-child > td.fc-widget-content {
     margin-left: -100px;
 }
 
-.gh-empty-icons .fa-mail-forward {
+.gh-empty-icons .fa-share-square-o {
     font-size: 100px;
-    margin-left: -58px;
-    margin-top: 80px;
+    margin-left: -46px;
+    margin-top: 85px;
 }
 
 .gh-empty-main {
     font-size: 26px;
+    font-weight: 400;
+}
+
+.gh-empty-description {
     font-weight: 400;
 }
 

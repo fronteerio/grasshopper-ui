@@ -81,6 +81,11 @@ label {
     z-index: 3;
 }
 
+#gh-page-container #gh-left-container.collapsed {
+    height: 215px;
+    overflow: hidden;
+}
+
 #gh-page-container #gh-left-container #gh-header-logo img {
     -webkit-box-sizing: initial;
        -moz-box-sizing: initial;

@@ -48,7 +48,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
                 utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
             }
 
-            // Retrieve the organisational unit information for the modules
             $(document).trigger('gh.part.selected', {
                 'partId': partId,
                 'modules': modules,

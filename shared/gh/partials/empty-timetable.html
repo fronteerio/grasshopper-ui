@@ -1,9 +1,9 @@
 <div class="gh-empty-icons clearfix">
     <i class="fa fa-calendar-o"></i>
-    <i class="fa fa-mail-forward"></i>
+    <i class="fa fa-share-square-o"></i>
 </div>
 <p class="gh-empty-main">Unfortunately this is not in Timetable yet</p>
-<p>Click below to access it, and ask you departmental administrator about making it available via Timetable</p>
-<% if (!data.metadata.external) { %>
-    <button id="gh-empty-access" class="btn btn-default" data-external="<%- data.metadata.external %>">Access timetable</button>
+<p class="gh-empty-description">Click below to access it, and ask you departmental administrator about making it available via Timetable</p>
+<% if (data.metadata.external) { %>
+    <a href="<%- data.metadata.external %>" target="_blank" id="gh-empty-access" class="btn btn-default">Access timetable</a>
 <% } %>
