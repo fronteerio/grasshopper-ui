@@ -296,6 +296,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
     /**
      * Set the document title to the currently selected date range
+     *
+     * @private
      */
     var setDocumentTitle = function() {
         if (!$('body').data('isadminui')) {
