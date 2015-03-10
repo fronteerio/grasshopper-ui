@@ -82,12 +82,12 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
         if (!data.modules.results.length) {
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
                 gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
-                $('#gh-left-container').addClass('minimised');
+                $('#gh-left-container').addClass('gh-minimised');
                 $('#gh-main').hide();
                 $('#gh-empty').show();
             });
         } else {
-            $('#gh-left-container').removeClass('minimised');
+            $('#gh-left-container').removeClass('gh-minimised');
             $('#gh-empty').hide();
             $('#gh-main').show();
         }

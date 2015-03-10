@@ -81,7 +81,7 @@ label {
     z-index: 3;
 }
 
-#gh-page-container #gh-left-container.minimised {
+#gh-page-container #gh-left-container.gh-minimised {
     height: 215px;
     overflow: hidden;
 }
