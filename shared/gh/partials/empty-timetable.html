@@ -1,0 +1,9 @@
+<div class="gh-empty-icons clearfix">
+    <i class="fa fa-calendar-o"></i>
+    <i class="fa fa-mail-forward"></i>
+</div>
+<p class="gh-empty-main">Unfortunately this is not in Timetable yet</p>
+<p>Click below to access it, and ask you departmental administrator about making it available via Timetable</p>
+<% if (!data.metadata.external) { %>
+    <button id="gh-empty-access" class="btn btn-default" data-external="<%- data.metadata.external %>">Access timetable</button>
+<% } %>

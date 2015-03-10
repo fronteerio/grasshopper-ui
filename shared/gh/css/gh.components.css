@@ -465,6 +465,47 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 
+/*********/
+/* EMPTY */
+/*********/
+
+#gh-empty {
+    text-align: center;
+}
+
+.gh-empty-icons {
+    margin-bottom: 30px;
+    margin-top: 70px;
+    height: 200px;
+    position: relative;
+}
+
+.gh-empty-icons .fa {
+    position: absolute;
+}
+
+.gh-empty-icons .fa-calendar-o {
+    font-size: 200px;
+    margin-left: -100px;
+}
+
+.gh-empty-icons .fa-mail-forward {
+    font-size: 100px;
+    margin-left: -58px;
+    margin-top: 80px;
+}
+
+.gh-empty-main {
+    font-size: 26px;
+    font-weight: 400;
+}
+
+#gh-empty-access {
+    margin-top: 30px;
+    padding: 20px 25px;
+}
+
+
 /**************/
 /* LIST GROUP */
 /**************/

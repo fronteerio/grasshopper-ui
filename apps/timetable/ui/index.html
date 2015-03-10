@@ -55,6 +55,7 @@
                     <div id="gh-header"><!-- --></div>
                     <div id="gh-subheader"><!-- --></div>
                 </div>
+                <div id="gh-empty" style="display: none; margin-left: -320px;"><!-- --></div>
                 <main id="gh-main"><!-- --></main>
             </div>
             <div class="clearfix"></div>
@@ -109,6 +110,10 @@
 
         <script id="gh-event-template" type="text/template">
             <%= _.partial('event', {'data': data}) %>
+        </script>
+
+        <script id="gh-empty-template" type="text/template">
+            <%= _.partial('empty-timetable', {'data': data}) %>
         </script>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>

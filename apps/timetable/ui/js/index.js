@@ -72,6 +72,38 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
     };
 
     /**
+     * Display the appropriate view depending on the state of the selected part
+     *
+     * @param  {Object}    ev      Standard jQuery event
+     * @param  {Object}    data
+     * @private
+     */
+    var onPartSelected = function(evt, data) {
+        if (!data.modules.results.length) {
+            gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
+                gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
+                $('#gh-left-container').css({'height': '215px', 'overflow': 'hidden'});
+                $('#gh-main').hide();
+                $('#gh-empty').show();
+            });
+        } else {
+            $('#gh-left-container').css({'height': '100%', 'overflow': 'auto'});
+            $('#gh-empty').hide();
+            $('#gh-main').show();
+        }
+    };
+
+    /**
+     * Open the external timetable
+     *
+     * @private
+     */
+    var openExternalTimetable = function() {
+        var url = $(this).attr('data-external');
+        window.open(url, '_blank');
+    };
+
+    /**
      * Render the login modal dialog used to prompt anonymous users to sign in
      *
      * @private
@@ -152,10 +184,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-
-        $(document).on('gh.calendar.ready', function() {
-            setUpCalendar();
-        });
+        $('body').on('click', '#gh-empty-access', openExternalTimetable);
+        $(document).on('gh.calendar.ready', setUpCalendar);
+        $(document).on('gh.part.selected', onPartSelected);
     };
 
     /**

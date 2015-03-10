@@ -31,54 +31,49 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         data.container = data.container || $('body');
         // Assign a default template if it's not defined in the data
         data.template = data.template || $('#gh-modules-template');
+        // Cache the modules
+        var modules = data.modules;
 
-        // Retrieve the organisational unit information for the modules
-        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, null, data.partId, ['module'], function(err, modules) {
-            if (err) {
-                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
-            }
-
-            // Sort the data before displaying it
-            modules.results.sort(utils.sortByDisplayName);
-            $.each(modules.results, function(i, module) {
-                module.Series.sort(utils.sortByDisplayName);
-            });
-
-            // Decorate the modules with their expanded status if LocalStorage is supported
-            var expandedIds = [];
-            if (Storage) {
-                expandedIds = _.compact(utils.localDataStorage().get('expanded'));
-                _.each(modules.results, function(module) {
-                    module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
-                });
-            }
-
-            // Render the series in the sidebar
-            utils.renderTemplate($(data.template), {
-                'data': modules.results,
-                'state': History.getState().data,
-                'preselect': preselect
-            }, $('#gh-modules-container', $(data.container)));
-
-            // Reset the preselect value for next iteration
-            if (preselect) {
-                preselectSeries();
-            }
-
-            // Put focus on the selected series
-            $('.gh-series-active').focus();
-
-            // Clear local storage
-            utils.localDataStorage().remove('expanded');
-
-            // Add the current expanded module(s) back to the local storage
-            expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
-                return $(value).attr('data-id');
-            });
-
-            expandedIds = _.map(expandedIds, function(id) { return id; });
-            utils.localDataStorage().store('expanded', expandedIds);
+        // Sort the data before displaying it
+        modules.results.sort(utils.sortByDisplayName);
+        $.each(modules.results, function(i, module) {
+            module.Series.sort(utils.sortByDisplayName);
         });
+
+        // Decorate the modules with their expanded status if LocalStorage is supported
+        var expandedIds = [];
+        if (Storage) {
+            expandedIds = _.compact(utils.localDataStorage().get('expanded'));
+            _.each(modules.results, function(module) {
+                module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
+            });
+        }
+
+        // Render the series in the sidebar
+        utils.renderTemplate($(data.template), {
+            'data': modules.results,
+            'state': History.getState().data,
+            'preselect': preselect
+        }, $('#gh-modules-container', $(data.container)));
+
+        // Reset the preselect value for next iteration
+        if (preselect) {
+            preselectSeries();
+        }
+
+        // Put focus on the selected series
+        $('.gh-series-active').focus();
+
+        // Clear local storage
+        utils.localDataStorage().remove('expanded');
+
+        // Add the current expanded module(s) back to the local storage
+        expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
+            return $(value).attr('data-id');
+        });
+
+        expandedIds = _.map(expandedIds, function(id) { return id; });
+        utils.localDataStorage().store('expanded', expandedIds);
     };
 
     /**
@@ -178,7 +173,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Toggle a list item
         $('body').on('click', '.gh-toggle-list', toggleList);
         // Set up the modules list
-        $(document).on('gh.listview.setup', setUpModules);
+        $(document).on('gh.part.selected', setUpModules);
         // Refresh the modules list
         $(document).on('gh.listview.refresh', setUpModules);
         // Select the first module and series in the list

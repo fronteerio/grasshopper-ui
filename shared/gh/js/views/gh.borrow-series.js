@@ -28,7 +28,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
 
-        $(document).trigger('gh.listview.setup', {
+        $(document).trigger('gh.part.selected', {
             'partId': partId,
             'container': $('#gh-borrow-series-modal'),
             'template': $('#gh-borrow-series-modules-template')

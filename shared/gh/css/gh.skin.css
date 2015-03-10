@@ -203,6 +203,19 @@ ul.nav-tabs li.active {
 }
 
 
+/*********/
+/* EMPTY */
+/*********/
+
+.gh-empty-icons .fa-calendar-o {
+    color: #CCC;
+}
+
+.gh-empty-icons .fa-mail-forward {
+    color: #07525D;
+}
+
+
 /**************/
 /* LIST GROUP */
 /**************/
