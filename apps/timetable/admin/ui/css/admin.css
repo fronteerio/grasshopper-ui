@@ -774,7 +774,7 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
-    content: 'Add type' !important;
+    content: 'Add type';
 }
 
 .gh-batch-edit-events-container .gh-event-type.gh-editing::before {
