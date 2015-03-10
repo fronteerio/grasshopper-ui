@@ -221,8 +221,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         return _.find(terms, function(term) {
 
             // Convert the dates from ISO to UNIX for easier calculation
-            var startDate = convertISODatetoUnixDate(moment(term.start).utc().format());
-            var endDate = convertISODatetoUnixDate(moment(term.end).utc().format());
+            var startDate = convertISODatetoUnixDate(moment(term.start).toISOString());
+            var endDate = convertISODatetoUnixDate(moment(term.end).toISOString());
 
             // Only use an offset for the week calculation when specified
             if (!usePrecise) {
@@ -231,7 +231,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
                 // E.g. A term starts on Tuesday 13th February, but the academic weeks always start on a Thursday.
                 //      This means that the first academic week of that term starts on the 13th and ends on the 14th.
                 //      The second academic week will start on Thursday 15th February.
-                var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).utc().format());
+                var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).toISOString());
                 /* istanbul ignore else */
                 if (date < startDate && datePlus >= startDate) {
                     date = datePlus;
@@ -567,8 +567,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             if (name !== 'OT') {
                 _terms.push({
                     'name': name,
-                    'start': moment(term.start).utc().format(),
-                    'end': moment(term.end).utc().format(),
+                    'start': moment(term.start).toISOString(),
+                    'end': moment(term.end).toISOString(),
                     'events': term.events
                 });
             }
@@ -580,7 +580,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             _.each(terms['OT'].events, function(event) {
                 _terms.push({
                     'name': 'OT',
-                    'start': moment(event.start).utc().format(),
+                    'start': moment(event.start).toISOString(),
                     'events': [event]
                 });
             });

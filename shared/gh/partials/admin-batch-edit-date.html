@@ -12,12 +12,6 @@
     <!-- Show the number of weeks that are selected -->
     <small><%- weeksInUse.length %> week<% if (weeksInUse.length !== 1) { %>s<% } %> in selection</small>
     <div id="gh-batch-edit-date-picker">
-        <% var weekUsed = _.indexOf(weeksInUse, 0) !== -1 %>
-        <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
-            <label>
-                <input type="checkbox" value="0" <% if (weekUsed) { %>checked<% } %>>OT <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
-            </label>
-        </div>
         <% var totalWeeks = numberOfWeeks%>
         <!-- Keep rendering new weeks until the amount of weeks left to render is 0 -->
         <% while (numberOfWeeks) { %>
@@ -31,6 +25,12 @@
                 </label>
             </div>
         <% } %>
+        <% var weekUsed = _.indexOf(weeksInUse, 0) !== -1 %>
+        <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } else { %> hide<% } %>">
+            <label>
+                <input type="checkbox" value="0" <% if (weekUsed) { %>checked<% } %>>OT <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
+            </label>
+        </div>
     </div>
     <% _.each(daysInUse, function(dayInUse, index) { %>
         <div class="form-inline gh-batch-edit-time-picker">

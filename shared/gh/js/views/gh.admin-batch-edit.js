@@ -124,21 +124,21 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         if ($lastEventInTerm.length) {
             eventObj.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
-                'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').utc().format(),
+                'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': $lastEventInTerm.find('.gh-event-location').text(),
                 'notes': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default,
                 'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
-                'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').utc().format(),
+                'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
             };
         // If no events were previously added to the term, create a default event object
         } else {
             eventObj.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
+                'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
                 'location': '',
                 'notes': gh.config.events.default,
                 'organisers': [],
-                'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
+                'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
             };
         }
 
@@ -156,6 +156,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         toggleSubmit();
         // Enable batch editing of dates
         toggleBatchEditDateEnabled();
+        // Trigger a change event on the newly added row to update the batch edit
+        $eventContainer.find('.gh-select-single').trigger('change');
     };
 
     /**

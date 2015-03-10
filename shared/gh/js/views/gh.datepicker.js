@@ -93,8 +93,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var entries = getFormValues();
 
         // Generate the start and end dates
-        var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).utc().format();
-        var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).utc().format();
+        var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).toISOString();
+        var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).toISOString();
 
         // Return the full dates
         return {

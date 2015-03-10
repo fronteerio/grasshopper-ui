@@ -37,6 +37,8 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             'termsInUse': termsInUse,
             'daysInUse': daysInUse
         }, $('#gh-batch-edit-date-container'));
+
+        $('#gh-batch-edit-time').removeAttr('disabled');
     };
 
     /**
@@ -47,6 +49,8 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
     var buildBatchDateObject = function() {
         // Get the checked events from the batch edit container
         var $rows = $('.gh-batch-edit-events-container tr.info:visible:not(".gh-event-deleted")');
+        // Get the checked terms from the batch edit container
+        var $terms = $('.gh-batch-edit-events-container thead .gh-select-all:checked');
         // Get the maximum number of weeks in a term
         var maxNumberOfWeeks = getMaxNumberOfWeeks();
         // Get the weeks that are in use by the selection
@@ -56,7 +60,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         // Get the unique days in the week to render time pickers for
         var daysInUse = getDaysInUse($rows);
         // Render the batch date editor if at least one week was selected
-        if (weeksInUse.length) {
+        if (weeksInUse.length || $terms.length) {
             renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse);
         // If no weeks where selected, close the batch date edit header
         } else {
@@ -94,11 +98,15 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
     };
 
     /**
-     * Add another day to the terms based on the selection of weeks
+     * Add another day to the terms based on the selection of weeks. If a day has already been added it won't be
+     * added again unless `forceAdd` has been set to `true`
      *
+     * @param {Boolean}    [forceAdd]    Whether to force adding another day. Defaults to `false`
+     * 
      * @private
      */
-    var addAnotherDay = function() {
+    var addAnotherDay = function(forceAdd) {
+
         // Default the container to look for selected weeks in
         var $weeks = $('#gh-batch-edit-date-picker input:checked');
 
@@ -107,46 +115,55 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             // For each selected week, add events
             _.each($weeks, function(chk) {
                 // For each row of days, add the event
-                _.each($('.gh-batch-edit-time-picker'), function($timePickerContainer) {
-                    // Get the week number
-                    var eventWeek = parseInt(chk.value, 10);
-                    // Get the day number
-                    var eventDay = parseInt($('#gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
-                    // Get the date by week and day
-                    var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
+                var $days = $('.gh-batch-edit-time-picker');
+                if ($days.length) {
+                    _.each($days, function($timePickerContainer) {
+                        // Get the week number
+                        var eventWeek = parseInt(chk.value, 10);
+                        // Get the day number
+                        var eventDay = parseInt($('#gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
+                        // Get the date by week and day
+                        var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
 
-                    var eventYear = dateByWeekAndDay.getFullYear();
-                    var eventMonth = dateByWeekAndDay.getMonth();
-                    eventDay = dateByWeekAndDay.getDate();
-                    var eventStartHour = parseInt($('#gh-batch-edit-hours-start', $timePickerContainer).val(), 10);
-                    var eventStartMinute = parseInt($('#gh-batch-edit-minutes-start', $timePickerContainer).val(), 10);
-                    var eventEndHour = parseInt($('#gh-batch-edit-hours-end', $timePickerContainer).val(), 10);
-                    var eventEndMinute = parseInt($('#gh-batch-edit-minutes-end', $timePickerContainer).val(), 10);
+                        var eventYear = dateByWeekAndDay.getFullYear();
+                        var eventMonth = dateByWeekAndDay.getMonth();
+                        eventDay = dateByWeekAndDay.getDate();
+                        var eventStartHour = parseInt($('#gh-batch-edit-hours-start', $timePickerContainer).val(), 10);
+                        var eventStartMinute = parseInt($('#gh-batch-edit-minutes-start', $timePickerContainer).val(), 10);
+                        var eventEndHour = parseInt($('#gh-batch-edit-hours-end', $timePickerContainer).val(), 10);
+                        var eventEndMinute = parseInt($('#gh-batch-edit-minutes-end', $timePickerContainer).val(), 10);
 
-                    // Create the start date of the event
-                    var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
-                    // Create the end date of the event
-                    var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+                        // Create the start date of the event
+                        var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
+                        // Create the end date of the event
+                        var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
 
-                    // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                    var alreadyAdded = $('.info .gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(startDate.utc().format()) + '"]').length;
-                    if (!alreadyAdded) {
-                        $(document).trigger('gh.batchedit.addevent', {
-                            'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
-                            'eventObj': {
-                                'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
-                                'isNew': true, // Used in the template to know this one needs special handling
-                                'selected': true,
-                                'displayName': $('.gh-jeditable-series-title').text(),
-                                'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
-                                'location': '',
-                                'notes': 'Lecture',
-                                'organisers': null,
-                                'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
-                            }
-                        });
-                    }
-                });
+                        // Send off an event that will be picked up by the batch edit and add the rows to the terms
+                        var alreadyAdded = $('.info .gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(startDate.toISOString()) + '"]:visible').length;
+                        if (!alreadyAdded || forceAdd) {
+                            $(document).trigger('gh.batchedit.addevent', {
+                                'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
+                                'eventObj': {
+                                    'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
+                                    'isNew': true, // Used in the template to know this one needs special handling
+                                    'selected': true,
+                                    'displayName': $('.gh-jeditable-series-title').text(),
+                                    'end': gh.utils.convertUnixDatetoISODate(moment(endDate).toISOString()),
+                                    'location': '',
+                                    'notes': 'Lecture',
+                                    'organisers': null,
+                                    'start': gh.utils.convertUnixDatetoISODate(moment(startDate).toISOString())
+                                },
+                                'startDate': startDate
+                            });
+                        }
+                    });
+                } else {
+                    // If no days are shown, the term is empty, add a new default event
+                    $(document).trigger('gh.batchedit.addevent', {
+                        'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody')
+                    });
+                }
             });
         });
     };
@@ -278,15 +295,15 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                 // Get the date the event finishes on
                 var eventEnd = new Date($row.find('.gh-event-date').attr('data-end'));
                 // Get which week of the term this event takes place in
-                var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(eventStart).utc().format()));
+                var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(eventStart).toISOString()));
                 // Get the name of the term this date is in
                 var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
                 // Get the date the event would be on after the change
                 var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
 
                 // Create the new date for the row
-                eventStart = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventStartHour, eventStartMinute, 0, 0]).utc().format();
-                eventEnd = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventEndHour, eventEndMinute, 0, 0]).utc().format();
+                eventStart = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventStartHour, eventStartMinute, 0, 0]).toISOString();
+                eventEnd = moment([newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), eventEndHour, eventEndMinute, 0, 0]).toISOString();
 
                 // Re-render the date fields
                 var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
@@ -373,11 +390,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             }, 1);
         });
 
-        $('body').on('change', '.gh-select-all', function() {
-            if ($('.gh-select-single:checked').length) {
-                buildBatchDateObject();
-            }
-        });
+        $('body').on('change', '.gh-select-all', buildBatchDateObject);
 
         // Week checkbox related events
         $('body').on('change', '#gh-batch-edit-date-picker-container input', batchEditDateWeeks);
@@ -395,7 +408,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         $('body').on('change', '#gh-batch-edit-minutes-end', batchEditTime);
 
         // Adding a new day
-        $('body').on('click', '.gh-batch-edit-date-add-day', addAnotherDay);
+        $('body').on('click', '.gh-batch-edit-date-add-day', function() {
+            addAnotherDay(true);
+        });
 
         // Removing events
         $(document).on('gh.event.deleted', buildBatchDateObject);
