@@ -48,6 +48,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
                 utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
             }
 
+            // Trigger an event when a part has been selected, persisting the part ID and the modules
             $(document).trigger('gh.part.selected', {
                 'partId': partId,
                 'modules': modules,
