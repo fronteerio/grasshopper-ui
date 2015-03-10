@@ -1,7 +1,7 @@
 <% var termNames = _.pluck(termsInUse, 'name'); %>
 
 <div id="gh-batch-edit-date-term-description">
-    <small>Selected</small>
+    <small>Selected terms</small>
     <h2>
     <% _.each(termsInUse, function(term) { %>
         <%- term.label %><br/>
@@ -10,7 +10,7 @@
 </div>
 <div id="gh-batch-edit-date-picker-container" data-terms="<%- termNames.join(',') %>">
     <!-- Show the number of weeks that are selected -->
-    <small><%- weeksInUse.length %> week<% if (weeksInUse.length !== 1) { %>s<% } %> selected</small>
+    <small><%- weeksInUse.length %> week<% if (weeksInUse.length !== 1) { %>s<% } %> in selection</small>
     <div id="gh-batch-edit-date-picker">
         <% var weekUsed = _.indexOf(weeksInUse, 0) !== -1 %>
         <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
@@ -27,7 +27,7 @@
             <% var weekUsed = _.indexOf(weeksInUse, weekNumber) !== -1 %>
             <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
                 <label>
-                    <input type="checkbox" value="<%- weekNumber %>" <% if (weekUsed) { %>checked<% } %>><%- gh.utils.addLeadingZero(weekNumber) %> <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
+                    <input type="checkbox" value="<%- weekNumber %>" <% if (weekUsed) { %>checked<% } %>>W<%- weekNumber %> <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
                 </label>
             </div>
         <% } %>
@@ -55,6 +55,7 @@
                     <% } %>
                 </select>
             </div>
+            <p id="gh-batch-edit-date-to" class="pull-left">to</p>
             <div id="gh-batch-edit-date-end" class="pull-left">
                 <select id="gh-batch-edit-hours-end" class="form-control gh-batch-edit-hours-picker">
                     <% for (var i = 7; i < 20; i += 1) { %>
