@@ -635,7 +635,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
-            'tooltip': 'Click to edit event notes',
+            'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
@@ -651,7 +651,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
-            'tooltip': 'Click to edit organisers',
+            'tooltip': 'Click to add a lecturer for this event',
             'type': 'organiser-autosuggest',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
