@@ -37,8 +37,6 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             'termsInUse': termsInUse,
             'daysInUse': daysInUse
         }, $('#gh-batch-edit-date-container'));
-
-        $('#gh-batch-edit-time').removeAttr('disabled');
     };
 
     /**
@@ -59,13 +57,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         var termsInUse = getTermsInUse($rows);
         // Get the unique days in the week to render time pickers for
         var daysInUse = getDaysInUse($rows);
-        // Render the batch date editor if at least one week was selected
-        if (weeksInUse.length || $terms.length) {
+        // Render the batch date editor if at least one week was selected that isn't out of term
+        if (weeksInUse.length && termsInUse.length) {
             renderBatchDate(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse);
-        // If no weeks where selected, close the batch date edit header
-        } else {
-            $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
-            $('#gh-batch-edit-time').attr('disabled', 'disabled');
         }
     };
 

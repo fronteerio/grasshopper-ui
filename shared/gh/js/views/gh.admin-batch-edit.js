@@ -283,7 +283,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var toggleBatchEditDateEnabled = function() {
-        if ($('.gh-batch-edit-events-container tbody .gh-select-single:checked').length) {
+        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length) {
             $('#gh-batch-edit-time').removeAttr('disabled');
         } else {
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
