@@ -21,6 +21,28 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
     ///////////////
 
     /**
+     * Set the title of the document. Depending on the interface that's loaded up, the title will be prefixed with:
+     *     - 'My Timetable' when the student UI is loaded
+     *     - 'Timetable Administration' when the administrator UI is loaded
+     *     
+     * @param {String}    [title]    The title to set to the document
+     */
+    var setDocumentTitle = exports.setDocumentTitle = function(title) {
+        if (title && !_.isString(title)) {
+            throw new Error('An invalid value for title was provided');
+        }
+
+        // Default the previx to 'My Timetable'. If the admin UI is loaded
+        // up the prefix should be 'Timetable Administration'
+        var prefix = 'My Timetable ';
+        if ($('body').data('isadminui')) {
+            prefix = 'Timetable Administration ';
+        }
+
+        document.title = prefix + title.trim();
+    };
+
+    /**
      * Generates a random 10 character sequence of upper and lowercase letters.
      *
      * @param  {Boolean}    toLowerCase    Whether or not the string should be returned lowercase

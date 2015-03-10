@@ -56,6 +56,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Set the document title
+        setDocumentTitle();
         // Track the week change in GA
         gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
 
@@ -103,6 +105,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Set the document title
+        setDocumentTitle();
         // Track the term change in GA
         gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
 
@@ -134,6 +138,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Set the document title
+        setDocumentTitle();
 
         // Track the view change in GA
         gh.utils.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
@@ -156,6 +162,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setPeriodLabel();
         // Set the term label
         setTermLabel();
+        // Set the document title
+        setDocumentTitle();
 
         // Track the today click in GA
         gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to today');
@@ -274,7 +282,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var setTermLabel = function() {
-
         // Get the current term
         var term = gh.utils.getTerm(getCurrentViewDate());
 
@@ -285,6 +292,20 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         }
 
         $('#gh-toolbar-label-term').html(label);
+    };
+
+    /**
+     * Set the document title to the currently selected date range
+     *
+     * @private
+     */
+    var setDocumentTitle = function() {
+        if (!$('body').data('isadminui')) {
+            var title = calendar.fullCalendar('getView').title;
+
+            // Set the document title
+            gh.utils.setDocumentTitle(title);
+        }
     };
 
 
