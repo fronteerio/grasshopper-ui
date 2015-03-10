@@ -607,6 +607,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //  GENERAL  //
     ///////////////
 
+    // Test the 'setDocumentTitle' functionality
+    QUnit.test('setDocumentTitle', function(assert) {
+        // Verify that only string values are allowed as a parameter
+        assert.throws(function() {
+            gh.utils.setDocumentTitle(123);
+        }, 'Verify that only string values are allowed as a parameter');
+
+        // Verify that the document title can be set
+        gh.utils.setDocumentTitle('QUnit Test');
+        assert.equal(document.title, 'My Timetable QUnit Test', 'Verify that the document title can be set');
+    });
+
     // Test the 'generateRandomString' functionality
     QUnit.test('generateRandomString', function(assert) {
 
