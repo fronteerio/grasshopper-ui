@@ -70,6 +70,10 @@
 /* LAYOUT */
 /**********/
 
+#gh-right-container #gh-subheader form {
+    margin-left: 60px;
+}
+
 #gh-main {
     margin-bottom: 0;
 }
@@ -81,7 +85,7 @@
 
 .gh-tripos-help {
     display: table-cell;
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 100;
     height: 415px;
     padding: 45px;
@@ -91,10 +95,10 @@
 .gh-academic-year-select {
     display: table-cell;
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 100;
     height: 100px;
     line-height: 40px;
-    padding-left: 30px;
+    padding-left: 45px !important;
     vertical-align: middle;
 }
 
@@ -230,14 +234,23 @@
     margin-right: 4px;
 }
 
+.gh-home,
 .gh-visibility {
     display: block;
-    font-size: 16px;
-    margin-top: -20px;
     position: absolute;
-    right: 43px;
     text-decoration: none;
     top: 50%;
+}
+
+.gh-home {
+    font-size: 25px;
+    margin-top: -20px;
+}
+
+.gh-visibility {
+    font-size: 16px;
+    margin-top: -20px;
+    right: 43px;
 }
 
 .gh-visibility:hover {
@@ -255,7 +268,8 @@
 
 #gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description,
 .list-group .list-group-item .gh-list-group-item-container .gh-series-select {
-    padding: 0 0 0 12px;
+    border: none;
+    padding: 0;
     width: 100%;
 }
 
@@ -272,9 +286,9 @@
 }
 
 
-/**************/
-/* NEW SERIES */
-/**************/
+/**********************/
+/* NEW SERIES/MODULES */
+/**********************/
 
 #gh-new-series-form .form-group {
     padding: 5px 20px;
@@ -284,13 +298,67 @@
     padding: 25px;
 }
 
+#gh-new-module-form .form-group label,
 #gh-new-series-form .form-group label {
-    font-weight: 200;
+    font-weight: 400;
 }
 
+#gh-new-module-form .form-group input,
 #gh-new-series-form .form-group input {
+    font-size: 28px;
+    font-weight: 400;
+    height: 41px;
     margin: 0 12px;
-    width: 80%;
+    padding: 5px 10px 3px 10px;
+    width: 55%;
+}
+
+#gh-new-module-form .form-group input {
+    margin: 0;
+    width: 100%;
+}
+
+
+/*****************/
+/* DELETE SERIES */
+/*****************/
+
+#gh-delete-series-modal strong {
+    font-weight: 600;
+}
+
+#gh-delete-series-modal #gh-delete-series-borrowed-list-description {
+    margin: 20px 0 5px;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow: auto;
+    padding: 0;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    list-style: none;
+    padding: 12px;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li:last-child {
+    border-bottom: none;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p {
+    margin: 0;
+}
+
+#gh-delete-series-modal small {
+    font-size: 15px;
 }
 
 
@@ -304,9 +372,6 @@
 }
 
 #gh-batch-edit-container.gh-sticky-header {
-    -webkit-box-shadow: 0 6px 37px;
-       -moz-box-shadow: 0 6px 37px;
-            box-shadow: 0 6px 37px;
     position: fixed;
     top: 0;
     width: calc(100% - 320px);
@@ -339,71 +404,114 @@
     width: 100%;
 }
 
-#gh-batch-edit-header input[type="text"] {
+#gh-batch-edit-header input[type="text"],
+#gh-batch-edit-header select {
+    font-weight: 400;
+    height: 32px !important;
     padding-left: 6px;
     padding-right: 6px;
 }
 
-#gh-batch-edit-header > div > * {
-    height: 39px;
+#gh-batch-edit-header th {
+    border-bottom: none;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(1) {
+    width: 25px;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(3),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
+    width: 170px;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(4),
+#gh-batch-edit-header .table thead tr th:nth-child(5),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(4),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(5) {
+    width: 150px;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(6),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(6) {
+    width: 105px;
+}
+
+#gh-batch-edit-header .table thead tr th:last-child,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:last-child {
+    width: 50px;
+}
+
+#gh-batch-edit-header th > * {
+    height: 32px;
+    padding: 6px 12px;
     width: 100%;
 }
 
-#gh-batch-edit-header {
-    padding-bottom: 12px;
+#gh-batch-edit-header th:first-child {
+    font-weight: 200;
+    font-size: 13px;
+    padding: 0;
+    vertical-align: middle;
 }
 
 #gh-batch-edit-header .gh-batch-edit-header-description {
-    display: table-cell;
     vertical-align: middle;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open {
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    height: 51px;
-    padding-bottom: 10px;
+    height: 50px;
+    padding-bottom: 50px;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-bottom: none !important;
-    border-style: solid;
-    border-width: 2px;
-    height: 51px !important;
-    padding-top: 0;
-    position: absolute;
-    right: 0;
+    border: none !important;
+    bottom: -20px;
+    height: 60px !important;
+    margin-top: -64px;
+    padding-bottom: 20px;
+    padding-top: 16px;
+    position: relative;
+    right: 0px;
     z-index: 9999;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container {
     clear: both;
-    height: 0;
+    max-height: 0;
     opacity: 0;
     overflow: hidden;
-    padding: 0;
-    -webkit-transition: height .2s, opacity .2s, padding .3s;
-       -moz-transition: height .2s, opacity .2s, padding .3s;
-            transition: height .2s, opacity .2s, padding .3s;
+    padding: 0 0 0 15px !important;
+    -webkit-transition: max-height .3s, opacity .3s;
+       -moz-transition: max-height .3s, opacity .3s;
+            transition: max-height .3s, opacity .3s;
 }
 
 .gh-batch-edit-time-open + #gh-batch-edit-date-container {
-    height: auto !important;
+    max-height: 1000px !important;
     opacity: 1 !important;
-    padding: 20px 50px 0 !important;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description {
     float: left;
-    width: 20%;
+    margin-top: 20px;
+    width: 140px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description small {
+    font-size: 90%;
+    font-weight: 400;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-term-description h2 {
-    font-size: 20px;
-    margin: 7px 0 0;
+    font-size: 18px;
+    margin: 5px 0 0;
+    font-weight: 600;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container {
+    margin-top: 20px;
     overflow: auto;
     width: 80%;
 }
@@ -412,30 +520,33 @@
     border-collapse: separate;
     border-spacing: 1px;
     display: table;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
     display: table-cell;
-    height: 40px;
-    min-width: 77px;
+    min-height: 36px;
+    min-width: 62px;
     overflow: hidden;
     padding: 0;
     vertical-align: middle;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
-    padding: 5px 16px 1px;
+    padding: 3px 5px 0 5px;
 }
 
-#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o {
-    margin-left: 2px;
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o,
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-check-square-o {
+    position: relative;
+    top: 1px;
 }
 
+#gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o,
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i {
-    margin-left: 2px;
+    margin-left: 4px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i.fa-square-o,
@@ -449,7 +560,7 @@
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
     border-style: solid;
-    border-width: 3px;
+    border-width: 2px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label {
@@ -474,19 +585,33 @@
     height: 30px;
 }
 
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
+    font-size: 16px;
+    font-weight: 400;
+}
+
 #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
 #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
     width: 50px;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-start,
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-end {
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-start {
     margin: 0 0 7px 17px;
+}
+
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-end {
+    margin: 0 0 7px 5px;
+}
+
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-to {
+    margin: 5px 0 0 5px;
 }
 
 #gh-batch-edit-container .gh-batch-edit-date-add-day {
     clear: both;
     display: block;
+    margin-bottom: 15px;
 }
 
 /* Terms */
@@ -496,12 +621,16 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
-    margin-bottom: 30px;
-    margin-top: 60px;
+    margin-bottom: 0;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:last-child {
     margin-bottom: 100px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table {
+    font-size: 15.3px;
+    table-layout: fixed;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th {
@@ -512,7 +641,7 @@
     cursor: pointer;
     max-width: 200px;
     overflow: hidden;
-    padding: 8px 13px;
+    padding: 6px 0px 6px 15px;
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
@@ -528,17 +657,27 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
     height: auto;
     overflow: visible;
-    padding-bottom: 0px;
-    padding-top: 7px;
+    padding-bottom: 4px;
+    padding-top: 3px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title] {
     overflow: hidden;
-    padding: 0;
+    padding: 6px 0px 6px 15px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+    content: 'Add lecturer';
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before {
+    content: 'Add location';
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
-    margin-bottom: -20px;
+    margin-bottom: 10px;
     margin-top: 0;
 }
 
@@ -562,15 +701,32 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
     cursor: auto;
     max-width: 40px;
+    padding: 0 0 0 8px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot .gh-batch-edit-events-container-empty {
+    display: none !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty td {
+    padding: 20px !important;
+    text-align: center;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
+    font-size: 16px;
     margin: 0;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox {
-    margin-left: 5px;
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
+    font-weight: 700;
+    margin-bottom: 7px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
@@ -579,16 +735,14 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form {
-    margin: -8px -12px;
+    margin: 0 0 -8px -10px;
     height: 30px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form input {
+    background-color: transparent;
     border: none;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-right-style: solid;
-    border-right-width: 1px;
+    height: 31px !important;
     padding: 0 10px;
 }
 
@@ -601,10 +755,7 @@
     bottom: 0;
     border-top-width: 1px;
     border-top-style: solid;
-    -webkit-box-shadow: 0 6px 37px;
-       -moz-box-shadow: 0 6px 37px;
-            box-shadow: 0 6px 37px;
-    padding: 20px;
+    padding: 15px 30px;
     position: fixed;
     width: -moz-calc(100% - 320px); /* Firefox */
     width: -o-calc(100% - 320px); /* Opera */
@@ -613,7 +764,12 @@
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {
-    margin: 9px 0 0px 12px;
+    font-weight: 400;
+    margin: 9px 0 0;
+}
+
+.gh-batch-edit-actions-container #gh-batch-edit-cancel {
+    font-weight: 400;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-submit {
@@ -622,18 +778,22 @@
 
 /* Event type */
 .gh-batch-edit-events-container .gh-jeditable-form select {
-    height: 40px;
+    height: 34px;
 }
 
-.gh-batch-edit-events-container .gh-event-type::before {
+.gh-batch-edit-events-container .gh-event-type:not(:empty)::before {
     border-radius: 12px;
     content: attr(data-first);
     display: inline-block;
-    height: 22px;
+    height: 20px;
     margin-right: 6px;
     padding: 1px;
     text-align: center;
-    width: 22px;
+    width: 20px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
+    content: 'Add type';
 }
 
 .gh-batch-edit-events-container .gh-event-type.gh-editing::before {
@@ -657,10 +817,6 @@
 
 .gh-event-calendar-icon .month,
 .gh-event-calendar-icon .day {
-    -webkit-font-smoothing: antialiased;
-       -moz-font-smoothing: antialiased;
-         -o-font-smoothing: antialiased;
-            font-smoothing: antialiased;
     display: block;
     font-weight: 800;
     text-align: center;
@@ -673,20 +829,59 @@
 }
 
 .gh-event-calendar-icon .day {
-    font-size: 13px;
+    font-size: 12.5px;
+    font-weight: 700;
     line-height: 16px;
+}
+
+.gh-event-description {
+    max-width: 220px !important;
+    min-width: 175px !important;
+    text-overflow: ellipsis;
+}
+
+.gh-event-date {
+    max-width: 250px !important;
+    min-width: 210px !important;
 }
 
 .gh-event-display-date {
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
-    max-width: 150px;
+    max-width: 170px;
     text-overflow: ellipsis;
 }
 
+.gh-event-delete,
 .gh-event-delete button {
+    cursor: default !important;
+}
+
+tr.info .gh-event-delete,
+tr.info .gh-event-delete button {
+    cursor: pointer !important;
+}
+
+.gh-event-delete button {
+    opacity: 0;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: hidden;
     width: 100%;
+}
+
+tr.info .gh-event-delete button {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: visible;
+}
+
+#gh-batch-calendar-view {
+    padding: 30px 30px 12px;
 }
 
 
@@ -694,11 +889,29 @@
 /* BORROWING */
 /*************/
 
+#gh-borrow-series-modal .list-group-item .list-group {
+    margin-bottom: 30px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description p {
+    opacity: 0.75;
+}
+
 #gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    padding-bottom: 10px;
-    padding-top: 10px;
+    font-weight: 400;
+    padding: 10px 0 10px 15px;
     position: relative;
     width: 210px;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description p {
+    font-size: 15.3px;
+    opacity: 1;
 }
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-list-action,
@@ -810,7 +1023,7 @@
     text-align: right;
 }
 
-#gh-edit-dates #gh-edit-dates-form select.form-control {
+#gh-edit-dates #gh-edit-dates-form select.gh-select-time {
     margin-left: 5px;
     width: 50px;
 }
@@ -841,23 +1054,13 @@
     cursor: pointer;
 }
 
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
-    -webkit-border-radius: 2px;
-       -moz-border-radius: 2px;
-            border-radius: 2px;
-    border: 3px solid;
-    height: 154px;
-    margin-bottom: 10px;
-    position: relative;
-    width: 154px;
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container input {
+    margin-top: -100px;
+    visibility: hidden;
 }
 
 #gh-visibility-modal #gh-visibility-form label:not(.checked) .gh-visibility-icon-container i.fa-check {
     display: none;
-}
-
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container input {
-    visibility: hidden;
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-eye,
@@ -867,11 +1070,21 @@
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
-    bottom: 6px;
     font-size: 30px;
     font-weight: 600;
     position: absolute;
     right: 8px;
+    top: 6px;
+}
+
+#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
+    border: 3px solid;
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+            border-radius: 2px;
+    margin-bottom: 10px;
+    padding: 0 12px;
+    position: relative;
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container .visibility-type {
@@ -883,20 +1096,53 @@
     font-weight: 400;
 }
 
-#gh-visibility-modal #gh-visibility-form label small p.warning {
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
-            border-radius: 3px;
-    font-size: 14px;
+#gh-visibility-modal #gh-visibility-form label small p {
+    border-top-style: solid;
+    border-top-width: 1px;
+    margin-top: 7px;
+    padding-top: 10px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider {
+    font-size: 55px;
+    padding: 77px 0 0;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
+    display: block;
+    margin: 0 auto;
+    width: 20px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
     font-weight: 400;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 55px;
+    text-align: center;
+    -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+       -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+            transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning.open {
+    max-height: 500px;
+    opacity: 1;
+    padding: 15px 55px;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning p {
+    line-height: 1.8;
     margin: 0;
-    padding: 5px 10px;
 }
 
-#gh-visibility-modal #gh-visibility-form label:not(.checked) small p.warning {
-    display: none;
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning strong {
+    font-weight: 600;
 }
-
 
 /***************/
 /* AUTOSUGGEST */
@@ -965,6 +1211,7 @@ ul.as-selections li.as-selection-item {
 }
 
 .as-results {
+    font-weight: 200;
     position: absolute;
 }
 

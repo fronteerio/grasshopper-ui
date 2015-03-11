@@ -19,23 +19,11 @@ casper.test.begin('Student - Component - Modules', function(test) {
      * Add some modules to the sidebar by selecting a tripos and part in the pickers
      */
     var openModules = function() {
-        casper.waitForSelector('#gh-right-container #gh-header', function() {
-            casper.waitForSelector('#gh-subheader #gh_subheader_tripos_chosen.chosen-container', function() {
-                // Open the tripos picker
-                casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container');
-                // Verify that the tripos picker opens and a selection can be made
-                casper.waitUntilVisible('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results', function() {
-                    // Click the first item and verify that the part picker becomes available
-                    casper.click('#gh-subheader #gh_subheader_tripos_chosen.chosen-container .chosen-results .group-result:first-child + .active-result');
-                    casper.waitForSelector('#gh-subheader #gh_subheader_part_chosen.chosen-container', function() {
-                        // Open the part picker
-                        casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container');
-                        // Verify that the part picker opens and a selection can be made
-                        casper.waitUntilVisible('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results', function() {
-                            // Click the first item
-                            casper.click('#gh-subheader #gh_subheader_part_chosen.chosen-container .chosen-results .active-result');
-                        });
-                    });
+        casper.waitForSelector('#gh-right-container #gh-header h1', function() {
+            casper.evaluate(function() {
+                require('gh.core').utils.addToState({
+                    'tripos': 5,
+                    'part': 6
                 });
             });
         });
@@ -55,7 +43,7 @@ casper.test.begin('Student - Component - Modules', function(test) {
                 var moduleCount = casper.evaluate(function() {
                     return $('#gh-left-container #gh-modules-list > li').length;
                 });
-                test.assertSelectorHasText('#gh-left-container #gh-result-summary', 'Found ' + moduleCount + ' modules', 'Verify that the result summary shows the correct number of modules found');
+                test.assertSelectorHasText('#gh-left-container #gh-result-summary', moduleCount + ' modules in this part', 'Verify that the result summary shows the correct number of modules found');
                 // Verify the module item
                 test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list', 'Verify that the module toggle is present');
                 test.assertExists('#gh-left-container #gh-modules-list > li:first-child button.gh-toggle-list .gh-list-icon i', 'Verify that the module toggle icon is present');

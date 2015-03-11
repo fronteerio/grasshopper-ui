@@ -6,11 +6,11 @@
                 <h4 class="modal-title" id="modal-title">Borrow series</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <select id="gh-borrow-series-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="display: none; width: 46%;" tabindex="-1">
+                <form class="form-horizontal gh-chosen-inverted">
+                    <select id="gh-borrow-series-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="display: none; width: 300px;" tabindex="-1">
                         <%= _.partial('subheader-picker', {'data': data}) %>
                     </select>
-                    <select id="gh-borrow-series-part" class="chosen-select" data-placeholder="Choose a part/paper" style="display: none; width: 46%;" tabindex="-1">
+                    <select id="gh-borrow-series-part" class="chosen-select" data-placeholder="Choose a part/paper" style="display: none; width: 160px;" tabindex="-1">
                         <%= _.partial('subheader-part', {'data': data}) %>
                     </select>
                 </form>

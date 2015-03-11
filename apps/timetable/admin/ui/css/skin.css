@@ -68,7 +68,7 @@
 }
 
 .gh-tripos-help {
-    color: #FFF;
+    color: #BEBEBE;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,
@@ -157,6 +157,22 @@
     background-color: #42305B;
 }
 
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-description {
+    background-color: transparent;
+}
+
+.list-group .list-group-item .gh-list-group-item-container .gh-series-select:hover {
+    background-color: #62326E;
+}
+
+.list-group .list-group-item .list-group .list-group-item:first-child {
+    border-color: #594674;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
+    border-bottom-color: #594674;
+}
+
 
 /*********/
 /* MODAL */
@@ -164,6 +180,10 @@
 
 .modal-header {
     background-color: #62326E;
+}
+
+.modal-header.gh-warning {
+    background-color: #D92751;
 }
 
 .modal-header button,
@@ -186,13 +206,32 @@
 }
 
 
-/**************/
-/* NEW SERIES */
-/**************/
+/**********************/
+/* NEW SERIES/MODULES */
+/**********************/
 
-
+#gh-new-module-form .form-group label,
 #gh-new-series-form .form-group label {
-    color: #8D8D8D;
+    color: #171717;
+}
+
+
+/*****************/
+/* DELETE SERIES */
+/*****************/
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+    border-bottom-color: #CCC;
+    border-top-color: #CCC;
+}
+
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+    border-bottom-color: #CCC;
+}
+
+#gh-delete-series-modal small,
+#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p:first-child {
+    color: #6C6C6C;
 }
 
 
@@ -200,18 +239,18 @@
 /* BATCH EDITING */
 /*****************/
 
-#gh-batch-edit-header.gh-batch-edit-time-open,
-#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-bottom-color: #EEE;
+#gh-batch-edit-container.gh-sticky-header {
+    -webkit-box-shadow: 0 0px 15px #666;
+       -moz-box-shadow: 0 0px 15px #666;
+            box-shadow: 0 0px 15px #666;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-color: #EEE;
+    background-color: #F4F4F4;
     color: #171717;
 }
 
-#gh-batch-edit-container,
-#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
+#gh-batch-edit-container {
     background-color: #FFF;
 }
 
@@ -221,16 +260,28 @@
 
 .gh-batch-edit-actions-container {
     background: #FFF;
-    border-top-color: #EEE;
+    border-top-color: #BEBEBE;
+    -webkit-box-shadow: 0 0px 15px #666;
+       -moz-box-shadow: 0 0px 15px #666;
+            box-shadow: 0 0px 15px #666;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {
-    color: #999;
+    color: #6B6B6B;
+}
+
+.gh-batch-edit-actions-container #gh-batch-edit-cancel {
+    color: #171717;
 }
 
 .gh-batch-edit-events-container .gh-jeditable-form input {
+    background-color: transparent;
     border-left-color: #DDD;
     border-right-color: #DDD;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container {
+    background-color: #F4F4F4;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
@@ -245,34 +296,38 @@
     border-color: #62326E;
 }
 
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
+    color: #171717;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+    background-color: transparent;
+    color: #BEBEBE;
+}
+
 /* Event type */
 .gh-batch-edit-events-container .gh-event-type::before {
     background-color: #555;
     color: #FFF;
 }
 
-.gh-batch-edit-events-container .gh-event-type[data-first=""]::before {
-    display: none;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Field Trip"]::before {
-    background-color: #7D9D5C;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Lab"]::before {
-    background-color: #FF944D;
-}
-
 .gh-batch-edit-events-container .gh-event-type[data-type="Lecture"]::before {
     background-color: #19A3FF;
 }
 
-.gh-batch-edit-events-container .gh-event-type[data-type="Paper"]::before {
-    background-color: #FF4719;
+.gh-batch-edit-events-container .gh-event-type[data-type="Class"]::before {
+    background-color: #FF944D;
 }
 
 .gh-batch-edit-events-container .gh-event-type[data-type="Seminar"]::before {
     background-color: #92308A;
+}
+
+.gh-batch-edit-events-container .gh-event-type[data-type="Other"]::before {
+    background-color: #FF4719;
 }
 
 /* Terms */
@@ -289,6 +344,15 @@
     background-color: #FFF !important;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .gh-batch-edit-events-container-empty {
+    background-color: #F5F5F5;
+    color: #999;
+}
+
+tr.info .gh-event-delete button i {
+    color: #4D4D4D;
+}
+
 /* Calendar icon */
 .gh-event-calendar-icon {
     border-color: #888;
@@ -303,6 +367,7 @@
 
 .gh-event-calendar-icon .day {
     background-color: #FFF;
+    color: #4D4D4D;
     text-shadow: 1px 1px 1px rgba(255,255,255,0.004);
 }
 
@@ -388,11 +453,22 @@
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
     background-color: #EEE;
     border-color: #EEE;
+    color: #8D8D8D;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container .visibility-type,
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye-slash,
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye,
+#gh-visibility-modal #gh-visibility-form label.checked small {
     color: #333;
 }
 
-#gh-visibility-modal #gh-visibility-form label.checked small {
-    color: #333;
+#gh-visibility-modal #gh-visibility-form label small p {
+    border-top-color: #BBB;
+}
+
+#gh-visibility-modal #gh-visibility-form label.checked small p {
+    border-top-color: #333;
 }
 
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container {
@@ -404,8 +480,13 @@
     color: #62326E;
 }
 
-#gh-visibility-modal #gh-visibility-form label small p.warning {
+#gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
+    color: #939393;
+}
+
+#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning {
     background-color: #E0E6E4;
+    color: #555;
 }
 
 
@@ -425,7 +506,7 @@ ul.as-selections.loading {
 }
 
 .as-selections .as-original input {
-    background-color: #EEE;
+    background-color: #EEE !important;
     border-top-color: #BEBEBE !important;
 }
 
@@ -436,7 +517,7 @@ ul.as-selections li.as-selection-item {
 
 .gh-batch-event-collapsed .as-selections .as-original input,
 .as-selections .as-original:first-child input {
-    background-color: #FFF;
+    background-color: #FFF !important;
 }
 
 .as-selections .as-selection-item {

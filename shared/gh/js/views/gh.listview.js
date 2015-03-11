@@ -13,7 +13,10 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
+define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAPI, constants) {
+
+    // Whether to preselect the first module and series or not
+    var preselect = false;
 
     /**
      * Set up the modules of events in the sidebar. Note that context-specific handling should be done
@@ -28,55 +31,85 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
         data.container = data.container || $('body');
         // Assign a default template if it's not defined in the data
         data.template = data.template || $('#gh-modules-template');
+        // Cache the modules
+        var modules = data.modules;
 
-        // Retrieve the organisational unit information for the modules
-        orgunitAPI.getOrgUnits(require('gh.core').data.me.AppId, true, null, data.partId, ['module'], function(err, modules) {
-            if (err) {
-                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
-            }
-
-            // Check which series are borrowed
-            _.each(modules.results, function(module) {
-                _.each(module.Series, function(serie) {
-                    serie.borrowed = (serie.GroupId !== module.GroupId);
-                });
-            });
-
-            // Sort the data before displaying it
-            modules.results.sort(utils.sortByDisplayName);
-            $.each(modules.results, function(i, module) {
-                module.Series.sort(utils.sortByDisplayName);
-            });
-
-            // Decorate the modules with their expanded status if LocalStorage is supported
-            var expandedIds = [];
-            if (Storage) {
-                expandedIds = _.compact(utils.localDataStorage().get('expanded'));
-                _.each(modules.results, function(module) {
-                    module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
-                });
-            }
-
-            // Render the series in the sidebar
-            utils.renderTemplate($(data.template), {
-                'data': modules.results,
-                'state': $.bbq.getState()
-            }, $('#gh-modules-container', $(data.container)));
-
-            // Put focus on the selected series
-            $('.gh-series-active').focus();
-
-            // Clear local storage
-            utils.localDataStorage().remove('expanded');
-
-            // Add the current expanded module(s) back to the local storage
-            expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
-                return $(value).attr('data-id');
-            });
-
-            expandedIds = _.map(expandedIds, function(id) { return id; });
-            utils.localDataStorage().store('expanded', expandedIds);
+        // Sort the data before displaying it
+        modules.results.sort(utils.sortByDisplayName);
+        $.each(modules.results, function(i, module) {
+            module.Series.sort(utils.sortByDisplayName);
         });
+
+        // Check which series are borrowed
+        _.each(modules.results, function(module) {
+            _.each(module.Series, function(serie) {
+                serie.borrowed = (serie.GroupId !== module.GroupId);
+            });
+        });
+
+        // Decorate the modules with their expanded status if LocalStorage is supported
+        var expandedIds = [];
+        if (Storage) {
+            expandedIds = _.compact(utils.localDataStorage().get('expanded'));
+            _.each(modules.results, function(module) {
+                module.expanded = (_.indexOf(expandedIds, String(module.id)) > -1);
+            });
+        }
+
+        // Render the series in the sidebar
+        utils.renderTemplate($(data.template), {
+            'data': modules.results,
+            'state': History.getState().data,
+            'preselect': preselect
+        }, $('#gh-modules-container', $(data.container)));
+
+        // Reset the preselect value for next iteration
+        if (preselect) {
+            preselectSeries();
+        }
+
+        // Put focus on the selected series
+        $('.gh-series-active').focus();
+
+        // Clear local storage
+        utils.localDataStorage().remove('expanded');
+
+        // Add the current expanded module(s) back to the local storage
+        expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
+            return $(value).attr('data-id');
+        });
+
+        expandedIds = _.map(expandedIds, function(id) { return id; });
+        utils.localDataStorage().store('expanded', expandedIds);
+    };
+
+    /**
+     * Preselect the first module and first series inside of that module when the modules list has
+     * been rendered in the UI. In case it's not been rendered yet, a flag is set which will make
+     * sure the function is executed again after the list has been rendered.
+     *
+     * @private
+     */
+    var preselectSeries = function() {
+        // Preselect the series if the modules list has been loaded already. If it still
+        // needs to be rendered, set a variable indicating that preselection needs to happen
+        // Get the first available series
+        var $firstSeries = $($('#gh-modules-list li.list-group-item > ul > li:first-child')[0]);
+        // Get the first series' parent module
+        var $firstModule = $($firstSeries.parents('li.list-group-item'));
+
+        // If both module and series are defined, open them up
+        if ($firstModule.length && $firstSeries.length) {
+            utils.addToState({
+                'module': $firstModule.attr('data-id'),
+                'series': $firstSeries.attr('data-id')
+            }, true);
+            // Reset the preselect value for the next iteration
+            preselect = false;
+        } else {
+            $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
+            preselect = true;
+        }
     };
 
 
@@ -121,7 +154,7 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
-        // Fetch the id's of the expanded list
+        // Fetch the ID's of the expanded list
         var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
                 'id': $(module).attr('data-id'),
@@ -147,9 +180,11 @@ define(['gh.utils', 'gh.api.orgunit'], function(utils, orgunitAPI) {
         // Toggle a list item
         $('body').on('click', '.gh-toggle-list', toggleList);
         // Set up the modules list
-        $(document).on('gh.listview.setup', setUpModules);
+        $(document).on('gh.part.selected', setUpModules);
         // Refresh the modules list
         $(document).on('gh.listview.refresh', setUpModules);
+        // Select the first module and series in the list
+        $(document).on('gh.listview.preselect', preselectSeries);
     };
 
     addBinding();

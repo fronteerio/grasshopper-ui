@@ -207,32 +207,32 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             gh.api.orgunitAPI.getOrgUnitCalendar('invalid_orgunitid', '2014-11-30', '2014-12-1', function(err, data) {
                 assert.ok(err, 'Verify that an error is thrown when an invalid orgUnitId was provided');
 
-                // Verify that an error is thrown when no from ISO 8601 timestamp was provided
+                // Verify that an error is thrown when no start ISO 8601 timestamp was provided
                 gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, null, '2014-12-1', function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no from ISO 8601 timestamp was provided');
+                    assert.ok(err, 'Verify that an error is thrown when no start ISO 8601 timestamp was provided');
 
-                    // Verify that an error is thrown when an invalid from ISO 8601 timestamp was provided
+                    // Verify that an error is thrown when an invalid start ISO 8601 timestamp was provided
                     gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, 2014, null, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid from ISO 8601 timestamp was provided');
+                        assert.ok(err, 'Verify that an error is thrown when an invalid start ISO 8601 timestamp was provided');
 
-                        // Verify that an error is thrown when no to ISO 8601 timestamp was provided
+                        // Verify that an error is thrown when no end ISO 8601 timestamp was provided
                         gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', null, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when no to ISO 8601 timestamp was provided');
+                            assert.ok(err, 'Verify that an error is thrown when no end ISO 8601 timestamp was provided');
 
-                            // Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided
+                            // Verify that an error is thrown when an invalid end ISO 8601 timestamp was provided
                             gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', 2014, function(err, data) {
-                                assert.ok(err, 'Verify that an error is thrown when an invalid to ISO 8601 timestamp was provided');
+                                assert.ok(err, 'Verify that an error is thrown when an invalid end ISO 8601 timestamp was provided');
 
                                 // Verify that the calendar can be successfully retrieved
                                 // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
                                 var body = {'code': 200, 'msg': 'OK'};
-                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 200, {'Content-Type': 'application/json'}, body, function() {
+                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?start=2014-11-30&end=2014-12-1', 200, {'Content-Type': 'application/json'}, body, function() {
                                     gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
                                         assert.ok(!err, 'Verify that the calendar can be successfully retrieved');
 
                                         // Verify that the error is handled when the calendar can't be retrieved
                                         body = {'code': 400, 'msg': 'Bad Request'};
-                                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?from=2014-11-30&to=2014-12-1', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/calendar?start=2014-11-30&end=2014-12-1', 400, {'Content-Type': 'application/json'}, body, function() {
                                             gh.api.orgunitAPI.getOrgUnitCalendar(testOrgUnit.id, '2014-11-30', '2014-12-1', function(err, data) {
                                                 assert.ok(err, 'Verify that the error is handled when the calendar can\'t be successfully retrieved');
                                                 assert.ok(!data, 'Verify that no data returns when the calendar can\'t be successfully retrieved');

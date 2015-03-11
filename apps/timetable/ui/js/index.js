@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery-bbq'], function(gh) {
-    var state = $.bbq.getState() || {};
+define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], function(gh) {
 
     // Cache the tripos data
     var triposData = {};
@@ -56,7 +55,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
     var setUpCalendar = function() {
         // Render the calendar template
         gh.utils.renderTemplate($('#gh-calendar-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh
+            }
         }, $('#gh-main'));
 
         // Initialise the calendar
@@ -67,6 +68,28 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
 
             // Put the calendar on today's view
             $(document).trigger('gh.calendar.navigateToToday');
+        }
+    };
+
+    /**
+     * Display the appropriate view depending on the state of the selected part
+     *
+     * @param  {Object}    ev      Standard jQuery event
+     * @param  {Object}    data
+     * @private
+     */
+    var onPartSelected = function(evt, data) {
+        if (!data.modules.results.length) {
+            gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
+                gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
+                $('#gh-left-container').addClass('gh-minimised');
+                $('#gh-main').hide();
+                $('#gh-empty').show();
+            });
+        } else {
+            $('#gh-left-container').removeClass('gh-minimised');
+            $('#gh-empty').hide();
+            $('#gh-main').show();
         }
     };
 
@@ -103,7 +126,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
                 if (!err) {
-                    var state = $.param($.bbq.getState());
+                    var state = $.param(History.getState().data);
                     if (state) {
                         return window.location.reload();
                     }
@@ -151,10 +174,8 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'jquery
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-
-        $(document).on('gh.calendar.ready', function() {
-            setUpCalendar();
-        });
+        $(document).on('gh.calendar.ready', setUpCalendar);
+        $(document).on('gh.part.selected', onPartSelected);
     };
 
     /**

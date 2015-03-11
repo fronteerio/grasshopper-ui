@@ -34,11 +34,13 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], functi
      * @private
      */
     var selectSeries = function() {
-        // Update the hash
-        var state = $.bbq.getState();
-        state['series'] = $(this).closest('.list-group-item').data('id');
-        state['module'] = $(this).closest('ul').closest('.list-group-item').data('id');
-        $.bbq.pushState(state);
+        var moduleId = $(this).closest('ul').closest('.list-group-item').data('id');
+        var seriesId = $(this).closest('.list-group-item').data('id');
+         // Push the selected module and series in the URL
+        gh.utils.addToState({
+            'module': moduleId,
+            'series': seriesId
+        });
     };
 
 
@@ -55,7 +57,7 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], functi
         // Select a series in the sidebar
         $('body').on('click', '.gh-series-select', selectSeries);
         // Set up the modules in the sidebar
-        $(document).on('gh.listview.setup', setUpModules);
+        $(document).on('gh.part.selected', setUpModules);
     };
 
     addBinding();

@@ -17,8 +17,14 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
     var triposData = null;
 
-    // Cache the state
-    var state = $.bbq.getState();
+    /**
+     * Return to the home page
+     *
+     * @private
+     */
+    var goHome = function() {
+        gh.utils.removeFromState(['tripos', 'part', 'module', 'series']);
+    };
 
     /**
      * Set up the modules of events in the sidebar
@@ -30,16 +36,24 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
 
-        // Push the selected tripos in the URL
-        state['part'] = partId;
-        $.bbq.pushState(state);
+        // Push the selected part in the URL
+        gh.utils.addToState({'part': partId});
 
         // Track the part picker change in GA
         gh.utils.sendTrackingEvent('picker', 'change', 'part picker', partId);
 
-        $(document).trigger('gh.listview.setup', {
-            'partId': partId,
-            'container': $('#gh-left-container')
+        // Retrieve the organisational unit information for the modules
+        orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
+            if (err) {
+                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+            }
+
+            // Trigger an event when a part has been selected, persisting the part ID and the modules
+            $(document).trigger('gh.part.selected', {
+                'partId': partId,
+                'modules': modules,
+                'container': $('#gh-left-container')
+            });
         });
     };
 
@@ -54,8 +68,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         var triposId = parseInt(data.selected, 10);
 
         // Push the selected tripos in the URL
-        state['tripos'] = triposId;
-        $.bbq.pushState(state);
+        gh.utils.addToState({'tripos': triposId});
 
         // Track the tripos picker change in GA
         gh.utils.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
@@ -84,9 +97,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Initialise the Chosen plugin on the part picker
         $('#gh-subheader-part').chosen({
-            'no_results_text': 'No matches for',
-            'disable_search_threshold': 10
+            'disable_search': true
         }).on('change', setUpModules);
+
+        // Chosen has a bug where search sometimes isn't disabled properly
+        $('#gh_subheader_part_chosen .chosen-search').hide();
     };
 
     /**
@@ -115,32 +130,45 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         $('#gh-subheader-tripos').show();
 
         // Destroy the field if it's been initialised previously
-        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpModules);
+        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpPartPicker);
 
         // Initialise the Chosen plugin on the tripos picker
         $('#gh-subheader-tripos').chosen({
             'no_results_text': 'No matches for'
         }).change(setUpPartPicker);
+
+        // Set the default placeholder text
+        $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search triposes');
     };
 
     /**
-     * Handle the hashchange event by applying state values to the pickers. Can also be
-     * used separate from the hashchange event to apply state values to the pickers
+     * Handle the statechange event by applying state values to the pickers. Can also be
+     * used separate from the statechange event to apply state values to the pickers
      *
      * @private
      */
-    var handleHashChange = function() {
-        state = $.bbq.getState() || {};
+    var handleStateChange = function(a, b, c) {
+
+        // Make sure that all state data is set before handling the statechange event
+        gh.utils.setStateData();
+
+        // Get the current history state
+        var state = History.getState().data;
+
         // If the URL shows a preselected tripos, select that tripos automatically
-        if (state.tripos && !_.isEmpty(state.tripos)) {
+        if (state.tripos) {
             $('#gh-subheader-tripos').val(state.tripos);
             $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
             $('#gh-subheader-tripos').trigger('chosen:updated');
         } else {
             // If there is no selected tripos, the tripos, part, module and series should be removed from the hash
-            $.bbq.removeState('tripos', 'part', 'module', 'series');
+            gh.utils.removeFromState(['part', 'module', 'series']);
             // There is no state for the tripos, make sure it's reset
             setUpTriposPicker();
+            // Show the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').show();
+            }
             // Resetting the tripos means destroying the part picker and hiding it
             if ($('#gh_subheader_part_chosen').length) {
                 // Destroy the field if it's been initialised previously
@@ -150,35 +178,54 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             }
         }
 
-        state = $.bbq.getState() || {};
         // If the URL shows a preselected part, select that part automatically
         if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
             $('#gh-subheader-part').val(state.part);
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
+            // Hide the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').hide();
+            }
+
+            // Only select the part if it is available in the part picker, if it's not
+            // it indicates that either the tripos has changed since the last iteration
+            // or the part is no longer available. Either way, the part, module and series
+            // should be removed from the url in that case
+            if (!$('#gh-subheader-part option[value="' + state.part + '"]').length) {
+                // If there is no part to select, part, module and series should be removed from the hash
+                gh.utils.removeFromState(['part', 'module', 'series']);
+            }
 
             // Dispatch an event to update the visibility button
             $(document).trigger('gh.part.changed', {'part': state.part});
         } else {
-            // If there is no preselected part the part, module and series should be removed from the hash
-            $.bbq.removeState('part', 'module', 'series');
+            // If there is no preselected part, the part, module and series should be removed from the hash
+            gh.utils.removeFromState(['part', 'module', 'series']);
+            $('#gh-result-summary').remove();
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
+            // Show the contextual help
+            if (!$('body').data('isadminui')) {
+                $('#gh-content-description p').show();
+            }
 
             // Dispatch an event to update the visibility button
             $(document).trigger('gh.part.changed');
         }
 
-        state = $.bbq.getState() || {};
         // ADMIN ONLY LOGIC
         if ($('body').data('isadminui')) {
             // If the URL shows a module and series, go into batch edit mode
-            if (state.module && !_.isEmpty(state.module) && state.series && !_.isEmpty(state.series)) {
+            if (state.module && state.series) {
                 // Set up batch edit, this will redirect the user to the correct batch edit view as well
                 $(document).trigger('gh.batchedit.setup');
+            // If the URL shows a tripos and a part, but no module and series, we select the first module and series in the list
+            } else if (state.tripos && state.part) {
+                $(document).trigger('gh.listview.preselect');
+            // If there is no preselected series, the module and series should be removed from the hash
             } else {
-                // If there is no preselected series, the module and series should be removed from the hash
-                $.bbq.removeState('module', 'series');
+                gh.utils.removeFromState(['module', 'series']);
                 // Show the editable parts in the UI
                 $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
             }
@@ -197,15 +244,17 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      */
     var addBinding = function() {
         // Handle hash changes
-        $(window).on('hashchange', handleHashChange);
+        $(window).on('statechange', handleStateChange);
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;
             // Set up the tripos picker
             setUpTriposPicker();
-            // Run the hashchange logic to put the right selections in place
-            handleHashChange();
+            // Run the statechange logic to put the right selections in place
+            handleStateChange();
         });
+
+        $('body').on('click', '.gh-home', goHome);
     };
 
     addBinding();

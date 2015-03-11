@@ -37,7 +37,7 @@
 /*************/
 
 #gh-right-container #gh-subheader form {
-    margin: 0;
+    margin: 0 0 0 40px;
     min-width: 960px;
     padding: 28px 0 0;
 }
@@ -61,6 +61,24 @@
 .btn:hover,
 .btn:focus {
     text-decoration: none;
+}
+
+
+/*******************/
+/* NAVIGATION TABS */
+/*******************/
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+    border: none !important;
+    -webkit-border-radius: 0 !important;
+       -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
 }
 
 
@@ -90,7 +108,8 @@
 }
 
 /* Default buttons */
-#gh-toolbar-container .btn-default {
+#gh-toolbar-container .btn-default,
+.nav-tabs > li > a {
     height: 100%;
     padding: 12px;
 }
@@ -111,12 +130,13 @@
 /* Secondary toolbar */
 #gh-toolbar-container .gh-toolbar-secondary {
     font-weight: 600;
-    padding-top: 40px;
     opacity: 1;
+    padding: 28px 20px 0;
     position: relative;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
             transition: opacity .2s;
+    z-index: 2;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,
@@ -129,6 +149,7 @@
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
     height: auto;
+    margin-bottom: 2px;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
@@ -155,8 +176,9 @@
 
 .gh-toolbar-label {
     display: inline-block;
+    font-weight: 400;
+    min-width: 60px;
     text-align: center;
-    min-width: 100px;
 }
 
 /* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
@@ -189,27 +211,23 @@
     border-bottom-style: solid !important;
     border-bottom-width: 6px;
     font-size: 16px;
+    font-weight: 400;
+    height: 40px;
+    padding-top: 9px;
+}
+
+.fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today, .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
     font-weight: 600;
-    height: 50px;
-    vertical-align: middle;
 }
 
-.fc-month-view td.fc-today {
-    border-top-style: solid !important;
-    border-top-width: 6px;
-}
-
-.fc-month-view .fc-bg td.fc-today:before {
-    border-top-width: 6px;
-    border-top-style: solid;
-    content: "";
-    width: 100%;
-    position: absolute;
+.fc-month-view .fc-today.fc-day-number {
+    border-right-style: solid !important;
+    border-right-width: 1px !important;
 }
 
 .fc-ltr .fc-basic-view .fc-day-number,
 .fc-ltr .fc-basic-view .fc-today.fc-day-number {
-    padding: 8px 8px 8px 11px;
+    padding: 10px 8px 6px 11px;
 }
 
 .fc-ltr .fc-basic-view .fc-day-number {
@@ -218,11 +236,10 @@
 
 .fc-ltr .fc-basic-view .fc-today.fc-day-number {
     font-weight: bold;
-    padding-top: 5px;
 }
 
 .fc-slats .fc-minor td {
-    border-top-style: dashed;
+    border: none !important;
 }
 
 .fc td.fc-today {
@@ -339,8 +356,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main {
-    padding: 30px;
     margin-top: 30px;
+    padding: 30px 30px 10px 40px;
     width: 370px;
 }
 
@@ -351,9 +368,15 @@ tbody tr:last-child > td.fc-widget-content {
             transition: opacity .2s;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main p#gh-export-add-description {
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
+    border: none;
     display: block;
-    padding: 15px;
+    padding: 16px 0 14px 0;
     width: 100%;
 }
 
@@ -367,21 +390,22 @@ tbody tr:last-child > td.fc-widget-content {
     font-weight: 400;
     list-style-type: decimal;
     margin-left: 18px;
+    padding-bottom: 5px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main textarea {
-    height: 70px;
     font-family: monospace;
     font-size: 13px;
-    margin-bottom: 25px;
-    padding: 7px 12px;
+    height: 100px;
+    margin: 0 0 20px 18px;
+    padding: 5px 5px;
     resize: none;
-    width: 100%;
+    width: 280px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul {
     list-style-type: circle;
-    padding: 0 0 0 25px;
+    padding: 0 0 0 33px;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul li {
@@ -392,9 +416,13 @@ tbody tr:last-child > td.fc-widget-content {
     margin: 0;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-main ul li i {
+    font-size: 14px;
+}
+
 #gh-calendar-view #gh-export-container > #gh-export-sync-message {
     display: block;
-    padding: 20px 20px 20px 30px;
+    padding: 20px 20px 20px 40px;
     width: 400px;
 }
 
@@ -408,9 +436,8 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view #gh-export-container > #gh-export-sync-message small {
     display: block;
-    font-size: 14px;
+    font-size: 15px;
     overflow: auto;
-    width: 210px;
 }
 
 /* Export calendar animations */
@@ -426,6 +453,7 @@ tbody tr:last-child > td.fc-widget-content {
 #gh-calendar-view.gh-export-enabled #gh-export-container {
     opacity: 1;
     width: 400px;
+    z-index: 2;
 }
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {
@@ -434,6 +462,53 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary #gh-btn-calendar-export {
     opacity: 1;
+}
+
+
+/**************/
+/* EMPTY PART */
+/**************/
+
+#gh-empty {
+    margin-left: -320px;
+    text-align: center;
+}
+
+.gh-empty-icons {
+    height: 200px;
+    margin-bottom: 30px;
+    margin-top: 70px;
+    position: relative;
+}
+
+.gh-empty-icons .fa {
+    position: absolute;
+}
+
+.gh-empty-icons .fa-calendar-o {
+    font-size: 200px;
+    margin-left: -100px;
+}
+
+.gh-empty-icons .fa-share-square-o {
+    font-size: 100px;
+    margin-left: -46px;
+    margin-top: 85px;
+}
+
+.gh-empty-main {
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.gh-empty-description {
+    font-weight: 400;
+}
+
+#gh-empty-access {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 20px 25px;
 }
 
 
@@ -480,10 +555,18 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item p {
+    font-size: 14px;
     margin: 0;
+    opacity: 0.8;
     text-align: initial;
     white-space: pre-line;
     word-break: break-word;
+}
+
+.list-group .list-group-item p.gh-list-description-text {
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 1;
 }
 
 .list-group .list-group-item .gh-list-action,
@@ -504,7 +587,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .gh-list-action .btn-link {
     height: 100%;
-    padding: 16px;
+    padding: 13px 16px;
     position: absolute;
     right: 0;
     top: 0;
@@ -535,14 +618,14 @@ tbody tr:last-child > td.fc-widget-content {
 .list-group .list-group-item .gh-list-description {
     display: table-cell;
     overflow: auto;
-    padding-right: 7px;
-    padding-top: 18px;
+    padding: 18px 5px 10px 0;
     width: 230px;
 }
 
 /* Nested list */
 .list-group .list-group-item .list-group .list-group-item {
-    margin-left: 60px;
+    cursor: pointer;
+    margin-left: 40px;
 }
 
 .list-group .list-group-item.gh-list-group-item-open .list-group {
@@ -559,7 +642,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    width: 210px;
+    padding: 12px 5px 12px 20px;
+    width: 230px;
 }
 
 
@@ -625,6 +709,13 @@ tbody tr:last-child > td.fc-widget-content {
     padding-top: 2px;
 }
 
+.chosen-container .chosen-single,
+.chosen-container .chosen-drop {
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+}
+
 .chosen-container .chosen-single span,
 .chosen-container .chosen-single b {
     margin-top: 9px;
@@ -640,7 +731,7 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .chosen-container .chosen-search input {
-    padding: 6px 12px !important;
+    padding: 5px 20px 4px 7px !important;
     font-size: 14px !important;
     line-height: 1.42857143 !important;
     background-image: none !important;
@@ -656,13 +747,14 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .chosen-container .chosen-results {
-    margin: 0 8px 8px 0;
+    margin: 0 8px 0 0;
     max-height: 320px;
-    padding: 0 0 0 8px;
+    padding: 0 0 5px 8px;
 }
 
 .chosen-container .chosen-results li {
-    padding: 10px 5px;
+    font-weight: 400;
+    padding: 10px 8px;
 }
 
 .chosen-container .chosen-results li.highlighted {
@@ -675,7 +767,7 @@ tbody tr:last-child > td.fc-widget-content {
 /***********/
 
 .popover {
-    font-size: 12px;
+    font-size: 14px;
     max-width: 350px;
     width: 350px;
 }
@@ -686,6 +778,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .popover .popover-content {
     margin: 12px 10px;
+    padding: 5px 10px;
 }
 
 .popover h3 {
@@ -705,6 +798,7 @@ tbody tr:last-child > td.fc-widget-content {
     border-top-style: solid;
     border-top-width: 1px;
     display: block;
+    font-size: 14px;
     margin-top: 15px;
     padding-top: 7px;
 }

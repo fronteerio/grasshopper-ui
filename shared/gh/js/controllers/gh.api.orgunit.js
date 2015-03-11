@@ -232,29 +232,29 @@ define(['exports'], function(exports) {
      * Get the calendar for an organisational unit
      *
      * @param  {Number}      orgUnitId            The ID of the organisational unit to get the calendar for
-     * @param  {String}      from                 The timestamp (ISO 8601) from which to get the calendar for the organisational unit
-     * @param  {String}      to                   The timestamp (ISO 8601) until which to get the calendar for the organisational unit
+     * @param  {String}      start                 The timestamp (ISO 8601) from which to get the calendar for the organisational unit
+     * @param  {String}      end                   The timestamp (ISO 8601) until which to get the calendar for the organisational unit
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the calendar for an organisational unit
      */
-    var getOrgUnitCalendar = exports.getOrgUnitCalendar = function(orgUnitId, from, to, callback) {
+    var getOrgUnitCalendar = exports.getOrgUnitCalendar = function(orgUnitId, start, end, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A valid callback function should be provided');
         } else if (!_.isNumber(orgUnitId)) {
             return callback({'code': 400, 'msg': 'A valid orgUnitId should be provided'});
-        } else if (!_.isString(from)) {
-            return callback({'code': 400, 'msg': 'A valid from ISO 8601 date should be provided'});
-        } else if (!_.isString(to)) {
-            return callback({'code': 400, 'msg': 'A valid to ISO 8601 date should be provided'});
+        } else if (!_.isString(start)) {
+            return callback({'code': 400, 'msg': 'A valid start ISO 8601 date should be provided'});
+        } else if (!_.isString(end)) {
+            return callback({'code': 400, 'msg': 'A valid end ISO 8601 date should be provided'});
         }
 
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/calendar',
             'type': 'GET',
             'data': {
-                'from': from,
-                'to': to
+                'start': start,
+                'end': end
             },
             'success': function(data) {
                 return callback(null, data);

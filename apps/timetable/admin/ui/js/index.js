@@ -13,8 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery-bbq', 'jquery.jeditable'], function(gh, constants) {
-    var state = $.bbq.getState() || {};
+define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable'], function(gh, constants) {
 
     // Cache the tripos data
     var triposData = {};
@@ -121,7 +120,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                     _.each(parts, function(part) {
                         editableParts.push({
                             'displayName': course.displayName + ' - ' + subject.displayName,
-                            'hash': '#tripos=' + subject.id + '&part=' + part.id,
+                            'hash': '?tripos=' + subject.id + '&part=' + part.id,
                             'canManage': course.canManage,
                             'part': part,
                             'isEditing': part.Group.LockedBy || false,
@@ -141,7 +140,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 _.each(parts, function(part) {
                     editableParts.push({
                         'displayName': course.displayName,
-                        'hash': '#tripos=' + course.id + '&part=' + part.id,
+                        'hash': '?tripos=' + course.id + '&part=' + part.id,
                         'canManage': course.canManage,
                         'part': part,
                         'isEditing': part.Group.LockedBy || false,
@@ -334,13 +333,22 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
     var setView = function(view, data) {
         switch(view) {
             case constants.views.NEW_SERIES:
+                // Show the home button
+                $('.gh-home').show();
+                // Render the new series form
                 renderNewSeriesForm(data);
                 break;
             case constants.views.BATCH_EDIT:
+                // Show the home button
+                $('.gh-home').show();
+                // Render the batch edit
                 renderBatchEdit(data);
                 break;
             // Show the editable parts for the admin by default
             default:
+                // Hide the home button
+                $('.gh-home').hide();
+                // Render the editable parts
                 renderEditableParts();
                 break;
         }
@@ -379,11 +387,14 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var initIndex = function() {
-        addBinding();
-        renderHeader();
-
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {
+            // Add event handlers
+            addBinding();
+
+            // Render the header
+            renderHeader();
+
             // Only show the login form is local authentication is enabled
             if (gh.config.enableLocalAuth) {
 
@@ -393,7 +404,14 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 // Render the login form
                 renderLoginForm();
             }
+        } else if (gh.data.me && !gh.data.me.isAdmin) {
+            gh.utils.redirect().accessdenied();
         } else {
+            // Add event handlers
+            addBinding();
+
+            // Render the header
+            renderHeader();
 
             // Render the picker container
             renderPickers();

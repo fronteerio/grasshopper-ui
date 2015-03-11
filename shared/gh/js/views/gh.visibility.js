@@ -21,13 +21,17 @@ define(['gh.core'], function(gh) {
     /////////////
 
     /**
-     * Highlight the selected visibility types
+     * Highlight the selected visibility types and toggle the warning message and submit button
      *
      * @private
      */
     var selectVisibilityType = function() {
         $('.gh-visibility-label').removeClass('checked');
         $(this).parents('label').addClass('checked');
+        // Toggle the warning message
+        $('#gh-visibility-publish-warning').toggleClass('open');
+        // Toggle the submit button
+        $('#gh-visibility-save').attr('disabled', !$('#gh-visibility-published').is(':checked'));
     };
 
     /**
@@ -48,7 +52,7 @@ define(['gh.core'], function(gh) {
         // Cache the trigger
         var $trigger = $(this);
         // Retrieve the organisational unit ID
-        var orgUnitId = parseInt($.bbq.getState().part, 10);
+        var orgUnitId = parseInt(History.getState().data.part, 10);
 
         // Retrieve the published status
         gh.api.orgunitAPI.getOrgUnit(orgUnitId, false, function(err, data) {
@@ -73,7 +77,7 @@ define(['gh.core'], function(gh) {
      */
     var updateVisibilityStatus = function() {
         // Retrieve the organisational unit ID
-        var orgUnitId = parseInt($.bbq.getState().part, 10);
+        var orgUnitId = parseInt(History.getState().data.part, 10);
         // Retrieve the published status
         var published = $('#gh-visibility-modal').find('.gh-visibility-label.checked').data('published');
 

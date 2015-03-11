@@ -1,12 +1,12 @@
 {
     "events": {
         "types": [
-            "Field Trip",
-            "Lab",
             "Lecture",
-            "Paper",
-            "Seminar"
-        ]
+            "Class",
+            "Seminar",
+            "Other"
+        ],
+        "default": "Lecture"
     },
     "terms":
         {

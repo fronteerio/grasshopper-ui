@@ -275,6 +275,9 @@ define(['gh.core'], function(gh) {
         $('body').on('click', '.gh-remove-all-from-calendar', removeAllFromCalendar);
         $('body').on('click', '.gh-add-to-calendar', addToCalendar);
         $('body').on('click', '.gh-remove-from-calendar', removeFromCalendar);
+        $('body').on('click', '.list-group .list-group-item .list-group .list-group-item .gh-list-description', function() {
+            $($(this).next().find('button')).click();
+        });
     };
 
     addBinding();

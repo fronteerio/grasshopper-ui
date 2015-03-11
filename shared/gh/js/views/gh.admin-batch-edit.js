@@ -13,12 +13,41 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.series', 'moment', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser'], function(constants, utils, eventAPI, groupAPI, seriesAPI, moment) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
+
+    // Object used to cache the triposData
+    var triposData = null;
 
 
     ///////////////
     // UTILITIES //
     ///////////////
+
+    /**
+     * Hide the empty term description container. The container will only be hidden if there are events left in the term
+     *
+     * @param {String}    term    The term for which to hide the empty term description container
+     * @private
+     */
+    var hideEmptyTermDescription = function(term) {
+        // If events are found in the term, hide the empty description container
+        if ($('.gh-batch-edit-events-container[data-term="' + term + '"] tbody tr:visible').length) {
+            $('.gh-batch-edit-events-container[data-term="' + term + '"] .gh-batch-edit-events-container-empty').hide();
+        }
+    };
+
+    /**
+     * Show the empty term description container. The container will only be shown if no events are left in the term
+     *
+     * @param {String}    term    The term for which to show the empty term description container
+     * @private
+     */
+    var showEmptyTermDescription = function(term) {
+        // If no events are found in the term, show the empty term description container
+        if (!$('.gh-batch-edit-events-container[data-term="' + term + '"] tbody tr:visible').length) {
+            $('.gh-batch-edit-events-container[data-term="' + term + '"] .gh-batch-edit-events-container-empty').show();
+        }
+    };
 
     /**
      * Fade the colourisation of a row over 2 seconds and remove the `gh-fade` class
@@ -50,8 +79,35 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
     /**
+     * Create and return user objects found in the provided $hiddenFields container
+     *
+     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
+     * @return {User[]}                     Array of user objects
+     * @private
+     */
+    var getOrganiserObjects = function($hiddenFields) {
+        // Get all hidden fields in the container
+        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
+        // Cache the Array of organisers to return
+        var organisers = [];
+
+        // Create a user object for each hidden field in the container
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push({
+                'displayName': hiddenField.value,
+                'id': $(hiddenField).attr('data-id')
+            });
+        });
+
+        // Return the Array of user objects
+        return organisers;
+    };
+
+    /**
      * Add a new event row to the table and initialise the editable fields in it
      *
+     * @param {Event}     ev      Standard jQuery event
+     * @param {Object}    data    Data object containing the event object to create and its container
      * @private
      */
     var addNewEventRow = function(ev, data) {
@@ -59,17 +115,37 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
         var termStart = utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
-        eventObj.ev = data && data.eventObj ? data.eventObj : {
-            'displayName': $('.gh-jeditable-series-title').text(),
-            'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format(),
-            'isNew': true, // Used in the template to know this one needs special handling
-            'location': '',
-            'notes': 'Lecture',
-            'organisers': [],
-            'selected': true,
-            'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format(),
-            'tempId': utils.generateRandomString() // The actual ID hasn't been generated yet
-        };
+
+        // Hide the empty term description
+        hideEmptyTermDescription(termName);
+
+        // If an event was already added to the term, clone that event to the new event
+        var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
+        if ($lastEventInTerm.length) {
+            eventObj.ev = data && data.eventObj ? data.eventObj : {
+                'displayName': $lastEventInTerm.find('.gh-event-description').text(),
+                'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
+                'location': $lastEventInTerm.find('.gh-event-location').text(),
+                'notes': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default,
+                'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
+                'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
+            };
+        // If no events were previously added to the term, create a default event object
+        } else {
+            eventObj.ev = data && data.eventObj ? data.eventObj : {
+                'displayName': $('.gh-jeditable-series-title').text(),
+                'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
+                'location': '',
+                'notes': gh.config.events.default,
+                'organisers': [],
+                'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
+            };
+        }
+
+        // Add common properties to the event object
+        eventObj.ev['isNew'] = true; // Used in the template to know this one needs special handling
+        eventObj.ev['selected'] = true; // Select and highlight added events straight away
+        eventObj.ev['tempId'] = utils.generateRandomString(); // The actual ID hasn't been generated yet
         eventObj['utils'] = utils;
 
         // Append a new event row
@@ -80,6 +156,31 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         toggleSubmit();
         // Enable batch editing of dates
         toggleBatchEditDateEnabled();
+        // Trigger a change event on the newly added row to update the batch edit
+        $eventContainer.find('.gh-select-single').trigger('change');
+    };
+
+    /**
+     * Add as many new rows as it takes to fill up a term
+     *
+     * @param {Event}    ev    Standard jQuery event
+     * @private
+     */
+    var addNewEventRows = function(ev) {
+        var termLabel = $(this).closest('.gh-batch-edit-events-container').attr('data-term');
+        // Get the term from the configuration
+        var term = _.find(gh.config.terms[gh.config.academicYear], function(term) {
+            return term.label.toLowerCase() === termLabel.toLowerCase();
+        });
+        // Get the number of weeks in the term
+        var weeksInTerm = gh.utils.getWeeksInTerm(term);
+        // Add a new event row for every week in the term
+        for (weeksInTerm; weeksInTerm !== 0; weeksInTerm--) {
+            // Add new event rows
+            addNewEventRow(ev, {
+                'eventContainer': $(this).closest('.gh-batch-edit-events-container').find('tbody'),
+            });
+        }
     };
 
     /**
@@ -91,12 +192,18 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Only soft delete the event when it hasn't been created in the first place. If the
         // row has no 'eventid' data attribute it shouldn't be deleted from the db
         var $row = $(this).closest('tr');
+        var termLabel = $row.closest('.gh-batch-edit-events-container').attr('data-term');
         if ($row.data('eventid')) {
-            $row.addClass('gh-event-deleted').fadeOut(200);
+            $row.addClass('gh-event-deleted').fadeOut(200, function() {
+                // Show the empty term description
+                showEmptyTermDescription(termLabel);
+            });
             toggleSubmit();
         } else {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 $row.remove();
+                // Show the empty term description
+                showEmptyTermDescription(termLabel);
             });
         }
         // Let other components know that an event was deleted
@@ -176,7 +283,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
      * @private
      */
     var toggleBatchEditDateEnabled = function() {
-        if ($('.gh-batch-edit-events-container tbody .gh-select-single:checked').length) {
+        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length) {
             $('#gh-batch-edit-time').removeAttr('disabled');
         } else {
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
@@ -264,6 +371,61 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     };
 
 
+    //////////////
+    // CALENDAR //
+    //////////////
+
+    /**
+     * Fetch the tripos data that the calendar needs
+     *
+     * @param  {Function}    callback    Standard callback function
+     * @private
+     */
+    var setUpPreviewCalendar = function(callback) {
+        // Fetch the triposes
+        if (!triposData) {
+            utils.getTriposStructure(function(err, data) {
+                if (err) {
+                    return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                }
+
+                // Cache the triposData for future use
+                triposData = data;
+
+                // Render the calendar
+                renderPreviewCalendar();
+            });
+        } else {
+            // Render the calendar
+            renderPreviewCalendar();
+        }
+    };
+
+    /**
+     * Render and initialise the calendar
+     *
+     * @private
+     */
+    var renderPreviewCalendar = function() {
+        // Render the calendar template
+        utils.renderTemplate($('#gh-calendar-template'), {
+            'data': {
+                'gh': gh,
+                'view': 'admin'
+            }
+        }, $('#gh-calendar-view-container'));
+
+        // Initialise the calendar
+        $(document).trigger('gh.calendar.init', {
+            'triposData': triposData,
+            'orgUnitId': History.getState().data.module
+        });
+
+        // Put the calendar on today's view
+        $(document).trigger('gh.calendar.navigateToToday');
+    };
+
+
     /////////////
     // LOCKING //
     /////////////
@@ -281,18 +443,21 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
     var lockGroup = function() {
         // Get the GroupId
         lockedGroupId = $('#gh-modules-container button[data-groupid]').data('groupid');
-        // Lock the group
-        groupAPI.lock(lockedGroupId);
-        // Lock the currently edited group every 60 seconds
-        lockInterval = setInterval(function() {
-            // Only attempt to lock when the batch edit mode is active
-            if ($('#gh-batch-edit-view').is(':visible')) {
-                groupAPI.lock(lockedGroupId);
-            // If batch edit is not active we can unlock the group
-            } else {
-                unlockGroup();
-            }
-        }, 60000);
+        // Only lock the group if the ID is defined
+        if (lockedGroupId) {
+            // Lock the group
+            gh.api.groupsAPI.lock(lockedGroupId);
+            // Lock the currently edited group every 60 seconds
+            lockInterval = setInterval(function() {
+                // Only attempt to lock when the batch edit mode is active
+                if ($('#gh-batch-edit-view').is(':visible')) {
+                    gh.api.groupsAPI.lock(lockedGroupId);
+                // If batch edit is not active we can unlock the group
+                } else {
+                    unlockGroup();
+                }
+            }, 60000);
+        }
     };
 
     /**
@@ -304,7 +469,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         // Only unlock the group if it was previously locked
         if (lockedGroupId) {
             // Unlock the group
-            groupAPI.unlock(lockedGroupId);
+            gh.api.groupsAPI.unlock(lockedGroupId);
             // Clear the interval
             clearInterval(lockInterval);
         }
@@ -329,8 +494,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         if (!value) {
             return this.revert;
         } else if (this.revert !== value) {
-            var seriesId = parseInt($.bbq.getState()['series'], 10);
-            seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
+            var seriesId = parseInt(History.getState().data['series'], 10);
+            gh.api.seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
                     return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
@@ -472,7 +637,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
-            'tooltip': 'Click to edit event notes',
+            'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
@@ -488,7 +653,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
-            'tooltip': 'Click to edit organisers',
+            'tooltip': 'Click to add a lecturer for this event',
             'type': 'organiser-autosuggest',
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
@@ -526,7 +691,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
          * @private
          */
         var submitEventUpdate = function(updatedEvent, _callback) {
-            eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
@@ -535,7 +700,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
 
                 if (updatedEvent.organisers) {
                     // Update the event organisers
-                    eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
+                    gh.api.eventAPI.updateEventOrganisers(updatedEvent.id, updatedEvent.organisers, function(orgErr, data) {
                         if (orgErr) {
                             hasError = true;
                             // Mark the row so it's visually obvious that the update failed
@@ -614,8 +779,8 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
          */
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
-            var seriesId = parseInt($.bbq.getState()['series'], 10);
-            eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
+            var seriesId = parseInt(History.getState().data['series'], 10);
+            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
@@ -676,7 +841,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
          * @private
          */
         var deleteEvent = function(eventID, _callback) {
-            eventAPI.deleteEvent(eventID, function(err) {
+            gh.api.eventAPI.deleteEvent(eventID, function(err) {
                 // Remove the row from the DOM
                 $('.gh-batch-edit-events-container tbody tr[data-eventid="' + eventID + '"]').remove();
 
@@ -933,69 +1098,71 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
      * @private
      */
     var loadSeriesEvents = function() {
-        var seriesId = parseInt($.bbq.getState()['series'], 10);
+        var seriesId = parseInt(History.getState().data['series'], 10);
 
         // Get the information about the series
-        seriesAPI.getSeries(seriesId, function(err, series) {
-            if (err) {
-                return gh.utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
-            }
+        if (seriesId) {
+            gh.api.seriesAPI.getSeries(seriesId, null, function(err, series) {
+                if (err) {
+                    return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                }
 
-            // Object used to aggregate the events between pages
-            var events = {
-                'results': []
-            };
+                // Object used to aggregate the events between pages
+                var events = {
+                    'results': []
+                };
 
-            /**
-             * Get the events in a series per page of 25. Calls itself when it feels like there might be more
-             *
-             * @param  {Number}      offset      The paging number of the results to retrieve
-             * @param  {Function}    callback    Standard callback function
-             * @private
-             */
-            var getSeriesEvents = function(offset, callback) {
-                // Get the information about the events in the series
-                seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
-                    if (err) {
-                        return gh.utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
-                    }
+                /**
+                 * Get the events in a series per page of 25. Calls itself when it feels like there might be more
+                 *
+                 * @param  {Number}      offset      The paging number of the results to retrieve
+                 * @param  {Function}    callback    Standard callback function
+                 * @private
+                 */
+                var getSeriesEvents = function(offset, callback) {
+                    // Get the information about the events in the series
+                    gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
+                        if (err) {
+                            return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                        }
 
-                    // Aggregate the results
-                    events.results = _.union(events.results, _events.results);
+                        // Aggregate the results
+                        events.results = _.union(events.results, _events.results);
 
-                    // If the length of the Array of _events is 25 there might be other results so
-                    // we increase the offset and fetch again
-                    if (_events.results.length === 25) {
-                        offset = offset + 25;
-                        getSeriesEvents(offset, callback);
-                    } else {
-                        callback();
-                    }
+                        // If the length of the Array of _events is 25 there might be other results so
+                        // we increase the offset and fetch again
+                        if (_events.results.length === 25) {
+                            offset = offset + 25;
+                            getSeriesEvents(offset, callback);
+                        } else {
+                            callback();
+                        }
+                    });
+                };
+
+                // Get the first page of events
+                getSeriesEvents(0, function() {
+                    // Unlock the currently locked group
+                    unlockGroup();
+
+                    // Load up the batch edit page and provide the events and series data
+                    $(document).trigger('gh.admin.changeView', {
+                        'name': constants.views.BATCH_EDIT,
+                        'data': {
+                            'events': events,
+                            'series': series
+                        }
+                    });
+
+                    // Lock the currently edited group every 60 seconds
+                    lockGroup();
+
+                    // TODO: Remove this and only trigger when button is clicked/expanded
+                    $(document).trigger('gh.batchdate.setup');
+                    $(document).trigger('gh.batchorganiser.setup');
                 });
-            };
-
-            // Get the first page of events
-            getSeriesEvents(0, function() {
-                // Unlock the currently locked group
-                unlockGroup();
-
-                // Load up the batch edit page and provide the events and series data
-                $(document).trigger('gh.admin.changeView', {
-                    'name': constants.views.BATCH_EDIT,
-                    'data': {
-                        'events': events,
-                        'series': series
-                    }
-                });
-
-                // Lock the currently edited group every 60 seconds
-                lockGroup();
-
-                // TODO: Remove this and only trigger when button is clicked/expanded
-                $(document).trigger('gh.batchdate.setup');
-                $(document).trigger('gh.batchorganiser.setup');
             });
-        });
+        }
     };
 
 
@@ -1029,6 +1196,7 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         $('body').on('change', '.gh-select-single', toggleEvent);
         $('body').on('click', '.gh-new-event', addNewEventRow);
         $(document).on('gh.batchedit.addevent', addNewEventRow);
+        $('body').on('click', '.gh-new-events', addNewEventRows);
         $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
@@ -1046,6 +1214,14 @@ define(['gh.constants', 'gh.utils', 'gh.api.event', 'gh.api.groups', 'gh.api.ser
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
+
+        // Tabs
+        $(document).on('shown.bs.tab', '#gh-batch-edit-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
+            // Only set up the calendar if that tab is active
+            if ($(ev.target).attr('aria-controls') === 'gh-batch-calendar-view') {
+                setUpPreviewCalendar();
+            }
+        });
     };
 
     addBinding();

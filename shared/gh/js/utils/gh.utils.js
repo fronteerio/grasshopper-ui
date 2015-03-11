@@ -21,6 +21,28 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
     ///////////////
 
     /**
+     * Set the title of the document. Depending on the interface that's loaded up, the title will be prefixed with:
+     *     - 'My Timetable' when the student UI is loaded
+     *     - 'Timetable Administration' when the administrator UI is loaded
+     *     
+     * @param {String}    [title]    The title to set to the document
+     */
+    var setDocumentTitle = exports.setDocumentTitle = function(title) {
+        if (title && !_.isString(title)) {
+            throw new Error('An invalid value for title was provided');
+        }
+
+        // Default the previx to 'My Timetable'. If the admin UI is loaded
+        // up the prefix should be 'Timetable Administration'
+        var prefix = 'My Timetable ';
+        if ($('body').data('isadminui')) {
+            prefix = 'Timetable Administration ';
+        }
+
+        document.title = prefix + title.trim();
+    };
+
+    /**
      * Generates a random 10 character sequence of upper and lowercase letters.
      *
      * @param  {Boolean}    toLowerCase    Whether or not the string should be returned lowercase
@@ -276,26 +298,61 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
         // If the container has not been created yet, we create it and add
         // it to the DOM.
         var $notificationContainer = $('#gh-notification-container');
+        var randomId = generateRandomString();
         if ($notificationContainer.length === 0) {
-            $notificationContainer = $('<div>').attr('id', 'gh-notification-container').addClass('notifications top-center');
+            $notificationContainer = $('<div>').attr('id', 'gh-notification-container').addClass('notifications bottom-left');
             $('body').append($notificationContainer);
         }
 
         // If a title has been provided, we wrap it in an h4 and prepend it to the message
         if (title) {
-            message = '<h4 id="' + id + '">' + title + '</h4>' + message;
+            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4><p>' + message + '</p></div>';
         }
 
-        // Show the actual notification
+        // If an ID has been provided, add the `id` attribute to the message
+        if (id) {
+            message = $(message).attr('id', id);
+        }
+
+        // Show the notification
         $notificationContainer.notify({
             'fadeOut': {
                 'enabled': sticky ? false : true,
                 'delay': 5000
             },
-            'type': type,
-            'message': {'html': message},
-            'transition': 'fade'
+            'type': type ? type : 'success',
+            'message': {'html': message}
         }).show();
+
+        // Cache the rendered notification object to refer to it later
+        var $notification = $($('[data-internal-id]', $notificationContainer).closest('.alert'));
+
+        // Wait until the call stack has cleared before animating
+        setTimeout(function() {
+            $notification.removeClass('fade in');
+            $notification.addClass('gh-notification-in');
+        }, 10);
+
+        // Fade out and remove the container after 5 seconds if it's not marked as sticky
+        var fadeTimeout = setTimeout(function() {
+            if (!sticky) {
+                $notification.addClass('gh-notification-fade');
+            }
+        }, 5000);
+
+        // Close the notification when the 'X' is clicked
+        $('a.close', $notificationContainer).off('click').on('click', function(ev) {
+            // Add the fade animation to remove the popover from view
+            $(this).closest('.alert').addClass('gh-notification-fade');
+            // Remove the notification from the DOM after the animation finishes
+            setTimeout(function() {
+                $(this).closest('.alert').remove();
+            }, 500);
+            // Clear the timeout that removes the notification
+            clearTimeout(fadeTimeout);
+            // Avoid default link click behaviour
+            return false;
+        });
 
         return true;
     };
@@ -310,6 +367,14 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
      */
     /* istanbul ignore next */
     var redirect = exports.redirect = function() {
+
+        /**
+         * Redirect the current user to the 401 page. This can be used when the user requests a page or entity
+         * to which no access should be granted.
+         */
+        var accessdenied = function() {
+            window.location = '/accessdenied';
+        };
 
         /**
          * Redirect the current user to the 404 page. This can be used when the user requests a page or entity
@@ -328,6 +393,7 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
         };
 
         return {
+            'accessdenied': accessdenied,
             'notfound': notfound,
             'unavailable': unavailable
         };
@@ -388,6 +454,144 @@ define(['exports', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], f
 
     // Initialise Google Analytics
     googleAnalytics();
+
+
+    /////////////
+    //  STATE  //
+    /////////////
+
+    /**
+     * Refresh the state by triggering the statechange event without making modifications
+     */
+    var refreshState = exports.refreshState = function() {
+        History.Adapter.trigger(window, 'statechange');
+    };
+
+    /**
+     * Add a key/value pair to the URL state
+     *
+     * @param {Object}    toAdd        The key of the state parameter to set
+     * @param {Boolean}   [replace]    Whether to replace the state or push a new one in. Setting to `true` is useful when the state needs to be updated but no history entry should be created. Defaults to `false`
+     */
+    var addToState = exports.addToState = function(toAdd, replace) {
+        // Construct an array to create the state string from
+        var stateString = [];
+        // Whether or not the key/value pair overrides an already existing state property
+        var override = false;
+        // Merge the current history with the arguments to add to it
+        var currentState = _.extend(History.getState().data, toAdd);
+
+        // For each entry, add it to the stateString
+        _.each(currentState, function(value, key) {
+            stateString.push(key + '=' + value);
+        });
+
+        // Create the URL to set the state to
+        var url = '/?' + stateString.join('&');
+        // If the admin UI is loaded, prepend '/admin/?'
+        if ($('body').data('isadminui')) {
+            url = '/admin' + url;
+        }
+
+        // Clear the queue
+        History.clearQueue();
+
+        if (replace) {
+            // Replace with the new state
+            History.replaceState(currentState, $('title').text(), url);
+        } else {
+            // Push the new state
+            History.pushState(currentState, $('title').text(), url);
+        }
+    };
+
+    /**
+     * Remove one or more keys from the state
+     *
+     * @param  {String[]}    keys    Array of keys to remove from the state
+     */
+    var removeFromState = exports.removeFromState = function(keys) {
+        // Construct an array to create the state string from
+        var stateString = [];
+        // Get the current history state to work with
+        var currentState = History.getState();
+        // Cache the state data object to set
+        var stateData = {};
+
+        // If the state is already empty there is nothing to do
+        if (_.isEmpty(currentState.data)) {
+            return;
+        }
+
+        // Loop over each data entry in the state and remove the keys that match
+        _.each(currentState.data, function(value, key) {
+            // Remove the key from the state, if it's matched, by not adding it to the
+            // updated state object
+            if (_.indexOf(keys, key) === -1) {
+                stateString.push(key + '=' + value);
+                stateData[key] = value;
+            }
+        });
+
+        // Create the URL to set the state to
+        var url = '/?' + stateString.join('&');
+        // If the admin UI is loaded, prepend '/admin/?'
+        if ($('body').data('isadminui')) {
+            url = '/admin' + url;
+        }
+
+        // Clear the queue
+        History.clearQueue();
+
+        // Replace the state data
+        History.replaceState(stateData, $('title').text(), url);
+    };
+
+    /**
+     * Set the state data. This is useful in functions that are using the data to determine what to add or remove
+     *
+     */
+    var setStateData = exports.setStateData = function() {
+        // Parse the URL that's in the History state.
+        // The expected URL structure is `[/admin]/?tripos=123&part=234&module=567&series=890`
+        var stateString = History.getState().cleanUrl.split('?');
+
+        // The hostname is included in the stateString Array; if it has more than one item in it that means
+        // there's some state handling to be done.
+        if (stateString.length > 1) {
+            // Cache the state data object to set
+            var stateData = {};
+
+            // Drop the hostname from the Array to only keep the hash
+            stateString = stateString.pop();
+
+            // Split the hash into an Array
+            stateString = stateString.split('&');
+
+            // For each key/value pair in the Array, assign it to the new state object
+            _.each(stateString, function(s) {
+                if (s) {
+                    // Split the string into a key and value
+                    s = s.split('=');
+                    // Add the key/value pair to the state object
+                    stateData[s[0]] = parseInt(s[1], 10);
+                }
+            });
+
+            // Create the URL to set the state to
+            var url = '/?' + stateString.join('&');
+            // If the admin UI is loaded, prepend '/admin/?'
+            if ($('body').data('isadminui')) {
+                url = '/admin' + url;
+            }
+
+            // Clear the queue
+            History.clearQueue();
+
+            // Replace the state data
+            History.replaceState(stateData, $('title').text(), url);
+        }
+    };
 
 
     //////////////////////

@@ -58,7 +58,9 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/admin-modules.html',
                  'text!gh/partials/borrow-series-modal.html',
                  'text!gh/partials/calendar.html',
+                 'text!gh/partials/delete-series-modal.html',
                  'text!gh/partials/editable-parts.html',
+                 'text!gh/partials/empty-timetable.html',
                  'text!gh/partials/event.html',
                  'text!gh/partials/event-popover.html',
                  'text!gh/partials/login-form.html',
@@ -71,21 +73,23 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
                  'text!gh/partials/visibility-button.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, editableParts, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityButton, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, deleteSeriesModal, editableParts, emptyTimetable, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityButton, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit', adminBatchEdit);
             _.declarePartial('admin-batch-edit-date', adminBatchEditDate);
             _.declarePartial('admin-edit-date-field', adminEditDateField);
-            _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-batch-edit-event-row', adminBatchEditEventRow);
+            _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-edit-dates', adminEditDates);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
             _.declarePartial('borrow-series-modal', borrowSeriesModal);
             _.declarePartial('calendar', calendar);
+            _.declarePartial('delete-series-modal', deleteSeriesModal);
             _.declarePartial('editable-parts', editableParts);
+            _.declarePartial('empty-timetable', emptyTimetable);
             _.declarePartial('event', eventItem);
             _.declarePartial('event-popover', eventPopover);
             _.declarePartial('login-form', loginForm);

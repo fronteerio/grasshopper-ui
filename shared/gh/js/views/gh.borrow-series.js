@@ -28,7 +28,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
 
-        $(document).trigger('gh.listview.setup', {
+        $(document).trigger('gh.part.selected', {
             'partId': partId,
             'container': $('#gh-borrow-series-modal'),
             'template': $('#gh-borrow-series-modules-template')
@@ -52,7 +52,9 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
 
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
-            'data': parts
+            'data': {
+                'parts': parts
+            }
         }, $('#gh-borrow-series-part'));
 
         // Show the subheader part picker
@@ -66,6 +68,9 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
             'no_results_text': 'No matches for',
             'disable_search_threshold': 10
         }).on('change', setUpModules);
+
+        // Chosen has a bug where search sometimes isn't disabled properly
+        $('#gh_borrow_series_part_chosen .chosen-search').hide();
     };
 
     /**

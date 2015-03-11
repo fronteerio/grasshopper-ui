@@ -1,10 +1,28 @@
 <html>
     <head>
-        <title>My timetable</title>
+        <title>My Timetable</title>
 
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#FFC40D">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="theme-color" content="#FFFFFF">
 
         <!-- .cam.ac.uk domain Typekit inclusion -->
         <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
@@ -27,7 +45,7 @@
                         <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
                     </a>
                     <div id="gh-content-description">
-                        <p>Select your course and part to view available modules</p>
+                        <p style="display: none;">Choose a tripos &amp; part<br/> to see available modules</p>
                     </div>
                 </div>
                 <div id="gh-modules-container"><!-- --></div>
@@ -37,25 +55,37 @@
                     <div id="gh-header"><!-- --></div>
                     <div id="gh-subheader"><!-- --></div>
                 </div>
+                <div id="gh-empty" style="display: none;"><!-- --></div>
                 <main id="gh-main"><!-- --></main>
             </div>
             <div class="clearfix"></div>
         </div>
 
+        <!-- Modal template -->
         <div id="gh-modal"><!-- --></div>
-
-        <script id="gh-subheader-part-template" type="text/template">
-            <%= _.partial('subheader-part', {'data': data}) %>
+        <script id="gh-modal-template" type="text/template">
+            <%= _.partial('login-modal', {
+                'gh': gh,
+                'isGlobalAdminUI': false
+            }) %>
         </script>
 
-        <script id="gh-subheader-picker-template" type="text/template">
-            <%= _.partial('subheader-picker', {'data': data}) %>
-        </script>
-
+        <!-- Subheader pickers template -->
         <script id="gh-subheader-pickers-template" type="text/template">
             <%= _.partial('subheader-pickers') %>
         </script>
 
+        <!-- Subheader picker template -->
+        <script id="gh-subheader-picker-template" type="text/template">
+            <%= _.partial('subheader-picker', {'data': data}) %>
+        </script>
+
+        <!-- Subheader part template-->
+        <script id="gh-subheader-part-template" type="text/template">
+            <%= _.partial('subheader-part', {'data': data}) %>
+        </script>
+
+        <!-- Header template -->
         <script id="gh-header-template" type="text/template">
             <% if (!gh.data.me || gh.data.me.anon) { %>
                 <form id="gh-signin-form" class="form-inline pull-right" role="form">
@@ -74,25 +104,24 @@
             <h1><%- gh.data.me.app.displayName %></h1>
         </script>
 
-        <script id="gh-modal-template" type="text/template">
-            <%= _.partial('login-modal', {
-                'gh': gh,
-                'isGlobalAdminUI': false
-            }) %>
-        </script>
-
+        <!-- Modules template -->
         <script id="gh-modules-template" type="text/template">
             <%= _.partial('student-modules', {'data': data}) %>
         </script>
 
+        <!-- Calendar template -->
         <script id="gh-calendar-template" type="text/template">
-            <%= _.partial('calendar', {
-                'gh': gh
-            }) %>
+            <%= _.partial('calendar', {'data': data}) %>
         </script>
 
+        <!-- Event template -->
         <script id="gh-event-template" type="text/template">
             <%= _.partial('event', {'data': data}) %>
+        </script>
+
+        <!-- Empty part template -->
+        <script id="gh-empty-template" type="text/template">
+            <%= _.partial('empty-timetable', {'data': data}) %>
         </script>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
