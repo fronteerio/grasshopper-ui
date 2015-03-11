@@ -245,18 +245,12 @@
             box-shadow: 0 0px 15px #666;
 }
 
-#gh-batch-edit-header.gh-batch-edit-time-open,
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-bottom-color: #EEE;
-}
-
-#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    border-color: #EEE;
+    background-color: #F4F4F4;
     color: #171717;
 }
 
-#gh-batch-edit-container,
-#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
+#gh-batch-edit-container {
     background-color: #FFF;
 }
 
@@ -286,6 +280,10 @@
     border-right-color: #DDD;
 }
 
+#gh-batch-edit-container #gh-batch-edit-date-container {
+    background-color: #F4F4F4;
+}
+
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
     background-color: #FFF;
 }
@@ -296,6 +294,11 @@
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
     border-color: #62326E;
+}
+
+#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
+    color: #171717;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,

@@ -413,7 +413,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Get the start date from the current calendar view
         var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).utc().format());
+        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).toISOString());
     };
 
     /**
