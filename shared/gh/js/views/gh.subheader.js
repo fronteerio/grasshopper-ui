@@ -42,9 +42,18 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Track the part picker change in GA
         gh.utils.sendTrackingEvent('picker', 'change', 'part picker', partId);
 
-        $(document).trigger('gh.listview.setup', {
-            'partId': partId,
-            'container': $('#gh-left-container')
+        // Retrieve the organisational unit information for the modules
+        orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
+            if (err) {
+                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+            }
+
+            // Trigger an event when a part has been selected, persisting the part ID and the modules
+            $(document).trigger('gh.part.selected', {
+                'partId': partId,
+                'modules': modules,
+                'container': $('#gh-left-container')
+            });
         });
     };
 
@@ -139,6 +148,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      * @private
      */
     var handleStateChange = function(a, b, c) {
+
         // Make sure that all state data is set before handling the statechange event
         gh.utils.setStateData();
 

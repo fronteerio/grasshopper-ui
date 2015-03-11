@@ -57,7 +57,7 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series'], functi
         // Select a series in the sidebar
         $('body').on('click', '.gh-series-select', selectSeries);
         // Set up the modules in the sidebar
-        $(document).on('gh.listview.setup', setUpModules);
+        $(document).on('gh.part.selected', setUpModules);
     };
 
     addBinding();

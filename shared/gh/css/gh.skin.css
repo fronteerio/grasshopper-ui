@@ -204,6 +204,19 @@ ul.nav-tabs li.active {
 
 
 /**************/
+/* EMPTY PART */
+/**************/
+
+.gh-empty-icons .fa-calendar-o {
+    color: #CCC;
+}
+
+.gh-empty-icons .fa-share-square-o {
+    color: #07525D;
+}
+
+
+/**************/
 /* LIST GROUP */
 /**************/
 

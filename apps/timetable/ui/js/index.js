@@ -72,6 +72,28 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
     };
 
     /**
+     * Display the appropriate view depending on the state of the selected part
+     *
+     * @param  {Object}    ev      Standard jQuery event
+     * @param  {Object}    data
+     * @private
+     */
+    var onPartSelected = function(evt, data) {
+        if (!data.modules.results.length) {
+            gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
+                gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
+                $('#gh-left-container').addClass('gh-minimised');
+                $('#gh-main').hide();
+                $('#gh-empty').show();
+            });
+        } else {
+            $('#gh-left-container').removeClass('gh-minimised');
+            $('#gh-empty').hide();
+            $('#gh-main').show();
+        }
+    };
+
+    /**
      * Render the login modal dialog used to prompt anonymous users to sign in
      *
      * @private
@@ -152,10 +174,8 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-
-        $(document).on('gh.calendar.ready', function() {
-            setUpCalendar();
-        });
+        $(document).on('gh.calendar.ready', setUpCalendar);
+        $(document).on('gh.part.selected', onPartSelected);
     };
 
     /**
