@@ -1,0 +1,17 @@
+<%
+    var updateString = [];
+
+    if (data.updated) {
+        updateString.push(data.updated + ' event' + (data.updated === 1 ? '' : 's' ) + ' changed');
+    }
+    if (data.created) {
+        updateString.push('<span class="text-success">' + data.created + ' event' + (data.created === 1 ? '' : 's' ) + ' added</span>');
+    }
+    if (data.deleted) {
+        updateString.push('<span class="text-danger">' + data.deleted + ' event' + (data.deleted === 1 ? '' : 's' ) + ' deleted</span>');
+    }
+%>
+
+<p id="gh-batch-edit-change-summary" class="pull-left"><%= updateString.join(', ') %></p>
+<button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right"><i class="fa fa-check"></i> Save</button>
+<button type="button" id="gh-batch-edit-cancel" class="btn btn-link pull-right">Cancel</button>
