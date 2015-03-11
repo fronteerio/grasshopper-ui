@@ -187,10 +187,6 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                     if ($(ev.relatedTarget).length) {
                         $(ev.relatedTarget).focus();
                     }
-                // If the relatedTarget that was tabbed to has the `gh-event-organisers` class we submit the form
-                } else if ($(ev.relatedTarget).hasClass('gh-event-organisers')) {
-                    // Submit the AutoSuggest field
-                    submitAutoSuggest(this, original);
                 }
             };
 
