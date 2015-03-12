@@ -190,6 +190,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         // week in that term. If it can't be retrieved the date is out of term and 0 should
         // be returned
         var weekNumber = 0;
+        /* istanbul ignore else */
         if (currentTerm) {
             weekNumber = Math.ceil(((date - startDate) / constants.time.PERIODS['week']) - (dayOffset)) + 1;
         }

@@ -169,7 +169,8 @@ module.exports = function(grunt) {
                         'baseUrl': ".",
                         'src': [
                             'shared/gh/js/*.js',
-                            'shared/gh/js/controllers/*.js'
+                            'shared/gh/js/controllers/*.js',
+                            'shared/gh/js/utils/*.js'
                         ],
                         'instrumentedFiles': 'target/coverage',
                         'lcovReport': 'coverage/lcov',
