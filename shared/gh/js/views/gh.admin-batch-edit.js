@@ -197,13 +197,16 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
+                // Update the footer
+                toggleSubmit();
             });
-            toggleSubmit();
         } else {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 $row.remove();
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
+                // Update the footer
+                toggleSubmit();
             });
         }
         // Let other components know that an event was deleted
@@ -264,12 +267,23 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var toggleSubmit = function() {
-        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted)').length + $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
+        // Get the number of events that were updated
+        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted):not(.gh-new-event-row)').length;
+        // Get the number of events that were created
+        var eventsCreated = $('.gh-batch-edit-events-container tbody tr.gh-new-event-row:not(.gh-event-deleted)').length;
+        // Get the number of events that were deleted
+        var eventsDeleted = $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
 
-        if (eventsUpdated) {
+        // Only toggle and update the footer if events where updated, created or deleted
+        if (eventsUpdated || eventsCreated || eventsDeleted) {
             // Update the count
-            var updatedCountString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
-            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(updatedCountString);
+            utils.renderTemplate($('#gh-batch-edit-actions-template'), {
+                'data': {
+                    'updated': eventsUpdated,
+                    'created': eventsCreated,
+                    'deleted': eventsDeleted
+                }
+            }, $('.gh-batch-edit-actions-container'));
             // Show the save button if events have changed but not submitted
             $('.gh-batch-edit-actions-container').fadeIn(200);
         } else {
