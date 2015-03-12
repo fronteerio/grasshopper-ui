@@ -1,4 +1,4 @@
-<select id="<%- data.id %>" class="form-control" name="gh-event-type-select">
+<select id="<%- data.id %>" class="form-control" name="gh-event-type-select" disabled>
     <% _.each(data.types, function(value, index) { %>
         <option value="<%- value %>"><%- value %></option>
     <% }) %>

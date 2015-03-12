@@ -40,16 +40,16 @@
                             <tr>
                                 <th>Batch edit:</th>
                                 <th>
-                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
+                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles" disabled>
                                 </th>
                                 <th>
                                     <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Dates &amp; times</button>
                                 </th>
                                 <th class="gh-batch-event-organisers">
-                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
+                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers" disabled>
                                 </th>
                                 <th>
-                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations">
+                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations" disabled>
                                 </th>
                                 <th>
                                     <%= _.partial('admin-batch-edit-event-type', {
