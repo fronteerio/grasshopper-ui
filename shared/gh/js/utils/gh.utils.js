@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, state, templates, time) {
+define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, state, templates, time) {
 
 
     ///////////////
@@ -406,6 +406,7 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
 
         // Gather all the specific funtionality classes
         var utilClasses = [
+            instrumentation,
             state,
             templates,
             time

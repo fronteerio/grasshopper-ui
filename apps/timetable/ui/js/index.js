@@ -174,6 +174,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
+        $('body').on('submit', '#gh-signout-form', function() {
+            gh.utils.trackEvent('Auth - Signed out');
+        });
         $(document).on('gh.calendar.ready', setUpCalendar);
         $(document).on('gh.part.selected', onPartSelected);
     };

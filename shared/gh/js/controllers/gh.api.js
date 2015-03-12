@@ -64,9 +64,12 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
                 getConfig(function() {
                     // Cache the partials
                     utils.cachePartials(function() {
-                        // The APIs have now fully initialised. All javascript that
-                        // depends on the initialised core APIs can now execute
-                        return callback(gh);
+                        // Set up instrumentation
+                        utils.setUpInstrumentation(gh.data.me, function() {
+                            // The APIs have now fully initialised. All javascript that
+                            // depends on the initialised core APIs can now execute
+                            return callback(gh);
+                        });
                     });
                 });
             });

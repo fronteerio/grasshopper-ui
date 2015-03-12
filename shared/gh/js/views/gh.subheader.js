@@ -39,6 +39,12 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected part in the URL
         gh.utils.addToState({'part': partId});
 
+        gh.utils.trackEvent('Navigation - Part selector - Selected ' + partId, {
+            'part': partId,
+            'tripos': History.getState().data.tripos,
+            'time_from_start': new Date().getTime()
+        });
+
         // Retrieve the organisational unit information for the modules
         orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
             if (err) {
@@ -66,6 +72,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Push the selected tripos in the URL
         gh.utils.addToState({'tripos': triposId});
+
+        gh.utils.trackEvent('Navigation - Tripos selector - Selected ' + triposId, {
+            'tripos': triposId
+        });
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {

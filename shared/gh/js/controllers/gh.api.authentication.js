@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports'], function(exports) {
+define(['exports', 'gh.utils'], function(exports, utils) {
 
 
     /////////////
@@ -75,10 +75,18 @@ define(['exports'], function(exports) {
             'type': 'POST',
             'data': data,
             'success': function() {
-                return callback();
+                return utils.trackEvent('Auth - Signed in', null, null, function() {
+                    callback();
+                });
             },
             'error': function(jqXHR, textStatus) {
-                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+                return utils.trackEvent('Auth - Signed in error', {
+                    'endpoint': '/api/auth/login',
+                    'http_code': jqXHR.status,
+                    'message': jqXHR.responseText
+                }, null, function() {
+                    callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+                });
             }
         });
     };
