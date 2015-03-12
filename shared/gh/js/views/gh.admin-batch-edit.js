@@ -126,9 +126,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': $lastEventInTerm.find('.gh-event-location').text(),
-                'notes': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default,
                 'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
                 'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
+                'type': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default
             };
         // If no events were previously added to the term, create a default event object
         } else {
@@ -136,9 +136,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 'displayName': $('.gh-jeditable-series-title').text(),
                 'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
                 'location': '',
-                'notes': gh.config.events.default,
                 'organisers': [],
                 'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
+                'type': gh.config.events.default
             };
         }
 
@@ -632,7 +632,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             }
         });
 
-        // Apply jEditable to the event notes
+        // Apply jEditable to the event type
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
@@ -691,7 +691,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
          * @private
          */
         var submitEventUpdate = function(updatedEvent, _callback) {
-            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, updatedEvent.type, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
@@ -780,7 +780,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
             var seriesId = parseInt(History.getState().data['series'], 10);
-            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
+            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, newEvent.type, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
@@ -953,9 +953,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organisers': organisers || null,
-                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start'),
+                    'type': $('.gh-event-type', $eventContainer).attr('data-type')
                 };
                 updatedEventObjs.push(updatedEventObj);
             });
@@ -973,10 +973,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organiserOther': organisers.organiserOthers || null,
                     'organiserUsers': organisers.organiserUsers || null,
-                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start'),
+                    'type': $('.gh-event-type', $eventContainer).attr('data-type')
                 };
                 newEventObjs.push(newEventObj);
             });
