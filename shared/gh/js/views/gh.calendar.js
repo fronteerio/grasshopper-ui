@@ -58,8 +58,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-        // Track the week change in GA
-        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' week');
 
         // Fetch the user's events
         getUserEvents();
@@ -107,8 +105,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-        // Track the term change in GA
-        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to ' + action + ' ' + term.label + ' term');
 
         // Fetch the user's events
         getUserEvents();
@@ -141,9 +137,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Set the document title
         setDocumentTitle();
 
-        // Track the view change in GA
-        gh.utils.sendTrackingEvent('calendar', 'view', 'Change calendar view to ' + currentView);
-
         // Fetch the user's events
         getUserEvents();
     };
@@ -164,9 +157,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-
-        // Track the today click in GA
-        gh.utils.sendTrackingEvent('calendar', 'view', 'Navigate to today');
 
         // Fetch the user's events
         getUserEvents();
@@ -355,8 +345,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var printCalendar = function() {
-        // Track the print event in GA
-        gh.utils.sendTrackingEvent('export', 'print', 'Print the calendar');
         return window.print();
     };
 
@@ -596,9 +584,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
                     // Hide the popover on resize
                     hidePopoverOnResize($trigger);
-
-                    // Track the event details lookup in GA
-                    gh.utils.sendTrackingEvent('event', 'view', 'View event details', eventId);
                 }
             };
 

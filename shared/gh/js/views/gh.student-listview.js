@@ -51,9 +51,6 @@ define(['gh.core'], function(gh) {
             // Toggle the children's class from add to remove
             $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
 
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
-
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
@@ -103,9 +100,6 @@ define(['gh.core'], function(gh) {
             $this.toggleClass('gh-add-all-to-calendar gh-remove-all-from-calendar');
             // Toggle the children's class from remove to add
             $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
@@ -172,9 +166,6 @@ define(['gh.core'], function(gh) {
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-minus');
             }
 
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
-
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
@@ -239,9 +230,6 @@ define(['gh.core'], function(gh) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-minus');
             }
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {

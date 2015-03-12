@@ -39,9 +39,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected part in the URL
         gh.utils.addToState({'part': partId});
 
-        // Track the part picker change in GA
-        gh.utils.sendTrackingEvent('picker', 'change', 'part picker', partId);
-
         // Retrieve the organisational unit information for the modules
         orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
             if (err) {
@@ -69,9 +66,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Push the selected tripos in the URL
         gh.utils.addToState({'tripos': triposId});
-
-        // Track the tripos picker change in GA
-        gh.utils.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
