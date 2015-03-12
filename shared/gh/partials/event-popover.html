@@ -1,5 +1,5 @@
 <div class="popover fade" role="tooltip" data-id="<%- data.id %>">
-    <h3 class="gh-popover-title" data-type="<%- data.type %>" data-first="<% if (data.type) { %><%- data.type.substr(0,1) %><% } %>"><%- data.displayName %></h3>
+    <h3 class="gh-popover-title gh-event-type" data-type="<%- data.type %>" data-first="<% if (data.type) { %><%- data.type.substr(0,1) %><% } %>"><%- data.displayName %></h3>
     <p class="gh-popover-time"><%- moment.utc(data.start).format('dddd h:mma') %> - <%- moment.utc(data.end).format('h:mma') %></p>
     <p class="gh-popover-location"><%- data.location %></p>
     <p class="gh-popover-organiser">
