@@ -22,8 +22,16 @@ h1, h2, h3, h4, h5 {
     color: #171717;
 }
 
-input {
+input,
+textarea {
+    border-color: #CCC;
     color: #171717 !important;
+}
+
+input[disabled],
+select[disabled],
+.as-selections.gh-disabled {
+    border-color: #EEE !important;
 }
 
 #gh-page-container #gh-subheader h1,

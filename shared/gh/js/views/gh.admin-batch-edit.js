@@ -155,7 +155,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Show the save button
         toggleSubmit();
         // Enable batch editing of dates
-        toggleBatchEditDateEnabled();
+        toggleBatchEditEnabled();
         // Trigger a change event on the newly added row to update the batch edit
         $eventContainer.find('.gh-select-single').trigger('change');
     };
@@ -240,6 +240,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         }
         // Trigger the change event on all checkboxes
         $checkboxes.change();
+        // Enable batch editing of dates
+        toggleBatchEditEnabled();
     };
 
     /**
@@ -253,7 +255,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         } else {
             $(this).closest('tr').removeClass('info');
         }
-        toggleBatchEditDateEnabled();
+        toggleBatchEditEnabled();
     };
 
     /**
@@ -282,12 +284,15 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      *
      * @private
      */
-    var toggleBatchEditDateEnabled = function() {
-        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length) {
-            $('#gh-batch-edit-time').removeAttr('disabled');
+    var toggleBatchEditEnabled = function() {
+        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length ||
+            $('.gh-batch-edit-events-container:not(.gh-ot) thead .gh-select-all:checked').length) {
+            $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
+            $('.as-selections', $('#gh-batch-edit-header')).removeClass('gh-disabled');
         } else {
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
-            $('#gh-batch-edit-time').attr('disabled', 'disabled');
+            $('input, button, select', $('#gh-batch-edit-header')).attr('disabled', 'disabled');
+            $('.as-selections', $('#gh-batch-edit-header')).addClass('gh-disabled');
         }
     };
 

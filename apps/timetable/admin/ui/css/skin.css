@@ -296,7 +296,7 @@
     border-color: #62326E;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-day-picker,
 #gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
     color: #171717;
 }
