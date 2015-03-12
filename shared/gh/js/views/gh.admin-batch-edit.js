@@ -192,9 +192,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Only soft delete the event when it hasn't been created in the first place. If the
         // row has no 'eventid' data attribute it shouldn't be deleted from the db
         var $row = $(this).closest('tr');
+        var $otEventContainer = $($(this).closest('.gh-batch-edit-events-container.gh-ot'));
         var termLabel = $row.closest('.gh-batch-edit-events-container').attr('data-term');
         if ($row.data('eventid')) {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
+                // If the event was the last OT event, hide its container
+                if ($otEventContainer.length && !$otEventContainer.find('tbody tr:visible').length) {
+                    $otEventContainer.hide();
+                }
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
                 // Update the footer
@@ -203,6 +208,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         } else {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 $row.remove();
+                // If the event was the last OT event, remove its container
+                if ($otEventContainer.length && !$otEventContainer.find('tbody tr:visible').length) {
+                    $otEventContainer.remove();
+                }
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
                 // Update the footer

@@ -672,28 +672,6 @@
     content: 'Add location';
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
-    margin-bottom: 10px;
-    margin-top: 0;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead {
-    visibility: hidden;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead tr th {
-    border-bottom-width: 0 !important;
-    padding-bottom: 0;
-    padding-top: 0;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead button,
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead label {
-    height: 1px;
-    overflow: hidden;
-    visibility: hidden;
-}
-
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
     cursor: auto;
     max-width: 40px;
@@ -723,6 +701,12 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
     font-weight: 700;
     margin-bottom: 7px;
+    white-space: nowrap;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot .table > thead > tr > th .checkbox label {
+    cursor: initial;
+    white-space: nowrap;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
