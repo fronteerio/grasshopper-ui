@@ -822,3 +822,7 @@ tbody tr:last-child > td.fc-widget-content {
     text-align: center;
     width: 20px;
 }
+
+.gh-event-type:not(:empty) span {
+    display: none;
+}
