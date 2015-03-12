@@ -163,7 +163,6 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      * added again unless `forceAdd` has been set to `true`
      *
      * @param {Boolean}    [forceAdd]    Whether to force adding another day. Defaults to `false`
-     * 
      * @private
      */
     var addAnotherEvent = function(forceAdd) {
