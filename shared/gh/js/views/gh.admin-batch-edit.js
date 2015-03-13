@@ -667,6 +667,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'select': true,
             'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
+            'disable': false,
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
