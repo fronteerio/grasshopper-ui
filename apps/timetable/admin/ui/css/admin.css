@@ -700,7 +700,6 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
     font-weight: 700;
-    margin-bottom: 7px;
     white-space: nowrap;
 }
 
@@ -720,7 +719,6 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form input {
-    background-color: transparent;
     border: none;
     height: 31px !important;
     padding: 0 10px;
