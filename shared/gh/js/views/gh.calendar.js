@@ -16,6 +16,89 @@
 define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
 
+    /////////////////////
+    // INSTRUMENTATION //
+    /////////////////////
+
+    /**
+     * Create a human readable string from the selected view and return it
+     *
+     * @return {String}    Human readable string of the selected view. One of `Month`, `Week` or `Day`
+     * @private
+     */
+    var getReadableView = function() {
+        if (currentView === 'month') {
+            return 'Month';
+        } else if (currentView === 'agendaDay') {
+            return 'Day';
+        }
+
+        return 'Week';
+    };
+
+    /**
+     * Send a tracking event when the user navigates the terms
+     *
+     * @param  {Function}    next    Whether or not the next term button was clicked
+     * @private
+     */
+    var sendTermNavigationEvent = function(next) {
+        // Append an icon at the end of the tracking event, depending on whether the
+        // next or previous button was clicked
+        var navIcon = next ? '>' : '<';
+
+        // Create a human readable string from the selected view
+        var viewMode = getReadableView();
+
+        // Send a tracking event when the user navigates the terms
+        gh.utils.trackEvent(['Calendar', 'View', viewMode, 'Term ' + navIcon]);
+    };
+
+    /**
+     * Send a tracking event when the user navigates to today
+     *
+     * @private
+     */
+    var sendTodayNavigationEvent = function() {
+        // Create a human readable string from the selected view
+        var viewMode = getReadableView();
+
+        // Send a tracking event when the user navigates the terms
+        gh.utils.trackEvent(['Calendar', 'View', viewMode, 'Today']);
+    };
+
+    /**
+     * Send a tracking event when the user navigates the view within the current view (month/week/day)
+     *
+     * @param  {Function}    next    Whether or not the next month/week/day button was clicked
+     * @private
+     */
+    var sendNavigationEvent = function(next) {
+        // Append an icon at the end of the tracking event, depending on whether the
+        // next or previous button was clicked
+        var navIcon = next ? '>' : '<';
+
+        // Create a human readable string from the selected view
+        var viewMode = getReadableView();
+
+        // Send a tracking event when the user navigates the terms
+        gh.utils.trackEvent(['Calendar', 'View', viewMode,  viewMode + ' ' + navIcon]);
+    };
+
+    /**
+     * Send a tracking event when the user navigates the current view (month/week/day)
+     *
+     * @private
+     */
+    var sendViewNavigationEvent = function() {
+        // Create a human readable string from the selected view
+        var viewMode = getReadableView();
+
+        // Send a tracking event when the user navigates the terms
+        gh.utils.trackEvent(['Calendar', 'View', viewMode + ' view selected']);
+    };
+
+
     ////////////////
     //  CALENDAR  //
     ////////////////
@@ -50,6 +133,12 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Update the calendar
         calendar.fullCalendar(action);
 
+        if (action === 'next') {
+            sendNavigationEvent(true);
+        } else {
+            sendNavigationEvent();
+        }
+
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -82,15 +171,19 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         if (currentTerm) {
             if (action === 'next') {
                 term = getNextTerm(currentTerm);
+                sendTermNavigationEvent(true);
             } else {
                 term = getPreviousTerm(currentTerm);
+                sendTermNavigationEvent();
             }
         // This gets called when you are inbetween terms
         } else {
             if (action === 'next') {
                 term = getNearestTerm(currentTerm, 'start');
+                sendTermNavigationEvent(true);
             } else {
                 term = getNearestTerm(currentTerm, 'end');
+                sendTermNavigationEvent();
             }
         }
 
@@ -128,6 +221,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // Update the button's status
         $button.removeClass('default').addClass('active');
 
+        // Send a tracking event when the user changes the current view
+        sendViewNavigationEvent();
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -157,7 +252,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-
+        // Track the user clicking the today button
+        sendTodayNavigationEvent();
         // Fetch the user's events
         getUserEvents();
     };
@@ -320,9 +416,13 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         // If the export panel is opened, disable all actions on the page
         if ($('#gh-calendar-view').hasClass('gh-export-enabled')) {
             disableEnableAll(true);
+            // Send a tracking event when the user opens the export panel
+            gh.utils.trackEvent(['Calendar', 'Export', 'Opened']);
         // If the export panel is closed, enable all actions on the page
         } else {
             disableEnableAll();
+            // Send a tracking event when the user closes the export panel
+            gh.utils.trackEvent(['Calendar', 'Export', 'Closed']);
         }
     };
 
@@ -332,11 +432,20 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var toggleExportOptions = function() {
+        // Toggle the icon's class
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
+
         // Pre-select the ical URL in the textarea after the call stack clears
         _.defer(function() {
             $('#gh-export-subscribe-copy').select();
         });
+
+        // Send a tracking event when the user toggles the other subscribe options
+        if ($(this).find('i').hasClass('fa-caret-right')) {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Closed']);
+        } else {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Opened']);
+        }
     };
 
     /**
@@ -345,6 +454,8 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
      * @private
      */
     var printCalendar = function() {
+        // Send a tracking event when a user prints the calendar
+        gh.utils.trackEvent(['Calendar', 'Print clicked']);
         return window.print();
     };
 
@@ -584,6 +695,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
                     // Hide the popover on resize
                     hidePopoverOnResize($trigger);
+
+                    // Send a tracking event when a user opens the popover
+                    gh.utils.trackEvent(['Calendar', 'View', 'Tooltip displayed']);
                 }
             };
 
@@ -617,8 +731,28 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     var addBinding = function() {
         // Export the calendar
         $('#gh-btn-calendar-export').off('click', exportCalendar).on('click', exportCalendar);
+        $('#gh-export-subscribe').off('click').on('click', function() {
+            // Send a tracking event when the user clicks the subscribe button
+            gh.utils.trackEvent(['Calendar', 'Export', 'Subscribed to calendar feed'], {
+                'ics_feed_hash': gh.data.me.calendarToken
+            });
+        });
         // Toggle the other options for export
         $('#gh-export-collapsed-other-toggle').off('click', toggleExportOptions).on('click', toggleExportOptions);
+        // Send an event when the feed URL is copied
+        $('#gh-export-subscribe-copy').off('copy').on('copy', function() {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Copied feed URL']);
+        });
+        // Send tracking events when the help links are clicked
+        $('#gh-export-other-google').off('click').on('click', function() {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Google Calendar help clicked']);
+        });
+        $('#gh-export-other-microsoft').off('click').on('click', function() {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'MS Outlook help clicked']);
+        });
+        $('#gh-export-other-apple').off('click').on('click', function() {
+            gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Apple Calendar help clicked']);
+        });
         // Print the calendar
         $('#gh-btn-calendar-print').off('click', printCalendar).on('click', printCalendar);
         // Navigate to the current day

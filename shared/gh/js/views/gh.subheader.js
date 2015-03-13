@@ -24,6 +24,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      */
     var goHome = function() {
         gh.utils.removeFromState(['tripos', 'part', 'module', 'series']);
+        // Send a tracking event when the user clicks the home button
+        gh.utils.trackEvent(['Navigation', 'Home', 'Shortcut clicked']);
     };
 
     /**
@@ -258,6 +260,26 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             setUpTriposPicker();
             // Run the statechange logic to put the right selections in place
             handleStateChange();
+        });
+
+        // Tripos tracking events
+        $('body').on('chosen:showing_dropdown', '#gh-subheader-tripos', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Opened']);
+        });
+        $('body').on('chosen:hiding_dropdown', '#gh-subheader-tripos', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Closed']);
+        });
+        $('body').on('change', '#gh_subheader_tripos_chosen .chosen-search input', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Search'], {
+                'query': $(this).val()
+            });
+        });
+        // Part tracking events
+        $('body').on('chosen:showing_dropdown', '#gh-subheader-part', function() {
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Opened']);
+        });
+        $('body').on('chosen:hiding_dropdown', '#gh-subheader-part', function() {
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Closed']);
         });
 
         $('body').on('click', '.gh-home', goHome);

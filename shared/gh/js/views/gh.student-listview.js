@@ -40,6 +40,8 @@ define(['gh.core'], function(gh) {
                 return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
+            // Send a tracking event when a user adds all events in the module to the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Module added']);
             // Add `gh-list-group-item-added` to the list item
             $list.addClass('gh-list-group-item-added');
             // Add `gh-list-group-item-added` to all children of the list item
@@ -90,6 +92,8 @@ define(['gh.core'], function(gh) {
                 return gh.utils.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
             }
 
+            // Send a tracking event when a user removes all events in the module from the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Module removed']);
             // Remove `gh-list-group-item-added` from the list item
             $list.removeClass('gh-list-group-item-added');
             // Remove `gh-list-group-item-added` from all children of the list item
@@ -140,6 +144,8 @@ define(['gh.core'], function(gh) {
                 return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
             }
 
+            // Send a tracking event when a user adds an event series to the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Series added']);
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
@@ -204,6 +210,8 @@ define(['gh.core'], function(gh) {
                 return gh.utils.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
             }
 
+            // Send a tracking event when a user removes all events in the module from the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Series removed']);
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class

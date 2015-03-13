@@ -373,6 +373,13 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
 
+        // Track an event when the user clicks the Cambridge logo
+        $('body').on('click', '#gh-header-logo', function() {
+            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
+                window.location = '/admin/';
+            });
+        });
+
         // Change the view
         $(document).on('gh.admin.changeView', onViewChange);
 

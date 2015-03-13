@@ -102,6 +102,11 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
         gh.utils.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
+
+        // Track an event when the login modal is shown
+        $('#gh-modal-login').on('shown.bs.modal', function () {
+            gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
+        });
     };
 
 
@@ -194,6 +199,13 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Track an event when the user clicks the Cambridge logo
+        $('body').on('click', '#gh-header-logo', function() {
+            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
+                window.location = '/';
+            });
+        });
         $(document).on('gh.calendar.ready', setUpCalendar);
         $(document).on('gh.part.selected', onPartSelected);
     };
