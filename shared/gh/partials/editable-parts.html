@@ -20,8 +20,7 @@
                 <% } %>
                 <p class="gh-part-tripos"><%= part.displayName %></p>
                 <p class="gh-part-part"><%= part.part.displayName %></p>
-                <% var label = (part.part.published) ? 'View' : 'Edit' %>
-                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %> disabled="disabled"<% } %>><%- label %></a>
+                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %> disabled="disabled"<% } %>>Edit</a>
                 <% if (!part.part.published) { %>
                     <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
                 <% } %>
