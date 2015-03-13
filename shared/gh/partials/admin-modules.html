@@ -1,6 +1,6 @@
-<% var partId = state.part; %>
-<% if (data.length) {
-    var groupId = data[0].GroupId;
+<% var partId = data.state.part; %>
+<% if (data.modules.length) {
+    var groupId = data.modules[0].GroupId;
 } %>
 <div id="gh-result-summary">
     <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-module" data-partid="<%= partId %>" data-groupid="<%= groupId %>"><i class="fa fa-plus-square"></i> New module</button>
@@ -8,8 +8,8 @@
 <div id="gh-modules-list-container" data-partId="<%= partId %>">
     <ul id="gh-modules-list" class="list-group">
         <%= _.partial('admin-module-item', {
-            'data': data,
-            'state': state
+            'data': data.modules,
+            'state': data.state
         }) %>
     </ul>
 </div>

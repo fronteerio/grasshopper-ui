@@ -32,7 +32,9 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
     var setUpHeader = function() {
         // Render the header template
         gh.utils.renderTemplate($('#gh-header-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh
+            }
         }, $('#gh-header'));
 
         // Render the tripos pickers
@@ -100,7 +102,10 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
      */
     var renderLoginModal = function() {
         gh.utils.renderTemplate($('#gh-modal-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh,
+                'isGlobalAdminUI': false
+            }
         }, $('#gh-modal'));
     };
 

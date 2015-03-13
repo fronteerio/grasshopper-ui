@@ -1,38 +1,38 @@
-<% var termNames = _.pluck(termsInUse, 'name'); %>
+<% var termNames = _.pluck(data.termsInUse, 'name'); %>
 
 <div id="gh-batch-edit-date-term-description">
     <small>Selected terms</small>
     <h2>
-    <% _.each(termsInUse, function(term) { %>
+    <% _.each(data.termsInUse, function(term) { %>
         <%- term.label %><br/>
     <% }); %>
     </h2>
 </div>
 <div id="gh-batch-edit-date-picker-container" data-terms="<%- termNames.join(',') %>">
     <!-- Show the number of weeks that are selected -->
-    <small><%- weeksInUse.length %> week<% if (weeksInUse.length !== 1) { %>s<% } %> in selection</small>
+    <small><%- data.weeksInUse.length %> week<% if (data.weeksInUse.length !== 1) { %>s<% } %> in selection</small>
     <div id="gh-batch-edit-date-picker">
-        <% var totalWeeks = numberOfWeeks%>
+        <% var totalWeeks = data.numberOfWeeks %>
         <!-- Keep rendering new weeks until the amount of weeks left to render is 0 -->
-        <% while (numberOfWeeks) { %>
-            <% numberOfWeeks--; %>
-            <% var weekNumber = totalWeeks - numberOfWeeks %>
+        <% while (data.numberOfWeeks) { %>
+            <% data.numberOfWeeks--; %>
+            <% var weekNumber = totalWeeks - data.numberOfWeeks %>
             <!-- Determine if the week should be checked or not -->
-            <% var weekUsed = _.indexOf(weeksInUse, weekNumber) !== -1 %>
+            <% var weekUsed = _.indexOf(data.weeksInUse, weekNumber) !== -1 %>
             <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } %>">
                 <label>
                     <input type="checkbox" value="<%- weekNumber %>" <% if (weekUsed) { %>checked<% } %>>W<%- weekNumber %> <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
                 </label>
             </div>
         <% } %>
-        <% var weekUsed = _.indexOf(weeksInUse, 0) !== -1 %>
+        <% var weekUsed = _.indexOf(data.weeksInUse, 0) !== -1 %>
         <div class="checkbox <% if (weekUsed) { %>gh-batch-edit-date-picker-selected<% } else { %> hide<% } %>">
             <label>
                 <input type="checkbox" value="0" <% if (weekUsed) { %>checked<% } %>>OT <i class="fa fa-square-o"></i><i class="fa fa-check-square-o"></i>
             </label>
         </div>
     </div>
-    <% _.each(daysInUse, function(dayInUse, index) { %>
+    <% _.each(data.daysInUse, function(dayInUse, index) { %>
         <div class="form-inline gh-batch-edit-time-picker">
             <select class="pull-left form-control gh-batch-edit-day-picker" data-prev="<%- index %>">
                 <option value="4" <% if (parseInt(index, 10) === 4) { %> selected="true" <% } %>>Thursdays</option>
@@ -46,12 +46,12 @@
             <div class="pull-left gh-batch-edit-date-start">
                 <select class="form-control gh-batch-edit-hours-picker gh-batch-edit-hours-start">
                     <% for (var i = 7; i < 20; i += 1) { %>
-                        <option value="<%= i %>" <% if (parseInt(dayInUse.startHour, 10) === i ) { %> selected="true" <% } %>><%- gh.utils.addLeadingZero(i) %></option>
+                        <option value="<%= i %>" <% if (parseInt(dayInUse.startHour, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
                 <select class="form-control gh-batch-edit-minutes-picker gh-batch-edit-minutes-start">
                     <% for (var i = 0; i < 60; i += 15) { %>
-                        <option value="<%= i %>" <% if (parseInt(dayInUse.startMinute, 10) === i ) { %> selected="true" <% } %>><%- gh.utils.addLeadingZero(i) %></option>
+                        <option value="<%= i %>" <% if (parseInt(dayInUse.startMinute, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
             </div>
@@ -59,12 +59,12 @@
             <div class="pull-left gh-batch-edit-date-end">
                 <select class="form-control gh-batch-edit-hours-picker gh-batch-edit-hours-end">
                     <% for (var i = 7; i < 20; i += 1) { %>
-                        <option value="<%= i %>" <% if (parseInt(dayInUse.endHour, 10) === i ) { %> selected="true" <% } %>><%- gh.utils.addLeadingZero(i) %></option>
+                        <option value="<%= i %>" <% if (parseInt(dayInUse.endHour, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
                 <select class="form-control gh-batch-edit-minutes-picker gh-batch-edit-minutes-end">
                     <% for (var i = 0; i < 60; i += 15) { %>
-                        <option value="<%= i %>" <% if (parseInt(dayInUse.endMinute, 10) === i ) { %> selected="true" <% } %>><%- gh.utils.addLeadingZero(i) %></option>
+                        <option value="<%= i %>" <% if (parseInt(dayInUse.endMinute, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
                     <% } %>
                 </select>
             </div>

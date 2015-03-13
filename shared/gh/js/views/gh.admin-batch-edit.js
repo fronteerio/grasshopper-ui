@@ -114,7 +114,11 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
         var termStart = utils.getFirstDayOfTerm(termName);
-        var eventObj = {'ev': null};
+        var eventObj = {
+            'data': {
+                'ev': null
+            }
+        };
 
         // Hide the empty term description
         hideEmptyTermDescription(termName);
@@ -122,7 +126,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // If an event was already added to the term, clone that event to the new event
         var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
         if ($lastEventInTerm.length) {
-            eventObj.ev = data && data.eventObj ? data.eventObj : {
+            eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': $lastEventInTerm.find('.gh-event-location').text(),
@@ -132,7 +136,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             };
         // If no events were previously added to the term, create a default event object
         } else {
-            eventObj.ev = data && data.eventObj ? data.eventObj : {
+            eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
                 'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
                 'location': '',
@@ -143,10 +147,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         }
 
         // Add common properties to the event object
-        eventObj.ev['isNew'] = true; // Used in the template to know this one needs special handling
-        eventObj.ev['selected'] = true; // Select and highlight added events straight away
-        eventObj.ev['tempId'] = utils.generateRandomString(); // The actual ID hasn't been generated yet
-        eventObj['utils'] = utils;
+        eventObj.data.ev['isNew'] = true; // Used in the template to know this one needs special handling
+        eventObj.data.ev['selected'] = true; // Select and highlight added events straight away
+        eventObj.data.ev['tempId'] = utils.generateRandomString(); // The actual ID hasn't been generated yet
+        eventObj.data['utils'] = utils;
 
         // Append a new event row
         $eventContainer.append(utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));

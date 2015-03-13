@@ -55,6 +55,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/admin-batch-edit-event-type.html',
                  'text!gh/partials/admin-borrow-series-module-item.html',
                  'text!gh/partials/admin-edit-dates.html',
+                 'text!gh/partials/admin-header-template.html',
                  'text!gh/partials/admin-module-item.html',
                  'text!gh/partials/admin-modules.html',
                  'text!gh/partials/borrow-series-modal.html',
@@ -66,6 +67,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/event-popover.html',
                  'text!gh/partials/login-form.html',
                  'text!gh/partials/login-modal.html',
+                 'text!gh/partials/header-template.html',
                  'text!gh/partials/new-module-modal.html',
                  'text!gh/partials/new-series.html',
                  'text!gh/partials/student-module-item.html',
@@ -74,7 +76,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                  'text!gh/partials/subheader-picker.html',
                  'text!gh/partials/subheader-pickers.html',
                  'text!gh/partials/visibility-button.html',
-                 'text!gh/partials/visibility-modal.html'], function(adminBatchEditActions, adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminModuleItem, adminModules, borrowSeriesModal, calendar, deleteSeriesModal, editableParts, emptyTimetable, eventItem, eventPopover, loginForm, loginModal, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityButton, visibilityModal) {
+                 'text!gh/partials/visibility-modal.html'], function(adminBatchEditActions, adminBatchEdit, adminBatchEditDate, adminEditDateField, adminBatchEditEventRow, adminBatchEditEventType, adminBorrowSeriesModuleItem, adminEditDates, adminHeader, adminModuleItem, adminModules, borrowSeriesModal, calendar, deleteSeriesModal, editableParts, emptyTimetable, eventItem, eventPopover, loginForm, loginModal, headerTemplate, newModuleModal, newSeries, studentModuleItem, studentModules, subheaderPart, subheaderPicker, subheaderPickers, visibilityButton, visibilityModal) {
 
             // Declare all partials which makes them available in every template
             _.declarePartial('admin-batch-edit-actions', adminBatchEditActions);
@@ -85,6 +87,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             _.declarePartial('admin-batch-edit-event-type', adminBatchEditEventType);
             _.declarePartial('admin-borrow-series-module-item', adminBorrowSeriesModuleItem);
             _.declarePartial('admin-edit-dates', adminEditDates);
+            _.declarePartial('admin-header-template', adminHeader);
             _.declarePartial('admin-module-item', adminModuleItem);
             _.declarePartial('admin-modules', adminModules);
             _.declarePartial('borrow-series-modal', borrowSeriesModal);
@@ -96,6 +99,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             _.declarePartial('event-popover', eventPopover);
             _.declarePartial('login-form', loginForm);
             _.declarePartial('login-modal', loginModal);
+            _.declarePartial('header-template', headerTemplate);
             _.declarePartial('new-module-modal', newModuleModal);
             _.declarePartial('new-series', newSeries);
             _.declarePartial('student-modules', studentModules);

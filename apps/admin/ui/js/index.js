@@ -57,7 +57,10 @@ define(['gh.core', 'chosen'], function(gh) {
      */
     var renderHeader = function() {
         gh.utils.renderTemplate($('#gh-header-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh,
+                'isGlobalAdminUI': true
+            }
         }, $('#gh-header'));
     };
 

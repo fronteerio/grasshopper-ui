@@ -1,9 +1,9 @@
 <%
-    var localAuthEnabled = gh.config.enableLocalAuth;
-    var externalAuthEnabled = gh.config.enableShibbolethAuth;
+    var localAuthEnabled = data.gh.config.enableLocalAuth;
+    var externalAuthEnabled = data.gh.config.enableShibbolethAuth;
 %>
-<% if (isGlobalAdminUI || localAuthEnabled || externalAuthEnabled ) { %>
-    <% if (isGlobalAdminUI || (!isGlobalAdminUI && localAuthEnabled)) { %>
+<% if (data.isGlobalAdminUI || localAuthEnabled || externalAuthEnabled ) { %>
+    <% if (data.isGlobalAdminUI || (!data.isGlobalAdminUI && localAuthEnabled)) { %>
         <div class="form-group">
             <label class="sr-only" for="gh-signin-email">Email address</label>
             <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter email" required>

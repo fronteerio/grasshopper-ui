@@ -103,9 +103,11 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
 
             // Render the modal and pickers
             gh.utils.renderTemplate($('#gh-borrow-series-modal-template'), {
-                'data': triposPickerData,
-                'moduleId': moduleId,
-                'partId': partId
+                'data': {
+                    'triposPickerData': triposPickerData,
+                    'moduleId': moduleId,
+                    'partId': partId
+                }
             }, $('#gh-modal'));
 
             // Show the modal
