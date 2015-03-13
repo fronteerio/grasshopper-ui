@@ -181,11 +181,15 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             var closeAutoSuggest = function(ev) {
                 // Only close the input if the focus was lost on an element outside of the organiser container
                 if (!$(ev.target).closest('.gh-event-organisers').length || !$(ev.relatedTarget).closest('.gh-event-organisers').length) {
-                    // Submit the AutoSuggest field
-                    submitAutoSuggest(this, original);
-                    // If there is a relatedTarget set on the event that triggered the function, focus on it
-                    if ($(ev.relatedTarget).length) {
-                        $(ev.relatedTarget).focus();
+                    // The form shouldn't be submitted when a click was triggered by pressing the space
+                    if (ev.type !== 'click') {
+                        // Submit the AutoSuggest field
+                        submitAutoSuggest(this, original);
+
+                        // If there is a relatedTarget set on the event that triggered the function, focus on it
+                        if ($(ev.relatedTarget).length) {
+                            $(ev.relatedTarget).focus();
+                        }
                     }
                 }
             };
