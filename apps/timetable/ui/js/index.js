@@ -143,6 +143,25 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
     };
 
     /**
+     * Log the current user out
+     *
+     * @param  {Event}    ev    The jQuery event
+     * @private
+     */
+    var doLogout = function(ev) {
+        // Prevent the form from being submitted
+        ev.preventDefault();
+
+        gh.api.authenticationAPI.logout(function(err) {
+            if (!err) {
+                window.location = '/';
+            } else {
+                gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
+            }
+        });
+    };
+
+    /**
      * Fetch the tripos data
      *
      * @param  {Function}    callback    Standard callback function
@@ -174,9 +193,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
-        $('body').on('submit', '#gh-signout-form', function() {
-            gh.utils.trackEvent('Auth - Signed out');
-        });
+        $('body').on('submit', '#gh-signout-form', doLogout);
         $(document).on('gh.calendar.ready', setUpCalendar);
         $(document).on('gh.part.selected', onPartSelected);
     };

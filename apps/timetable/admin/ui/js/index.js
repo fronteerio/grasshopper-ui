@@ -245,7 +245,6 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var doLogout = function(ev) {
-
         // Prevent the form from being submitted
         ev.preventDefault();
 

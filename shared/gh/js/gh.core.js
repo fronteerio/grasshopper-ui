@@ -54,6 +54,19 @@ define([
     ],
 
     function(gh) {
+
+        // Globally catch ajax errors and track the error when it's an API call
+        $(document).ajaxError(function(ev, jqXHR, ajaxSettings) {
+            // Only track the error if it's an API call
+            if (ajaxSettings.url.indexOf('/api') === 0) {
+                gh.utils.trackEvent(['Generic', 'API call error'], {
+                    'endpoint': ajaxSettings.url,
+                    'http_code': jqXHR.status,
+                    'message': jqXHR.responseText || jqXHR.statusText
+                });
+            }
+        });
+
         return gh;
     }
 );

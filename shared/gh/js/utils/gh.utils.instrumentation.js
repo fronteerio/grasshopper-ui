@@ -36,12 +36,16 @@ define(['exports'], function(exports) {
     /**
      * Record any actions that a user performs
      *
-     * @param  {String}      event         The name of the event you’re tracking (@see https://segment.com/docs/spec/track/)
-     * @param  {Object}      properties    A dictionary of properties for the event (@see https://segment.com/docs/spec/track/#properties)
-     * @param  {Object}      options       A dictionary options, that let you do things like enable or disable specific integrations for the call
-     * @param  {Function}    callback      A callback function that gets called after a short timeout, giving the browser time to make the track requests first
+     * @param  {String[]}    ev              An Array of event descriptors that will be concatenated with ' - ' and sent as the tracking title (@see https://segment.com/docs/spec/track/)
+     * @param  {Object}      [properties]    A dictionary of properties for the event (@see https://segment.com/docs/spec/track/#properties)
+     * @param  {Object}      [options]       A dictionary of options, that let you do things like enable or disable specific integrations for the call
+     * @param  {Function}    [callback]      A callback function that gets called after a short timeout, giving the browser time to make the track requests first
      */
-    var trackEvent = exports.trackEvent = function(event, properties, options, callback) {
+    var trackEvent = exports.trackEvent = function(ev, properties, options, callback) {
+        if (!_.isArray(ev)) {
+            return callback({'code': 400, 'msg': 'A valid value for ev should be provided'});
+        }
+
         // Depending on the UI that's loaded we prepend a different text
         // - SUI: for events in the student user interface
         // - AUI: for events in the administrator interface
@@ -49,6 +53,8 @@ define(['exports'], function(exports) {
         if ($('body').data('isadminui')) {
             prefix = 'AUI ';
         }
-        window.analytics.track((prefix + event), properties, options, callback);
+
+        // Send the tracking event to Segment.io
+        window.analytics.track((prefix + ev.join(' - ')), properties, options, callback);
     };
 });

@@ -35,7 +35,10 @@ define(['exports', 'gh.utils'], function(exports, utils) {
             'url': '/api/auth/logout',
             'type': 'POST',
             'success': function() {
-                return callback();
+                // Track the user successfully logged out
+                return utils.trackEvent(['Auth', 'Signed out'], null, null, function() {
+                    callback();
+                });
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
@@ -75,18 +78,13 @@ define(['exports', 'gh.utils'], function(exports, utils) {
             'type': 'POST',
             'data': data,
             'success': function() {
-                return utils.trackEvent('Auth - Signed in', null, null, function() {
+                // Track that the user signed in
+                return utils.trackEvent(['Auth', 'Signed in'], null, null, function() {
                     callback();
                 });
             },
             'error': function(jqXHR, textStatus) {
-                return utils.trackEvent('Auth - Signed in error', {
-                    'endpoint': '/api/auth/login',
-                    'http_code': jqXHR.status,
-                    'message': jqXHR.responseText
-                }, null, function() {
-                    callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-                });
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
     };

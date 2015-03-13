@@ -39,7 +39,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected part in the URL
         gh.utils.addToState({'part': partId});
 
-        gh.utils.trackEvent('Navigation - Part selector - Selected ' + partId, {
+        // Track that the user selected a part
+        gh.utils.trackEvent(['Navigation', 'Part selector', 'Selected'], {
             'part': partId,
             'tripos': History.getState().data.tripos,
             'time_from_start': new Date().getTime()
@@ -73,7 +74,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected tripos in the URL
         gh.utils.addToState({'tripos': triposId});
 
-        gh.utils.trackEvent('Navigation - Tripos selector - Selected ' + triposId, {
+        // Track that the user selected a tripos
+        gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Selected'], {
             'tripos': triposId
         });
 
