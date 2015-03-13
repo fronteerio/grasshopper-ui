@@ -55,7 +55,8 @@
                                     <%= _.partial('admin-batch-edit-event-type', {
                                         'data': {
                                             'id': 'gh-batch-edit-type',
-                                            'types': gh.config.events.types
+                                            'types': gh.config.events.types,
+                                            'disable': true
                                         }
                                     }) %>
                                 </th>

@@ -1168,6 +1168,10 @@ ul.as-selections li.as-selection-item {
     width: 100%;
 }
 
+ul.as-selections li.as-original input {
+    width: 100%;
+}
+
 #gh-batch-edit-header .as-selections .as-original input[type="text"] {
     border: none !important;
     font-size: 15px !important;
