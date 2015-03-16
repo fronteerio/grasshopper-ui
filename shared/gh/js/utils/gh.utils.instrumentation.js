@@ -53,11 +53,15 @@ define(['exports'], function(exports) {
                 }
         }());
 
-        if (!me.anon) {
+        if (!me.anon && me.isAdmin) {
             analytics.identify(me.id, {
-                'name': me.displayName,
-                'username': me.id,
-                'user_type': me.isAdmin ? 'Administrator' : 'Student'
+                'user_type': 'Administrator'
+            });
+        } else {
+            analytics.identify('Anonymous', {
+                'id': 'anonymous',
+                'name': 'Anonymous User',
+                'email': 'anonymous@localhost.null'
             });
         }
 
