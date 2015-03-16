@@ -75,17 +75,11 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <% if (term.name !== 'OT') { %>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" class="gh-select-all"> <%- term.name %>
-                                                </label>
-                                            </div>
-                                        <% } else { %>
-                                            <div class="checkbox">
-                                                <label>Out of term</label>
-                                            </div>
-                                        <% } %>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" class="gh-select-all"><span><% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %></span>
+                                            </label>
+                                        </div>
                                     </th>
                                     <th></th>
                                     <th></th>

@@ -263,6 +263,10 @@
     background-color: #ECF5F9;
 }
 
+.gh-batch-edit-events-container .table > tbody > tr.gh-not-eligible > .gh-event-date {
+    background-color: #E7E7E7;
+}
+
 .gh-batch-edit-actions-container {
     background: #FFF;
     border-top-color: #BEBEBE;
