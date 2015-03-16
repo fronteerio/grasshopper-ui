@@ -65,7 +65,8 @@ module.exports = function(grunt) {
             },
             'files': [
                 'apps/**/*.css',
-                'shared/gh/**/*.css'
+                'shared/gh/**/*.css',
+                'tests/**/*.css'
             ]
         },
         'exec': {
