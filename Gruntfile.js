@@ -109,7 +109,6 @@ module.exports = function(grunt) {
                         'tests/casperjs/util/include/gh.api.event.js',
                         'tests/casperjs/util/include/gh.api.groups.js',
                         'tests/casperjs/util/include/gh.api.orgunit.js',
-                        'tests/casperjs/util/include/gh.api.search.js',
                         'tests/casperjs/util/include/gh.api.series.js',
                         'tests/casperjs/util/include/gh.api.tenant.js',
                         'tests/casperjs/util/include/gh.api.user.js',
