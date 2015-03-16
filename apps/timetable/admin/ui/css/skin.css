@@ -39,6 +39,11 @@
     border-color: #62326E;
 }
 
+.btn-link,
+.btn-link:hover {
+    color: #171717;
+}
+
 
 /**********/
 /* CHOSEN */
