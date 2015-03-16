@@ -274,6 +274,8 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
         $('#gh-main-tripos .gh-video:first-child').hide();
         // Do not show the video next time
         gh.utils.localDataStorage().store('hideVideo', true);
+        // Track the user hiding the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video collapsed']);
         // Stop the video
         $(document).trigger('gh.video.stop');
     };
@@ -300,6 +302,8 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
      * @private
      */
     var playVideo = function() {
+        // Track the user playing the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video played']);
         showVideo();
         return false;
     };

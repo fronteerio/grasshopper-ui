@@ -15,6 +15,10 @@
 
 define(['gh.core', 'jquery-autosuggest'], function(gh) {
 
+    // Keep track of when the user started
+    var timeFromStart = null;
+    var isStarted = false;
+
     /**
      * Get the user objects from the batch edit AutoSuggest field
      *
@@ -65,6 +69,29 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
     };
 
     /**
+     * Track a selection event
+     *
+     * @param  {Object}    elem    The DOM element that was added after a selection
+     */
+    var trackSelectionEvent = function(elem) {
+        // Try to parse the ID, if it fails that means we have a new user, not in the system
+        var hasId = false;
+        try {
+            hasId = parseInt($(elem).data('value'), 10);
+        } catch (err) {
+            hasId = false;
+        }
+
+        if (hasId) {
+            // Track the user editing the organisers
+            gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Autocomplete userID selected']);
+        } else {
+            // Track the user editing the organisers as freetext
+            gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Freetext entered']);
+        }
+    };
+
+    /**
      * Set up the autosuggest field in the batch edit header
      *
      * @private
@@ -80,10 +107,17 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
             'selectedValuesProp': 'id',
             'startText': 'Lecturers (0)',
             'usePlaceholder': true,
+            'resultsComplete': function() {
+                // Track the user if no results come up
+                if (!$('#gh-batch-edit-organisers').find('.as-results li.as-result-item').length) {
+                    gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Autocomplete no results shown']);
+                }
+            },
             'retrieveComplete': function(data) {
                 return data.results;
             },
             'selectionAdded': function(elem, id) {
+                trackSelectionEvent(elem);
                 // Get the batch added users
                 var batchOrganisers = getBatchSelection();
                 // Update each selected row's organisers
@@ -106,7 +140,6 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                         if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
                             // The hidden field exists already, make sure it's marked as 'to add'
                             $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', true);
-
                         // Create the hidden field if it doesn't exist yet
                         } else {
                             // Create the hidden field element
@@ -169,6 +202,9 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                 // Remove the element from the AutoSuggest field
                 elem.remove();
 
+                // Track the user removing an AutoSuggest field
+                gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Item removed']);
+
                 // Update the lecture count in the placeholder
                 updateAutoSuggestPlaceholder();
 
@@ -200,6 +236,14 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
             $('.gh-batch-event-organisers').addClass('gh-batch-event-collapsed');
             // Update the lecture count in the placeholder
             updateAutoSuggestPlaceholder();
+            // Calculate how long it takes the user to change the date
+            timeFromStart = (new Date() - timeFromStart) / 1000;
+            // Track the user editing organisers
+            gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Completed'], {
+                'time_from_start': timeFromStart
+            });
+            // Set the autosuggest mode to stopped
+            isStarted = false;
         }
     };
 
@@ -208,10 +252,18 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
      *
      * @private
      */
-    var openAutoSuggest = function() {
+    var openAutoSuggest = function(ev) {
         $('.gh-batch-event-organisers').removeClass('gh-batch-event-collapsed');
         // Update the lecture count in the placeholder
         updateAutoSuggestPlaceholder();
+        if (!isStarted) {
+            // Track how long the user takes to adjust the organisers
+            timeFromStart = new Date();
+            // Track the user editing the organisers
+            gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Started']);
+            // Set the autosuggest mode to started
+            isStarted = true;
+        }
     };
 
     /**

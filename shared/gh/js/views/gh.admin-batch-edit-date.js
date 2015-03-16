@@ -156,6 +156,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                 });
             });
         });
+
+        // Track a user adding another day
+        gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Added another day']);
     };
 
     /**
@@ -429,11 +432,15 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
             // Add all events to the associated week
             addAnotherEvent();
+            // Track the user adding a week to the selection
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Week ticked on']);
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
             // Remove all events associated to the week
             removeEventsInWeek(parseInt($(this).val(), 10));
+            // Track the user removing a week to the selection
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Week ticked off']);
         }
         // Update the batch edit header
         buildBatchDateObject();
@@ -492,17 +499,30 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         $('body').on('blur', '#gh-batch-edit-date-picker-container input', blurEditDateWeeks);
 
         // Date picker related events
-        $('body').on('change', '.gh-batch-edit-day-picker', batchEditTime);
-        $('body').on('change', '.gh-batch-edit-hours-start', batchEditTime);
-        $('body').on('change', '.gh-batch-edit-hours-end', batchEditTime);
-        $('body').on('change', '.gh-batch-edit-minutes-start', batchEditTime);
-        $('body').on('change', '.gh-batch-edit-minutes-end', batchEditTime);
+        $('body').on('change', '.gh-batch-edit-day-picker', function() {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Day changed']);
+            batchEditTime.apply(this);
+        });
+        $('body').on('change', '.gh-batch-edit-hours-start', function() {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Start hour changed']);
+            batchEditTime.apply(this);
+        });
+        $('body').on('change', '.gh-batch-edit-hours-end', function() {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'End hour changed']);
+            batchEditTime.apply(this);
+        });
+        $('body').on('change', '.gh-batch-edit-minutes-start', function() {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Start minute changed']);
+            batchEditTime.apply(this);
+        });
+        $('body').on('change', '.gh-batch-edit-minutes-end', function() {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'End minute changed']);
+            batchEditTime.apply(this);
+        });
         $('body').on('click', '.gh-batch-edit-date-delete', deleteDay);
 
         // Adding a new day
-        $('body').on('click', '.gh-batch-edit-date-add-day', function() {
-            addAnotherDay();
-        });
+        $('body').on('click', '.gh-batch-edit-date-add-day', addAnotherDay);
 
         // Removing events
         $(document).on('gh.event.deleted', buildBatchDateObject);

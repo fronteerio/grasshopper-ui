@@ -18,6 +18,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     // Object used to cache the triposData
     var triposData = null;
 
+    // Keep track of when the user started
+    var timeFromStart = null;
 
     ///////////////
     // UTILITIES //
@@ -76,6 +78,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var renameSeries = function() {
         $('.gh-jeditable-series-title').click();
+        // Track the user renaming the series via the menu
+        gh.utils.trackEvent(['Manage', 'Rename series via menu']);
     };
 
     /**
@@ -181,6 +185,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 'eventContainer': $(this).closest('.gh-batch-edit-events-container').find('tbody'),
             });
         }
+        // Track the user adding events for an empty term
+        gh.utils.trackEvent(['Data', 'Added events for empty term']);
     };
 
     /**
@@ -218,6 +224,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 toggleSubmit();
             });
         }
+        // Track the user deleting an event
+        gh.utils.trackEvent(['Data', 'Event deleted']);
         // Let other components know that an event was deleted
         $(document).trigger('gh.event.deleted');
     };
@@ -232,6 +240,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('.gh-select-all').prop('checked', 'checked');
         // Fire the change event to let the handlers do their magic
         $('.gh-select-all').change();
+        // Track the user selecting an event term
+        gh.utils.trackEvent(['Data', 'All events selected from menu']);
     };
 
     /**
@@ -313,6 +323,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
             $('.as-selections', $('#gh-batch-edit-header')).removeClass('gh-disabled');
         } else {
+            if ($('#gh-batch-edit-header').hasClass('gh-batch-edit-time-open')) {
+                gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Closed']);
+            }
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
             $('input, button, select', $('#gh-batch-edit-header')).attr('disabled', 'disabled');
             $('.as-selections', $('#gh-batch-edit-header')).addClass('gh-disabled');
@@ -354,6 +367,11 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var toggleBatchEditDate = function() {
         $('#gh-batch-edit-header').toggleClass('gh-batch-edit-time-open');
+        if ($('#gh-batch-edit-header').hasClass('gh-batch-edit-time-open')) {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Started']);
+        } else {
+            gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Closed']);
+        }
     };
 
     /**
@@ -529,6 +547,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
                 }
 
+                // Track the user renaming the series inline
+                gh.utils.trackEvent(['Manage', 'Rename series inline']);
+
                 // Update the series in the sidebar
                 $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
 
@@ -565,6 +586,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             // Show the save button
             toggleSubmit();
         }
+
+        // Track the user updating the event location or title
+        if ($(this).hasClass('gh-event-location')) {
+            gh.utils.trackEvent(['Data', 'Location edit', 'Completed']);
+        } else if ($(this).hasClass('gh-event-description')) {
+            gh.utils.trackEvent(['Data', 'Title edited', 'Completed']);
+        }
+
         // Return the selected value
         return value;
     };
@@ -597,6 +626,12 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         }
         // Remove the editing class from the table cell
         $(this).removeClass('gh-editing');
+
+        // Track the user updating the event type
+        gh.utils.trackEvent(['Data', 'Type changed'], {
+            'type': value
+        });
+
         // Return the selected value
         return value;
     };
@@ -960,6 +995,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var submitBatchEdit = function() {
+        // Calculate how long it takes the user to batch edit
+        timeFromStart = (new Date() - timeFromStart) / 1000;
+
         // Disable all elements in the UI to avoid data changing halfway through the update
         disableEnableAll(true);
 
@@ -1021,6 +1059,17 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             });
         });
 
+        // Track how long the user spent in batch edit
+        gh.utils.trackEvent(['Data', 'Batch edit', 'Completed'], {
+            'number_of_changes': (updatedEventObjs.length + newEventObjs.length + eventsToDelete.length),
+            'number_of_selected_events': $('.gh-select-single:checked').length,
+            'number_of_selected_terms': $('.gh-select-all:checked').length,
+            'time_from_start': timeFromStart,
+            'tripos': History.getState().data.tripos
+        });
+        // Reset the timer to track how long a user batch edits
+        timeFromStart = new Date();
+
         // Deselect the 'check all' checkbox to see progress update
         $('.gh-select-all').prop('checked', false);
         $('.gh-select-all').change();
@@ -1060,6 +1109,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
         toggleSubmit();
+        // Track the user batch editing the type
+        gh.utils.trackEvent(['Data', 'Batch edit', 'Type changed']);
     };
 
     /**
@@ -1076,6 +1127,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
         toggleSubmit();
+        // Track the user batch editing the location
+        gh.utils.trackEvent(['Data', 'Batch edit', 'Location edited']);
     };
 
     /**
@@ -1092,6 +1145,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('.gh-batch-edit-events-container tbody tr.info').addClass('active');
         // Show the save button
         toggleSubmit();
+        // Track the user batch editing the title
+        gh.utils.trackEvent(['Data', 'Batch edit', 'Title edited']);
     };
 
     /**
@@ -1127,6 +1182,12 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var loadSeriesEvents = function() {
+        // Track how long the user takes to batch edit
+        timeFromStart = new Date();
+
+        // Track the user starting batch edit
+        gh.utils.trackEvent(['Data', 'Batch edit', 'Started']);
+
         var seriesId = parseInt(History.getState().data['series'], 10);
 
         // Get the information about the series
@@ -1186,6 +1247,13 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     // Lock the currently edited group every 60 seconds
                     lockGroup();
 
+                    // Track the user opening a series
+                    gh.utils.trackEvent(['Navigation', 'Series opened'], {
+                        'seriesID': seriesId,
+                        'is_borrowed': 'TBD',
+                        'can_be_edited': 'TBD'
+                    });
+
                     // TODO: Remove this and only trigger when button is clicked/expanded
                     $(document).trigger('gh.batchdate.setup');
                     $(document).trigger('gh.batchorganiser.setup');
@@ -1221,16 +1289,51 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('click', '.gh-rename-series', renameSeries);
 
         // List utilities
-        $('body').on('change', '.gh-select-all', toggleAllEventsInTerm);
+        $('body').on('change', '.gh-select-all', function() {
+            toggleAllEventsInTerm.apply(this);
+            // Track the user selecting an event term
+            gh.utils.trackEvent(['Data', 'Term selected'], {
+                'is_empty': !$($(this).closest('thead').next('tbody').find('input[type="checkbox"]')).length
+            });
+        });
         $('body').on('change', '.gh-select-single', toggleEvent);
-        $('body').on('click', '.gh-new-event', addNewEventRow);
-        $(document).on('gh.batchedit.addevent', addNewEventRow);
+        // Send an event when the user manually selects a checkbox
+        $('body').on('click', '.gh-select-single', function() {
+            if ($(this).is(':checked')) {
+                // Track the user selecting an individual event
+                gh.utils.trackEvent(['Data', 'Event selected']);
+            }
+        });
+        $('body').on('click', '.gh-new-event', function(ev, data) {
+            addNewEventRow.apply(this, [ev, data]);
+            gh.utils.trackEvent(['Data', 'Added event']);
+        });
+        $(document).on('gh.batchedit.addevent', function(ev, data) {
+            addNewEventRow.apply(this, [ev, data]);
+            gh.utils.trackEvent(['Data', 'Added event']);
+        });
         $('body').on('click', '.gh-new-events', addNewEventRows);
         $('body').on('click', '.gh-event-delete > button', deleteEvent);
 
         // Batch edit form submission and cancel
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
-        $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
+        $('body').on('click', '#gh-batch-edit-cancel', function() {
+            // Calculate how long it takes the user to batch edit
+            timeFromStart = (new Date() - timeFromStart) / 1000;
+            // Track how long the user spent in batch edit
+            var updatedEventObjs = $('tbody tr.active:not(.gh-new-event-row)');
+            var newEventObjs = $('tbody tr.active.gh-new-event-row');
+            var eventsToDelete = $('tbody tr.gh-event-deleted');
+            gh.utils.trackEvent(['Data', 'Batch edit', 'Cancelled'], {
+                'number_of_changes': (updatedEventObjs.length + newEventObjs.length + eventsToDelete.length),
+                'number_of_selected_events': $('.gh-select-single:checked').length,
+                'number_of_selected_terms': $('.gh-select-all:checked').length,
+                'time_from_start': timeFromStart,
+                'tripos': History.getState().data.tripos
+            });
+            // Reload the event series
+            loadSeriesEvents();
+        });
         $(document).on('gh.batchedit.togglesubmit', toggleSubmit);
 
         // Batch edit header functionality
@@ -1238,6 +1341,11 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('keyup', '#gh-batch-edit-location', batchEditLocation);
         $('body').on('change', '#gh-batch-edit-type', batchEditType);
         $('body').on('click', '#gh-batch-edit-time', toggleBatchEditDate);
+        $('body').on('click', '#gh-batch-edit-header th', function() {
+            if ($(this).find('[disabled]').length) {
+                gh.utils.trackEvent(['Data', 'Batch edit', 'Clicked on disabled batch edit component']);
+            }
+        });
 
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
@@ -1249,6 +1357,15 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             // Only set up the calendar if that tab is active
             if ($(ev.target).attr('aria-controls') === 'gh-batch-calendar-view') {
                 setUpPreviewCalendar();
+                // Track the user opening the calendar view
+                gh.utils.trackEvent(['Navigation', 'Calendar view selected'], {
+                    'partId': History.getState().data.part
+                });
+            } else {
+                // Track the user opening the list view
+                gh.utils.trackEvent(['Navigation', 'List view selected'], {
+                    'partId': History.getState().data.part
+                });
             }
         });
     };

@@ -161,8 +161,16 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
         // If the series is borrowed from another module, only remove it from this series
         if (isBorrowedFrom) {
             removeSeriesFromModule();
+            // Track the user removing a borrowed series from a module
+            gh.utils.trackEvent(['Manage', 'Remove borrowed series'], {
+                'is_borrowed': true
+            });
         // If the series is not borrowed by or from another module, it can be deleted
         } else {
+            // Track the user removing a series from a module
+            gh.utils.trackEvent(['Manage', 'Delete series'], {
+                'is_borrowed': false
+            });
             deleteSeries();
         }
     };
