@@ -174,7 +174,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
             $('#gh-borrow-series-modal').modal('hide');
 
             // Retrieve the organisational unit information for the modules
-            orgUnitAPI.getOrgUnits(appId, true, null, partId, ['module'], function(err, modules) {
+            orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
                 if (err) {
                     utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
                 }
