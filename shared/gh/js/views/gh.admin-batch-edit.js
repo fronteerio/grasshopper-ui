@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
 
     // Object used to cache the triposData
     var triposData = null;
@@ -516,6 +516,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var editableSeriesTitleSubmitted = function(value, editableField) {
+
+        // Remove the editing class from the jeditable input field
+        $('h1.editing').removeClass('editing');
+
         // Get the value
         value = $.trim(value);
         // If no value has been entered, we fall back to the previous value
@@ -633,14 +637,16 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var setUpJEditable = function() {
 
-        // Apply jEditable to the series title
+        // Apply jEditable to the series title. (custom plugin)
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
             'cssclass': 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'disable': false,
             'height': '38px',
             'maxlength': 255,
             'onblur': 'submit',
-            'placeholder': '',
-            'select' : true,
+            'placeholder': 'Click to add a title for this series',
+            'select': true,
+            'type': 'series-title',
             'submit': '<button type="submit" class="btn btn-default">Save</button>'
         });
 
@@ -660,14 +666,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             }
         });
 
-        // Apply jEditable to the event notes
+        // Apply jEditable to the event type. (custom plugin)
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass': 'gh-jeditable-form',
+            'disable': false,
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
-            'disable': false,
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
