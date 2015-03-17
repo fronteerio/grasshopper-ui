@@ -396,10 +396,16 @@
 
 #gh-batch-edit-container h1 {
     cursor: pointer;
+    display: inline-block;
     font-size: 25px;
     font-weight: 400;
-    height: 40px;
+    max-width: 80%;
+    min-height: 40px;
     padding-top: 7px;
+}
+
+#gh-batch-edit-container h1.editing {
+    display: block;
     width: 80%;
 }
 

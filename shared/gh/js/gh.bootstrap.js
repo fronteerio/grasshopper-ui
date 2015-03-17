@@ -74,6 +74,7 @@ requirejs.config({
         'gh.admin-edit-organiser': 'gh/js/views/gh.admin-edit-organiser',
         'gh.admin-event-type-select': 'gh/js/views/gh.admin-event-type-select',
         'gh.admin-listview': 'gh/js/views/gh.admin-listview',
+        'gh.admin-series-title': 'gh/js/views/gh.admin-series-title',
         'gh.borrow-series': 'gh/js/views/gh.borrow-series',
         'gh.calendar': 'gh/js/views/gh.calendar',
         'gh.datepicker': 'gh/js/views/gh.datepicker',
