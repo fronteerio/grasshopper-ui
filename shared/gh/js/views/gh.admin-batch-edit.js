@@ -518,7 +518,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     var editableSeriesTitleSubmitted = function(value, editableField) {
 
         // Remove the editing class from the jeditable input field
-        $('h1.editing').removeClass('editing');
+        $('.gh-jeditable-series-title.editing').removeClass('editing');
 
         // Get the value
         value = $.trim(value);
@@ -650,7 +650,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'submit': '<button type="submit" class="btn btn-default">Save</button>',
             'callback': function(value, settings) {
                 // Remove the `editing` class when the input field loses its focus
-                $('h1.editing').removeClass('editing');
+                $('.gh-jeditable-series-title.editing').removeClass('editing');
             }
         });
 
