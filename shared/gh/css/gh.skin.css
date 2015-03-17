@@ -465,6 +465,7 @@ tbody .fc-sun {
     color: #6C6C6C;
 }
 
+
 /***********/
 /* POPOVER */
 /***********/
@@ -488,6 +489,32 @@ tbody .fc-sun {
 .popover small {
     border-top-color: #DDD;
     color: #999;
+}
+
+
+/**********/
+/* EVENTS */
+/**********/
+
+.gh-event-type::before {
+    background-color: #555;
+    color: #FFF;
+}
+
+.gh-event-type[data-type="Lecture"]::before {
+    background-color: #19A3FF;
+}
+
+.gh-event-type[data-type="Class"]::before {
+    background-color: #FF944D;
+}
+
+.gh-event-type[data-type="Seminar"]::before {
+    background-color: #92308A;
+}
+
+.gh-event-type[data-type="Other"]::before {
+    background-color: #FF4719;
 }
 
 
