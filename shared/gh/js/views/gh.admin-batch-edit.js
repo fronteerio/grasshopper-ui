@@ -390,7 +390,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
                 // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
-                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight()) + 'px');
                 // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
             } else {
@@ -964,6 +964,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var submitBatchEdit = function() {
+        // Remove the `gh-not-eligible` class
+        $('.gh-not-eligible').removeClass('gh-not-eligible');
+
         // Disable all elements in the UI to avoid data changing halfway through the update
         disableEnableAll(true);
 

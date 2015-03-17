@@ -39,6 +39,11 @@
     border-color: #62326E;
 }
 
+.btn-link,
+.btn-link:hover {
+    color: #171717;
+}
+
 
 /**********/
 /* CHOSEN */
@@ -256,6 +261,10 @@
 
 .gh-batch-edit-events-container .table > tbody > tr.info td {
     background-color: #ECF5F9;
+}
+
+.gh-batch-edit-events-container .table > tbody > tr.gh-not-eligible > .gh-event-date {
+    background-color: #E7E7E7;
 }
 
 .gh-batch-edit-actions-container {

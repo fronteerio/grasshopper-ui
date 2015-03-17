@@ -56,6 +56,15 @@
 
 
 /***********/
+/* BUTTONS */
+/***********/
+
+.btn-link {
+    font-weight: 400;
+}
+
+
+/***********/
 /* POPOVER */
 /***********/
 
@@ -692,6 +701,10 @@
     text-align: center;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container:not(:first-child) .table > thead > tr > th {
+    height: 60px;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     font-size: 16px;
@@ -703,8 +716,11 @@
     white-space: nowrap;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label span {
+    margin-left: 11px;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot .table > thead > tr > th .checkbox label {
-    cursor: initial;
     white-space: nowrap;
 }
 
