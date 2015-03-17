@@ -40,22 +40,23 @@
                             <tr>
                                 <th>Batch edit:</th>
                                 <th>
-                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles">
+                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles" disabled>
                                 </th>
                                 <th>
                                     <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Dates &amp; times</button>
                                 </th>
                                 <th class="gh-batch-event-organisers">
-                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers">
+                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers" disabled>
                                 </th>
                                 <th>
-                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations">
+                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations" disabled>
                                 </th>
                                 <th>
                                     <%= _.partial('admin-batch-edit-event-type', {
                                         'data': {
                                             'id': 'gh-batch-edit-type',
-                                            'types': gh.config.events.types
+                                            'types': gh.config.events.types,
+                                            'disable': true
                                         }
                                     }) %>
                                 </th>
@@ -69,14 +70,14 @@
 
             <div id="gh-batch-edit-term-container">
                 <% _.each(data.eventsByTerm, function(term) { %>
-                    <div class="gh-batch-edit-events-container <% if (term.name == 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
+                    <div class="gh-batch-edit-events-container <% if (term.name === 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="gh-select-all"> <%- term.name %>
+                                                <input type="checkbox" class="gh-select-all"><span><% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %></span>
                                             </label>
                                         </div>
                                     </th>
@@ -86,7 +87,9 @@
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
+                                        <% if (term.name !== 'OT') { %>
+                                            <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
+                                        <% } %>
                                     </th>
                                 </tr>
                             </thead>
@@ -110,11 +113,11 @@
                 <% }); %>
             </div>
 
-            <div class="gh-batch-edit-actions-container" style="display: none;">
-                <p id="gh-batch-edit-change-summary" class="pull-left"></p>
-                <button type="button" id="gh-batch-edit-submit" class="btn btn-default pull-right"><i class="fa fa-check"></i> Save</button>
-                <button type="button" id="gh-batch-edit-cancel" class="btn btn-link pull-right">Cancel</button>
-            </div>
+            <div class="gh-batch-edit-actions-container" style="display: none;"><!-- --></div>
+            <!-- Footer actions template -->
+            <script id="gh-batch-edit-actions-template" type="text/template">
+                <%= _.partial('admin-batch-edit-actions', {'data': data}, false) %>
+            </script>
         </div>
 
         <div id="gh-batch-calendar-view" class="tab-pane" role="tabpanel">

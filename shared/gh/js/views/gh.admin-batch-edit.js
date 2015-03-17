@@ -155,7 +155,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Show the save button
         toggleSubmit();
         // Enable batch editing of dates
-        toggleBatchEditDateEnabled();
+        toggleBatchEditEnabled();
         // Trigger a change event on the newly added row to update the batch edit
         $eventContainer.find('.gh-select-single').trigger('change');
     };
@@ -192,18 +192,30 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Only soft delete the event when it hasn't been created in the first place. If the
         // row has no 'eventid' data attribute it shouldn't be deleted from the db
         var $row = $(this).closest('tr');
+        var $otEventContainer = $($(this).closest('.gh-batch-edit-events-container.gh-ot'));
         var termLabel = $row.closest('.gh-batch-edit-events-container').attr('data-term');
         if ($row.data('eventid')) {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
+                // If the event was the last OT event, hide its container
+                if ($otEventContainer.length && !$otEventContainer.find('tbody tr:visible').length) {
+                    $otEventContainer.hide();
+                }
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
+                // Update the footer
+                toggleSubmit();
             });
-            toggleSubmit();
         } else {
             $row.addClass('gh-event-deleted').fadeOut(200, function() {
                 $row.remove();
+                // If the event was the last OT event, remove its container
+                if ($otEventContainer.length && !$otEventContainer.find('tbody tr:visible').length) {
+                    $otEventContainer.remove();
+                }
                 // Show the empty term description
                 showEmptyTermDescription(termLabel);
+                // Update the footer
+                toggleSubmit();
             });
         }
         // Let other components know that an event was deleted
@@ -240,6 +252,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         }
         // Trigger the change event on all checkboxes
         $checkboxes.change();
+        // Enable batch editing of dates
+        toggleBatchEditEnabled();
     };
 
     /**
@@ -253,7 +267,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         } else {
             $(this).closest('tr').removeClass('info');
         }
-        toggleBatchEditDateEnabled();
+        toggleBatchEditEnabled();
     };
 
     /**
@@ -262,12 +276,23 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var toggleSubmit = function() {
-        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted)').length + $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
+        // Get the number of events that were updated
+        var eventsUpdated = $('.gh-batch-edit-events-container tbody tr.active:not(.gh-event-deleted):not(.gh-new-event-row)').length;
+        // Get the number of events that were created
+        var eventsCreated = $('.gh-batch-edit-events-container tbody tr.gh-new-event-row:not(.gh-event-deleted)').length;
+        // Get the number of events that were deleted
+        var eventsDeleted = $('.gh-batch-edit-events-container tbody tr.gh-event-deleted').length;
 
-        if (eventsUpdated) {
+        // Only toggle and update the footer if events where updated, created or deleted
+        if (eventsUpdated || eventsCreated || eventsDeleted) {
             // Update the count
-            var updatedCountString = eventsUpdated + ' event' + (eventsUpdated === 1 ? '' : 's' ) + ' updated';
-            $('.gh-batch-edit-actions-container #gh-batch-edit-change-summary').text(updatedCountString);
+            utils.renderTemplate($('#gh-batch-edit-actions-template'), {
+                'data': {
+                    'updated': eventsUpdated,
+                    'created': eventsCreated,
+                    'deleted': eventsDeleted
+                }
+            }, $('.gh-batch-edit-actions-container'));
             // Show the save button if events have changed but not submitted
             $('.gh-batch-edit-actions-container').fadeIn(200);
         } else {
@@ -282,12 +307,15 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      *
      * @private
      */
-    var toggleBatchEditDateEnabled = function() {
-        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length) {
-            $('#gh-batch-edit-time').removeAttr('disabled');
+    var toggleBatchEditEnabled = function() {
+        if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length ||
+            $('.gh-batch-edit-events-container:not(.gh-ot) thead .gh-select-all:checked').length) {
+            $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
+            $('.as-selections', $('#gh-batch-edit-header')).removeClass('gh-disabled');
         } else {
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
-            $('#gh-batch-edit-time').attr('disabled', 'disabled');
+            $('input, button, select', $('#gh-batch-edit-header')).attr('disabled', 'disabled');
+            $('.as-selections', $('#gh-batch-edit-header')).addClass('gh-disabled');
         }
     };
 
@@ -358,7 +386,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
                 // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
-                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight()) + 'px');
                 // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
             } else {
@@ -639,6 +667,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'select': true,
             'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
+            'disable': false,
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
@@ -931,6 +960,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var submitBatchEdit = function() {
+        // Remove the `gh-not-eligible` class
+        $('.gh-not-eligible').removeClass('gh-not-eligible');
+
         // Disable all elements in the UI to avoid data changing halfway through the update
         disableEnableAll(true);
 

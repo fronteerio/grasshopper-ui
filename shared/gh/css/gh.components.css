@@ -110,8 +110,13 @@
 /* Default buttons */
 #gh-toolbar-container .btn-default,
 .nav-tabs > li > a {
+    font-weight: 400;
     height: 100%;
-    padding: 12px;
+    padding: 12px 25px;
+}
+
+#gh-toolbar-container .btn-default.gh-btn-reverse.active {
+    font-weight: 600;
 }
 
 /* Primary toolbar */

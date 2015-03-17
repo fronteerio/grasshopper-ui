@@ -22,8 +22,16 @@ h1, h2, h3, h4, h5 {
     color: #171717;
 }
 
-input {
+input,
+textarea {
+    border-color: #CCC;
     color: #171717 !important;
+}
+
+input[disabled],
+select[disabled],
+.as-selections.gh-disabled {
+    border-color: #EEE !important;
 }
 
 #gh-page-container #gh-subheader h1,
@@ -35,8 +43,7 @@ input {
 }
 
 a,
-.btn-link,
-.btn-link i {
+.btn-link {
     color: #127077;
 }
 
@@ -187,6 +194,12 @@ ul.nav-tabs li.active {
 .btn-default.gh-btn-tertiary:active {
     background-color: #2A2A2A;
     border-color: #2A2A2A;
+}
+
+/* Link buttons */
+
+.btn-link i {
+    color: #171717;
 }
 
 
@@ -438,6 +451,10 @@ tbody .fc-sun {
 
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe:hover {
     background-color: #127077;
+}
+
+#gh-calendar-view #gh-export-container #gh-export-collapsed-other-toggle.btn-link i {
+    color: #127077;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul li i {

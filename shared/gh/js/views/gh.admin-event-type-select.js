@@ -33,7 +33,8 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             var content = gh.utils.renderTemplate($('#gh-event-type-template'), {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
-                    'types': gh.config.events.types
+                    'types': gh.config.events.types,
+                    'disable': settings.disable
                 }
             });
             $(this).append(content);

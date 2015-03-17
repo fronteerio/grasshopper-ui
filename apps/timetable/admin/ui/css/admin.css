@@ -56,6 +56,15 @@
 
 
 /***********/
+/* BUTTONS */
+/***********/
+
+.btn-link {
+    font-weight: 400;
+}
+
+
+/***********/
 /* POPOVER */
 /***********/
 
@@ -407,7 +416,7 @@
 #gh-batch-edit-header input[type="text"],
 #gh-batch-edit-header select {
     font-weight: 400;
-    height: 32px !important;
+    height: 33px !important;
     padding-left: 6px;
     padding-right: 6px;
 }
@@ -423,7 +432,7 @@
 
 #gh-batch-edit-header .table thead tr th:nth-child(3),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
-    width: 170px;
+    width: 180px;
 }
 
 #gh-batch-edit-header .table thead tr th:nth-child(4),
@@ -444,7 +453,7 @@
 }
 
 #gh-batch-edit-header th > * {
-    height: 32px;
+    height: 33px;
     padding: 6px 12px;
     width: 100%;
 }
@@ -458,11 +467,6 @@
 
 #gh-batch-edit-header .gh-batch-edit-header-description {
     vertical-align: middle;
-}
-
-#gh-batch-edit-header.gh-batch-edit-time-open {
-    height: 50px;
-    padding-bottom: 50px;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
@@ -528,14 +532,14 @@
     min-height: 36px;
     min-width: 62px;
     overflow: hidden;
-    padding: 0;
+    padding: 1px 4px 0;
     vertical-align: middle;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label {
     font-size: 18px;
     font-weight: 400;
-    padding: 3px 5px 0 5px;
+    padding: 5px 4px 2px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox label i.fa-square-o,
@@ -561,10 +565,11 @@
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
     border-style: solid;
     border-width: 2px;
+    padding: 0 0 0 2px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label {
-    padding: 4px 12px 0 13px;
+    padding: 4px 4px 0;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i.fa-check-square-o {
@@ -577,7 +582,7 @@
     display: block;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker {
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-day-picker {
     width: 120px;
 }
 
@@ -585,7 +590,7 @@
     height: 30px;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-day-picker,
 #gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
     font-size: 16px;
     font-weight: 400;
@@ -596,15 +601,15 @@
     width: 50px;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-start {
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-date-start {
     margin: 0 0 7px 17px;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-end {
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-date-end {
     margin: 0 0 7px 5px;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-date-to {
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-date-to {
     margin: 5px 0 0 5px;
 }
 
@@ -676,28 +681,6 @@
     content: 'Add location';
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot {
-    margin-bottom: 10px;
-    margin-top: 0;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead {
-    visibility: hidden;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead tr th {
-    border-bottom-width: 0 !important;
-    padding-bottom: 0;
-    padding-top: 0;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead button,
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot thead label {
-    height: 1px;
-    overflow: hidden;
-    visibility: hidden;
-}
-
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td:first-child {
     cursor: auto;
     max-width: 40px;
@@ -718,6 +701,10 @@
     text-align: center;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container:not(:first-child) .table > thead > tr > th {
+    height: 60px;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     font-size: 16px;
@@ -726,7 +713,15 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
     font-weight: 700;
-    margin-bottom: 7px;
+    white-space: nowrap;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label span {
+    margin-left: 11px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot .table > thead > tr > th .checkbox label {
+    white-space: nowrap;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
@@ -740,7 +735,6 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form input {
-    background-color: transparent;
     border: none;
     height: 31px !important;
     padding: 0 10px;
@@ -1179,12 +1173,14 @@ ul.as-selections li.as-selection-item {
     width: 100%;
 }
 
-.as-selections .as-original input {
+ul.as-selections li.as-original input {
+    width: 100%;
+}
+
+#gh-batch-edit-header .as-selections .as-original input[type="text"] {
     border: none !important;
-    border-top-style: solid !important;
-    border-top-width: 1px !important;
     font-size: 15px !important;
-    height: 37px !important;
+    height: 31px !important;
     padding: 0 10px;
     width: 100% !important;
 }
@@ -1201,6 +1197,7 @@ ul.as-selections li.as-selection-item {
 
 .as-results {
     font-weight: 200;
+    padding: 0 !important;
     position: absolute;
 }
 

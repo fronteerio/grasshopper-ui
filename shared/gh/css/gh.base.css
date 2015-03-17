@@ -57,6 +57,18 @@ label {
     font-weight: 600;
 }
 
+input,
+textarea {
+    border-style: solid;
+    border-width: 1px;
+}
+
+input[disabled],
+select[disabled],
+.as-selections.gh-disabled {
+    border-style: solid;
+    border-width: 1px;
+}
 
 /**********/
 /* LAYOUT */
