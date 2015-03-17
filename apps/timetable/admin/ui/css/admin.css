@@ -775,17 +775,6 @@
     height: 34px;
 }
 
-.gh-batch-edit-events-container .gh-event-type:not(:empty)::before {
-    border-radius: 12px;
-    content: attr(data-first);
-    display: inline-block;
-    height: 20px;
-    margin-right: 6px;
-    padding: 1px;
-    text-align: center;
-    width: 20px;
-}
-
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
     content: 'Add type';
 }
