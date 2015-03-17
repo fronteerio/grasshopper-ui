@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
+define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
 
     // Cache the tripos data
     var triposData = null;
@@ -30,13 +30,21 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
 
-        // Track the user starting borrowing of a series
+        // Track the user choosing a part
         gh.utils.trackEvent(['Manage', 'Borrow series', 'Chosen part']);
 
-        $(document).trigger('gh.part.selected', {
-            'partId': partId,
-            'container': $('#gh-borrow-series-modal'),
-            'template': $('#gh-borrow-series-modules-template')
+        // Retrieve the organisational unit information for the modules
+        orgUnitAPI.getOrgUnits(gh.data.me.appId, true, null, partId, ['module'], function(err, modules) {
+            if (err) {
+                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+            }
+
+            $(document).trigger('gh.part.selected', {
+                'partId': partId,
+                'modules': modules,
+                'container': $('#gh-borrow-series-modal'),
+                'template': $('#gh-borrow-series-modules-template')
+            });
         });
     };
 
@@ -50,7 +58,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
 
-        // Track the user starting borrowing of a series
+        // Track the user choosing a tripos
         gh.utils.trackEvent(['Manage', 'Borrow series', 'Chosen tripos']);
 
         // Get the parts associated to the selected tripos
@@ -170,22 +178,33 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgunitAPI) {
         });
 
         // Borrow the event series in the module
-        orgunitAPI.addOrgUnitSeries(moduleId, seriesIDs, function(err, data) {
+        orgUnitAPI.addOrgUnitSeries(moduleId, seriesIDs, function(err, data) {
             // Show a success or failure notification
             if (err) {
                 return gh.utils.notification('Series not borrowed.', 'The series could not be successfully borrowed.', 'error');
             }
             gh.utils.notification('Series borrowed.', 'The series were successfully borrowed.', 'success');
+
             // Track the user completing borrowing of a series
             gh.utils.trackEvent(['Manage', 'Borrow series', 'Completed'], {
                 'time_from_start': timeFromStart,
                 'number_of_borrowed_series': seriesIDs.length
             });
+
             // Hide the module modal
             $('#gh-borrow-series-modal').modal('hide');
-            // Refresh the modules list
-            $(document).trigger('gh.listview.refresh', {
-                'partId': partId
+
+            // Retrieve the organisational unit information for the modules
+            orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
+                if (err) {
+                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                }
+
+                // Refresh the modules list
+                $(document).trigger('gh.listview.refresh', {
+                    'partId': partId,
+                    'modules': modules
+                });
             });
         });
     };

@@ -46,7 +46,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      */
     var buildBatchDateObject = function() {
         // Get the checked events from the batch edit container
-        var $rows = $('.gh-batch-edit-events-container tr.info:visible:not(".gh-event-deleted")');
+        var $selectedRows = $('.gh-batch-edit-events-container tr.info:visible:not(".gh-event-deleted")');
+        // Filter the rows that are eligible for updating
+        var $rows = getEligibleRows($selectedRows);
         // Get the checked terms from the batch edit container
         var $terms = $('.gh-batch-edit-events-container thead .gh-select-all:checked');
         // Get the maximum number of weeks in a term
@@ -69,6 +71,21 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
     ///////////////
 
     /**
+     * Filter the rows that are eligible for batch date/time updating
+     *
+     * @param  {Object[]}    $rows    A collection of selected rows
+     * @return {Object[]}             A filtered collection of rows that are eligible for updating
+     * @private
+     */
+    var getEligibleRows = function($rows) {
+        return _.filter($rows, function($row) {
+            if (!$($row).closest('.gh-batch-edit-events-container').hasClass('gh-ot')) {
+                return $row;
+            }
+        });
+    };
+
+    /**
      * Remove events from a specified week number
      *
      * @param  {Number}    weekNumber    The week number to delete events from
@@ -76,14 +93,18 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      */
     var removeEventsInWeek = function(weekNumber) {
         // Get the checked events from the batch edit container
-        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
+        var $selectedRows = $('.gh-batch-edit-events-container tr.info:visible');
+        // Filter the rows that are eligible for updating
+        var $rows = getEligibleRows($selectedRows);
+        // Mark the rows that are not eligible for updating
+        $(_.difference($selectedRows, $rows)).addClass('gh-not-eligible');
         // For each row, check if the event is taking place in the week that is to be removed
         _.each($rows, function($row) {
             $row = $($row);
             // Get the start date of the event
             var startDate = gh.utils.convertISODatetoUnixDate($row.find('.gh-event-date').attr('data-start'));
             // Get the week in which the event takes place
-            var dateWeek = gh.utils.getAcademicWeekNumber(startDate);
+            var dateWeek = gh.utils.getAcademicWeekNumber(startDate, true);
             // If the event takes place in the week that needs to be removed, delete it
             if (dateWeek === weekNumber) {
                 $row.addClass('gh-event-deleted').find('.gh-event-delete button').click();
@@ -299,7 +320,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         // Extract the weeks from the batch
         _.each($rows, function(row) {
             var start = gh.utils.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
-            weeksInUse.push(gh.utils.getAcademicWeekNumber(start));
+            weeksInUse.push(gh.utils.getAcademicWeekNumber(start, true));
         });
         return _.uniq(weeksInUse);
     };
@@ -372,7 +393,11 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // Loop over the selected events and change the ones that match the previous eventDay
         // value (assuming it was changed)
-        var $rows = $('.gh-batch-edit-events-container tr.info:visible');
+        var $selectedRows = $('.gh-batch-edit-events-container tr.info:visible');
+        // Filter the rows that are eligible for updating
+        var $rows = getEligibleRows($selectedRows);
+        // Mark the rows that are not eligible for updating
+        $(_.difference($selectedRows, $rows)).addClass('gh-not-eligible');
         _.each($rows, function($row) {
             $row = $($row);
             // Get the date the event starts on

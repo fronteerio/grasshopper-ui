@@ -293,7 +293,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         setDatePicker(calendarDate);
 
         // Set the week value
-        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate), true);
         $('.popover #gh-module-week').val(week);
 
         // Set the day value

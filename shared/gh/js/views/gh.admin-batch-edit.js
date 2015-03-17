@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
 
     // Object used to cache the triposData
     var triposData = null;
@@ -130,9 +130,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': $lastEventInTerm.find('.gh-event-location').text(),
-                'notes': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default,
                 'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
                 'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
+                'type': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default
             };
         // If no events were previously added to the term, create a default event object
         } else {
@@ -140,9 +140,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 'displayName': $('.gh-jeditable-series-title').text(),
                 'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
                 'location': '',
-                'notes': gh.config.events.default,
                 'organisers': [],
                 'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
+                'type': gh.config.events.default
             };
         }
 
@@ -404,7 +404,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             // positioned, make the header sticky
             if (windowTop >= headerTop) {
                 // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
-                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight() + 60) + 'px');
+                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight()) + 'px');
                 // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
             } else {
@@ -534,6 +534,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      * @private
      */
     var editableSeriesTitleSubmitted = function(value, editableField) {
+
+        // Remove the editing class from the jeditable input field
+        $('.gh-jeditable-series-title.editing').removeClass('editing');
+
         // Get the value
         value = $.trim(value);
         // If no value has been entered, we fall back to the previous value
@@ -668,15 +672,21 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var setUpJEditable = function() {
 
-        // Apply jEditable to the series title
+        // Apply jEditable to the series title. (custom plugin)
         $('.gh-jeditable-series-title').editable(editableSeriesTitleSubmitted, {
             'cssclass': 'gh-jeditable-form gh-jeditable-form-with-submit',
+            'disable': false,
             'height': '38px',
             'maxlength': 255,
             'onblur': 'submit',
-            'placeholder': '',
-            'select' : true,
-            'submit': '<button type="submit" class="btn btn-default">Save</button>'
+            'placeholder': 'Click to add a title for this series',
+            'select': true,
+            'type': 'series-title',
+            'submit': '<button type="submit" class="btn btn-default">Save</button>',
+            'callback': function(value, settings) {
+                // Remove the `editing` class when the input field loses its focus
+                $('.gh-jeditable-series-title.editing').removeClass('editing');
+            }
         });
 
         // Apply jEditable for inline editing of event rows
@@ -695,14 +705,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             }
         });
 
-        // Apply jEditable to the event notes
+        // Apply jEditable to the event type. (custom plugin)
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass': 'gh-jeditable-form',
+            'disable': false,
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit the event type',
             'type': 'event-type-select',
-            'disable': false,
             'callback': function(value, settings) {
                 // Focus the edited field td element after submitting the value
                 // for improved keyboard accessibility
@@ -755,7 +765,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
          * @private
          */
         var submitEventUpdate = function(updatedEvent, _callback) {
-            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, function(evErr, data) {
+            gh.api.eventAPI.updateEvent(updatedEvent.id, updatedEvent.displayName, null, null, updatedEvent.start, updatedEvent.end, updatedEvent.location, updatedEvent.notes, updatedEvent.type, function(evErr, data) {
                 if (evErr) {
                     hasError = true;
                 }
@@ -844,7 +854,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
             var seriesId = parseInt(History.getState().data['series'], 10);
-            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, function(evErr, data) {
+            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, newEvent.type, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
@@ -998,6 +1008,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Calculate how long it takes the user to batch edit
         timeFromStart = (new Date() - timeFromStart) / 1000;
 
+        // Remove the `gh-not-eligible` class
+        $('.gh-not-eligible').removeClass('gh-not-eligible');
+
         // Disable all elements in the UI to avoid data changing halfway through the update
         disableEnableAll(true);
 
@@ -1020,9 +1033,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organisers': organisers || null,
-                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start'),
+                    'type': $('.gh-event-type', $eventContainer).attr('data-type')
                 };
                 updatedEventObjs.push(updatedEventObj);
             });
@@ -1040,10 +1053,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     'displayName': $('.gh-event-description', $eventContainer).text(),
                     'end': $('.gh-event-date', $eventContainer).attr('data-end'),
                     'location': $('.gh-event-location', $eventContainer).text(),
-                    'notes': $('.gh-event-type', $eventContainer).attr('data-type'),
                     'organiserOther': organisers.organiserOthers || null,
                     'organiserUsers': organisers.organiserUsers || null,
-                    'start': $('.gh-event-date', $eventContainer).attr('data-start')
+                    'start': $('.gh-event-date', $eventContainer).attr('data-start'),
+                    'type': $('.gh-event-type', $eventContainer).attr('data-type')
                 };
                 newEventObjs.push(newEventObj);
             });

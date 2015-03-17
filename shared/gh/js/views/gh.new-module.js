@@ -41,15 +41,26 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
                 return gh.utils.notification('Module not created.', 'The module could not be successfully created.', 'error');
             }
             gh.utils.notification('Module created.', 'The module was successfully created.', 'success');
+
             // Track the user creating the module
             gh.utils.trackEvent(['Manage', 'Add module', 'Completed'], {
                 'time_from_start': timeFromStart
             });
+
             // Hide the module modal
             $('#gh-new-module-modal').modal('hide');
-            // Refresh the modules list
-            $(document).trigger('gh.listview.refresh', {
-                'partId': partId
+
+            // Retrieve the organisational unit information for the modules
+            orgUnitAPI.getOrgUnits(appId, true, null, partId, ['module'], function(err, modules) {
+                if (err) {
+                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                }
+
+                // Refresh the modules list
+                $(document).trigger('gh.listview.refresh', {
+                    'partId': partId,
+                    'modules': modules
+                });
             });
         });
 

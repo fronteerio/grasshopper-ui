@@ -55,12 +55,13 @@ define(['exports'], function(exports) {
      * @param  {String[]}    [organiserOther]    The name(s) of the unrecognised user(s) that organise the event. If no organisers are added, the current user will be added as the organiser
      * @param  {Number[]}    [organiserUsers]    The id(s) of the recognised user(s) that organise the event
      * @param  {Number[]}    [seriesId]          The id(s) of the serie(s) that the event belongs to
+     * @param  {String}      [type]              The type of the event
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
      *
      */
-    var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, callback) {
+    var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, type, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isString(displayName)) {
@@ -83,6 +84,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserUsers\' should be provided'});
         } else if (seriesId && (!_.isNumber(seriesId) && !_.isArray(seriesId))) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
+        } else if (type && !_.isString(type)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'type\' should be provided'});
         }
 
         // Request data object
@@ -114,6 +117,9 @@ define(['exports'], function(exports) {
         if (seriesId) {
             data['series'] = seriesId;
         }
+        if (type) {
+            data['type'] = type;
+        }
 
         $.ajax({
             'url': '/api/events',
@@ -142,11 +148,12 @@ define(['exports'], function(exports) {
      * @param  {String[]}    [organiserOther]    The name(s) of the unrecognised user(s) that organise the event. If no organisers are added, the current user will be added as the organiser
      * @param  {Number[]}    [organiserUsers]    The id(s) of the recognised user(s) that organise the event
      * @param  {Number[]}    [seriesId]          The id(s) of the serie(s) that the event belongs to
+     * @param  {String}      [type]              The type of the event
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
      */
-    var createEventByApp = exports.createEventByApp = function(appId, displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, callback) {
+    var createEventByApp = exports.createEventByApp = function(appId, displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, type, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(appId)) {
@@ -171,6 +178,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'organiserUsers\' should be provided'});
         } else if (seriesId && (!_.isNumber(seriesId) && !_.isArray(seriesId))) {
             return callback({'code': 400, 'msg': 'A valid value for \'seriesId\' should be provided'});
+        } else if (type && !_.isString(type)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'type\' should be provided'});
         }
 
         // Request data object
@@ -203,6 +212,9 @@ define(['exports'], function(exports) {
         if (seriesId) {
             data['serie'] = seriesId;
         }
+        if (type) {
+            data['type'] = type;
+        }
 
         $.ajax({
             'url': '/api/events/',
@@ -228,11 +240,12 @@ define(['exports'], function(exports) {
      * @param  {Number}      [end]               The updated timestamp (ISO 8601) at which the event ends
      * @param  {String}      [location]          The updated location of the event
      * @param  {String}      [notes]             The updated notes for the event
+     * @param  {String}      [type]              The updated type for the event
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The updated event
      */
-    var updateEvent = exports.updateEvent = function(eventId, displayName, description, groupId, start, end, location, notes, callback) {
+    var updateEvent = exports.updateEvent = function(eventId, displayName, description, groupId, start, end, location, notes, type, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('A callback function should be provided');
         } else if (!_.isNumber(eventId)) {
@@ -251,6 +264,8 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'location\' should be provided'});
         } else if (notes && !_.isString(notes)) {
             return callback({'code': 400, 'msg': 'A valid value for \'notes\' should be provided'});
+        } else if (type && !_.isString(type)) {
+            return callback({'code': 400, 'msg': 'A valid value for \'type\' should be provided'});
         }
 
         // Request data object
@@ -277,6 +292,9 @@ define(['exports'], function(exports) {
         }
         if (notes) {
             data['notes'] = notes;
+        }
+        if (type) {
+            data['type'] = type;
         }
 
         $.ajax({
