@@ -22,8 +22,16 @@ h1, h2, h3, h4, h5 {
     color: #171717;
 }
 
-input {
+input,
+textarea {
+    border-color: #CCC;
     color: #171717 !important;
+}
+
+input[disabled],
+select[disabled],
+.as-selections.gh-disabled {
+    border-color: #EEE !important;
 }
 
 #gh-page-container #gh-subheader h1,
@@ -35,8 +43,7 @@ input {
 }
 
 a,
-.btn-link,
-.btn-link i {
+.btn-link {
     color: #127077;
 }
 
@@ -187,6 +194,12 @@ ul.nav-tabs li.active {
 .btn-default.gh-btn-tertiary:active {
     background-color: #2A2A2A;
     border-color: #2A2A2A;
+}
+
+/* Link buttons */
+
+.btn-link i {
+    color: #171717;
 }
 
 
@@ -440,6 +453,10 @@ tbody .fc-sun {
     background-color: #127077;
 }
 
+#gh-calendar-view #gh-export-container #gh-export-collapsed-other-toggle.btn-link i {
+    color: #127077;
+}
+
 #gh-calendar-view #gh-export-container #gh-export-main ul li i {
     color: rgba(61, 61, 61, 0.4);
 }
@@ -447,6 +464,7 @@ tbody .fc-sun {
 #gh-calendar-view #gh-export-container > #gh-export-sync-message {
     color: #6C6C6C;
 }
+
 
 /***********/
 /* POPOVER */
@@ -471,6 +489,32 @@ tbody .fc-sun {
 .popover small {
     border-top-color: #DDD;
     color: #999;
+}
+
+
+/**********/
+/* EVENTS */
+/**********/
+
+.gh-event-type::before {
+    background-color: #555;
+    color: #FFF;
+}
+
+.gh-event-type[data-type="Lecture"]::before {
+    background-color: #19A3FF;
+}
+
+.gh-event-type[data-type="Class"]::before {
+    background-color: #FF944D;
+}
+
+.gh-event-type[data-type="Seminar"]::before {
+    background-color: #92308A;
+}
+
+.gh-event-type[data-type="Other"]::before {
+    background-color: #FF4719;
 }
 
 

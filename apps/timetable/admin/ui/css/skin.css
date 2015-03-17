@@ -39,6 +39,11 @@
     border-color: #62326E;
 }
 
+.btn-link,
+.btn-link:hover {
+    color: #171717;
+}
+
 
 /**********/
 /* CHOSEN */
@@ -258,6 +263,10 @@
     background-color: #ECF5F9;
 }
 
+.gh-batch-edit-events-container .table > tbody > tr.gh-not-eligible > .gh-event-date {
+    background-color: #E7E7E7;
+}
+
 .gh-batch-edit-actions-container {
     background: #FFF;
     border-top-color: #BEBEBE;
@@ -275,7 +284,7 @@
 }
 
 .gh-batch-edit-events-container .gh-jeditable-form input {
-    background-color: transparent;
+    background-color: #FFF;
     border-left-color: #DDD;
     border-right-color: #DDD;
 }
@@ -296,7 +305,7 @@
     border-color: #62326E;
 }
 
-#gh-batch-edit-container .gh-batch-edit-time-picker #gh-batch-edit-day-picker,
+#gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-day-picker,
 #gh-batch-edit-container .gh-batch-edit-time-picker select.form-control {
     color: #171717;
 }
@@ -308,36 +317,7 @@
     color: #BEBEBE;
 }
 
-/* Event type */
-.gh-batch-edit-events-container .gh-event-type::before {
-    background-color: #555;
-    color: #FFF;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Lecture"]::before {
-    background-color: #19A3FF;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Class"]::before {
-    background-color: #FF944D;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Seminar"]::before {
-    background-color: #92308A;
-}
-
-.gh-batch-edit-events-container .gh-event-type[data-type="Other"]::before {
-    background-color: #FF4719;
-}
-
 /* Terms */
-#gh-batch-edit-term-container .gh-batch-edit-events-container.gh-ot tr {
-    background-color: #F7F7F7;
-}
-
-#gh-batch-edit-term-container .gh-batch-edit-events-container:not(.gh-ot) + .gh-ot {
-    border-top-color: #DDD;
-}
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.danger.gh-fade td,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {

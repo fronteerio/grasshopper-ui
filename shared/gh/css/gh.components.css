@@ -110,8 +110,13 @@
 /* Default buttons */
 #gh-toolbar-container .btn-default,
 .nav-tabs > li > a {
+    font-weight: 400;
     height: 100%;
-    padding: 12px;
+    padding: 12px 25px;
+}
+
+#gh-toolbar-container .btn-default.gh-btn-reverse.active {
+    font-weight: 600;
 }
 
 /* Primary toolbar */
@@ -786,6 +791,7 @@ tbody tr:last-child > td.fc-widget-content {
     border-bottom-width: 1px;
     font-size: 16px;
     font-weight: 600;
+    line-height: 20px;
     margin-bottom: 15px;
     padding-bottom: 7px;
 }
@@ -808,4 +814,24 @@ tbody tr:last-child > td.fc-widget-content {
     max-height: 400px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+
+/**********/
+/* EVENTS */
+/**********/
+
+.gh-event-type:not(:empty)::before {
+    border-radius: 12px;
+    content: attr(data-first);
+    display: inline-block;
+    height: 20px;
+    margin-right: 6px;
+    padding: 1px;
+    text-align: center;
+    width: 20px;
+}
+
+.gh-event-type:not(:empty) span {
+    display: none;
 }
