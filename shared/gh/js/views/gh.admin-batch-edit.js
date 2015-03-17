@@ -647,7 +647,11 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             'placeholder': 'Click to add a title for this series',
             'select': true,
             'type': 'series-title',
-            'submit': '<button type="submit" class="btn btn-default">Save</button>'
+            'submit': '<button type="submit" class="btn btn-default">Save</button>',
+            'callback': function(value, settings) {
+                // Remove the `editing` class when the input field loses its focus
+                $('h1.editing').removeClass('editing');
+            }
         });
 
         // Apply jEditable for inline editing of event rows

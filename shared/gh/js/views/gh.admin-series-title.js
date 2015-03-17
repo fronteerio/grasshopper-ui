@@ -44,13 +44,6 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             $('input', this).on('focus', function() {
                 $(original).addClass('editing');
             });
-
-            // Remove the `editing` class when the input field loses its focus
-            $('input', this).on('focusout', function() {
-                setTimeout(function() {
-                    $(original).removeClass('editing');
-                }, 750);
-            });
         }
     });
 });
