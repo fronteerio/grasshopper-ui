@@ -31,8 +31,7 @@
     </td>
     <td class="gh-event-organisers" tabindex="0" title="Click to add a lecturer for this event"><%- organiserString.join(', ') %></td>
     <td class="gh-jeditable-events gh-event-location" tabindex="0" title="Click to add a location for this event"><%- data.ev.location %></td>
-    <td class="gh-jeditable-events-select gh-event-type" data-type="<%- data.ev.notes %>" data-first="<% if (data.ev.notes) { %><%- data.ev.notes.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event type">
-    <%- data.ev.notes %></td>
+    <td class="gh-jeditable-events-select gh-event-type" data-type="<%- data.ev.type %>" data-first="<% if (data.ev.type) { %><%- data.ev.type.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event type"><%- data.ev.type %></td>
     <td class="gh-event-delete" tabindex="0" title="Select the row and click to delete this event">
         <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
     </td>
