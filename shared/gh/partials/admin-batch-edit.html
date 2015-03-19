@@ -1,3 +1,7 @@
+<%
+    console.log(data);
+%>
+
 <div id="gh-batch-edit-view" class="gh-main-view">
     <div id="gh-toolbar-container">
         <div class="gh-toolbar gh-toolbar-primary">
@@ -32,7 +36,7 @@
                     </li>
                 </ul>
 
-                <h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
+                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
 
                 <div id="gh-batch-edit-header">
                     <table class="table">

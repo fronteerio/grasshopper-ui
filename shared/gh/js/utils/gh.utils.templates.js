@@ -71,6 +71,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!gh/partials/header-template.html',
             'text!gh/partials/new-module-modal.html',
             'text!gh/partials/new-series.html',
+            'text!gh/partials/series-popover.html',
             'text!gh/partials/student-module-item.html',
             'text!gh/partials/student-modules.html',
             'text!gh/partials/subheader-part.html',
