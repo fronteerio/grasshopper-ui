@@ -1141,13 +1141,15 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var loadSeriesEvents = function() {
         var seriesId = parseInt(History.getState().data['series'], 10);
+        var moduleId = parseInt(History.getState().data['module'], 10);
 
         // Get the information about the series
         if (seriesId) {
-            gh.api.seriesAPI.getSeries(seriesId, null, function(err, series) {
+            gh.api.seriesAPI.getSeries(seriesId, true, function(err, series) {
                 if (err) {
                     return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
                 }
+
 
                 // Object used to aggregate the events between pages
                 var events = {
@@ -1192,7 +1194,8 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                         'name': constants.views.BATCH_EDIT,
                         'data': {
                             'events': events,
-                            'series': series
+                            'series': series,
+                            'borrowedFrom': series.borrowedFrom
                         }
                     });
 

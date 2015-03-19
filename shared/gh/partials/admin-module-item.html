@@ -5,22 +5,31 @@
 } %>
 
 <% _.each(data, function(d) { %>
-    <li class="list-group-item <% if (d.expanded || parseInt(state.module, 10) === d.id) { %>gh-list-group-item-open<% } %>" data-id="<%- d.id %>">
+    <li class="list-group-item<% if (d.expanded || parseInt(state.module, 10) === d.id) { %> gh-list-group-item-open<% } %>" data-id="<%- d.id %>">
         <div class="gh-list-group-item-container">
             <% if (!isChild) { %>
                 <button class="btn btn-link gh-toggle-list">
                     <div class="gh-list-icon">
-                        <i class="fa <% if (d.expanded) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>"></i>
+                        <i class="fa<% if (d.expanded) { %> fa-caret-down<% } else { %> fa-caret-right<% } %>"></i>
                     </div>
             <% } else { %>
-                <button class="btn btn-link gh-series-select <% if (parseInt(state.series, 10) === d.id && moduleMatch) { %> gh-series-active <% } %>">
+                <button class="btn btn-link gh-series-select<% if (parseInt(state.series, 10) === d.id && moduleMatch) { %> gh-series-active<% } %>">
             <% } %>
                     <div class="gh-list-description">
                         <p class="gh-list-description-text"><%- d.displayName %></p>
                     </div>
                     <% if (isChild) { %>
+                        <% if (d.borrowedFrom) {%>
+                            <%= _.partial('series-popover', {'data': d}) %>
+                        <% } %>
                         <div class="gh-list-action">
-                            <i class="fa fa-angle-right"></i>
+                            <span <% if(d.borrowedFrom) { %>class="gh-series-borrowed"<% } %>>
+                            <% if(d.borrowedFrom) { %>
+                                <i class="fa fa-link" data-id="<%- d.id %>"></i>
+                            <% } else { %>
+                                <i class="fa fa-angle-right"></i>
+                            <% } %>
+                            </span>
                         </div>
                     <% } %>
                 </button>
