@@ -883,7 +883,11 @@ tr.info .gh-event-delete button {
 }
 
 #gh-batch-calendar-view {
-    padding: 30px 30px 12px;
+    padding: 0;
+}
+
+#gh-batch-calendar-view #gh-calendar-container {
+    margin-top: 60px;
 }
 
 
