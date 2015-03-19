@@ -19,12 +19,17 @@
                         <p class="gh-list-description-text"><%- d.displayName %></p>
                     </div>
                     <% if (isChild) { %>
+                        <% if (d.borrowedFrom) {%>
+                            <%= _.partial('series-popover', {'data': d}) %>
+                        <% } %>
                         <div class="gh-list-action">
-                            <% if(d.borrowed) { %>
-                                <i class="fa fa-link"></i>
+                            <span <% if(d.borrowedFrom) { %>class="gh-series-borrowed"<% } %>>
+                            <% if(d.borrowedFrom) { %>
+                                <i class="fa fa-link" data-id="<%- d.id %>"></i>
                             <% } else { %>
                                 <i class="fa fa-angle-right"></i>
                             <% } %>
+                            </span>
                         </div>
                     <% } %>
                 </button>

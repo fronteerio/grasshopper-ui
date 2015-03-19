@@ -58,8 +58,18 @@
 /* POPOVER */
 /***********/
 
+/* event */
 .popover {
     background-color: #FFF;
+}
+
+/* series */
+.popover.gh-series-popover {
+    background-color: #D7E0DC;
+}
+
+.popover.gh-series-popover .arrow:after {
+    border-right-color: #D7E0DC;
 }
 
 
@@ -156,6 +166,14 @@
 
 .list-group .list-group-item .gh-list-action {
     background-color: transparent !important;
+}
+
+.list-group .list-group-item .gh-list-action .gh-series-borrowed:hover {
+    background-color: #D7E0DC;
+}
+
+.list-group .list-group-item .gh-list-action .gh-series-borrowed:hover > .fa-link {
+    color: #171717;
 }
 
 .list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {

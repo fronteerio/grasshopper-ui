@@ -40,13 +40,6 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
             module.Series.sort(utils.sortByDisplayName);
         });
 
-        // Check which series are borrowed
-        _.each(modules.results, function(module) {
-            _.each(module.Series, function(serie) {
-                serie.borrowed = (serie.GroupId !== module.GroupId);
-            });
-        });
-
         // Decorate the modules with their expanded status if LocalStorage is supported
         var expandedIds = [];
         if (Storage) {
