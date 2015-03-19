@@ -408,11 +408,10 @@ tr.info .gh-event-delete button i {
 }
 
 #gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-today {
-    background-color: #62326E;
+    background-color: #EFF4F2;
 }
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day * ,
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-today * {
+#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day * {
     color: #FFF;
 }
 
