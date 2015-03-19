@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'], function(gh, constants, utils, orgunitAPI, seriesAPI) {
+define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series', 'gh.api.orgunit'], function(gh, constants, utils, orgunitAPI, seriesAPI, orgUnitAPI) {
 
     /**
      * Cancel the creation of a new series and return to the last state
@@ -53,14 +53,28 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'
                 if (err) {
                     return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
                 }
+
                 utils.notification('Series created.', 'The series was successfully created.', 'success');
 
-                // Push the selected module and new series in the URL
-                var moduleId = parentId;
-                var seriesId = series.id;
-                gh.utils.addToState({
-                    'module': moduleId,
-                    'series': seriesId
+                // Retrieve the organisational unit information for the modules
+                orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
+                    if (err) {
+                        utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                    }
+
+                    // Refresh the modules list
+                    $(document).trigger('gh.listview.refresh', {
+                        'partId': partId,
+                        'modules': modules
+                    });
+
+                    // Push the selected module and new series in the URL
+                    var moduleId = parentId;
+                    var seriesId = series.id;
+                    gh.utils.addToState({
+                        'module': moduleId,
+                        'series': seriesId
+                    });
                 });
             });
         });

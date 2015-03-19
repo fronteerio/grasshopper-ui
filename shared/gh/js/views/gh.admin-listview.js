@@ -26,6 +26,11 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series', 'clicko
     var setUpModules = function(ev, data) {
         // Hide the tripos help text
         $('.gh-tripos-help').hide();
+        // Highlight the selected series
+        $('.gh-series-select').removeClass('gh-series-active');
+        $('.list-group-item[data-id="' + History.getState().data.series + '"] .gh-series-select').addClass('gh-series-active');
+        // Make sure its parent is opened
+        $('.list-group-item[data-id="' + History.getState().data.series + '"]').parents('.list-group-item').addClass('gh-list-group-item-open');
     };
 
     /**
@@ -97,7 +102,7 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series', 'clicko
         $('body').on('mouseout', '.gh-series-select .fa-link', dismissSeriesPopover);
 
         // Set up the modules in the sidebar
-        $(document).on('gh.part.selected', setUpModules);
+        $(document).on('gh.part.selected.admin', setUpModules);
     };
 
     addBinding();
