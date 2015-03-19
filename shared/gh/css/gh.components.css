@@ -631,6 +631,7 @@ tbody tr:last-child > td.fc-widget-content {
 .list-group .list-group-item .list-group .list-group-item .gh-list-action > span {
     border-radius: 3px;
     display: block;
+    height: 25px;
     padding: 5px 0 5px 5px;
     text-align: center;
     width: 25px;

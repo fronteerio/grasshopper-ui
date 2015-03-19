@@ -402,10 +402,10 @@
     display: block;
 }
 
-#gh-batch-edit-container > i.fa-link{
+#gh-batch-edit-container > i.fa-link {
     font-size: 18px;
     font-weight: 400;
-    margin-right: 5px;
+    margin: 11px 10px 0 0;
 }
 
 #gh-batch-edit-container h1 {
