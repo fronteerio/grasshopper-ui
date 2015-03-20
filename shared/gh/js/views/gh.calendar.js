@@ -576,7 +576,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         var termDates = _.map(terms, function(term) {
             return {
                 'name': term.name,
-                'date': gh.utils.convertISODatetoUnixDate(term[property])
+                'date': gh.utils.convertISODatetoUnixDate(moment(term[property]).utc().format('YYYY-MM-DD'))
             };
         });
 

@@ -172,10 +172,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
         var seriesToBorrow = $('.gh-borrow-series-borrowed', $('#gh-borrow-series-modal'));
 
         // Get all series' IDs
-        var seriesIDs = [];
-        _.each(seriesToBorrow, function(series) {
-            seriesIDs.push($(series).data('id'));
-        });
+        var seriesIDs = _.map(seriesToBorrow, function(series) { return $(series).data('id'); });
 
         // Borrow the event series in the module
         orgUnitAPI.addOrgUnitSeries(moduleId, seriesIDs, function(err, data) {

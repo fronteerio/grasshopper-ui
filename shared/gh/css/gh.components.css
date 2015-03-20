@@ -603,6 +603,10 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 0;
 }
 
+.list-group .list-group-item .gh-list-action .fa-link {
+    font-weight: 400;
+}
+
 .list-group .list-group-item .gh-list-icon {
     display: table-cell;
     max-width: 40px;
@@ -620,7 +624,17 @@ tbody tr:last-child > td.fc-widget-content {
     display: table-cell;
     overflow: auto;
     padding: 18px 5px 10px 0;
+    vertical-align: middle;
     width: 230px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-action > span {
+    border-radius: 3px;
+    display: block;
+    height: 25px;
+    padding: 5px 0 5px 5px;
+    text-align: center;
+    width: 25px;
 }
 
 /* Nested list */

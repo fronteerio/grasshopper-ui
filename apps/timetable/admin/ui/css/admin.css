@@ -68,10 +68,18 @@
 /* POPOVER */
 /***********/
 
+/* event */
 .popover {
     max-width: 425px;
     padding: 5px 0 15px;
     width: 425px;
+}
+
+/* series */
+.popover.gh-series-popover {
+    max-width: 200px;
+    margin-left: 15px;
+    padding: 3px;
 }
 
 
@@ -394,6 +402,12 @@
     display: block;
 }
 
+#gh-batch-edit-container > i.fa-link {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 11px 10px 0 0;
+}
+
 #gh-batch-edit-container h1 {
     cursor: pointer;
     display: inline-block;
@@ -405,7 +419,6 @@
 }
 
 #gh-batch-edit-container h1.editing {
-    display: block;
     width: 80%;
 }
 
@@ -870,7 +883,11 @@ tr.info .gh-event-delete button {
 }
 
 #gh-batch-calendar-view {
-    padding: 30px 30px 12px;
+    padding: 0;
+}
+
+#gh-batch-calendar-view #gh-calendar-container {
+    margin-top: 60px;
 }
 
 

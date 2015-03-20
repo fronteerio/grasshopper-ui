@@ -32,7 +32,7 @@
                     </li>
                 </ul>
 
-                <h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
+                <% if (data.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
 
                 <div id="gh-batch-edit-header">
                     <table class="table">

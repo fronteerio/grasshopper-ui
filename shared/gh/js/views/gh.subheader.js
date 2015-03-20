@@ -17,6 +17,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
     var triposData = null;
 
+    // Keep track of the previously selected part
+    var prevPartId = null;
+    // Keep track of the modules to avoid having to fetch them over and over again
+    var cachedModules = null;
+
     /**
      * Return to the home page
      *
@@ -48,19 +53,31 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             'time_from_start': new Date().getTime()
         });
 
-        // Retrieve the organisational unit information for the modules
-        orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
-            if (err) {
-                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
-            }
+        // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
+        // the current one OR if the modules list hasn't been rendered
+        if ((prevPartId !== partId) || !$('#gh-modules-container #gh-modules-list-container ul').length) {
+            orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
+                if (err) {
+                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                }
 
-            // Trigger an event when a part has been selected, persisting the part ID and the modules
-            $(document).trigger('gh.part.selected', {
-                'partId': partId,
-                'modules': modules,
-                'container': $('#gh-left-container')
+                // Cache the modules for later use
+                cachedModules = modules;
+
+                // Trigger an event when a part has been selected, persisting the part ID and the modules
+                $(document).trigger('gh.part.selected', {
+                    'partId': partId,
+                    'modules': cachedModules,
+                    'container': $('#gh-left-container')
+                });
             });
-        });
+        } else {
+            // Let the admin modules list know that the list was updated
+            $(document).trigger('gh.part.selected.admin');
+        }
+
+        // Update the previously used partId for next time
+        prevPartId = partId;
     };
 
     /**
