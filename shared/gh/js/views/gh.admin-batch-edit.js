@@ -1198,9 +1198,13 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     // Template data object
                     var data = _.extend({
                         'events': events,
-                        'series': series,
-                        'borrowedFrom': series.borrowedFrom
+                        'series': series
                     }, opts);
+
+                    // Check whether the series is borrowed from another module
+                    if (series.borrowedFrom && moduleId !== series.borrowedFrom.id) {
+                        data.borrowedFrom = series.borrowedFrom;
+                    }
 
                     // Load up the batch edit page and provide the events and series data
                     $(document).trigger('gh.admin.changeView', {
@@ -1248,37 +1252,6 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     };
 
 
-    ///////////////
-    // BORROWING //
-    ///////////////
-
-    /**
-     * Update the tripos in the url
-     *
-     * @private
-     */
-    var updateTripos = function() {
-        var $trigger = $(this);
-        var triposId = $trigger.data('id');
-        utils.removeFromState(['tripos', 'part', 'module', 'series']);
-        utils.addToState({'tripos': triposId});
-    };
-
-    /**
-     * Update the part in the url
-     *
-     * @private
-     */
-    var updatePart = function() {
-        var $trigger = $(this);
-        var triposId = $trigger.data('parentid');
-        var partId = $trigger.data('id');
-        utils.removeFromState(['tripos', 'part', 'module', 'series']);
-        utils.addToState({'tripos': triposId}, true);
-        utils.addToState({'part': partId});
-    };
-
-
     /////////////
     // BINDING //
     /////////////
@@ -1316,10 +1289,6 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
         $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
         $(document).on('gh.batchedit.togglesubmit', toggleSubmit);
-
-        // Borrowing
-        $('body').on('click', '.gh-series-borrowed-tripos', updateTripos);
-        $('body').on('click', '.gh-series-borrowed-part', updatePart);
 
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);
