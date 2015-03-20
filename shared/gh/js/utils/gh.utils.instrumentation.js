@@ -15,6 +15,13 @@
 
 define(['exports'], function(exports) {
 
+    /**
+     * Set up instrumentation on the page by including the segment.io script and identifying the current user
+     *
+     * @param {User}        me          Object representing the current user
+     * @param {Function}    callback    Standard callback function
+     */
+    /* istanbul ignore next */
     var setUpInstrumentation = exports.setUpInstrumentation = function(me, callback) {
         // Load the segment.io JavaScript snippet
         (function() {
@@ -53,6 +60,7 @@ define(['exports'], function(exports) {
                 }
         }());
 
+        // Only identify administrator and anonymous users
         if (!me.anon && me.isAdmin) {
             analytics.identify(me.id, {
                 'user_type': 'Administrator'
@@ -76,6 +84,7 @@ define(['exports'], function(exports) {
      * @param  {Object}      [options]       A dictionary of options, that let you do things like enable or disable specific integrations for the call
      * @param  {Function}    [callback]      A callback function that gets called after a short timeout, giving the browser time to make the track requests first
      */
+    /* istanbul ignore next */
     var trackEvent = exports.trackEvent = function(ev, properties, options, callback) {
         if (!_.isArray(ev)) {
             return callback({'code': 400, 'msg': 'A valid value for ev should be provided'});

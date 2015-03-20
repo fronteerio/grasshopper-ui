@@ -132,13 +132,6 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         var action = $button.attr('data-action');
         // Update the calendar
         calendar.fullCalendar(action);
-
-        if (action === 'next') {
-            sendNavigationEvent(true);
-        } else {
-            sendNavigationEvent();
-        }
-
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -147,9 +140,10 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-
         // Fetch the user's events
         getUserEvents();
+        // Track the user navigating periods
+        sendNavigationEvent(action === 'next');
     };
 
     /**

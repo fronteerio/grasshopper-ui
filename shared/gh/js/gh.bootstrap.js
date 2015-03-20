@@ -62,8 +62,8 @@ requirejs.config({
         'gh.constants': 'gh/js/constants/gh.constants',
 
         // GH utilities
-        'gh.utils.instrumentation': 'gh/js/utils/gh.utils.instrumentation',
         'gh.utils': 'gh/js/utils/gh.utils',
+        'gh.utils.instrumentation': 'gh/js/utils/gh.utils.instrumentation',
         'gh.utils.state': 'gh/js/utils/gh.utils.state',
         'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
         'gh.utils.time': 'gh/js/utils/gh.utils.time',
