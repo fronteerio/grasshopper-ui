@@ -32,7 +32,19 @@
                     </li>
                 </ul>
 
+                <!-- Series title -->
                 <% if (data.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
+
+                <!-- Borrowed data -->
+                <% if (data.borrowedFrom) { %>
+                    <p class="gh-series-title-borrowed-info">
+                        <% if(data.tripos) { %>
+                            <span>Belongs to: <a class="gh-series-borrowed-tripos" href="javascript:;" data-id="<%- data.tripos.id %>" title="<%- data.tripos.displayName %>"><%- data.tripos.displayName %></a></span>
+                        <% } %>
+                        <% if(data.part) { %>
+                            <span>Module: <a class="gh-series-borrowed-part" href="javascript:;" data-id="<%- data.part.id %>" data-parentid="<%- data.part.ParentId %>" title="<%- data.part.displayName %>"><%- data.part.displayName %></a></span>
+                        <% } %>
+                <% } %>
 
                 <div id="gh-batch-edit-header">
                     <table class="table">

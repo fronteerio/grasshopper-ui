@@ -1150,7 +1150,6 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
                 }
 
-
                 // Object used to aggregate the events between pages
                 var events = {
                     'results': []
@@ -1161,9 +1160,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                  *
                  * @param  {Number}      offset      The paging number of the results to retrieve
                  * @param  {Function}    callback    Standard callback function
+                 * @param  {Object}      opts        Object containing additional borrowing data
                  * @private
                  */
-                var getSeriesEvents = function(offset, callback) {
+                var getSeriesEvents = function(offset, callback, opts) {
                     // Get the information about the events in the series
                     gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
                         if (err) {
@@ -1177,26 +1177,35 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                         // we increase the offset and fetch again
                         if (_events.results.length === 25) {
                             offset = offset + 25;
-                            getSeriesEvents(offset, callback);
+                            getSeriesEvents(offset, callback, opts);
                         } else {
-                            callback();
+                            callback(opts);
                         }
                     });
                 };
 
-                // Get the first page of events
-                getSeriesEvents(0, function() {
+                /**
+                 * Invoke a view change when the data retrieval has been completed
+                 *
+                 * @param  {Object}    opts    Object containing additional borrowing data
+                 * @private
+                 */
+                var onGetSeriesEventsComplete = function(opts) {
+
                     // Unlock the currently locked group
                     unlockGroup();
+
+                    // Template data object
+                    var data = _.extend({
+                        'events': events,
+                        'series': series,
+                        'borrowedFrom': series.borrowedFrom
+                    }, opts);
 
                     // Load up the batch edit page and provide the events and series data
                     $(document).trigger('gh.admin.changeView', {
                         'name': constants.views.BATCH_EDIT,
-                        'data': {
-                            'events': events,
-                            'series': series,
-                            'borrowedFrom': series.borrowedFrom
-                        }
+                        'data': data
                     });
 
                     // Lock the currently edited group every 60 seconds
@@ -1205,9 +1214,68 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     // TODO: Remove this and only trigger when button is clicked/expanded
                     $(document).trigger('gh.batchdate.setup');
                     $(document).trigger('gh.batchorganiser.setup');
-                });
+                };
+
+                // Fetch the part the borrowed series belongs to
+                if (series.borrowedFrom) {
+                    gh.api.orgunitAPI.getOrgUnit(series.borrowedFrom.ParentId, false, function(err, part) {
+                        if (err) {
+                            return utils.notification('Part data not retrieved.', 'The part data could not be successfully retrieved.', 'error');
+                        }
+
+                        // Fetch the tripos the borrowed series belogs to
+                        if (part.ParentId) {
+                            gh.api.orgunitAPI.getOrgUnit(part.ParentId, false, function(err, tripos) {
+                                if (err) {
+                                    return utils.notification('Tripos data not retrieved.', 'The tripos data could not be successfully retrieved.', 'error');
+                                }
+
+                                // Get the first page of events
+                                getSeriesEvents(0, onGetSeriesEventsComplete, {
+                                    'part': part,
+                                    'tripos': tripos
+                                });
+                            });
+                        }
+                    });
+
+                // Immediately get the first page of events when the series is not borrowed
+                } else {
+                    getSeriesEvents(0, onGetSeriesEventsComplete);
+                }
             });
         }
+    };
+
+
+    ///////////////
+    // BORROWING //
+    ///////////////
+
+    /**
+     * Update the tripos in the url
+     *
+     * @private
+     */
+    var updateTripos = function() {
+        var $trigger = $(this);
+        var triposId = $trigger.data('id');
+        utils.removeFromState(['tripos', 'part', 'module', 'series']);
+        utils.addToState({'tripos': triposId});
+    };
+
+    /**
+     * Update the part in the url
+     *
+     * @private
+     */
+    var updatePart = function() {
+        var $trigger = $(this);
+        var triposId = $trigger.data('parentid');
+        var partId = $trigger.data('id');
+        utils.removeFromState(['tripos', 'part', 'module', 'series']);
+        utils.addToState({'tripos': triposId}, true);
+        utils.addToState({'part': partId});
     };
 
 
@@ -1248,6 +1316,10 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         $('body').on('click', '#gh-batch-edit-submit', submitBatchEdit);
         $('body').on('click', '#gh-batch-edit-cancel', loadSeriesEvents);
         $(document).on('gh.batchedit.togglesubmit', toggleSubmit);
+
+        // Borrowing
+        $('body').on('click', '.gh-series-borrowed-tripos', updateTripos);
+        $('body').on('click', '.gh-series-borrowed-part', updatePart);
 
         // Batch edit header functionality
         $('body').on('keyup', '#gh-batch-edit-title', batchEditTitle);

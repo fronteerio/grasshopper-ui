@@ -277,6 +277,14 @@
     background-color: #FFF;
 }
 
+#gh-batch-edit-container .gh-series-title-borrowed-info span {
+    color: #555;
+}
+
+#gh-batch-edit-container .gh-series-title-borrowed-info a {
+    color: #171717;
+}
+
 .gh-batch-edit-events-container .table > tbody > tr.info td {
     background-color: #ECF5F9;
 }
