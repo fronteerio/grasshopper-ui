@@ -21,6 +21,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
     var prevPartId = null;
     // Keep track of the modules to avoid having to fetch them over and over again
     var cachedModules = null;
+    // Keep track of when the user started
+    var timeFromStart = null;
 
     /**
      * Return to the home page
@@ -46,12 +48,19 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected part in the URL
         gh.utils.addToState({'part': partId});
 
-        // Track that the user selected a part
-        gh.utils.trackEvent(['Navigation', 'Part selector', 'Selected'], {
-            'part': partId,
-            'tripos': History.getState().data.tripos,
-            'time_from_start': new Date().getTime()
-        });
+        if (timeFromStart) {
+            // Calculate how long it takes the user to make a part selection
+            timeFromStart = (new Date() - timeFromStart) / 1000;
+
+            // Track that the user selected a part
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Selected'], {
+                'part': parseInt(data.selected, 10),
+                'tripos': History.getState().data.tripos,
+                'time_from_start': timeFromStart
+            });
+
+            timeFromStart = null;
+        }
 
         // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
         // the current one OR if the modules list hasn't been rendered
@@ -294,6 +303,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Part tracking events
         $('body').on('chosen:showing_dropdown', '#gh-subheader-part', function() {
             gh.utils.trackEvent(['Navigation', 'Part selector', 'Opened']);
+            timeFromStart = new Date();
         });
         $('body').on('chosen:hiding_dropdown', '#gh-subheader-part', function() {
             gh.utils.trackEvent(['Navigation', 'Part selector', 'Closed']);

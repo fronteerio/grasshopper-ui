@@ -85,6 +85,8 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
                 $('#gh-left-container').addClass('gh-minimised');
                 $('#gh-main').hide();
                 $('#gh-empty').show();
+                // Track the user selecting an empty part
+                gh.utils.trackEvent(['Navigation', 'Draft timetable page shown']);
             });
         } else {
             $('#gh-left-container').removeClass('gh-minimised');

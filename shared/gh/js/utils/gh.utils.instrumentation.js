@@ -63,6 +63,8 @@ define(['exports'], function(exports) {
         // Only identify administrator and anonymous users
         if (!me.anon && me.isAdmin) {
             analytics.identify(me.id, {
+                'name': me.displayName,
+                'email': me.email,
                 'user_type': 'Administrator'
             });
         } else {
