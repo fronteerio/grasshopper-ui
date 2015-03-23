@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constants, moment) {
 
 
     ////////////////
@@ -186,7 +186,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 if (orgUnitID) {
                     gh.api.orgunitAPI.getOrgUnitCalendar(parseInt(orgUnitID, 10), range.start, range.end, function(err, data) {
                         if (err) {
-                            return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                            return gh.utils.notification('Could not fetch the calendar', constants.messaging.default.error, 'error');
                         }
 
                         // Update the calendar
@@ -195,7 +195,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 } else {
                     gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, data) {
                         if (err) {
-                            return gh.utils.notification('Fetching user calendar failed.', 'An error occurred while fetching the user calendar.', 'error');
+                            return gh.utils.notification('Could not fetch the calendar for ' + gh.data.me.displayName, constants.messaging.default.error, 'error');
                         }
 
                         // Update the calendar

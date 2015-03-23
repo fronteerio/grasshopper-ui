@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, orgUnitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(gh, constants, seriesAPI, orgUnitAPI) {
 
     // Cache whether the series is borrowed from another module
     var isBorrowedFrom = false;
@@ -42,7 +42,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
         gh.api.orgunitAPI.deleteOrgUnitSeries(moduleId, seriesId, function(err) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Removing series failed.', 'An error occurred while removing the series.', 'error');
+                return gh.utils.notification('Could not remove series ' + $('.gh-jeditable-series-title').text(), constants.messaging.default.error, 'error');
             }
 
             // Hide the modal
@@ -55,7 +55,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
             removeSeriesFromState();
 
             // Show a success notification
-            gh.utils.notification('Series removed.', 'The series was successfully removed.');
+            gh.utils.notification($('.gh-jeditable-series-title').text() + ' has been removed', null, 'success');
         });
     };
 
@@ -72,7 +72,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
         gh.api.seriesAPI.deleteSeries(seriesId, function(err) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Deleting series failed.', 'An error occurred while deleting the series.', 'error');
+                return gh.utils.notification('Could not delete series ' + $('.gh-jeditable-series-title').text(), constants.messaging.default.error, 'error');
             }
 
             // Hide the modal
@@ -85,7 +85,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
             removeSeriesFromState();
 
             // Show a success notification
-            gh.utils.notification('Series deleted.', 'The series was successfully deleted.');
+            gh.utils.notification($('.gh-jeditable-series-title').text() + ' deleted successfully', null, 'success');
         });
     };
 
@@ -113,7 +113,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
             orgUnitAPI.getOrgUnit(orgUnit.ParentId, false, function(err, _orgUnit) {
                 if (err) {
                     // Show a failure notification
-                    return gh.utils.notification('Retrieving module failed.', 'An error occurred while retrieving the module information.', 'error');
+                    return gh.utils.notification('Could not fetch module', constants.messaging.default.error, 'error');
                 }
 
                 // Cache the part object on the series
@@ -123,7 +123,7 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
                 orgUnitAPI.getOrgUnit(_orgUnit.ParentId, false, function(err, _orgUnit) {
                     if (err) {
                         // Show a failure notification
-                        return gh.utils.notification('Retrieving module failed.', 'An error occurred while retrieving the module information.', 'error');
+                        return gh.utils.notification('Could not fetch module', constants.messaging.default.error, 'error');
                     }
 
                     // Cache the tripos object on the series
@@ -211,12 +211,12 @@ define(['gh.core', 'gh.api.series', 'gh.api.orgunit'], function(gh, seriesAPI, o
 
         gh.api.seriesAPI.getSeries(seriesId, true, function(seriesErr, series) {
             if (seriesErr) {
-                gh.utils.notification('Fetching series failed.', 'An error occurred while fetching the series information.', 'error');
+                gh.utils.notification('Could not fetch series', constants.messaging.default.error, 'error');
             }
 
             gh.api.orgunitAPI.getOrgUnit(moduleId, false, function(moduleErr, module) {
                 if (moduleErr) {
-                    gh.utils.notification('Fetching module failed.', 'An error occurred while fetching the module information.', 'error');
+                    gh.utils.notification('Could not fetch module', constants.messaging.default.error, 'error');
                 }
 
                 isBorrowedFrom = getIsBorrowedFrom(series, module);

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, utils, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, moment) {
 
     // Object used to cache the triposData
     var triposData = null;
@@ -113,7 +113,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     var addNewEventRow = function(ev, data) {
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
-        var termStart = utils.getFirstDayOfTerm(termName);
+        var termStart = gh.utils.getFirstDayOfTerm(termName);
         var eventObj = {'ev': null};
 
         // Hide the empty term description
@@ -145,11 +145,11 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Add common properties to the event object
         eventObj.ev['isNew'] = true; // Used in the template to know this one needs special handling
         eventObj.ev['selected'] = true; // Select and highlight added events straight away
-        eventObj.ev['tempId'] = utils.generateRandomString(); // The actual ID hasn't been generated yet
-        eventObj['utils'] = utils;
+        eventObj.ev['tempId'] = gh.utils.generateRandomString(); // The actual ID hasn't been generated yet
+        eventObj['utils'] = gh.utils;
 
         // Append a new event row
-        $eventContainer.append(utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
+        $eventContainer.append(gh.utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
         // Enable JEditable on the row
         setUpJEditable();
         // Show the save button
@@ -286,7 +286,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         // Only toggle and update the footer if events where updated, created or deleted
         if (eventsUpdated || eventsCreated || eventsDeleted) {
             // Update the count
-            utils.renderTemplate($('#gh-batch-edit-actions-template'), {
+            gh.utils.renderTemplate($('#gh-batch-edit-actions-template'), {
                 'data': {
                     'updated': eventsUpdated,
                     'created': eventsCreated,
@@ -412,9 +412,9 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
     var setUpPreviewCalendar = function(callback) {
         // Fetch the triposes
         if (!triposData) {
-            utils.getTriposStructure(function(err, data) {
+            gh.utils.getTriposStructure(function(err, data) {
                 if (err) {
-                    return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                    return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
                 }
 
                 // Cache the triposData for future use
@@ -436,7 +436,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
      */
     var renderPreviewCalendar = function() {
         // Render the calendar template
-        utils.renderTemplate($('#gh-calendar-template'), {
+        gh.utils.renderTemplate($('#gh-calendar-template'), {
             'data': {
                 'gh': gh,
                 'view': 'admin'
@@ -530,14 +530,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             gh.api.seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
-                    return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
+                    return gh.utils.notification('Could not update the title for this series', constants.messaging.default.error, 'error');
                 }
 
                 // Update the series in the sidebar
                 $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
 
                 // Show a success notification
-                return utils.notification('Series title updated.', 'The series title was successfully updated.');
+                return gh.utils.notification('Series title successfully updated', null, 'success');
             });
         }
         return value;
@@ -1048,12 +1048,12 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
 
                     if (updateErr || newErr || deleteErr) {
                         // Show an error notification
-                        return utils.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
+                        return gh.utils.notification('Could not update all events for ' + $('.gh-jeditable-series-title').text(), constants.messaging.default.error, 'error');
                     }
                     // Hide the save button
                     toggleSubmit();
                     // Show a success notification to the user
-                    return utils.notification('Events updated.', 'The events where successfully updated.');
+                    return gh.utils.notification('All events in ' + $('.gh-jeditable-series-title').text() + ' successfully updated', 'Students will see the updated information in about 8 hours');
                 });
             });
         });
@@ -1147,7 +1147,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         if (seriesId) {
             gh.api.seriesAPI.getSeries(seriesId, true, function(err, series) {
                 if (err) {
-                    return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                    return gh.utils.notification('Could not fetch the series data', constants.messaging.default.error, 'error');
                 }
 
                 // Object used to aggregate the events between pages
@@ -1167,7 +1167,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     // Get the information about the events in the series
                     gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
                         if (err) {
-                            return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                            return gh.utils.notification('Could not fetch the event data', constants.messaging.default.error, 'error');
                         }
 
                         // Aggregate the results
@@ -1224,14 +1224,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                 if (series.borrowedFrom) {
                     gh.api.orgunitAPI.getOrgUnit(series.borrowedFrom.ParentId, false, function(err, part) {
                         if (err) {
-                            return utils.notification('Part data not retrieved.', 'The part data could not be successfully retrieved.', 'error');
+                            return gh.utils.notification('Part data not retrieved.', 'The part data could not be successfully retrieved.', 'error');
                         }
 
                         // Fetch the tripos the borrowed series belogs to
                         if (part.ParentId) {
                             gh.api.orgunitAPI.getOrgUnit(part.ParentId, false, function(err, tripos) {
                                 if (err) {
-                                    return utils.notification('Tripos data not retrieved.', 'The tripos data could not be successfully retrieved.', 'error');
+                                    return gh.utils.notification('Tripos data not retrieved.', 'The tripos data could not be successfully retrieved.', 'error');
                                 }
 
                                 // Get the first page of events
