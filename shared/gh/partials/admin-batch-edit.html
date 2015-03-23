@@ -1,7 +1,3 @@
-<%
-    console.log(data);
-%>
-
 <div id="gh-batch-edit-view" class="gh-main-view">
     <div id="gh-toolbar-container">
         <div class="gh-toolbar gh-toolbar-primary">
@@ -36,7 +32,19 @@
                     </li>
                 </ul>
 
+                <!-- Series title -->
                 <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
+
+                <!-- Borrowed data -->
+                <% if (data.borrowedFrom && (data.tripos || data.part)) { %>
+                    <p class="gh-series-title-borrowed-info">
+                        <% if(data.tripos) { %>
+                            <span>Belongs to: <a href="?tripos=<%- data.tripos.id %>" title="<%- data.tripos.displayName %>"><%- data.tripos.displayName %></a></span>
+                        <% } %>
+                        <% if(data.part) { %>
+                            <span>Module: <a href="?tripos=<%- data.part.ParentId %>&part=<%- data.part.id %>" title="<%- data.part.displayName %>"><%- data.part.displayName %></a></span>
+                        <% } %>
+                <% } %>
 
                 <div id="gh-batch-edit-header">
                     <table class="table">
