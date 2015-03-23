@@ -114,7 +114,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Events successfully removed from your calendar', null, 'success', 'notification-events-added');
+                            gh.utils.notification('Events successfully removed from your calendar', null, 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);
@@ -251,7 +251,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Event successfully removed from your calendar', null, 'success', 'notification-events-added');
+                            gh.utils.notification('Event successfully removed from your calendar', null, 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);

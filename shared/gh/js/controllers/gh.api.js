@@ -56,14 +56,14 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
                 } else {
                     // Intercept 503 status indicating that the server is down
                     if (err.code === 503) {
-                        utils.redirect().unavailable();
+                        gh.utils.redirect().unavailable();
                     }
                 }
 
                 // Get the app configuration
                 getConfig(function() {
                     // Cache the partials
-                    utils.cachePartials(function() {
+                    gh.utils.cachePartials(function() {
                         // The APIs have now fully initialised. All javascript that
                         // depends on the initialised core APIs can now execute
                         return callback(gh);
@@ -95,7 +95,7 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
                     // Show a message to the user informing them that the app hasn't been properly configured
                     // if the academicYear hasn't been set
                     if (!config.terms[config.academicYear]) {
-                        utils.notification('App is not configured', 'The application has not yet been properly configured for an academic year', 'error', null, true);
+                        gh.utils.notification('App is not configured', 'The application has not yet been properly configured for an academic year', 'error', null, true);
                     }
 
                     // Cache the config on the global gh.data object

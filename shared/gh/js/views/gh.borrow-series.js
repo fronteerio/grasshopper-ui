@@ -31,7 +31,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         // Retrieve the organisational unit information for the modules
         orgUnitAPI.getOrgUnits(gh.data.me.appId, true, null, partId, ['module'], function(err, modules) {
             if (err) {
-                utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
+                gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
             }
 
             $(document).trigger('gh.part.selected', {
@@ -173,7 +173,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             // Retrieve the organisational unit information for the modules
             orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
                 if (err) {
-                    utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
+                    gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                 }
 
                 // Refresh the modules list
