@@ -36,13 +36,13 @@
                 <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
 
                 <!-- Borrowed data -->
-                <% if (data.borrowedFrom && (data.tripos || data.part)) { %>
+                <% if (data.records.borrowedFrom && (data.records.tripos || data.records.part)) { %>
                     <p class="gh-series-title-borrowed-info">
-                        <% if(data.tripos) { %>
-                            <span>Belongs to: <a href="?tripos=<%- data.tripos.id %>" title="<%- data.tripos.displayName %>"><%- data.tripos.displayName %></a></span>
+                        <% if(data.records.tripos) { %>
+                            <span>Belongs to: <a href="?tripos=<%- data.records.tripos.id %>" title="<%- data.records.tripos.displayName %>"><%- data.records.tripos.displayName %></a></span>
                         <% } %>
-                        <% if(data.part) { %>
-                            <span>Module: <a href="?tripos=<%- data.part.ParentId %>&part=<%- data.part.id %>" title="<%- data.part.displayName %>"><%- data.part.displayName %></a></span>
+                        <% if(data.records.part) { %>
+                            <span>Module: <a href="?tripos=<%- data.records.part.ParentId %>&part=<%- data.records.part.id %>" title="<%- data.records.part.displayName %>"><%- data.records.part.displayName %></a></span>
                         <% } %>
                 <% } %>
 
