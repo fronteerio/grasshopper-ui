@@ -67,7 +67,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         if ((prevPartId !== partId) || !$('#gh-modules-container #gh-modules-list-container ul').length) {
             orgunitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
                 if (err) {
-                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                    gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                 }
 
                 // Cache the modules for later use

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core'], function(gh) {
+define(['gh.core', 'gh.constants'], function(gh, constants) {
 
     var modules = null;
 
@@ -37,7 +37,7 @@ define(['gh.core'], function(gh) {
         gh.api.orgunitAPI.subscribeOrgUnit(moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+                return gh.utils.notification('The events could not be added to your calendar', constants.messaging.default.error, 'error');
             }
 
             // Send a tracking event when a user adds all events in the module to the calendar
@@ -60,7 +60,7 @@ define(['gh.core'], function(gh) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                            gh.utils.notification('Events successfully added to your calendar', null, 'success', 'notification-events-added');
                         },
                         'events': events.results
                     }]);
@@ -89,7 +89,7 @@ define(['gh.core'], function(gh) {
         gh.api.orgunitAPI.unsubscribeOrgUnit(moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Events not removed.', 'The events could not be successfully removed from your calendar.', 'error');
+                return gh.utils.notification('The events could not be removed from your calendar', constants.messaging.default.error, 'error');
             }
 
             // Send a tracking event when a user removes all events in the module from the calendar
@@ -112,7 +112,7 @@ define(['gh.core'], function(gh) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Events removed.', 'The events were successfully removed from your calendar.', 'success', 'notification-events-removed');
+                            gh.utils.notification('Events successfully removed from your calendar', null, 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);
@@ -141,7 +141,7 @@ define(['gh.core'], function(gh) {
         gh.api.seriesAPI.subscribeSeries(seriesId, null, moduleId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Events not added.', 'The events could not be successfully added to your calendar.', 'error');
+                return gh.utils.notification('The event could not be added to your calendar', constants.messaging.default.error, 'error');
             }
 
             // Send a tracking event when a user adds an event series to the calendar
@@ -179,7 +179,7 @@ define(['gh.core'], function(gh) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Events added.', 'All events where successfully added to your calendar.', 'success', 'notification-events-added');
+                            gh.utils.notification('Event successfully added to your calendar', null, 'success', 'notification-events-added');
                         },
                         'events': events.results
                     }]);
@@ -207,7 +207,7 @@ define(['gh.core'], function(gh) {
         gh.api.seriesAPI.unsubscribeSeries(seriesId, function(err, data) {
             if (err) {
                 // Show a failure notification
-                return gh.utils.notification('Event not removed.', 'The event could not be successfully removed from your calendar.', 'error');
+                return gh.utils.notification('Could not remove the event from your calendar', constants.messaging.default.error, 'error');
             }
 
             // Send a tracking event when a user removes all events in the module from the calendar
@@ -247,7 +247,7 @@ define(['gh.core'], function(gh) {
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
-                            gh.utils.notification('Event removed.', 'The event was successfully removed from your calendar.', 'success', 'notification-events-removed');
+                            gh.utils.notification('Event successfully removed from your calendar', null, 'success', 'notification-events-removed');
                         },
                         'events': events.results
                     }]);

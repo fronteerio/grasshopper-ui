@@ -36,4 +36,10 @@ define(['exports'], function(exports) {
             'month': 1000 * 60 * 60 * 24 * 7 * 30
         }
     };
+
+    var messaging = exports.messaging = {
+        'default': {
+            'error': 'This is a Timetable error, if you still see this after reloading a Timetable in your browser please contact <a href="mailto:help@timetable.cam.ac.uk" title="Contact support">support</a>'
+        }
+    };
 });

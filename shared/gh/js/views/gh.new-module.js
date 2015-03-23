@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, orgUnitAPI) {
 
     // Keep track of when the user started
     var timeFromStart = null;
@@ -38,9 +38,9 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
         orgUnitAPI.createOrgUnit(appId, displayName, 'module', partId, groupId, null, null, null,function(err, module) {
             // Show a success or failure notification
             if (err) {
-                return gh.utils.notification('Module not created.', 'The module could not be successfully created.', 'error');
+                return gh.utils.notification('Could not create ' + displayName, constants.messaging.default.error, 'error');
             }
-            gh.utils.notification('Module created.', 'The module was successfully created.', 'success');
+            gh.utils.notification(displayName + ' created successfully', null, 'success');
 
             // Track the user creating the module
             gh.utils.trackEvent(['Manage', 'Add module', 'Completed'], {
@@ -53,7 +53,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
             // Retrieve the organisational unit information for the modules
             orgUnitAPI.getOrgUnits(appId, true, null, partId, ['module'], function(err, modules) {
                 if (err) {
-                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                    gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                 }
 
                 // Refresh the modules list
