@@ -18,11 +18,12 @@ define(['exports'], function(exports) {
     /**
      * Set up instrumentation on the page by including the segment.io script and identifying the current user
      *
-     * @param {User}        me          Object representing the current user
-     * @param {Function}    callback    Standard callback function
+     * @param {User}        me            Object representing the current user
+     * @param {User}        trackingId    The Segment.io tracking ID
+     * @param {Function}    callback      Standard callback function
      */
     /* istanbul ignore next */
-    var setUpInstrumentation = exports.setUpInstrumentation = function(me, callback) {
+    var setUpInstrumentation = exports.setUpInstrumentation = function(me, trackingId, callback) {
         // Load the segment.io JavaScript snippet
         (function() {
             var analytics = window.analytics = window.analytics || [];
@@ -55,7 +56,7 @@ define(['exports'], function(exports) {
                         n.parentNode.insertBefore(e, n);
                     };
                     analytics.SNIPPET_VERSION = "3.0.1";
-                    analytics.load("GNOd0G9NERQiZDXTpTaNiu1f80nc1iP3");
+                    analytics.load(trackingId);
                     analytics.page();
                 }
         }());
@@ -88,6 +89,14 @@ define(['exports'], function(exports) {
      */
     /* istanbul ignore next */
     var trackEvent = exports.trackEvent = function(ev, properties, options, callback) {
+        // Only attempt to track activity when analytics is enabled
+        if (require('gh.core').config.enableAnalytics === false) {
+            if (_.isFunction(callback)) {
+                return callback();
+            }
+            return;
+        }
+
         if (!_.isArray(ev)) {
             return callback({'code': 400, 'msg': 'A valid value for ev should be provided'});
         }

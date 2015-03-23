@@ -65,11 +65,15 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
                     // Cache the partials
                     utils.cachePartials(function() {
                         // Set up instrumentation
-                        utils.setUpInstrumentation(gh.data.me, function() {
-                            // The APIs have now fully initialised. All javascript that
-                            // depends on the initialised core APIs can now execute
+                        if (gh.config.enableAnalytics) {
+                            utils.setUpInstrumentation(gh.data.me, gh.config.analyticsTrackingId, function() {
+                                // The APIs have now fully initialised. All javascript that
+                                // depends on the initialised core APIs can now execute
+                                return callback(gh);
+                            });
+                        } else {
                             return callback(gh);
-                        });
+                        }
                     });
                 });
             });
