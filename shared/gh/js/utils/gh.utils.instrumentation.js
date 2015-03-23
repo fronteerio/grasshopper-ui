@@ -20,60 +20,64 @@ define(['exports'], function(exports) {
      *
      * @param {User}        me            Object representing the current user
      * @param {User}        trackingId    The Segment.io tracking ID
+     * @param {Boolean}     enabled       Whether or not analytics are enabled
      * @param {Function}    callback      Standard callback function
      */
     /* istanbul ignore next */
-    var setUpInstrumentation = exports.setUpInstrumentation = function(me, trackingId, callback) {
-        // Load the segment.io JavaScript snippet
-        (function() {
-            var analytics = window.analytics = window.analytics || [];
-            if (!analytics.initialize)
-                if (analytics.invoked) {
-                    if (window.console && console.error) {
-                        console.error("Segment snippet included twice.");
-                    }
-                } else {
-                    analytics.invoked = !0;
-                    analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "group", "track", "ready", "alias", "page", "once", "off", "on"];
-                    analytics.factory = function(t) {
-                        return function() {
-                            var e = Array.prototype.slice.call(arguments);
-                            e.unshift(t);
-                            analytics.push(e);
-                            return analytics;
+    var setUpInstrumentation = exports.setUpInstrumentation = function(me, trackingId, analyticsEnabled, callback) {
+        // Only include the script when analytics is enabled
+        if (analyticsEnabled) {
+            // Load the segment.io JavaScript snippet
+            (function() {
+                var analytics = window.analytics = window.analytics || [];
+                if (!analytics.initialize)
+                    if (analytics.invoked) {
+                        if (window.console && console.error) {
+                            console.error("Segment snippet included twice.");
+                        }
+                    } else {
+                        analytics.invoked = !0;
+                        analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "group", "track", "ready", "alias", "page", "once", "off", "on"];
+                        analytics.factory = function(t) {
+                            return function() {
+                                var e = Array.prototype.slice.call(arguments);
+                                e.unshift(t);
+                                analytics.push(e);
+                                return analytics;
+                            };
                         };
-                    };
-                    for (var t = 0; t < analytics.methods.length; t++) {
-                        var e = analytics.methods[t];
-                        analytics[e] = analytics.factory(e);
+                        for (var t = 0; t < analytics.methods.length; t++) {
+                            var e = analytics.methods[t];
+                            analytics[e] = analytics.factory(e);
+                        }
+                        analytics.load = function(t) {
+                            var e = document.createElement("script");
+                            e.type = "text/javascript";
+                            e.async = !0;
+                            e.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
+                            var n = document.getElementsByTagName("script")[0];
+                            n.parentNode.insertBefore(e, n);
+                        };
+                        analytics.SNIPPET_VERSION = "3.0.1";
+                        analytics.load(trackingId);
+                        analytics.page();
                     }
-                    analytics.load = function(t) {
-                        var e = document.createElement("script");
-                        e.type = "text/javascript";
-                        e.async = !0;
-                        e.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
-                        var n = document.getElementsByTagName("script")[0];
-                        n.parentNode.insertBefore(e, n);
-                    };
-                    analytics.SNIPPET_VERSION = "3.0.1";
-                    analytics.load(trackingId);
-                    analytics.page();
-                }
-        }());
+            }());
 
-        // Only identify administrator and anonymous users
-        if (!me.anon && me.isAdmin) {
-            analytics.identify(me.id, {
-                'name': me.displayName,
-                'email': me.email,
-                'user_type': 'Administrator'
-            });
-        } else {
-            analytics.identify('Anonymous', {
-                'id': 'anonymous',
-                'name': 'Anonymous User',
-                'email': 'anonymous@localhost.null'
-            });
+            // Only identify administrator and anonymous users
+            if (!me.anon && me.isAdmin) {
+                analytics.identify(me.id, {
+                    'name': me.displayName,
+                    'email': me.email,
+                    'user_type': 'Administrator'
+                });
+            } else {
+                analytics.identify('Anonymous', {
+                    'id': 'anonymous',
+                    'name': 'Anonymous User',
+                    'email': 'anonymous@localhost.null'
+                });
+            }
         }
 
         callback();
@@ -90,7 +94,7 @@ define(['exports'], function(exports) {
     /* istanbul ignore next */
     var trackEvent = exports.trackEvent = function(ev, properties, options, callback) {
         // Only attempt to track activity when analytics is enabled
-        if (require('gh.core').config.enableAnalytics === false) {
+        if (require('gh.core').config.enableAnalytics !== true) {
             if (_.isFunction(callback)) {
                 return callback();
             }
