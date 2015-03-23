@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], function(gh) {
+define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], function(gh, constants) {
 
     // Cache the tripos data
     var triposData = {};
@@ -137,7 +137,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
                     }
                     window.location = '/';
                 } else {
-                    gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
+                    gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
             });
 
@@ -157,7 +157,7 @@ define(['gh.core', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], functi
         // Fetch the triposes
         gh.utils.getTriposStructure(function(err, data) {
             if (err) {
-                return gh.utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
 
             // Cache the tripos data

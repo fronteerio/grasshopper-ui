@@ -856,11 +856,11 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     QUnit.test('notification', function(assert) {
         // Verify that a message for the notification needs to be provided
         assert.throws(function() {
-            gh.utils.notification();
-        }, 'Verify that a message for the notification needs to be provided');
+            gh.utils.notification(null, 'msg', function() {});
+        }, 'Verify that a title for the notification needs to be provided');
 
         // Verify that a notification can be triggered with only a message
-        assert.ok(gh.utils.notification(null, 'Notification message'), 'Verify that a notification can be triggered with only a message');
+        assert.ok(gh.utils.notification('Notification title', null), 'Verify that a notification can be triggered with only a title');
 
         // Verify that a notification can be triggered with a title and a message
         assert.ok(gh.utils.notification('Notification title', 'Notification message'), 'Verify that a notification can be triggered with a title and a message');

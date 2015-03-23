@@ -278,8 +278,8 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
      * This function is mostly just a wrapper around jQuery.bootstrap.notify.js and supports all of the options documented
      * at https://github.com/goodybag/bootstrap-notify.
      *
-     * @param  {String}     [title]     The notification title
-     * @param  {String}     message     The notification message that will be shown underneath the title
+     * @param  {String}     title       The notification title
+     * @param  {String}     [message]   The notification message that will be shown underneath the title
      * @param  {String}     [type]      The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
      * @param  {String}     [id]        Unique identifier for the notification, in case a notification can be triggered twice due to some reason. If a second notification with the same id is triggered it will be ignored
      * @param  {Boolean}    [sticky]    Whether or not the notification should be sticky. Defaults to `false`
@@ -287,8 +287,8 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
      * @return {Boolean}                Returns true when the notification has been shown
      */
     var notification = exports.notification = function(title, message, type, id, sticky) {
-        if (!message) {
-            throw new Error('A valid notification message should be provided');
+        if (!title) {
+            throw new Error('A valid notification title should be provided');
         }
 
         if (id && $('#' + id).length) {
@@ -307,7 +307,7 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
 
         // If a title has been provided, we wrap it in an h4 and prepend it to the message
         if (title) {
-            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4><p>' + message + '</p></div>';
+            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
         }
 
         // If an ID has been provided, add the `id` attribute to the message

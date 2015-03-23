@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, orgUnitAPI) {
 
     // Cache the tripos data
     var triposData = null;
@@ -31,7 +31,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
         // Retrieve the organisational unit information for the modules
         orgUnitAPI.getOrgUnits(gh.data.me.appId, true, null, partId, ['module'], function(err, modules) {
             if (err) {
-                utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
             }
 
             $(document).trigger('gh.part.selected', {
@@ -165,9 +165,9 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
         orgUnitAPI.addOrgUnitSeries(moduleId, seriesIDs, function(err, data) {
             // Show a success or failure notification
             if (err) {
-                return gh.utils.notification('Series not borrowed.', 'The series could not be successfully borrowed.', 'error');
+                return gh.utils.notification('Could not borrow series', constants.messaging.default.error, 'error');
             }
-            gh.utils.notification('Series borrowed.', 'The series were successfully borrowed.', 'success');
+            gh.utils.notification('Successfully borrowed series', null, 'success');
 
             // Hide the module modal
             $('#gh-borrow-series-modal').modal('hide');
@@ -175,7 +175,7 @@ define(['gh.core', 'gh.api.orgunit'], function(gh, orgUnitAPI) {
             // Retrieve the organisational unit information for the modules
             orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
                 if (err) {
-                    utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                    gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                 }
 
                 // Refresh the modules list
