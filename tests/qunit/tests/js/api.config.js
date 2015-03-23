@@ -86,14 +86,14 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.api.configAPI.updateConfig(testApp.id, {'enableGoogleAnalytics': true}, 'invalid_callback');
+            gh.api.configAPI.updateConfig(testApp.id, {'enableAnalytics': true}, 'invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         // Invoke the funtionality without callback
-        assert.equal(null, gh.api.configAPI.updateConfig(testApp.id, {'enableGoogleAnalytics': true}), 'Verify that a default callback is set when none is provided and no error is thrown');
+        assert.equal(null, gh.api.configAPI.updateConfig(testApp.id, {'enableAnalytics': true}), 'Verify that a default callback is set when none is provided and no error is thrown');
 
         // Verify that an error is thrown when an invalid appId was provided
-        gh.api.configAPI.updateConfig('invalid_appid', {'enableGoogleAnalytics': true}, function(err, data) {
+        gh.api.configAPI.updateConfig('invalid_appid', {'enableAnalytics': true}, function(err, data) {
             assert.ok(err, 'Verify that an error is thrown when an invalid appId was provided');
 
             // Verify that an error is thrown when no configValues were provided
@@ -105,13 +105,13 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     assert.ok(err, 'Verify that an error is thrown when invalid configValues are provided');
 
                     // Verify that a config value can be updated without errors
-                    gh.api.configAPI.updateConfig(testApp.id, {'enableGoogleAnalytics': false}, function(err, data) {
+                    gh.api.configAPI.updateConfig(testApp.id, {'enableAnalytics': false}, function(err, data) {
                         assert.ok(!err, 'Verify that the config can be successfully updated');
 
                         // Verify that the error is handled when a config value can't be updated successfully
                         body = {'code': 400, 'msg': 'Bad Request'};
                         gh.utils.mockRequest('POST', '/api/config', 400, {'Content-Type': 'application/json'}, body, function() {
-                            gh.api.configAPI.updateConfig(testApp.id, {'enableGoogleAnalytics': false}, function(err, data) {
+                            gh.api.configAPI.updateConfig(testApp.id, {'enableAnalytics': false}, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the config can\'t be successfully updated');
                                 assert.ok(!data, 'Verify that no data returns when the config can\'t be successfully updated');
                                 QUnit.start();

@@ -242,10 +242,9 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             $('body').append($notificationContainer);
         }
 
-        // If a title has been provided, we wrap it in an h4 and prepend it to the message
-        if (title) {
-            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
-        }
+        // Wrap tit title in an h4 and prepend it to the message
+        /* istanbul ignore else */
+        message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
 
         // If an ID has been provided, add the `id` attribute to the message
         if (id) {
