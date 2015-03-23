@@ -45,21 +45,21 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'gh.api.orgunit', 'gh.api.series'
         // Create a new series
         seriesAPI.createSeries(appId, displayName, null, groupId, function(err, series) {
             if (err) {
-                return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                return utils.notification('Could not create ' + displayName, constants.messaging.default.error, 'error');
             }
 
             // Link the created series to the module
             orgunitAPI.addOrgUnitSeries(parentId, series.id, function(err) {
                 if (err) {
-                    return utils.notification('Series not created.', 'The series could not be successfully created.', 'error');
+                    return utils.notification('Could not create ' + displayName, constants.messaging.default.error, 'error');
                 }
 
-                utils.notification('Series created.', 'The series was successfully created.', 'success');
+                utils.notification(displayName + ' created successfully', null, 'success');
 
                 // Retrieve the organisational unit information for the modules
                 orgUnitAPI.getOrgUnits(gh.data.me.AppId, true, null, partId, ['module'], function(err, modules) {
                     if (err) {
-                        utils.notification('Fetching modules failed.', 'An error occurred while fetching the modules.', 'error');
+                        utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                     }
 
                     // Refresh the modules list

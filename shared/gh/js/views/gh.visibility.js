@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core'], function(gh) {
+define(['gh.core', 'gh.constants'], function(gh, constants) {
 
 
     /////////////
@@ -57,7 +57,7 @@ define(['gh.core'], function(gh) {
         // Retrieve the published status
         gh.api.orgunitAPI.getOrgUnit(orgUnitId, false, function(err, data) {
             if (err) {
-                return gh.utils.notification('Request error.', 'An error occurred while requesting the unit information.', 'error');
+                return gh.utils.notification('Request error.', constants.messaging.default.error, 'error');
             }
 
             // Render the modal
@@ -84,12 +84,12 @@ define(['gh.core'], function(gh) {
         // Update the published status for the organisational unit
         gh.api.orgunitAPI.updateOrgUnit(orgUnitId, null, null, null, null, null, null, published, function(err, orgUnit) {
             if (err) {
-                return gh.utils.notification('Publishing failed.', 'The part could not be successfully published.', 'error');
+                return gh.utils.notification('Could not publish the ' + orgUnit.displayName + ' timetable', constants.messaging.default.error, 'error');
             }
 
             // Only show a notification when the draft has been published
             if (published) {
-                gh.utils.notification('"' + orgUnit.displayName + '" has been published.', 'Students and Lecturers can now access the information in the timetable.');
+                gh.utils.notification('The ' + orgUnit.displayName + ' timetable has been successfully published.', 'All events are now available in the student interface. All event data can still be edited, but be mindful not to delete items which might be in students\' personal calendars');
             }
 
             // Render the visibility button
@@ -122,7 +122,7 @@ define(['gh.core'], function(gh) {
             // Retrieve the published status
             gh.api.orgunitAPI.getOrgUnit(data.part, false, function(err, orgUnit) {
                 if (err) {
-                    return gh.utils.notification('Request error.', 'An error occurred while requesting the unit information.', 'error');
+                    return gh.utils.notification('Request error.', constants.messaging.default.error, 'error');
                 }
 
                 // Render the visibility button

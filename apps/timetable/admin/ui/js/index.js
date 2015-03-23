@@ -33,7 +33,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
         // Fetch the triposes
         gh.utils.getTriposStructure(function(err, data) {
             if (err) {
-                return gh.utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
 
             // Cache the tripos data
@@ -228,7 +228,7 @@ define(['gh.core', 'gh.constants', 'gh.admin-listview', 'gh.admin-batch-edit', '
                 if (!err) {
                     window.location = '/admin';
                 } else {
-                    gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
+                    gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
             });
 

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'chosen'], function(gh) {
+define(['gh.core', 'gh.constants', 'chosen'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -112,7 +112,7 @@ define(['gh.core', 'chosen'], function(gh) {
                 }
                 window.location = '/';
             } else {
-                gh.utils.notification('Login failed', 'Logging in to the application failed', 'error');
+                gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
             }
         });
     };
@@ -140,7 +140,7 @@ define(['gh.core', 'chosen'], function(gh) {
         var getConfigForApps = function(apps, _callback) {
             gh.api.configAPI.getConfig(apps[appsDone].id, function(err, config) {
                 if (err) {
-                    return gh.utils.notification('Configuration not retrieved.', 'The configuration could not be successfully retrieved.', 'error');
+                    return gh.utils.notification('Could not fetch system configuration', constants.messaging.default.error, 'error');
                 }
 
                 // Remove unwanted properties from the configuration object
@@ -212,7 +212,7 @@ define(['gh.core', 'chosen'], function(gh) {
     var getTenantData = function(callback) {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
             if (err) {
-                gh.utils.notification('Fetching tenants failed.', 'An error occurred while fetching the tenants.', 'error');
+                gh.utils.notification('Could not fetch system tenants', constants.messaging.default.error, 'error');
             }
 
             var todo = tenants.length;
@@ -221,7 +221,7 @@ define(['gh.core', 'chosen'], function(gh) {
             var getApps = function(tenantId, _callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     if (err) {
-                        gh.utils.notification('Fetching apps failed.', 'An error occurred while fetching the apps.', 'error');
+                        gh.utils.notification('Could not fetch system apps', constants.messaging.default.error, 'error');
                     }
 
                     // Sort the apps by host
@@ -259,7 +259,7 @@ define(['gh.core', 'chosen'], function(gh) {
     var getAdminUserData = function(callback) {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
             if (err) {
-                gh.utils.notification('Fetching admins failed.', 'An error occurred while fetching the admins.', 'error');
+                gh.utils.notification('Could not fetch admins', constants.messaging.default.error, 'error');
             }
 
             callback(administrators.rows);
@@ -287,10 +287,10 @@ define(['gh.core', 'chosen'], function(gh) {
             // Create a new app
             gh.api.appAPI.createApp(newAppDisplayName, newAppHost, tenantId, 'timetable', function(err, data) {
                 if (err) {
-                    return gh.utils.notification('App not created.', 'The app could not be successfully created.', 'error');
+                    return gh.utils.notification('Could not create system app', constants.messaging.default.error, 'error');
                 }
                 setUpTenants();
-                gh.utils.notification('App created.', 'The app was successfully created.', 'success');
+                gh.utils.notification('System app ' + newAppDisplayName + ' successfully created', null, 'success');
             });
         } else if (updateApp) {
             var appId = parseInt($submitButton.data('appid'), 10);
@@ -300,19 +300,19 @@ define(['gh.core', 'chosen'], function(gh) {
             // Update the app
             gh.api.appAPI.updateApp(appId, updatedAppDisplayName, updatedAppEnabled, updatedAppHost, function(err, data) {
                 if (err) {
-                    return gh.utils.notification('App not updated.', 'The app could not be successfully updated.', 'error');
+                    return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
                 }
                 setUpTenants();
-                gh.utils.notification('App updated.', 'The app was successfully updated.', 'success');
+                gh.utils.notification('System app ' + updatedAppDisplayName + ' successfully updated', null, 'success');
             });
         } else if (createTenant) {
             var newTenantDisplayName = $('#gh-app-tenant-new').val();
             gh.api.tenantAPI.createTenant(newTenantDisplayName, function(err, data) {
                 if (err) {
-                    return gh.utils.notification('Tenant not created.', 'The tenant could not be successfully created.', 'error');
+                    return gh.utils.notification('Could not create system tenant', constants.messaging.default.error, 'error');
                 }
                 setUpTenants();
-                gh.utils.notification('Tenant updated.', 'The tenant was successfully updated.', 'success');
+                gh.utils.notification('System tenant ' + newTenantDisplayName + ' successfully created', null, 'success');
             });
         }
     };
@@ -336,10 +336,10 @@ define(['gh.core', 'chosen'], function(gh) {
 
             gh.api.adminAPI.createAdmin(newAdminUserName, newAdminDisplayName, newAdminPassword, function(err, administrator) {
                 if (err) {
-                    return gh.utils.notification('Administrator not created.', 'The administrator could not be successfully created.', 'error');
+                    return gh.utils.notification('Could not create administrator: ' + newAdminDisplayName, constants.messaging.default.error, 'error');
                 }
                 setUpUsers();
-                gh.utils.notification('Administrator created.', 'The administrator was successfully created.', 'success');
+                gh.utils.notification('Administrator ' + newAdminDisplayName + ' successfully created', null, 'success');
             });
         } else if (updateAdmin) {
             var adminId = parseInt($submitButton.data('adminid'), 10);
@@ -347,10 +347,10 @@ define(['gh.core', 'chosen'], function(gh) {
 
             gh.api.adminAPI.updateAdmin(adminId, updateAdminDisplayName, function(err, administrator) {
                 if (err) {
-                    return gh.utils.notification('Administrator not updated.', 'The administrator could not be successfully updated.', 'error');
+                    return gh.utils.notification('Administrator ' + updateAdminDisplayName + ' could not be updated', constants.messaging.default.error, 'error');
                 }
                 setUpUsers();
-                gh.utils.notification('Administrator updated.', 'The administrator was successfully updated.', 'success');
+                gh.utils.notification('Administrator ' + updateAdminDisplayName + ' successfully updated', null, 'success');
             });
         }
     };
@@ -376,9 +376,9 @@ define(['gh.core', 'chosen'], function(gh) {
         // Update the configuration
         gh.api.configAPI.updateConfig($form.data('appid'), configValues, function(err) {
             if (err) {
-                return gh.utils.notification('Configuration not updated.', 'The configuration could not be successfully updated.', 'error');
+                return gh.utils.notification('System configuration not updated', constants.messaging.default.error, 'error');
             }
-            return gh.utils.notification('Configuration updated.', 'The configuration was successfully updated.', 'success');
+            return gh.utils.notification('System configuration updated', null, 'success');
         });
 
         return false;

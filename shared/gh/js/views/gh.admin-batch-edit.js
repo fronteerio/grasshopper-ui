@@ -414,7 +414,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         if (!triposData) {
             utils.getTriposStructure(function(err, data) {
                 if (err) {
-                    return utils.notification('Fetching triposes failed.', 'An error occurred while fetching the triposes.', 'error');
+                    return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
                 }
 
                 // Cache the triposData for future use
@@ -530,14 +530,14 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
             gh.api.seriesAPI.updateSeries(seriesId, value, null, null, function(err, data) {
                 if (err) {
                     // Show a failure notification
-                    return utils.notification('Series title not updated.', 'The series title could not be successfully updated.', 'error');
+                    return utils.notification('Could not update the title for this series', constants.messaging.default.error, 'error');
                 }
 
                 // Update the series in the sidebar
                 $('#gh-modules-list .list-group-item[data-id="' + seriesId + '"] .gh-list-description p').text(value);
 
                 // Show a success notification
-                return utils.notification('Series title updated.', 'The series title was successfully updated.');
+                return utils.notification('Series title successfully updated', null, 'success');
             });
         }
         return value;
@@ -1048,12 +1048,12 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
 
                     if (updateErr || newErr || deleteErr) {
                         // Show an error notification
-                        return utils.notification('Events not updated.', 'Not all events could be successfully updated.', 'error');
+                        return utils.notification('Could not update all events for ' + $('.gh-jeditable-series-title').text(), constants.messaging.default.error, 'error');
                     }
                     // Hide the save button
                     toggleSubmit();
                     // Show a success notification to the user
-                    return utils.notification('Events updated.', 'The events where successfully updated.');
+                    return utils.notification('All events in ' + $('.gh-jeditable-series-title').text() + ' successfully updated', 'Students will see the updated information in about 8 hours');
                 });
             });
         });
@@ -1147,7 +1147,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
         if (seriesId) {
             gh.api.seriesAPI.getSeries(seriesId, true, function(err, series) {
                 if (err) {
-                    return utils.notification('Series not retrieved.', 'The event series could not be successfully retrieved.', 'error');
+                    return utils.notification('Could not fetch the series data', constants.messaging.default.error, 'error');
                 }
 
                 // Object used to aggregate the events between pages
@@ -1167,7 +1167,7 @@ define(['gh.core', 'gh.constants', 'gh.utils', 'moment', 'gh.calendar', 'gh.admi
                     // Get the information about the events in the series
                     gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, false, function(err, _events) {
                         if (err) {
-                            return utils.notification('Events not retrieved.', 'The events could not be successfully retrieved.', 'error');
+                            return utils.notification('Could not fetch the event data', constants.messaging.default.error, 'error');
                         }
 
                         // Aggregate the results
