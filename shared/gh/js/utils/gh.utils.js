@@ -306,6 +306,7 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
         }
 
         // If a title has been provided, we wrap it in an h4 and prepend it to the message
+        /* istanbul ignore else */
         if (title) {
             message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
         }
