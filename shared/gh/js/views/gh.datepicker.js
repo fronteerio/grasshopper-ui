@@ -20,7 +20,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var hasChanges = false;
 
     var _term = null;
-
+    // Keep track of when the user started
+    var timeFromStart = null;
 
     /////////////////
     //  UTILITIES  //
@@ -50,6 +51,13 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         // Close the popover window
         dismissPopover();
+
+        // Calculate how long it takes the user to change the date
+        timeFromStart = (new Date() - timeFromStart) / 1000;
+        // Track the user editing the date
+        gh.utils.trackEvent(['Data', 'DateTime edit', 'Completed'], {
+            'time_from_start': timeFromStart
+        });
     };
 
     /**
@@ -210,6 +218,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'html': true,
                 'placement': 'bottom',
                 'onShown': function() {
+                    // Track how long the user takes to adjust the date
+                    timeFromStart = new Date();
+
+                    // Track the user starting to edit dates
+                    gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
 
                     // Cache the trigger
                     $trigger = $(trigger).closest('tr .gh-event-date');
@@ -306,6 +319,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var onDatepickerChange = function() {
         updateComponents('#gh-datepicker');
         validateEntry();
+        // Track the user changing the calendar
+        gh.utils.trackEvent(['Data', 'DateTime edit', 'Calendar item selected']);
     };
 
 
@@ -319,6 +334,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var onWeekChange = function() {
+        // Track the user editing the week
+        gh.utils.trackEvent(['Data', 'DateTime edit', 'Week changed']);
         updateComponents('#gh-module-week');
         validateEntry();
     };
@@ -329,6 +346,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @private
      */
     var onDayChange = function() {
+        // Track the user editing the day
+        gh.utils.trackEvent(['Data', 'DateTime edit', 'Day changed']);
         updateComponents('#gh-module-day');
         validateEntry();
     };
@@ -460,6 +479,24 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         // Week change
         $('body').on('change', '#gh-module-week', onWeekChange);
         $('body').on('change', '#gh-module-day', onDayChange);
+
+        // Time related changes
+        $('body').on('change', '#gh-module-from-hour', function() {
+            // Track the user changing the start hour
+            gh.utils.trackEvent(['Data', 'DateTime edit', 'Start hour changed']);
+        });
+        $('body').on('change', '#gh-module-from-minutes', function() {
+            // Track the user changing the start minute
+            gh.utils.trackEvent(['Data', 'DateTime edit', 'Start minute changed']);
+        });
+        $('body').on('change', '#gh-module-to-hour', function() {
+            // Track the user changing the end hour
+            gh.utils.trackEvent(['Data', 'DateTime edit', 'End hour changed']);
+        });
+        $('body').on('change', '#gh-module-to-minutes', function() {
+            // Track the user changing the end minute
+            gh.utils.trackEvent(['Data', 'DateTime edit', 'End minute changed']);
+        });
 
         // Setup
         $(document).on('gh.datepicker.show', showPopover);
