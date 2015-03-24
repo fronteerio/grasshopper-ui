@@ -109,11 +109,10 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
             // Collect and submit the form data
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-                if (!err) {
-                    return window.location.reload();
-                } else {
+                if (err) {
                     gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
+                window.location.reload();
             });
         }
 
