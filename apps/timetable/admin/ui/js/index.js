@@ -250,7 +250,6 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      * @private
      */
     var doLogout = function(ev) {
-
         // Prevent the form from being submitted
         ev.preventDefault();
 
@@ -280,6 +279,8 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         $('#gh-main-tripos .gh-video:first-child').hide();
         // Do not show the video next time
         gh.utils.localDataStorage().store('hideVideo', true);
+        // Track the user hiding the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video collapsed']);
         // Stop the video
         $(document).trigger('gh.video.stop');
     };
@@ -306,6 +307,8 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      * @private
      */
     var playVideo = function() {
+        // Track the user playing the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video played']);
         showVideo();
         return false;
     };
@@ -378,6 +381,13 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         // Login and logout
         $('body').on('submit', '#gh-signin-form', doLogin);
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Track an event when the user clicks the Cambridge logo
+        $('body').on('click', '#gh-header-logo', function() {
+            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
+                window.location = '/admin/';
+            });
+        });
 
         // Change the view
         $(document).on('gh.admin.changeView', onViewChange);

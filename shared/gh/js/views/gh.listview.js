@@ -145,7 +145,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
      */
     var toggleList = function() {
         // Toggle the child lists
-        $(this).closest('.list-group-item').toggleClass('gh-list-group-item-open');
+        var $module = $($(this).closest('.list-group-item'));
+        $module.toggleClass('gh-list-group-item-open');
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
@@ -155,6 +156,12 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
                 'id': $(module).attr('data-id'),
                 'expanded': $(module).hasClass('gh-list-group-item-open')
             };
+        });
+
+        // Send an event when the module has been opened or closed
+        var verb = $module.hasClass('gh-list-group-item-open') ? 'opened' : 'closed';
+        utils.trackEvent(['Navigation', 'Module ' + verb], {
+            'module': $module.attr('data-id')
         });
 
         // Store the expanded list items

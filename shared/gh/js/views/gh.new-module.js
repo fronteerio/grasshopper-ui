@@ -15,12 +15,17 @@
 
 define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, orgUnitAPI) {
 
+    // Keep track of when the user started
+    var timeFromStart = null;
+
     /**
      * Create the module using the provided title
      *
      * @private
      */
     var createModule = function() {
+        // Calculate how long it takes the user to create the module
+        timeFromStart = (new Date() - timeFromStart) / 1000;
         // Get the AppId
         var appId = require('gh.core').data.me.AppId;
         // Get the display name of the new module
@@ -36,6 +41,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
                 return gh.utils.notification('Could not create ' + displayName, constants.messaging.default.error, 'error');
             }
             gh.utils.notification(displayName + ' created successfully', null, 'success');
+
+            // Track the user creating the module
+            gh.utils.trackEvent(['Manage', 'Add module', 'Completed'], {
+                'time_from_start': timeFromStart
+            });
 
             // Hide the module modal
             $('#gh-new-module-modal').modal('hide');
@@ -87,6 +97,16 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
     var addBinding = function() {
         $('body').on('click', '.gh-new-module', showNewModuleModal);
         $('body').on('submit', '#gh-new-module-form', createModule);
+        $('body').on('shown.bs.modal', '#gh-new-module-modal', function() {
+            // Track the user starting creation of a module
+            gh.utils.trackEvent(['Manage', 'Add module', 'Started']);
+            // Track how long the user takes to create the module
+            timeFromStart = new Date();
+        });
+        $('body').on('click', '#gh-new-module-modal [data-dismiss="modal"]', function() {
+            // Track the user cancelling creation of a module
+            gh.utils.trackEvent(['Manage', 'Add module', 'Cancelled']);
+        });
     };
 
     addBinding();
