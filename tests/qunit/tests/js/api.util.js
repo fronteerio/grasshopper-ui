@@ -753,37 +753,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     });
 
 
-    //////////////////////
-    // GOOGLE ANALYTICS //
-    //////////////////////
-
-    // Test the `sendTrackingEvent` functionality
-    QUnit.test('sendTrackingEvent', function(assert) {
-        // Verify that an error is thrown when no category was provided
-        assert.throws(function() {
-            gh.utils.sendTrackingEvent(null, 'action', 'label', 1);
-        }, 'Verify that an error is thrown when no category was provided');
-
-        // Verify that an error is thrown when no action was provided
-        assert.throws(function() {
-            gh.utils.sendTrackingEvent('category', null, 'label', 1);
-        }, 'Verify that an error is thrown when no action was provided');
-
-        // Verify that an error is thrown when no label was provided
-        assert.throws(function() {
-            gh.utils.sendTrackingEvent('category', 'action', null, 1);
-        }, 'Verify that an error is thrown when no label was provided');
-
-        // Verify that an error is thrown when an invalid `value` was provided
-        assert.throws(function() {
-            gh.utils.sendTrackingEvent('category', 'action', 'label', 'invalid_value');
-        }, 'Verify that an error is thrown when an invalid `value` was provided');
-
-        // Verify that GA tracking succeeds with correct values
-        assert.ok(gh.utils.sendTrackingEvent('category', 'action', 'label', 1), 'Verify that GA tracking succeeds with correct values');
-    });
-
-
     ///////////////////
     // LOCAL STORAGE //
     ///////////////////

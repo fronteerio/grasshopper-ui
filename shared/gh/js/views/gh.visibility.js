@@ -15,6 +15,9 @@
 
 define(['gh.core', 'gh.constants'], function(gh, constants) {
 
+    // Keep track of when the user started
+    var timeFromStart = null;
+
 
     /////////////
     //  MODAL  //
@@ -49,6 +52,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
      * @private
      */
     var showVisibilityModal = function() {
+        // Track how long the user takes to publish the part
+        timeFromStart = new Date();
         // Cache the trigger
         var $trigger = $(this);
         // Retrieve the organisational unit ID
@@ -65,6 +70,9 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 'published': data.published
             }}, $('#gh-visibility-modal-container'));
 
+            // Track the user starting to publish
+            gh.utils.trackEvent(['Manage', 'Publishing', 'Started']);
+
             // Show the modal
             $('#gh-visibility-modal').modal();
         });
@@ -76,6 +84,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
      * @private
      */
     var updateVisibilityStatus = function() {
+        // Calculate how long it takes the user to create the series
+        timeFromStart = (new Date() - timeFromStart) / 1000;
         // Retrieve the organisational unit ID
         var orgUnitId = parseInt(History.getState().data.part, 10);
         // Retrieve the published status
@@ -90,6 +100,12 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
             // Only show a notification when the draft has been published
             if (published) {
                 gh.utils.notification('The ' + orgUnit.displayName + ' timetable has been successfully published.', 'All events are now available in the student interface. All event data can still be edited, but be mindful not to delete items which might be in students\' personal calendars');
+
+                // Track the user publishing a part
+                gh.utils.trackEvent(['Manage', 'Publishing', 'Completed'], {
+                    'time_from_start': timeFromStart,
+                    'date_stamp': (new Date()).getTime()
+                });
             }
 
             // Render the visibility button
@@ -168,6 +184,10 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
         $('body').on('click', '#gh-visibility-save', updateVisibilityStatus);
         // Toggle the modal
         $('body').on('click', '.gh-visibility', showVisibilityModal);
+        $('body').on('click', '#gh-visibility-modal [data-dismiss="modal"]', function() {
+            // Track the user cancelling publishing a part
+            gh.utils.trackEvent(['Manage', 'Publishing', 'Cancelled']);
+        });
     };
 
     addBinding();

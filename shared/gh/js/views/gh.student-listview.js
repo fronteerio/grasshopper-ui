@@ -40,6 +40,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 return gh.utils.notification('The events could not be added to your calendar', constants.messaging.default.error, 'error');
             }
 
+            // Send a tracking event when a user adds all events in the module to the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Module added']);
             // Add `gh-list-group-item-added` to the list item
             $list.addClass('gh-list-group-item-added');
             // Add `gh-list-group-item-added` to all children of the list item
@@ -50,9 +52,6 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
             $this.toggleClass('gh-add-all-to-calendar gh-remove-all-from-calendar');
             // Toggle the children's class from add to remove
             $list.find('li .gh-list-action .btn').removeClass('gh-add-to-calendar').addClass('gh-remove-from-calendar');
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('module', 'subscribe', 'Subscribe to all series in module', moduleId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
@@ -93,6 +92,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 return gh.utils.notification('The events could not be removed from your calendar', constants.messaging.default.error, 'error');
             }
 
+            // Send a tracking event when a user removes all events in the module from the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Module removed']);
             // Remove `gh-list-group-item-added` from the list item
             $list.removeClass('gh-list-group-item-added');
             // Remove `gh-list-group-item-added` from all children of the list item
@@ -103,9 +104,6 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
             $this.toggleClass('gh-add-all-to-calendar gh-remove-all-from-calendar');
             // Toggle the children's class from remove to add
             $list.find('li .gh-list-action .btn').removeClass('gh-remove-from-calendar').addClass('gh-add-to-calendar');
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('module', 'unsubscribe', 'Unsubscribe from all series in module', moduleId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
@@ -146,6 +144,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 return gh.utils.notification('The event could not be added to your calendar', constants.messaging.default.error, 'error');
             }
 
+            // Send a tracking event when a user adds an event series to the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Series added']);
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
@@ -171,9 +171,6 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-plus').addClass('fa-minus');
             }
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('serie', 'subscribe', 'Subscribe to a serie', seriesId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {
@@ -213,6 +210,8 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 return gh.utils.notification('Could not remove the event from your calendar', constants.messaging.default.error, 'error');
             }
 
+            // Send a tracking event when a user removes all events in the module from the calendar
+            gh.utils.trackEvent(['Calendar', 'Manage', 'Series removed']);
             // Toggle the event's item-added class
             $this.closest('li').toggleClass('gh-list-group-item-added');
             // Toggle the event's button class
@@ -239,9 +238,6 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 // Change the icon of the parent's list item button
                 $parentList.find('.gh-list-action .btn i').first().removeClass('fa-remove').addClass('fa-minus');
             }
-
-            // Track the subscription in GA
-            gh.utils.sendTrackingEvent('serie', 'unsubscribe', 'Unsubscribe from a serie', seriesId);
 
             // Determine the date range for which to get the user's events
             gh.utils.getCalendarDateRange(function(range) {

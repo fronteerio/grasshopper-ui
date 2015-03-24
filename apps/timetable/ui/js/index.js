@@ -85,6 +85,8 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
                 $('#gh-left-container').addClass('gh-minimised');
                 $('#gh-main').hide();
                 $('#gh-empty').show();
+                // Track the user selecting an empty part
+                gh.utils.trackEvent(['Navigation', 'Draft timetable page shown']);
             });
         } else {
             $('#gh-left-container').removeClass('gh-minimised');
@@ -102,6 +104,11 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         gh.utils.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
+
+        // Track an event when the login modal is shown
+        $('#gh-modal-login').on('shown.bs.modal', function () {
+            gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
+        });
     };
 
 
@@ -143,6 +150,25 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
     };
 
     /**
+     * Log the current user out
+     *
+     * @param  {Event}    ev    The jQuery event
+     * @private
+     */
+    var doLogout = function(ev) {
+        // Prevent the form from being submitted
+        ev.preventDefault();
+
+        gh.api.authenticationAPI.logout(function(err) {
+            if (!err) {
+                window.location = '/';
+            } else {
+                gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
+            }
+        });
+    };
+
+    /**
      * Fetch the tripos data
      *
      * @param  {Function}    callback    Standard callback function
@@ -174,6 +200,14 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signin-form', doLogin);
+        $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Track an event when the user clicks the Cambridge logo
+        $('body').on('click', '#gh-header-logo', function() {
+            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
+                window.location = '/';
+            });
+        });
         $(document).on('gh.calendar.ready', setUpCalendar);
         $(document).on('gh.part.selected', onPartSelected);
     };
