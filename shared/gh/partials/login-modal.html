@@ -11,10 +11,7 @@
             <div class="modal-body">
                 <p>Sign-in to see your timetable and make changes</p>
                 <form id="gh-signin-form" class="form-inline" role="form">
-                    <%= _.partial('login-form', {
-                        'gh': gh,
-                        'isGlobalAdminUI': false
-                    }) %>
+                    <%= _.partial('login-form', {'data': data}) %>
                 </form>
             </div>
             <div class="modal-footer">

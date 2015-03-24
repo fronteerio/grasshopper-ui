@@ -31,11 +31,13 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      */
     var renderBatchDate = function(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse) {
         gh.utils.renderTemplate($('#gh-batch-edit-date-template'), {
-            'gh': require('gh.core'),
-            'numberOfWeeks': maxNumberOfWeeks,
-            'weeksInUse': weeksInUse,
-            'termsInUse': termsInUse,
-            'daysInUse': daysInUse
+            'data': {
+                'gh': require('gh.core'),
+                'numberOfWeeks': maxNumberOfWeeks,
+                'weeksInUse': weeksInUse,
+                'termsInUse': termsInUse,
+                'daysInUse': daysInUse
+            }
         }, $('#gh-batch-edit-date-container'));
     };
 

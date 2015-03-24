@@ -1,5 +1,5 @@
 <div id="gh-main-tripos">
-    <div class="gh-video" <% if (hideVideo) {%>style="display: none;"<% } %>>
+    <div class="gh-video" <% if (data.hideVideo) {%>style="display: none;"<% } %>>
         <video id="gh-video" controls>
             <source src="/shared/gh/files/video.mp4" type="video/mp4"/>
             <source src="/shared/gh/files/video.webm" type="video/webm"/>
@@ -13,20 +13,20 @@
         <button class="btn gh-play-video"><i class="fa fa-youtube-play"></i>Play video</button>
     </div>
     <div class="row gh-row-part">
-        <% _.each(data, function(part) { %>
+        <% _.each(data.editableParts, function(part) { %>
             <div class="col-xs-4 gh-part">
-                <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %>
+                <% if (part.isEditing && (part.isEditing.id !== data.gh.data.me.id)) { %>
                     <p class="gh-part-editing"><%- part.isEditing.displayName %> is editing</p>
                 <% } %>
                 <p class="gh-part-tripos"><%= part.displayName %></p>
                 <p class="gh-part-part"><%= part.part.displayName %></p>
-                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.id !== gh.data.me.id)) { %> disabled="disabled"<% } %>>Edit</a>
+                <a href="<%= part.hash %>" class="btn btn-default pull-left gh-part-edit" <% if (part.isEditing && (part.isEditing.id !== data.gh.data.me.id)) { %> disabled="disabled"<% } %>>Edit</a>
                 <% if (!part.part.published) { %>
                     <span class="gh-part-draft pull-right"><i class="fa fa-eye-slash"></i> Draft</span>
                 <% } %>
             </div>
         <% }); %>
-        <div class="col-xs-4 gh-video gh-part" <% if (!hideVideo) {%>style="display: none;"<% } %>>
+        <div class="col-xs-4 gh-video gh-part" <% if (!data.hideVideo) {%>style="display: none;"<% } %>>
             <span class="gh-video-info">A quick look at how to use the new timetable system</span>
             <button class="btn gh-play-video"><i class="fa fa-youtube-play"></i>Play video</button>
         </div>
