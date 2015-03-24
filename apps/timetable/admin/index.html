@@ -63,26 +63,11 @@
             </div>
             <div class="clearfix"></div>
         </div>
+        <div id="gh-modal"><!-- --></div>
 
         <!-- Header template -->
         <script id="gh-header-template" type="text/template">
-            <h1>Timetable Administration</h1>
-            <% if (!gh.data.me || gh.data.me.anon) { %>
-                <% if (!gh.config.enableLocalAuth) { %>
-                    <form id="gh-signin-form" class="form-inline pull-right" role="form">
-                        <%= _.partial('login-form', {
-                            'gh': gh,
-                            'isGlobalAdminUI': false
-                        }) %>
-                    </form>
-                <% } %>
-            <% } else { %>
-                <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
-                    <button type="submit" class="btn btn-default gh-btn-secondary">
-                        <i class="fa fa-sign-out"></i>Sign out
-                    </button>
-                </form>
-            <% } %>
+            <%= _.partial('admin-header-template', {'data': data}) %>
         </script>
 
         <!-- Help template -->
@@ -119,10 +104,7 @@
 
         <!-- Modules list -->
         <script id="gh-modules-template" type="text/template">
-            <%= _.partial('admin-modules', {
-                'data': data,
-                'state': state
-            }) %>
+            <%= _.partial('admin-modules', {'data': data}) %>
         </script>
 
         <!-- Subheader part picker -->
@@ -144,11 +126,7 @@
 
         <!-- Editable parts -->
         <script id="gh-editable-parts-template" type="text/template">
-            <%= _.partial('editable-parts', {
-                'data': data,
-                'gh': gh,
-                'hideVideo': hideVideo
-            }) %>
+            <%= _.partial('editable-parts', {'data': data}) %>
         </script>
 
         <!-- New series -->
@@ -159,18 +137,12 @@
         <!-- New module -->
         <div id="gh-new-module-modal-container"><!-- --></div>
         <script id="gh-new-module-modal-template" type="text/template">
-            <%= _.partial('new-module-modal', {
-                'groupId': groupId,
-                'partId': partId
-            }) %>
+            <%= _.partial('new-module-modal', {'data': data}) %>
         </script>
 
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
-            <%= _.partial('admin-batch-edit', {
-                'data': data,
-                'gh': gh
-            }) %>
+            <%= _.partial('admin-batch-edit', {'data': data}) %>
         </script>
 
         <!-- Delete series modal -->
@@ -189,21 +161,12 @@
 
         <!-- Batch edit date template -->
         <script id="gh-batch-edit-date-template" type="text/template">
-            <%= _.partial('admin-batch-edit-date', {
-                'gh': gh,
-                'numberOfWeeks': numberOfWeeks,
-                'weeksInUse': weeksInUse,
-                'termsInUse': termsInUse,
-                'daysInUse': daysInUse
-            }) %>
+            <%= _.partial('admin-batch-edit-date', {'data': data}) %>
         </script>
 
         <!-- Batch edit event row template -->
         <script id="gh-batch-edit-event-row-template" type="text/template">
-            <%= _.partial('admin-batch-edit-event-row', {
-                'ev': ev,
-                'utils': utils
-            }) %>
+            <%= _.partial('admin-batch-edit-event-row', {'data': data}) %>
         </script>
 
         <!-- Event type template-->
@@ -213,11 +176,7 @@
 
         <!-- Borrow series modal template -->
         <script id="gh-borrow-series-modal-template" type="text/template">
-            <%= _.partial('borrow-series-modal', {
-                'data': data,
-                'moduleId': moduleId,
-                'partId': partId
-            }) %>
+            <%= _.partial('borrow-series-modal', {'data': data}) %>
         </script>
 
         <!-- Date picker popover -->
@@ -240,8 +199,6 @@
         <script id="gh-visibility-button-template" type="text/template">
             <%= _.partial('visibility-button', {'data': data}) %>
         </script>
-
-        <div id="gh-modal"><!-- --></div>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>

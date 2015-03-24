@@ -1,6 +1,8 @@
 <% isChild = (typeof isChild === 'undefined') ? false : isChild; %>
 
-<% _.each(data, function(d) { %>
+<% var records = (!isChild) ? data.modules : data; %>
+
+<% _.each(records, function(d) { %>
     <li class="list-group-item <% if (d.expanded) { %>gh-list-group-item-open<% } %>" data-id="<%- d.id %>">
         <div class="gh-list-group-item-container">
             <% if (!isChild) { %>
