@@ -243,7 +243,6 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         }
 
         // Wrap tit title in an h4 and prepend it to the message
-        /* istanbul ignore else */
         message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
 
         // If an ID has been provided, add the `id` attribute to the message

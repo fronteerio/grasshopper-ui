@@ -72,6 +72,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
      * Track a selection event
      *
      * @param  {Object}    elem    The DOM element that was added after a selection
+     * @private
      */
     var trackSelectionEvent = function(elem) {
         // Try to parse the ID, if it fails that means we have a new user, not in the system
@@ -250,6 +251,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
     /**
      * Open the AutoSuggest component by removing the class from it's parent that hides all selected users from view
      *
+     * @param {Object}    ev    Standard jQuery event object
      * @private
      */
     var openAutoSuggest = function(ev) {
