@@ -39,19 +39,15 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
     /**
      * Send a tracking event when the user navigates the terms
      *
-     * @param  {Function}    next    Whether or not the next term button was clicked
+     * @param  {Function}    termName    The name of the term that was navigated to
      * @private
      */
-    var sendTermNavigationEvent = function(next) {
-        // Append an icon at the end of the tracking event, depending on whether the
-        // next or previous button was clicked
-        var navIcon = next ? '>' : '<';
-
+    var sendTermNavigationEvent = function(termName) {
         // Create a human readable string from the selected view
         var viewMode = getReadableView();
 
         // Send a tracking event when the user navigates the terms
-        gh.utils.trackEvent(['Calendar', 'View', viewMode, 'Term ' + navIcon]);
+        gh.utils.trackEvent(['Calendar', 'View', viewMode, 'Term ' + termName]);
     };
 
     /**
@@ -125,11 +121,8 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var changePeriod = function() {
-
-        // Cache the clicked button
-        var $button = $(this);
         // Retrieve the button's action
-        var action = $button.attr('data-action');
+        var action = $(this).attr('data-action');
         // Update the calendar
         calendar.fullCalendar(action);
         // Set the current day
@@ -140,8 +133,10 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         setTermLabel();
         // Set the document title
         setDocumentTitle();
+
         // Fetch the user's events
         getUserEvents();
+
         // Track the user navigating periods
         sendNavigationEvent(action === 'next');
     };
@@ -152,38 +147,11 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var changeTerm = function() {
-
-        // Cache the clicked button
-        var $button = $(this);
-        // Retrieve the button's action
-        var action = $button.attr('data-action');
-        // Get the current term
-        var currentTerm = gh.utils.getTerm(getCurrentViewDate());
-
-        // Retrieve the term to navigate to, based on the current term
-        var term = null;
-        if (currentTerm) {
-            if (action === 'next') {
-                term = getNextTerm(currentTerm);
-                sendTermNavigationEvent(true);
-            } else {
-                term = getPreviousTerm(currentTerm);
-                sendTermNavigationEvent();
-            }
-        // This gets called when you are inbetween terms
-        } else {
-            if (action === 'next') {
-                term = getNearestTerm(currentTerm, 'start');
-                sendTermNavigationEvent(true);
-            } else {
-                term = getNearestTerm(currentTerm, 'end');
-                sendTermNavigationEvent();
-            }
-        }
-
+        var termName = $(this).attr('data-term');
+        // Retrieve the first day of term based on the name
+        var term = gh.utils.getFirstDayOfTerm(termName);
         // Navigate to a specific date in the calendar
-        calendar.fullCalendar('gotoDate', term.start);
-
+        calendar.fullCalendar('gotoDate', term);
          // Set the current day
         setCurrentDay();
         // Set the week label
@@ -195,6 +163,9 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
 
         // Fetch the user's events
         getUserEvents();
+
+        // Send an event when the user changes the term
+        sendTermNavigationEvent(termName);
     };
 
     /**
@@ -203,20 +174,12 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var changeView = function() {
-
-        // Cache the clicked button
-        var $button = $(this);
         // Retrieve the view
-        currentView = $button.attr('data-view');
+        currentView = $(this).attr('data-view');
         // Change the view
         calendar.fullCalendar('changeView', currentView);
-        // Remove the active status from the previous button
-        $('#gh-calendar-toolbar-views .active').removeClass('active').addClass('default');
-        // Update the button's status
-        $button.removeClass('default').addClass('active');
-
-        // Send a tracking event when the user changes the current view
-        sendViewNavigationEvent();
+        // Set the view mode label
+        $('#gh-switch-view-label').html(getReadableView());
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -228,6 +191,9 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
 
         // Fetch the user's events
         getUserEvents();
+
+        // Send a tracking event when the user changes the current view
+        sendViewNavigationEvent();
     };
 
     /**
@@ -246,10 +212,12 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         setTermLabel();
         // Set the document title
         setDocumentTitle();
-        // Track the user clicking the today button
-        sendTodayNavigationEvent();
+
         // Fetch the user's events
         getUserEvents();
+
+        // Track the user clicking the today button
+        sendTodayNavigationEvent();
     };
 
     /**
@@ -371,7 +339,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
             label = term.label;
         }
 
-        $('#gh-toolbar-label-term').html(label);
+        $('#gh-switch-term-label').html(label);
     };
 
     /**
@@ -754,9 +722,9 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // Change the calendar's period
         $('#gh-calendar-toolbar-period button').off('click', changePeriod).on('click', changePeriod);
         // Change the calendar's term
-        $('#gh-calendar-toolbar-terms button').off('click', changeTerm).on('click', changeTerm);
+        $('.gh-switch-term').off('click', changeTerm).on('click', changeTerm);
         // Change the calendar's view
-        $('#gh-calendar-toolbar-views button').off('click', changeView).on('click', changeView);
+        $('.gh-switch-view').off('click', changeView).on('click', changeView);
 
         // Return the calendar's current view
         $(document).off('gh.calendar.getCurrentView').on('gh.calendar.getCurrentView', function(ev, callback) {

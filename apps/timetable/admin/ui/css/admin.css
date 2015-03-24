@@ -447,11 +447,6 @@
     text-decoration: none;
 }
 
-#gh-batch-edit-settings + ul .btn {
-    text-align: left;
-    width: 100%;
-}
-
 #gh-batch-edit-header input[type="text"],
 #gh-batch-edit-header select {
     font-weight: 400;
