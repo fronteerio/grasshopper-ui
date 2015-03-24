@@ -21,6 +21,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
     var prevPartId = null;
     // Keep track of the modules to avoid having to fetch them over and over again
     var cachedModules = null;
+    // Keep track of when the user started
+    var timeFromStart = null;
 
     /**
      * Return to the home page
@@ -29,6 +31,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      */
     var goHome = function() {
         gh.utils.removeFromState(['tripos', 'part', 'module', 'series']);
+        // Send a tracking event when the user clicks the home button
+        gh.utils.trackEvent(['Navigation', 'Home', 'Shortcut clicked']);
     };
 
     /**
@@ -44,8 +48,19 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected part in the URL
         gh.utils.addToState({'part': partId});
 
-        // Track the part picker change in GA
-        gh.utils.sendTrackingEvent('picker', 'change', 'part picker', partId);
+        if (timeFromStart) {
+            // Calculate how long it takes the user to make a part selection
+            timeFromStart = (new Date() - timeFromStart) / 1000;
+
+            // Track that the user selected a part
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Selected'], {
+                'part': parseInt(data.selected, 10),
+                'tripos': History.getState().data.tripos,
+                'time_from_start': timeFromStart
+            });
+
+            timeFromStart = null;
+        }
 
         // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
         // the current one OR if the modules list hasn't been rendered
@@ -87,8 +102,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Push the selected tripos in the URL
         gh.utils.addToState({'tripos': triposId});
 
-        // Track the tripos picker change in GA
-        gh.utils.sendTrackingEvent('picker', 'change', 'Tripos picker', triposId);
+        // Track that the user selected a tripos
+        gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Selected'], {
+            'tripos': triposId
+        });
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
@@ -269,6 +286,27 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             setUpTriposPicker();
             // Run the statechange logic to put the right selections in place
             handleStateChange();
+        });
+
+        // Tripos tracking events
+        $('body').on('chosen:showing_dropdown', '#gh-subheader-tripos', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Opened']);
+        });
+        $('body').on('chosen:hiding_dropdown', '#gh-subheader-tripos', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Closed']);
+        });
+        $('body').on('change', '#gh_subheader_tripos_chosen .chosen-search input', function() {
+            gh.utils.trackEvent(['Navigation', 'Tripos selector', 'Search'], {
+                'query': $(this).val()
+            });
+        });
+        // Part tracking events
+        $('body').on('chosen:showing_dropdown', '#gh-subheader-part', function() {
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Opened']);
+            timeFromStart = new Date();
+        });
+        $('body').on('chosen:hiding_dropdown', '#gh-subheader-part', function() {
+            gh.utils.trackEvent(['Navigation', 'Part selector', 'Closed']);
         });
 
         $('body').on('click', '.gh-home', goHome);

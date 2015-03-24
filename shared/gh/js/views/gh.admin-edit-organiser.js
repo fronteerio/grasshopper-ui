@@ -15,6 +15,9 @@
 
 define(['gh.core', 'jquery.jeditable'], function(gh) {
 
+    // Keep track of when the user started
+    var timeFromStart = null;
+
     /**
      * Get all organisers that were previously added to the AutoSuggest field
      *
@@ -81,6 +84,12 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
         'plugin': function(settings, original) {
             var defaultOrganisers = getDefaultAutoSuggestUsers(original);
 
+            // Track how long the user takes to adjust the organisers
+            timeFromStart = new Date();
+
+            // Track the user editing the organisers
+            gh.utils.trackEvent(['Data', 'Lecturer edit', 'Started']);
+
             // Initialise the autosuggest plugin on the editable field
             $('.gh-organiser-autosuggest', this).autoSuggest('/api/users', {
                 'asHtmlID': gh.utils.generateRandomString(),
@@ -95,6 +104,12 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                 'selectedValuesProp': 'id',
                 'startText': 'Lecturers',
                 'usePlaceholder': true,
+                'resultsComplete': function() {
+                    // Track the user if no results come up
+                    if (!$(original).find('.as-results li.as-result-item').length) {
+                        gh.utils.trackEvent(['Data', 'Lecturer edit', 'Autocomplete no results shown']);
+                    }
+                },
                 'retrieveComplete': function(data) {
                     return data.results;
                 },
@@ -113,7 +128,14 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                     if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
                         // The hidden field exists already, make sure it's marked as 'to add'
                         $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', true);
-
+                        // If the hidden field has a data-id, it's an existing user in the database
+                        if ($hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-id')) {
+                            // Track the user editing the organisers
+                            gh.utils.trackEvent(['Data', 'Lecturer edit', 'Autocomplete userID selected']);
+                        } else {
+                            // Track the user editing the organisers
+                            gh.utils.trackEvent(['Data', 'Lecturer edit', 'Freetext entered']);
+                        }
                     // Create the hidden field if it doesn't exist yet
                     } else {
                         // Create the hidden field element
@@ -130,6 +152,11 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                         // If the user exists in the system, add the ID to the hidden field
                         if (hasId) {
                             $field.attr('data-id', user.id);
+                            // Track the user editing the organisers
+                            gh.utils.trackEvent(['Data', 'Lecturer edit', 'Autocomplete userID selected']);
+                        } else {
+                            // Track the user editing the organisers
+                            gh.utils.trackEvent(['Data', 'Lecturer edit', 'Freetext entered']);
                         }
 
                         // Add the hidden field
@@ -154,6 +181,9 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
 
                     // Remove the element from the AutoSuggest field
                     elem.remove();
+
+                    // Track the user removing an AutoSuggest field
+                    gh.utils.trackEvent(['Data', 'Lecturer edit', 'Item removed']);
                 }
             });
 
@@ -185,6 +215,13 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                     if (ev.type !== 'click') {
                         // Submit the AutoSuggest field
                         submitAutoSuggest(this, original);
+
+                        // Calculate how long it takes the user to change the date
+                        timeFromStart = (new Date() - timeFromStart) / 1000;
+                        // Track the user editing organisers
+                        gh.utils.trackEvent(['Data', 'Lecturer edit', 'Completed'], {
+                            'time_from_start': timeFromStart
+                        });
 
                         // If there is a relatedTarget set on the event that triggered the function, focus on it
                         if ($(ev.relatedTarget).length) {

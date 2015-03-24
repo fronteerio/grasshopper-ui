@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, state, templates, time) {
+define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, state, templates, time) {
 
 
     ///////////////
@@ -135,69 +135,6 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
     };
 
 
-    ////////////////////////
-    //  GOOGLE ANALYTICS  //
-    ////////////////////////
-
-    /**
-     * Set up Google Analytics tracking. Note that this is using Universal Tracking
-     *
-     * @private
-     */
-    /* istanbul ignore next */
-    var googleAnalytics = function() {
-        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
-        (i[r].q=i[r].q||[]).push(arguments);};i[r].l=1*new Date();a=s.createElement(o);
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        // Add hostname to allow tracking of accessed tenant
-        ga('create', 'UA-57660493-1', window.location.hostname);
-        ga('send', 'pageview');
-
-        // Add event handler to track JavaScript errors
-        window.addEventListener('error', function(ev) {
-            ga('send', 'event', 'JavaScript Error', 'log', ev.message + ' [' + ev.filename + ':  ' + ev.lineno + ']');
-        });
-
-        // Add event handler to track jQuery AJAX errors
-        $(document).ajaxError(function(ev, request, settings, err) {
-            ga('send', 'event', 'Ajax Error', 'log', settings.type + ' ' + settings.url + ' => ' + err + ' (' + request.status + ')');
-        });
-    };
-
-    /**
-     * Register a Google Analytics tracking event
-     * (https://developers.google.com/analytics/devguides/collection/analyticsjs/events#overview)
-     *
-     * @param  {String}    category      Typically the object that was interacted with (e.g. button)
-     * @param  {String}    action        The type of interaction (e.g. click)
-     * @param  {String}    label         Useful for categorizing events (e.g. nav buttons)
-     * @param  {Number}    [value]       Value of the action, values must be non-negative
-     */
-    var sendTrackingEvent = exports.sendTrackingEvent = function(category, action, label, value) {
-        if (!_.isString(category)) {
-            throw new Error('An invalid value for \'category\' has been provided');
-        } else if (!_.isString(action)) {
-            throw new Error('An invalid value for \'action\' has been provided');
-        } else if (!_.isString(label)){
-            throw new Error('An invalid value for \'label\' has been provided');
-        } else if (value && !_.isNumber(value)) {
-            throw new Error('An invalid value for \'value\' has been provided');
-        }
-
-        // Only send the value along when it's specified
-        /* istanbul ignore next */
-        if (value) {
-            ga('send', 'event', category, action, label, value);
-        } else {
-            ga('send', 'event', category, action, label);
-        }
-
-        return true;
-    };
-
-
     ///////////////////
     // LOCAL STORAGE //
     ///////////////////
@@ -305,10 +242,8 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
             $('body').append($notificationContainer);
         }
 
-        // If a title has been provided, we wrap it in an h4 and prepend it to the message
-        if (title) {
-            message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
-        }
+        // Wrap tit title in an h4 and prepend it to the message
+        message = '<div data-internal-id="' + randomId + '"><h4>' + title + '</h4>' + (message ? '<p>' + message + '</p>' : '') + '</div>';
 
         // If an ID has been provided, add the `id` attribute to the message
         if (id) {
@@ -455,9 +390,6 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
         });
     };
 
-    // Initialise Google Analytics
-    googleAnalytics();
-
 
     //////////////////////
     //  INITIALISATION  //
@@ -472,6 +404,7 @@ define(['exports', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'boo
 
         // Gather all the specific funtionality classes
         var utilClasses = [
+            instrumentation,
             state,
             templates,
             time

@@ -17,6 +17,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
 
     // Cache the tripos data
     var triposData = null;
+    // Keep track of when the user started
+    var timeFromStart = null;
 
     /**
      * Set up the modules of events in the list.
@@ -27,6 +29,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var setUpModules = function(ev, data) {
         var partId = parseInt(data.selected, 10);
+
+        // Track the user choosing a part
+        gh.utils.trackEvent(['Manage', 'Borrow series', 'Chosen part']);
 
         // Retrieve the organisational unit information for the modules
         orgUnitAPI.getOrgUnits(gh.data.me.appId, true, null, partId, ['module'], function(err, modules) {
@@ -52,6 +57,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var setUpPartPicker = function(ev, data) {
         var triposId = parseInt(data.selected, 10);
+
+        // Track the user choosing a tripos
+        gh.utils.trackEvent(['Manage', 'Borrow series', 'Chosen tripos']);
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
@@ -129,6 +137,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var addSeriesToBorrow = function() {
         $(this).closest('.list-group-item ').addClass('gh-borrow-series-borrowed');
+        // Track the user adding a series to borrow
+        gh.utils.trackEvent(['Manage', 'Borrow series', 'Series added']);
     };
 
     /**
@@ -139,6 +149,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var removeSeriesToBorrow = function() {
         $(this).closest('.list-group-item ').removeClass('gh-borrow-series-borrowed');
+        // Track the user removing a series to borrow
+        gh.utils.trackEvent(['Manage', 'Borrow series', 'Series removed']);
     };
 
     /**
@@ -147,6 +159,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      * @private
      */
     var borrowSeries = function()  {
+        // Calculate how long it takes the user to borrow the series
+        timeFromStart = (new Date() - timeFromStart) / 1000;
+
         // Get the ID of the module to borrow series to
         var moduleId = $(this).data('moduleid');
 
@@ -166,6 +181,12 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
                 return gh.utils.notification('Could not borrow series', constants.messaging.default.error, 'error');
             }
             gh.utils.notification('Successfully borrowed series', null, 'success');
+
+            // Track the user completing borrowing of a series
+            gh.utils.trackEvent(['Manage', 'Borrow series', 'Completed'], {
+                'time_from_start': timeFromStart,
+                'number_of_borrowed_series': seriesIDs.length
+            });
 
             // Hide the module modal
             $('#gh-borrow-series-modal').modal('hide');
@@ -208,6 +229,15 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             $('#gh-borrow-series-tripos').chosen({
                 'no_results_text': 'No matches for'
             }).change(setUpPartPicker);
+
+            // Track the user starting borrowing of a series
+            gh.utils.trackEvent(['Manage', 'Borrow series', 'Started']);
+            // Track how long the user takes to borrow the series
+            timeFromStart = new Date();
+        });
+        $('body').on('click', '#gh-borrow-series-modal [data-dismiss="modal"]', function() {
+            // Track the user cancelling borrowing of a module
+            gh.utils.trackEvent(['Manage', 'Borrow series', 'Cancelled']);
         });
         // Mark a series as 'to borrow'
         $('body').on('click', '.gh-borrow-series-select', addSeriesToBorrow);

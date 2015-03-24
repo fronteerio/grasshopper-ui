@@ -15,12 +15,18 @@
 
 define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.orgunit'], function(gh, constants, orgunitAPI, seriesAPI, orgUnitAPI) {
 
+    // Keep track of when the user started
+    var timeFromStart = null;
+
     /**
      * Cancel the creation of a new series and return to the last state
      *
      * @private
      */
     var cancelCreateNewSeries = function() {
+        // Track the user cancelling creation of a series
+        gh.utils.trackEvent(['Manage', 'Add series', 'Cancelled']);
+        // Refresh the state to reload the last selected part
         gh.utils.refreshState();
     };
 
@@ -30,7 +36,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
      * @private
      */
     var createNewSeries = function() {
-
+        // Calculate how long it takes the user to create the series
+        timeFromStart = (new Date() - timeFromStart) / 1000;
         // Get the AppId
         var appId = require('gh.core').data.me.AppId;
         // Get the displayName
@@ -61,6 +68,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
                     if (err) {
                         gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
                     }
+
+                    // Track the user creating the series
+                    gh.utils.trackEvent(['Manage', 'Add series', 'Completed'], {
+                        'time_from_start': timeFromStart
+                    });
 
                     // Refresh the modules list
                     $(document).trigger('gh.listview.refresh', {
@@ -127,6 +139,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
                     'partId': partId
                 }
             });
+            // Track the user starting creation of a module
+            gh.utils.trackEvent(['Manage', 'Add series', 'Started']);
+            // Track how long the user takes to create the module
+            timeFromStart = new Date();
         });
 
         // Toggle the enabled status of the submit button
