@@ -139,7 +139,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
                 if (err) {
-                    gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
+                    return gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
                 window.location.reload();
             });
@@ -164,11 +164,10 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         ev.preventDefault();
 
         gh.api.authenticationAPI.logout(function(err) {
-            if (!err) {
-                window.location = '/';
-            } else {
-                gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
+            if (err) {
+                return gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
             }
+            window.location = '/';
         });
     };
 
