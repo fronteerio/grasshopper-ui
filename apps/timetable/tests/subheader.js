@@ -63,12 +63,12 @@ casper.test.begin('Student - Component - Subheader', function(test) {
      * @param {User}    user    User object to test with
      */
     var verifySubHeaderLoggedIn = function(user) {
-        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
-            casper.fill('#gh-right-container #gh-header #gh-signin-form', {
+        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
+            casper.fill('#gh-right-container #gh-header .gh-signin-form', {
                 'username': user.email,
                 'password': user.password
             }, false);
-            casper.click('#gh-right-container #gh-header #gh-signin-form button[type="submit"]');
+            casper.click('#gh-right-container #gh-header .gh-signin-form button[type="submit"]');
 
             // Wait for the login to succeed
             casper.waitForSelector('#gh-signout-form button[type="submit"]', function() {

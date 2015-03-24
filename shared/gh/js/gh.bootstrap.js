@@ -38,6 +38,7 @@ requirejs.config({
         'sinon': 'vendor/js/sinon-1.12.1',
         'jquery.serializeobject': 'vendor/js/jquery.serializeobject',
         'text': 'vendor/js/require.text',
+        'validator': 'vendor/js/bootstrap-validator',
 
         // GH core
         'pluginBuilder': 'gh/pluginBuilder',

@@ -235,7 +235,7 @@
 
         <script id="gh-header-template" type="text/template">
             <% if (!gh.data.me || gh.data.me.anon) { %>
-                <form id="gh-signin-form" class="form-inline pull-right" role="form">
+                <form class="form-inline pull-right gh-signin-form" role="form" data-toggle="validator">
                     <%= _.partial('login-form', {
                         'gh': gh,
                         'isGlobalAdminUI': true

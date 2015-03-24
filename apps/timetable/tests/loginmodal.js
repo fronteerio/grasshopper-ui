@@ -50,10 +50,10 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
                     test.assertSelectorHasText('#gh-modal-login h4.modal-title', 'Already have a timetable or want one?', 'Verify that the login modal title has the correct text');
 
                     // Verify the login form
-                    test.assertExists('#gh-modal-login #gh-signin-form', 'Verify that the login modal is present');
-                    test.assertExists('#gh-modal-login #gh-signin-form #gh-signin-email', 'Verify that the login modal email field is present');
-                    test.assertExists('#gh-modal-login #gh-signin-form #gh-signin-password', 'Verify that the login modal password field is present');
-                    test.assertExists('#gh-modal-login #gh-signin-form button[type="submit"]', 'Verify that the login modal submit button is present');
+                    test.assertExists('#gh-modal-login .gh-signin-form', 'Verify that the login modal is present');
+                    test.assertExists('#gh-modal-login .gh-signin-form #gh-signin-email', 'Verify that the login modal email field is present');
+                    test.assertExists('#gh-modal-login .gh-signin-form #gh-signin-password', 'Verify that the login modal password field is present');
+                    test.assertExists('#gh-modal-login .gh-signin-form button[type="submit"]', 'Verify that the login modal submit button is present');
 
                     // Verify the close buttons
                     test.assertExists('#gh-modal-login .modal-header button[data-dismiss="modal"]', 'Verify that the close button is present in the header');
@@ -79,11 +79,11 @@ casper.test.begin('Student - Component - Login Modal', function(test) {
                                     test.assertVisible('#gh-modal-login', 'Verify that adding an event to the calendar as anonymous triggers the login modal');
 
                                     // Verify that the form logs the user in
-                                    casper.fill('#gh-modal-login #gh-signin-form', {
+                                    casper.fill('#gh-modal-login .gh-signin-form', {
                                         'username': user.email,
                                         'password': user.password
                                     }, false);
-                                    casper.click('#gh-modal-login #gh-signin-form button[type="submit"]');
+                                    casper.click('#gh-modal-login .gh-signin-form button[type="submit"]');
 
                                     // Wait for the login to succeed
                                     casper.waitForSelector('#gh-signout-form button[type="submit"]', function() {

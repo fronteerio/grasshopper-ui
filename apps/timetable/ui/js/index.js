@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-listview'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-listview', 'validator'], function(gh, constants) {
 
     // Cache the tripos data
     var triposData = {};
@@ -34,6 +34,11 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         gh.utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
+
+        // Bind the validator to the login form
+        $('.gh-signin-form').validator({
+            'disable': false
+        }).on('submit', doLogin);
 
         // Render the tripos pickers
         gh.utils.renderTemplate($('#gh-subheader-pickers-template'), {
@@ -102,6 +107,11 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         gh.utils.renderTemplate($('#gh-modal-template'), {
             'gh': gh
         }, $('#gh-modal'));
+
+        // Bind the validator to the login form
+        $('.gh-signin-form').validator({
+            'disable': false
+        }).on('submit', doLogin);
     };
 
 
@@ -116,21 +126,13 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @private
      */
     var doLogin = function(ev) {
-        // Prevent the form from being submitted
-        ev.preventDefault();
-
-        // Do local authentication
-        if (gh.config.enableLocalAuth) {
-
+        // Log in to the system if the form is valid
+        if (!ev.isDefaultPrevented() && gh.config.enableLocalAuth) {
             // Collect and submit the form data
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
                 if (!err) {
-                    var state = $.param(History.getState().data);
-                    if (state) {
-                        return window.location.reload();
-                    }
-                    window.location = '/';
+                    return window.location.reload();
                 } else {
                     gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
@@ -140,6 +142,9 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         } else if (gh.config.enableShibbolethAuth) {
             gh.api.authenticationAPI.shibbolethLogin();
         }
+
+        // Avoid default form submit behaviour
+        return false;
     };
 
     /**
@@ -173,7 +178,6 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @private
      */
     var addBinding = function() {
-        $('body').on('submit', '#gh-signin-form', doLogin);
         $(document).on('gh.calendar.ready', setUpCalendar);
         $(document).on('gh.part.selected', onPartSelected);
     };

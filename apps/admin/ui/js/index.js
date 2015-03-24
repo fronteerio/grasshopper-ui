@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'chosen'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -59,6 +59,11 @@ define(['gh.core', 'gh.constants', 'chosen'], function(gh, constants) {
         gh.utils.renderTemplate($('#gh-header-template'), {
             'gh': gh
         }, $('#gh-header'));
+
+        // Bind the validator to the login form
+        $('.gh-signin-form').validator({
+            'disable': false
+        }).on('submit', doLogin);
     };
 
     /**
@@ -99,22 +104,21 @@ define(['gh.core', 'gh.constants', 'chosen'], function(gh, constants) {
      * @private
      */
     var doLogin = function(ev) {
-        // Prevent the form from being submitted
-        ev.preventDefault();
-
-        // Collect and submit the form data
-        var formValues = _.object(_.map($(this).serializeArray(), _.values));
-        gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-            if (!err) {
-                var state = $.param(History.getState().data);
-                if (state) {
+        // Log in to the system if the form is valid
+        if (!ev.isDefaultPrevented()) {
+            // Collect and submit the form data
+            var formValues = _.object(_.map($(this).serializeArray(), _.values));
+            gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
+                if (!err) {
                     return window.location.reload();
+                } else {
+                    gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
-                window.location = '/';
-            } else {
-                gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
-            }
-        });
+            });
+        }
+
+        // Avoid default form submit behaviour
+        return false;
     };
 
     /**
@@ -456,7 +460,6 @@ define(['gh.core', 'gh.constants', 'chosen'], function(gh, constants) {
         $('body').on('click', '#gh-tenants-apps-form .gh-launch-app', launchApp);
         $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
-        $('body').on('submit', '#gh-signin-form', doLogin);
     };
 
     /**

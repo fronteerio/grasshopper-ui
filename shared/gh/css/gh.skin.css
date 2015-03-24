@@ -57,6 +57,33 @@ a,
     color: #D92751;
 }
 
+
+/**************/
+/* VALIDATION */
+/**************/
+
+.has-error label {
+    color: #A94442;
+}
+
+.has-error input.form-control {
+    background-color: #FFC8C7;
+    border-color: #A94442 !important;
+}
+
+.has-error .form-control::-moz-placeholder {
+    color: #A94442;
+}
+
+.has-error .form-control:-ms-input-placeholder {
+    color: #A94442;
+}
+
+.has-error .form-control::-webkit-input-placeholder {
+    color: #A94442;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/

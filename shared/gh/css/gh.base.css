@@ -70,6 +70,33 @@ select[disabled],
     border-width: 1px;
 }
 
+
+/**************/
+/* VALIDATION */
+/**************/
+
+.has-error label {
+    font-weight: 600;
+}
+
+.has-error input.form-control {
+    border-style: solid !important;
+    border-width: 1px !important;
+}
+
+.has-error .form-control::-moz-placeholder {
+    font-weight: 400;
+}
+
+.has-error .form-control:-ms-input-placeholder {
+    font-weight: 400;
+}
+
+.has-error .form-control::-webkit-input-placeholder {
+    font-weight: 400;
+}
+
+
 /**********/
 /* LAYOUT */
 /**********/
