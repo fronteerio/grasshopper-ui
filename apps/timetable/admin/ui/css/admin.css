@@ -536,6 +536,10 @@
     opacity: 1 !important;
 }
 
+.gh-batch-edit-time-open + #gh-batch-edit-date-container #gh-batch-edit-day-picker-container div:nth-child(7) {
+    margin-bottom: 17px;
+}
+
 .gh-batch-edit-time-open + #gh-batch-edit-date-container #gh-batch-edit-day-picker-container div:nth-child(7) + button {
     display: none;
 }
