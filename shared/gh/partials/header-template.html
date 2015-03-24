@@ -1,5 +1,5 @@
 <% if (!data.gh.data.me || data.gh.data.me.anon) { %>
-    <form id="gh-signin-form" class="form-inline pull-right" role="form">
+    <form class="form-inline pull-right gh-signin-form" role="form" data-toggle="validator">
         <%= _.partial('login-form', {'data': data}) %>
     </form>
 <% } else { %>

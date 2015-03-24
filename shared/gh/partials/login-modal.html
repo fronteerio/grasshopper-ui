@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <p>Sign-in to see your timetable and make changes</p>
-                <form id="gh-signin-form" class="form-inline" role="form">
+                <form class="form-inline gh-signin-form" role="form" data-toggle="validator">
                     <%= _.partial('login-form', {'data': data}) %>
                 </form>
             </div>

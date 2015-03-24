@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants) {
 
     // Cache the tripos data
     var triposData = {};
@@ -80,6 +80,11 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         gh.utils.renderTemplate($('#gh-login-template'), {
             'gh': gh
         }, $('#gh-subheader'));
+
+        // Bind the validator to the login form
+        $('.gh-signin-form').validator({
+            'disable': false
+        }).on('submit', doLogin);
     };
 
     /**
@@ -221,26 +226,24 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      * @private
      */
     var doLogin = function(ev) {
-        // Prevent the form from being submitted
-        ev.preventDefault();
-
-        // Do local authentication
-        if (gh.config.enableLocalAuth) {
-
+        // Log in to the system if the form is valid
+        if (!ev.isDefaultPrevented() && gh.config.enableLocalAuth) {
             // Collect and submit the form data
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-                if (!err) {
-                    window.location = '/admin';
-                } else {
-                    gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
+                if (err) {
+                    return gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
                 }
+                window.location.reload();
             });
 
         // Do Shibboleth authentication
         } else if (gh.config.enableShibbolethAuth) {
             gh.api.authenticationAPI.shibbolethLogin();
         }
+
+        // Avoid default form submit behaviour
+        return false;
     };
 
     /**
@@ -254,11 +257,10 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         ev.preventDefault();
 
         gh.api.authenticationAPI.logout(function(err) {
-            if (!err) {
-                window.location = '/admin';
-            } else {
-                gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
+            if (err) {
+                return gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
             }
+            window.location = '/admin';
         });
     };
 
@@ -378,8 +380,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         $('body').on('click', '.gh-hide-video', hideVideo);
         $('body').on('click', '.gh-play-video', playVideo);
 
-        // Login and logout
-        $('body').on('submit', '#gh-signin-form', doLogin);
+        // logout
         $('body').on('submit', '#gh-signout-form', doLogout);
 
         // Track an event when the user clicks the Cambridge logo
