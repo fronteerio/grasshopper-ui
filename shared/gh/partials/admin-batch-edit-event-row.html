@@ -1,25 +1,25 @@
-<% if (ev && !ev.isNew) { %>
-<tr data-eventid="<%= ev.id %>">
+<% if (data.ev && !data.ev.isNew) { %>
+<tr data-eventid="<%= data.ev.id %>">
 <% } else { %>
-<tr data-tempid="<%= ev.tempId %>" class="<% if (ev.selected) { %>info<% } %> active gh-new-event-row">
+<tr data-tempid="<%= data.ev.tempId %>" class="<% if (data.ev.selected) { %>info<% } %> active gh-new-event-row">
 <% } %>
     <td>
         <div class="checkbox">
             <label>
-                <input type="checkbox" class="gh-select-single" title="Click to select the event" <% if (ev.selected) { %> checked="checked" <% } %>> <span class="sr-only">Select</span>
+                <input type="checkbox" class="gh-select-single" title="Click to select the event" <% if (data.ev.selected) { %> checked="checked" <% } %>> <span class="sr-only">Select</span>
             </label>
         </div>
     </td>
-    <td class="gh-jeditable-events gh-event-description" tabindex="0" title="Click to edit the event name"><%- ev.displayName %></td>
-    <td class="gh-event-date" data-start="<%- ev.start %>" data-end="<%- ev.end %>" tabindex="0" title="Click to edit the event start and end times">
+    <td class="gh-jeditable-events gh-event-description" tabindex="0" title="Click to edit the event name"><%- data.ev.displayName %></td>
+    <td class="gh-event-date" data-start="<%- data.ev.start %>" data-end="<%- data.ev.end %>" tabindex="0" title="Click to edit the event start and end times">
         <%= _.partial('admin-edit-date-field', {
-            'data': ev,
-            'utils': utils
+            'data': data.ev,
+            'utils': data.utils
         }) %>
     </td>
     <td class="gh-event-organisers-fields hide">
         <% var organiserString = []; %>
-        <% _.each(ev.organisers, function(organiser) { %>
+        <% _.each(data.ev.organisers, function(organiser) { %>
             <% if (_.isObject(organiser)) { %>
                 <input type="hidden" name="gh-event-organiser" value="<%- organiser.displayName %>" data-id="<%- organiser.id %>" data-add="true">
                 <% organiserString.push(organiser.displayName) %>
@@ -30,9 +30,8 @@
         <% }); %>
     </td>
     <td class="gh-event-organisers" tabindex="0" title="Click to add a lecturer for this event"><%- organiserString.join(', ') %></td>
-    <td class="gh-jeditable-events gh-event-location" tabindex="0" title="Click to add a location for this event"><%- ev.location %></td>
-    <td class="gh-jeditable-events-select gh-event-type" data-type="<%- ev.type %>" data-first="<% if (ev.type) { %><%- ev.type.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event type">
-    <%- ev.type %></td>
+    <td class="gh-jeditable-events gh-event-location" tabindex="0" title="Click to add a location for this event"><%- data.ev.location %></td>
+    <td class="gh-jeditable-events-select gh-event-type" data-type="<%- data.ev.type %>" data-first="<% if (data.ev.type) { %><%- data.ev.type.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event type"><%- data.ev.type %></td>
     <td class="gh-event-delete" tabindex="0" title="Select the row and click to delete this event">
         <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
     </td>

@@ -1,8 +1,8 @@
 <div id="gh-result-summary">
-    <p><%- data.length %> module<% if (data.length === 0 || data.length > 1) { %>s<% } %> in this part</p>
+    <p><%- data.modules.length %> module<% if (data.modules.length === 0 || data.modules.length > 1) { %>s<% } %> in this part</p>
 </div>
 <div id="gh-modules-list-container">
     <ul id="gh-modules-list" class="list-group">
-        <%= _.partial('student-module-item', {'data': data}) %>
+        <%= _.partial('student-module-item', {'data': data.modules}) %>
     </ul>
 </div>
