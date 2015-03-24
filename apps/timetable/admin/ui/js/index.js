@@ -54,7 +54,10 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      */
     var renderHeader = function() {
         gh.utils.renderTemplate($('#gh-header-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh,
+                'isGlobalAdminUI': false
+            }
         }, $('#gh-header'));
     };
 
@@ -64,9 +67,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      * @private
      */
     var renderHelp = function() {
-        gh.utils.renderTemplate($('#gh-help-template'), {
-            'gh': gh
-        }, $('#gh-main'));
+        gh.utils.renderTemplate($('#gh-help-template'), null, $('#gh-main'));
     };
 
     /**
@@ -157,9 +158,11 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
 
         // Render the editable parts template
         gh.utils.renderTemplate($('#gh-editable-parts-template'), {
-            'data': editableParts,
-            'gh': gh,
-            'hideVideo': gh.utils.localDataStorage().get('hideVideo')
+            'data': {
+                'editableParts': editableParts,
+                'gh': gh,
+                'hideVideo': gh.utils.localDataStorage().get('hideVideo')
+            }
         }, $('#gh-main'));
     };
 
@@ -191,8 +194,10 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         data.eventsByTerm = gh.utils.orderEventsByTerm(data.eventsByTerm);
         // Render the batch edit template
         gh.utils.renderTemplate($('#gh-batch-edit-template'), {
-            'gh': gh,
-            'data': data
+            'data': {
+                'gh': gh,
+                'records': data
+            }
         }, $('#gh-main'));
 
         // Let the batch-edit plugin know that the HTML has been rendered

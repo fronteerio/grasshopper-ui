@@ -57,7 +57,10 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      */
     var renderHeader = function() {
         gh.utils.renderTemplate($('#gh-header-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh,
+                'isGlobalAdminUI': true
+            }
         }, $('#gh-header'));
 
         // Bind the validator to the login form

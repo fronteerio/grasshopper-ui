@@ -60,14 +60,11 @@
             </div>
             <div class="clearfix"></div>
         </div>
+        <div id="gh-modal"><!-- --></div>
 
         <!-- Modal template -->
-        <div id="gh-modal"><!-- --></div>
         <script id="gh-modal-template" type="text/template">
-            <%= _.partial('login-modal', {
-                'gh': gh,
-                'isGlobalAdminUI': false
-            }) %>
+            <%= _.partial('login-modal', {'data': data}) %>
         </script>
 
         <!-- Subheader pickers template -->
@@ -87,21 +84,7 @@
 
         <!-- Header template -->
         <script id="gh-header-template" type="text/template">
-            <% if (!gh.data.me || gh.data.me.anon) { %>
-                <form class="form-inline pull-right gh-signin-form" role="form" data-toggle="validator">
-                    <%= _.partial('login-form', {
-                        'gh': gh,
-                        'isGlobalAdminUI': false
-                    }) %>
-                </form>
-            <% } else { %>
-                <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
-                    <button type="submit" class="btn btn-default gh-btn-secondary">
-                        <i class="fa fa-sign-out"></i>Sign out
-                    </button>
-                </form>
-            <% } %>
-            <h1><%- gh.data.me.app.displayName %></h1>
+            <%= _.partial('header-template', {'data': data}) %>
         </script>
 
         <!-- Modules template -->

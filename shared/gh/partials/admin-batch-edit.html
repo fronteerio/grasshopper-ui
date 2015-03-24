@@ -33,16 +33,16 @@
                 </ul>
 
                 <!-- Series title -->
-                <% if (data.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.series.displayName %></h1>
+                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
 
                 <!-- Borrowed data -->
-                <% if (data.borrowedFrom && (data.tripos || data.part)) { %>
+                <% if (data.records.borrowedFrom && (data.records.tripos || data.records.part)) { %>
                     <p class="gh-series-title-borrowed-info">
-                        <% if(data.tripos) { %>
-                            <span>Belongs to: <a href="?tripos=<%- data.tripos.id %>" title="<%- data.tripos.displayName %>"><%- data.tripos.displayName %></a></span>
+                        <% if(data.records.tripos) { %>
+                            <span>Belongs to: <a href="?tripos=<%- data.records.tripos.id %>" title="<%- data.records.tripos.displayName %>"><%- data.records.tripos.displayName %></a></span>
                         <% } %>
-                        <% if(data.part) { %>
-                            <span>Module: <a href="?tripos=<%- data.part.ParentId %>&part=<%- data.part.id %>" title="<%- data.part.displayName %>"><%- data.part.displayName %></a></span>
+                        <% if(data.records.part) { %>
+                            <span>Module: <a href="?tripos=<%- data.records.part.ParentId %>&part=<%- data.records.part.id %>" title="<%- data.records.part.displayName %>"><%- data.records.part.displayName %></a></span>
                         <% } %>
                 <% } %>
 
@@ -67,7 +67,7 @@
                                     <%= _.partial('admin-batch-edit-event-type', {
                                         'data': {
                                             'id': 'gh-batch-edit-type',
-                                            'types': gh.config.events.types,
+                                            'types': data.gh.config.events.types,
                                             'disable': true
                                         }
                                     }) %>
@@ -81,7 +81,7 @@
             </div>
 
             <div id="gh-batch-edit-term-container">
-                <% _.each(data.eventsByTerm, function(term) { %>
+                <% _.each(data.records.eventsByTerm, function(term) { %>
                     <div class="gh-batch-edit-events-container <% if (term.name === 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
                         <table class="table">
                             <thead>
@@ -114,9 +114,10 @@
                                 </tr>
                                 <% _.each(term.events, function(ev) { %>
                                     <%= _.partial('admin-batch-edit-event-row', {
-                                        'ev': ev,
-                                        'gh': gh,
-                                        'utils': gh.utils
+                                        'data': {
+                                            'ev': ev,
+                                            'utils': data.gh.utils
+                                        }
                                     }) %>
                                 <% }); %>
                             </tbody>
@@ -128,18 +129,18 @@
             <div class="gh-batch-edit-actions-container" style="display: none;"><!-- --></div>
             <!-- Footer actions template -->
             <script id="gh-batch-edit-actions-template" type="text/template">
-                <%= _.partial('admin-batch-edit-actions', {'data': data}, false) %>
+                <%= _.partial('admin-batch-edit-actions', {'data': data.records}, false) %>
             </script>
         </div>
 
         <div id="gh-batch-calendar-view" class="tab-pane" role="tabpanel">
             <div id="gh-calendar-view-container"><!-- --></div>
             <script id="gh-calendar-template" type="text/template">
-                <%= _.partial('calendar', {'data': data}, false) %>
+                <%= _.partial('calendar', {'data': data.records}, false) %>
             </script>
 
             <script id="gh-event-template" type="text/template">
-                <%= _.partial('event', {'data': data}, false) %>
+                <%= _.partial('event', {'data': data.records}, false) %>
             </script>
         </div>
     </div>

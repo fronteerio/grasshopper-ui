@@ -32,7 +32,9 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
     var setUpHeader = function() {
         // Render the header template
         gh.utils.renderTemplate($('#gh-header-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh
+            }
         }, $('#gh-header'));
 
         // Bind the validator to the login form
@@ -107,7 +109,10 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var renderLoginModal = function() {
         gh.utils.renderTemplate($('#gh-modal-template'), {
-            'gh': gh
+            'data': {
+                'gh': gh,
+                'isGlobalAdminUI': false
+            }
         }, $('#gh-modal'));
 
         // Bind the validator to the login form

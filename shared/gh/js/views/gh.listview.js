@@ -51,9 +51,11 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
 
         // Render the series in the sidebar
         utils.renderTemplate($(data.template), {
-            'data': modules.results,
-            'state': History.getState().data,
-            'preselect': preselect
+            'data': {
+                'modules': modules.results,
+                'state': History.getState().data,
+                'preselect': preselect
+            }
         }, $('#gh-modules-container', $(data.container)));
 
         // Reset the preselect value for next iteration

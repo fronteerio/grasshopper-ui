@@ -234,12 +234,9 @@
         </script>
 
         <script id="gh-header-template" type="text/template">
-            <% if (!gh.data.me || gh.data.me.anon) { %>
-                <form class="form-inline pull-right gh-signin-form" role="form" data-toggle="validator">
-                    <%= _.partial('login-form', {
-                        'gh': gh,
-                        'isGlobalAdminUI': true
-                    }) %>
+            <% if (!data.gh.data.me || data.gh.data.me.anon) { %>
+                <form class="form-inline pull-right gh-signin-form" role="form"  data-toggle="validator">
+                    <%= _.partial('login-form', {'data': data}) %>
                 </form>
             <% } else { %>
                 <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
