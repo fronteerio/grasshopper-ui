@@ -49,6 +49,7 @@
     line-height: 45px;
 }
 
+
 /* Toolbar */
 #gh-toolbar-container {
     height: auto;
@@ -459,11 +460,6 @@
     font-weight: 400;
     margin-left: 3px;
     text-decoration: none;
-}
-
-#gh-batch-edit-settings + ul .btn {
-    text-align: left;
-    width: 100%;
 }
 
 #gh-batch-edit-header input[type="text"],

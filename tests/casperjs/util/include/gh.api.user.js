@@ -129,8 +129,8 @@ var userAPI = (function() {
      * @param  {Function}    callback    Standard callback function
      */
     var doLogin = function(user, callback) {
-        casper.waitForSelector('#gh-right-container #gh-header #gh-signin-form', function() {
-            casper.fill('#gh-signin-form', {
+        casper.waitForSelector('#gh-right-container #gh-header .gh-signin-form', function() {
+            casper.fill('.gh-signin-form', {
                 'username': user.email,
                 'password': user.password
             }, true);

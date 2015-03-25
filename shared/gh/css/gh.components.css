@@ -26,7 +26,7 @@
     margin: 36px 0 35px 40px;
 }
 
-#gh-right-container #gh-header #gh-signin-form,
+#gh-right-container #gh-header .gh-signin-form,
 #gh-right-container #gh-header #gh-signout-form {
     margin: 42px 30px 35px 40px;
 }
@@ -119,6 +119,10 @@
     font-weight: 600;
 }
 
+#gh-toolbar-container .gh-toolbar-secondary .btn-default {
+    padding: 8px 12px;
+}
+
 /* Primary toolbar */
 .gh-toolbar-primary {
     height: 44px;
@@ -145,11 +149,16 @@
 }
 
 #gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms,
+#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-view {
     display: table;
     height: 32px;
     position: relative;
     z-index: 1;
+}
+
+#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+    min-width: 200px;
 }
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
@@ -158,7 +167,7 @@
 }
 
 #gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
-    padding: 0;
+    padding: 2px 0 3px;
 }
 
 .gh-toolbar-inner {
@@ -176,7 +185,6 @@
 
 #gh-toolbar-container .gh-toolbar-secondary #gh-btn-calendar-today {
     border: none;
-    padding: 8px 12px;
 }
 
 .gh-toolbar-label {
@@ -908,4 +916,15 @@ tbody tr:last-child > td.fc-widget-content {
     border-top-style: solid;
     border-top-width: 1px;
     padding: 8px 0 5px;
+}
+
+
+/******************************************************/
+/* DROPDOWN                                           */
+/* @see http://getbootstrap.com/javascript/#dropdowns */
+/******************************************************/
+
+.dropdown ul.dropdown-menu li button {
+    text-align: left;
+    width: 100%;
 }

@@ -474,6 +474,120 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
     };
 
     /**
+     * Automatically update the start time based on the end time selection to avoid unlikely time settings.
+     * e.g., having already set an start time of 9AM and updating the end time to 8AM will trigger the function
+     * and change the start time to be 7AM, one hour earlier than the selected end time
+     *
+     * @param  {jQuery}    $startContainer    jQuery selector of the container holding the start hours and minutes
+     * @param  {jQuery}    $endContainer      jQuery selector of the container holding the end hours and minutes
+     * @private
+     */
+    var updateStartTime = function($startContainer, $endContainer) {
+        // Get the start and end times
+        var startHour = parseInt($startContainer.find('.gh-batch-edit-hours-start').val(), 10);
+        var startMinute = parseInt($startContainer.find('.gh-batch-edit-minutes-start').val(), 10);
+        var endHour = parseInt($endContainer.find('.gh-batch-edit-hours-end').val(), 10);
+        var endMinute = parseInt($endContainer.find('.gh-batch-edit-minutes-end').val(), 10);
+
+        // Create a time we can calculate with
+        var startTime = parseFloat(startHour + '.' + startMinute);
+        var endTime = parseFloat(endHour + '.' + endMinute);
+
+        // If the end time is earlier than the start, turn down start time
+        if (endTime <= startTime) {
+            if (endHour !== 7) {
+                startHour = endHour - 1;
+            } else {
+                startHour = endHour;
+                startMinute = 0;
+                // If the event starts and finishes on 0 minutes, bump the end to 15 minutes to avoid
+                // duplicate start and end times
+                if (endMinute === 0) {
+                    endMinute = 15;
+                }
+            }
+
+            // update the start hours/minutes and end minutes
+            $startContainer.find('.gh-batch-edit-hours-start').val(startHour);
+            $startContainer.find('.gh-batch-edit-minutes-start').val(startMinute);
+            $endContainer.find('.gh-batch-edit-minutes-end').val(endMinute);
+        }
+    };
+
+    /**
+     * Automatically update the end time based on the start time selection to avoid unlikely time settings.
+     * e.g., having already set an end time of 8AM and updating the start to 10AM will trigger the function
+     * and change the end time to be 11AM, one hour later than the selected start time
+     *
+     * @param  {jQuery}    $startContainer    jQuery selector of the container holding the start hours and minutes
+     * @param  {jQuery}    $endContainer      jQuery selector of the container holding the end hours and minutes
+     * @private
+     */
+    var updateEndTime = function($startContainer, $endContainer) {
+        // Get the start and end times
+        var startHour = parseInt($startContainer.find('.gh-batch-edit-hours-start').val(), 10);
+        var startMinute = parseInt($startContainer.find('.gh-batch-edit-minutes-start').val(), 10);
+        var endHour = parseInt($endContainer.find('.gh-batch-edit-hours-end').val(), 10);
+        var endMinute = parseInt($endContainer.find('.gh-batch-edit-minutes-end').val(), 10);
+
+        // Create a time we can calculate with
+        var startTime = parseFloat(startHour + '.' + startMinute);
+        var endTime = parseFloat(endHour + '.' + endMinute);
+
+        // If the start is later than the end, crank up the end time
+        if (startTime >= endTime) {
+            if (startHour !== 19) {
+                endHour = startHour + 1;
+            } else {
+                endHour = startHour;
+                endMinute = 45;
+                // If the event starts and finishes on 45 minutes, trim the start to 30 minutes to avoid
+                // duplicate start and end times
+                if (startMinute === 45) {
+                    startMinute = 30;
+                }
+            }
+
+            // Update the end hours/minutes and start minutes
+            $endContainer.find('.gh-batch-edit-hours-end').val(endHour);
+            $endContainer.find('.gh-batch-edit-minutes-end').val(endMinute);
+            $startContainer.find('.gh-batch-edit-minutes-start').val(startMinute);
+        }
+    };
+
+    /**
+     * Determine whether the end or start times should be looked at for valid input and run the functions that
+     * take care of any unusual time selections.
+     *
+     * @private
+     */
+    var preBatchEditAdjustTime = function() {
+        // Get the start and end containers
+        var $startContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-start');
+        var $endContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-end');
+
+        // Check if hours or minutes where changed
+        if ($(this).hasClass('gh-batch-edit-hours-picker')) {
+            // Check if the start or end time was edited and update the time accordingly
+            if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
+                updateEndTime($startContainer, $endContainer);
+            } else {
+                updateStartTime($startContainer, $endContainer);
+            }
+        } else {
+            // Check if the start or end time was edited and update the time accordingly
+            if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
+                updateEndTime($startContainer, $endContainer);
+            } else {
+                updateStartTime($startContainer, $endContainer);
+            }
+        }
+
+        // Batch edit time after all tweaks have been made to the time
+        batchEditTime.apply(this);
+    };
+
+    /**
      * Remove a helper class from all checkbox containers that visually indicate focus
      *
      * @private
@@ -528,24 +642,25 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         // Date picker related events
         $('body').on('change', '.gh-batch-edit-day-picker', function() {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Day changed']);
-            batchEditTime.apply(this);
+            preBatchEditAdjustTime.apply(this);
         });
         $('body').on('change', '.gh-batch-edit-hours-start', function() {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Start hour changed']);
-            batchEditTime.apply(this);
+            preBatchEditAdjustTime.apply(this);
         });
         $('body').on('change', '.gh-batch-edit-hours-end', function() {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'End hour changed']);
-            batchEditTime.apply(this);
+            preBatchEditAdjustTime.apply(this);
         });
         $('body').on('change', '.gh-batch-edit-minutes-start', function() {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Start minute changed']);
-            batchEditTime.apply(this);
+            preBatchEditAdjustTime.apply(this);
         });
         $('body').on('change', '.gh-batch-edit-minutes-end', function() {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'End minute changed']);
-            batchEditTime.apply(this);
+            preBatchEditAdjustTime.apply(this);
         });
+
         $('body').on('click', '.gh-batch-edit-date-delete', deleteDay);
 
         // Adding a new day

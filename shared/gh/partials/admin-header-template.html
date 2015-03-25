@@ -1,7 +1,7 @@
 <h1>Timetable Administration</h1>
 <% if (!data.gh.data.me || data.gh.data.me.anon) { %>
     <% if (!data.gh.config.enableLocalAuth) { %>
-        <form id="gh-signin-form" class="form-inline pull-right" role="form">
+        <form class="form-inline pull-right gh-signin-form" role="form" data-toggle="validator">
             <%= _.partial('login-form', {'data': data}) %>
         </form>
     <% } %>
