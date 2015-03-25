@@ -213,6 +213,9 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                 $(document).trigger('gh.batchedit.togglesubmit');
             }
         });
+
+        // Style the Autosuggest as disabled by default
+        $('.gh-batch-event-organisers .as-selections').addClass('gh-disabled');
     };
 
     /**
