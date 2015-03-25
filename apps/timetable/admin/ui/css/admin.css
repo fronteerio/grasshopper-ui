@@ -392,8 +392,12 @@
 #gh-batch-edit-container.gh-sticky-header {
     position: fixed;
     top: 0;
-    width: calc(100% - 320px);
+    /*width: calc(100% - 320px);*/
     z-index: 1;
+}
+
+.gh-collapsed #gh-batch-edit-container.gh-sticky-header {
+    top: 215px;
 }
 
 #gh-batch-edit-container::after,

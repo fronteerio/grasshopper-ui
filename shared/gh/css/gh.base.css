@@ -107,7 +107,7 @@ select[disabled],
 
 /* Main page container */
 #gh-page-container {
-    min-width: 1280px;
+    /*min-width: 1280px;*/
 }
 
 /* Main page left hand side (navigation) container */
@@ -145,7 +145,7 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    height: 100%;
+    height: calc(100% + 1px);
     padding-bottom: 45px;
     padding-top: 215px;
 }
@@ -153,12 +153,34 @@ select[disabled],
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    height: 45px;
+    height: 44px;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     margin: 0;
     padding: 13px 40px;
+    width: 300px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules {
+    position: relative;
+    width: 50px;
+    z-index: 1;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules i {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.fa-angle-double-right,
+.gh-collapsed .fa-angle-double-left {
+    display: none;
+}
+
+.fa-angle-double-left,
+.gh-collapsed .fa-angle-double-right {
+    display: block;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
@@ -212,6 +234,7 @@ select[disabled],
 
 #gh-page-container #gh-right-container #gh-subheader {
     position: relative;
+    z-index: 10;
 }
 
 #gh-page-container #gh-left-container #gh-content-description {
@@ -222,6 +245,82 @@ select[disabled],
     padding-left: 320px;
     width: 100%;
     height: 100%;
+}
+
+/* Collapse modules */
+
+#gh-page-container #gh-left-container {
+    transition: width .3s;
+}
+
+#gh-page-container #gh-left-container #gh-modules-list-container {
+    transition: background-color .3s;
+}
+
+#gh-page-container #gh-right-container {
+    transition: padding-left .3s;
+}
+
+/*#gh-page-container #gh-right-container #gh-header h1 {
+    transition: margin-left .3s;
+}*/
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-meta-container #gh-content-description p,
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p,
+#gh-page-container #gh-page-container #gh-left-container #gh-modules-list-container ul {
+    transition: opacity .3s;
+}
+
+.gh-collapsed #gh-page-container #gh-left-container {
+    /*position: relative !important;*/
+    width: 50px !important;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container {
+    padding-left: 50px;
+    position: absolute;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container #gh-toolbar-container {
+    position: fixed;
+    top: 215px;
+    width: 100%;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container #gh-header-container {
+    position: fixed;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container #gh-header-container #gh-header h1 {
+    /*margin-left: 310px;*/
+}
+
+.gh-collapsed div#gh-batch-edit-container {
+    padding-top: 74px;
+}
+
+.gh-collapsed #gh-batch-edit-view {
+    margin-top: 215px;
+}
+
+.gh-collapsed #gh-left-container #gh-modules-list-container {
+    background-color: #FFF;
+    height: 100%;
+}
+
+.gh-collapsed #gh-left-container #gh-modules-list-container ul {
+    opacity: 0;
+}
+
+.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary {
+    border-bottom: none !important;
+}
+
+.gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p,
+.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary p {
+    opacity: 0;
 }
 
 

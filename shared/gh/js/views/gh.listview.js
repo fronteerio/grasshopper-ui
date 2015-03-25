@@ -168,6 +168,28 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         updateListExpandedStatus(expandedItems);
     };
 
+    /**
+     * Toggle the collapse class on the html which hides certain things from view
+     *
+     * @private
+     */
+    var toggleModulesCollapse = function() {
+        $('html').toggleClass('gh-collapsed');
+
+        // If the modules are toggled, set the display of the module list to none
+        if ($('html').hasClass('gh-collapsed')) {
+            setTimeout(function() {
+                $('#gh-modules-list').css('display', 'none');
+                $(window).trigger('resize');
+            }, 300);
+        } else {
+            $('#gh-modules-list').css('display', 'block');
+            setTimeout(function() {
+                $(window).trigger('resize');
+            }, 300);
+        }
+    };
+
 
     /////////////
     // BINDING //
@@ -187,6 +209,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         $(document).on('gh.listview.refresh', setUpModules);
         // Select the first module and series in the list
         $(document).on('gh.listview.preselect', preselectSeries);
+        // Responsive collapse/expand
+        $(document).on('click', '.gh-collapse-modules', toggleModulesCollapse);
     };
 
     addBinding();

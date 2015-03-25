@@ -392,6 +392,17 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         }
     };
 
+    var calculateBatchHeaderWidth = function() {
+        var headerWidth = $('#gh-batch-edit-container').width() + 60;
+        var contentWidth = $('#gh-batch-edit-term-container').width() + 60;
+
+        // If the content is wider than the batch edit header, assign its width
+        // to the batch edit header
+        headerWidth = contentWidth;
+
+        return headerWidth + 'px';
+    };
+
     /**
      * Make the header stick to the top of the page, depending on how far
      * down the page is scrolled
@@ -399,6 +410,13 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
      * @private
      */
     var handleStickyHeader = function() {
+        // Set the default top margin for the batch edit header. If the header is in fixed
+        // position because of a collapsed modules list, bump the default margin
+        var marginDefault = null;
+        if ($('html').hasClass('gh-collapsed')) {
+            marginDefault = 260;
+        }
+
         // Only attempt to handle scrolling when the batch edit is being used
         if ($('#gh-batch-edit-view').is(':visible')) {
             // Get the top of the window and the top of the header's position
@@ -406,14 +424,19 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             var headerTop = $('#gh-sticky-header-anchor').offset().top;
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
-            if (windowTop >= headerTop) {
+            if (marginDefault ? marginDefault : windowTop >= headerTop) {
+                console.log('do it');
                 // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
-                $('#gh-batch-edit-term-container').css('margin-top', ($('#gh-batch-edit-container').outerHeight()) + 'px');
+                $('#gh-batch-edit-term-container').css('margin-top', (marginDefault + $('#gh-batch-edit-container').outerHeight()) + 'px');
+                // Set the width of the container
+                $('#gh-batch-edit-container').css('width', calculateBatchHeaderWidth());
                 // Add the sticky class to the header
                 $('#gh-batch-edit-container').addClass('gh-sticky-header');
             } else {
                 // Reset the margin of the batch edit container
                 $('#gh-batch-edit-term-container').css('margin-top', 0);
+                // Reset the width of the container
+                $('#gh-batch-edit-container').css('width', 'auto');
                 // Remove the sticky class from the header
                 $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
@@ -1338,6 +1361,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
         $(document).on('gh.batchedit.rendered', setUpJEditable);
         $(window).scroll(handleStickyHeader);
+        $(window).resize(handleStickyHeader);
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);
