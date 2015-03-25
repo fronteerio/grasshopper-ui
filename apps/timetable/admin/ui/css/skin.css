@@ -390,6 +390,10 @@ tr.info .gh-event-delete button i {
     color: #171717;
 }
 
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
+    border-top-color: #171717;
+}
+
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {
     color: #42305B;
 }

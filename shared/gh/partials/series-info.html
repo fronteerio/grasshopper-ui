@@ -1,0 +1,20 @@
+<h3 class="gh-popover-title"><%- data.displayName %></h3>
+
+<div class="row">
+<% _.each(data.terms, function(term) { %>
+    <div class="col-sm-4">
+        <strong class="term-name"><%- term.label %></strong>
+        <% _.each(term.events, function(event) { %>
+            <p><%- data.utils.generateDisplayDate(event.start, event.end) %></p>
+        <%}); %>
+    </div>
+<% }); %>
+</div>
+
+<% if (data.organisers) { %>
+    <p class="gh-popover-organiser"><%- data.organisers.join(', ') %></p>
+<% } %>
+
+<% if (data.locations) { %>
+    <p class="gh-popover-location"><%- data.locations.join(', ') %></p>
+<% } %>

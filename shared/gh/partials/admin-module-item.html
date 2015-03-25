@@ -20,7 +20,7 @@
                     </div>
                     <% if (isChild) { %>
                         <% if (d.borrowedFrom) {%>
-                            <%= _.partial('series-popover', {'data': d}) %>
+                            <%= _.partial('series-borrowed-popover', {'data': d}) %>
                         <% } %>
                         <div class="gh-list-action">
                             <span <% if(d.borrowedFrom) { %>class="gh-series-borrowed"<% } %>>
