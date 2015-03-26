@@ -46,7 +46,7 @@ define(['exports'], function(exports) {
         // Create the URL to set the state to
         var url = '/?' + stateString.join('&');
         // If the admin UI is loaded, prepend '/admin/?'
-        if ($('body').data('isadminui')) {
+        if ($('body').hasClass('gh-admin')) {
             url = '/admin' + url;
         }
 
@@ -94,7 +94,7 @@ define(['exports'], function(exports) {
         // Create the URL to set the state to
         var url = '/?' + stateString.join('&');
         // If the admin UI is loaded, prepend '/admin/?'
-        if ($('body').data('isadminui')) {
+        if ($('body').hasClass('gh-admin')) {
             url = '/admin' + url;
         }
 
@@ -139,7 +139,7 @@ define(['exports'], function(exports) {
             // Create the URL to set the state to
             var url = '/?' + stateString.join('&');
             // If the admin UI is loaded, prepend '/admin/?'
-            if ($('body').data('isadminui')) {
+            if ($('body').hasClass('gh-admin')) {
                 url = '/admin' + url;
             }
 

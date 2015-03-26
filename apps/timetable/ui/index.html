@@ -37,7 +37,7 @@
         <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body>
+    <body class="gh-student">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -110,6 +110,16 @@
         <!-- Empty part template -->
         <script id="gh-empty-template" type="text/template">
             <%= _.partial('empty-timetable', {'data': data}) %>
+        </script>
+
+        <!-- Additional series info popover -->
+        <script id="gh-series-info-popover-template" type="text/template">
+            <%= _.partial('series-info-popover', {'data': data}) %>
+        </script>
+
+        <!-- Additional series info -->
+        <script id="gh-series-info-template" type="text/template">
+            <%= _.partial('series-info', {'data': data}) %>
         </script>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>

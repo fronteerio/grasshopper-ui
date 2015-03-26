@@ -84,6 +84,7 @@ requirejs.config({
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.new-module': 'gh/js/views/gh.new-module',
         'gh.new-series': 'gh/js/views/gh.new-series',
+        'gh.series-info': 'gh/js/views/gh.series-info',
         'gh.student-listview': 'gh/js/views/gh.student-listview',
         'gh.subheader': 'gh/js/views/gh.subheader',
         'gh.video': 'gh/js/views/gh.video',

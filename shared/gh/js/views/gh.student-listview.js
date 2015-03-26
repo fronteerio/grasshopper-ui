@@ -13,9 +13,14 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.series-info'], function(gh, constants) {
 
     var modules = null;
+
+
+    ///////////////////
+    //  SUBSCRIBING  //
+    ///////////////////
 
     /**
      * Add all events in the module to the calendar

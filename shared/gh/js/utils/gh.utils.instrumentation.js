@@ -109,7 +109,7 @@ define(['exports'], function(exports) {
         // - SUI: for events in the student user interface
         // - AUI: for events in the administrator interface
         var prefix = 'SUI ';
-        if ($('body').data('isadminui')) {
+        if ($('body').hasClass('gh-admin')) {
             prefix = 'AUI ';
         }
 

@@ -16,16 +16,36 @@
                         <i class="fa <% if (d.expanded) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>"></i>
                     </div>
             <% } %>
+                    <% if (isChild) { %>
+                        <!-- Additional series info popover container -->
+                        <div class="gh-series-info-popover-container" data-id="<%- d.id %>"><!-- --></div>
+
+                        <!-- Additional series info popover trigger -->
+                        <div class="gh-list-info">
+                            <i class="fa fa-info-circle" data-id="<%- d.id %>"></i>
+                        </div>
+                    <% } %>
                     <div class="gh-list-description">
                         <p class="gh-list-description-text"><%- d.displayName %></p>
                         <% if (isChild) { %>
                             <% if (d.metadata) { %>
-                                <p><%- d.metadata.pattern %></p>
-                                <% if (d.metadata.locations && d.metadata.locations.length) { %>
-                                    <p><%- d.metadata.locations.join(', ') %></p>
+                                <% if (d.metadata.locations) { %>
+                                    <% if (d.metadata.locations.length > 1) { %>
+                                        <p class="gh-list-metadata">Multiple locations</p>
+                                    <% } else if (d.metadata.locations.length === 1) { %>
+                                        <p class="gh-list-metadata"><%- d.metadata.locations[0] %></p>
+                                    <% } else { %>
+                                        <p class="gh-list-metadata no-information">No location information</p>
+                                    <% } %>
                                 <% } %>
-                                <% if (d.metadata.organisers && d.metadata.organisers.length) { %>
-                                    <p><%- d.metadata.organisers.join(', ') %></p>
+                                <% if (d.metadata.organisers) { %>
+                                    <% if (d.metadata.organisers.length > 1) { %>
+                                        <p class="gh-list-metadata">Multiple organisers</p>
+                                    <% } else if (d.metadata.organisers.length === 1) { %>
+                                        <p class="gh-list-metadata"><%- d.metadata.organisers[0] %></p>
+                                    <% } else { %>
+                                        <p class="gh-list-metadata no-information">No organisers information</p>
+                                    <% } %>
                                 <% } %>
                             <% } %>
                         <% } %>
