@@ -535,8 +535,6 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item {
     border: none;
-    border-bottom-style: solid;
-    border-bottom-width: 0;
     margin: 0;
     padding: 0;
 }
@@ -893,23 +891,22 @@ tbody tr:last-child > td.fc-widget-content {
 /* SERIES INFO */
 /***************/
 
-.gh-series-popover {
+.gh-student .popover.gh-series-popover {
     margin-left: 275px;
-    max-width: 515px;
-    width: 515px;
+    min-width: 515px;
 }
 
-.gh-series-popover .term-name {
+.gh-student .popover.gh-series-popover .term-name {
     display: block;
     margin-bottom: 5px;
 }
 
-.gh-series-popover .col-sm-4 {
+.gh-student .popover.gh-series-popover .col-sm-4 {
     margin-bottom: 15px;
 }
 
-.gh-series-popover .gh-popover-location,
-.gh-series-popover .gh-popover-organiser {
+.gh-student .popover.gh-series-popover .gh-popover-location,
+.gh-student .popover.gh-series-popover .gh-popover-organiser {
     border-top-style: solid;
     border-top-width: 1px;
     padding: 8px 0 5px;

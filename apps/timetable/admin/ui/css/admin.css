@@ -69,18 +69,12 @@
 /* POPOVER */
 /***********/
 
-/* event */
-.popover {
-    max-width: 425px;
-    padding: 5px 0 15px;
-    width: 425px;
-}
+/* Series */
 
-/* series */
-.popover.gh-series-popover {
-    max-width: 200px;
-    margin-left: 15px;
+.gh-admin .popover.gh-series-popover {
+    margin-left: 20px;
     padding: 3px;
+    width: 250px;
 }
 
 
