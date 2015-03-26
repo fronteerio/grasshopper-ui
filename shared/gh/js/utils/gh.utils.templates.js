@@ -53,6 +53,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!gh/partials/admin-batch-edit-date.html',
             'text!gh/partials/admin-batch-edit-event-row.html',
             'text!gh/partials/admin-batch-edit-event-type.html',
+            'text!gh/partials/admin-batch-edit-time-picker.html',
             'text!gh/partials/admin-borrow-series-module-item.html',
             'text!gh/partials/admin-edit-date-field.html',
             'text!gh/partials/admin-edit-dates.html',

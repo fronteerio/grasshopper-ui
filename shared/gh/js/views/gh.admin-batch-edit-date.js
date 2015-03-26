@@ -115,43 +115,31 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
     };
 
     /**
-     * Add another day to the terms
+     * Generates other days after the 'add another day' button was clicked and a day of the week was chosen
+     *
+     * @private
      */
-    var addAnotherDay = function() {
+    var generateOtherDays = function() {
         // Default the container to look for selected weeks in
         var $weeks = $('#gh-batch-edit-date-picker input:checked');
         // Get the days in use by the batch date pickers
         var $days = $('.gh-batch-edit-time-picker');
-        // Array to keep track of available days
-        var days = [0, 1, 2, 3, 4, 5, 6];
-
-        // Remove all used days from the available days Array
-        _.each($days, function($day) {
-            var usedday = parseInt($($day).find('.gh-batch-edit-day-picker').val(), 10);
-            days.splice(_.indexOf(days, usedday), 1);
-        });
+        // Get the selected day
+        var dayOfTheWeek = parseInt($(this).val(), 10);
 
         // For each selected term, add another day
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
             // For each selected week, add another day
             _.each($weeks, function(chk) {
-                // If the term is empty, add another day on the first day of the week
-                if (!days.length) {
-                    return;
-                }
-
                 // Get the week number
                 var eventWeek = parseInt(chk.value, 10);
 
-                // Get the day number
-                var eventDay = days[0];
-
                 // Get the date by week and day
-                var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
+                var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
 
                 var eventYear = dateByWeekAndDay.getFullYear();
                 var eventMonth = dateByWeekAndDay.getMonth();
-                eventDay = dateByWeekAndDay.getDate();
+                var eventDay = dateByWeekAndDay.getDate();
                 var eventStartHour = 13;
                 var eventStartMinute = 0;
                 var eventEndHour = 14;
@@ -182,6 +170,31 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // Track a user adding another day
         gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Added another day']);
+    };
+
+    /**
+     * Add another day selector to the terms. The actual events will only be created if the default `Choose a day`
+     * changes into a day selection
+     *
+     * @private
+     */
+    var addAnotherDay = function() {
+        // Render a day picker with default values
+        var renderedDayPicker = gh.utils.renderTemplate($('#gh-admin-batch-edit-time-picker'), {
+            'data': {
+                'gh': gh,
+                'dayInUse': {
+                    'startHour': 13,
+                    'endHour': 14,
+                    'startMinute': 0,
+                    'endMinute': 0
+                },
+                'dayIndex': 7
+            }
+        });
+
+        // Append the HTML as the last day in the list
+        $('#gh-batch-edit-day-picker-container .gh-batch-edit-time-picker').last().after(renderedDayPicker);
     };
 
     /**
@@ -562,29 +575,37 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      * @private
      */
     var preBatchEditAdjustTime = function() {
-        // Get the start and end containers
-        var $startContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-start');
-        var $endContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-end');
-
-        // Check if hours or minutes where changed
-        if ($(this).hasClass('gh-batch-edit-hours-picker')) {
-            // Check if the start or end time was edited and update the time accordingly
-            if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
-                updateEndTime($startContainer, $endContainer);
-            } else {
-                updateStartTime($startContainer, $endContainer);
-            }
+        // If the batch-edit-day-picker select element has an extra `Choose day` option, the days haven't
+        // actually been generated yet and we do that first
+        if ($(this).hasClass('gh-batch-edit-day-picker') && $(this).find('option[value=7]').length) {
+            generateOtherDays.apply(this);
+        // The select element has no extra `Choose day` option, we update the existing events in the terms.
+        // If hours/minutes are adjusted and not days we update the events as well
         } else {
-            // Check if the start or end time was edited and update the time accordingly
-            if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
-                updateEndTime($startContainer, $endContainer);
-            } else {
-                updateStartTime($startContainer, $endContainer);
-            }
-        }
+            // Get the start and end containers
+            var $startContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-start');
+            var $endContainer = $($(this).closest('.gh-batch-edit-time-picker')).find('.gh-batch-edit-date-end');
 
-        // Batch edit time after all tweaks have been made to the time
-        batchEditTime.apply(this);
+            // Check if hours or minutes where changed
+            if ($(this).hasClass('gh-batch-edit-hours-picker')) {
+                // Check if the start or end time was edited and update the time accordingly
+                if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
+                    updateEndTime($startContainer, $endContainer);
+                } else {
+                    updateStartTime($startContainer, $endContainer);
+                }
+            } else {
+                // Check if the start or end time was edited and update the time accordingly
+                if ($(this).parent().hasClass('gh-batch-edit-date-start')) {
+                    updateEndTime($startContainer, $endContainer);
+                } else {
+                    updateStartTime($startContainer, $endContainer);
+                }
+            }
+
+            // Batch edit time after all tweaks have been made to the time
+            batchEditTime.apply(this);
+        }
     };
 
     /**
@@ -640,7 +661,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         $('body').on('blur', '#gh-batch-edit-date-picker-container input', blurEditDateWeeks);
 
         // Date picker related events
-        $('body').on('change', '.gh-batch-edit-day-picker', function() {
+        $('body').on('change', '.gh-batch-edit-day-picker', function(ev) {
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Day changed']);
             preBatchEditAdjustTime.apply(this);
         });
