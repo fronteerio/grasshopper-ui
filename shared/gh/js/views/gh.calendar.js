@@ -348,7 +348,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var setDocumentTitle = function() {
-        if (!$('body').data('isadminui')) {
+        if (!$('body').hasClass('gh-admin')) {
             var title = calendar.fullCalendar('getView').title;
 
             // Set the document title

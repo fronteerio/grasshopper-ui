@@ -36,7 +36,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         // up the prefix should be 'Timetable Administration'
         var prefix = 'My Timetable ';
         /* istanbul ignore next */
-        if ($('body').data('isadminui')) {
+        if ($('body').hasClass('gh-admin')) {
             prefix = 'Timetable Administration ';
         }
 

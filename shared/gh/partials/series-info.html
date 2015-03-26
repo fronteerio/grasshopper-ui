@@ -1,16 +1,27 @@
 <h3 class="gh-popover-title"><%- data.displayName %></h3>
 
+<%
+    var numEvents = 0;
+    _.each(_.map(data.terms, function(term) { return term.events.length; }), function(termEvents) {
+        numEvents += termEvents;
+    });
+%>
+
 <div class="row">
-    <% _.each(data.terms, function(term) { %>
-        <% if (term.events && term.events.length) { %>
-            <div class="col-sm-4">
-                <strong class="term-name"><%- term.label %></strong>
-                <% _.each(term.events, function(event) { %>
-                    <p><%- data.utils.generateDisplayDate(event.start, event.end) %></p>
-                <%}); %>
-            </div>
-        <% } %>
-    <% }); %>
+    <% if (numEvents) { %>
+        <% _.each(data.terms, function(term) { %>
+            <% if (term.events && term.events.length) { %>
+                <div class="col-sm-4">
+                    <strong class="term-name"><%- term.label %></strong>
+                    <% _.each(term.events, function(event) { %>
+                        <p><%- data.utils.generateDisplayDate(event.start, event.end) %></p>
+                    <%}); %>
+                </div>
+            <% } %>
+        <% }); %>
+    <% } else { %>
+        <div class="col-sm-12">No events</div>
+    <% } %>
 </div>
 
 <% if (data.organisers.length) { %>
