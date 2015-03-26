@@ -86,6 +86,21 @@
 /* CALENDAR */
 /************/
 
+#gh-calendar-loading-container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#gh-calendar-loading-container h2 {
+    font-size: 30px;
+    font-weight: 200;
+    margin-bottom: 12px;
+}
+
+#gh-calendar-loading-container i {
+    font-size: 25px;
+}
+
 #gh-calendar-container {
     opacity: 1;
     -webkit-transition: opacity .2s;
