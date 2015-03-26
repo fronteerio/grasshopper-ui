@@ -31,20 +31,20 @@
                             <% if (d.metadata) { %>
                                 <% if (d.metadata.locations) { %>
                                     <% if (d.metadata.locations.length > 1) { %>
-                                        <p class="metadata">Multiple locations</p>
+                                        <p class="gh-list-metadata">Multiple locations</p>
                                     <% } else if (d.metadata.locations.length === 1) { %>
-                                        <p class="metadata"><%- d.metadata.locations[0] %></p>
+                                        <p class="gh-list-metadata"><%- d.metadata.locations[0] %></p>
                                     <% } else { %>
-                                        <p class="metadata no-information">No location information</p>
+                                        <p class="gh-list-metadata no-information">No location information</p>
                                     <% } %>
                                 <% } %>
                                 <% if (d.metadata.organisers) { %>
                                     <% if (d.metadata.organisers.length > 1) { %>
-                                        <p class="metadata">Multiple organisers</p>
+                                        <p class="gh-list-metadata">Multiple organisers</p>
                                     <% } else if (d.metadata.organisers.length === 1) { %>
-                                        <p class="metadata"><%- d.metadata.organisers[0] %></p>
+                                        <p class="gh-list-metadata"><%- d.metadata.organisers[0] %></p>
                                     <% } else { %>
-                                        <p class="metadata no-information">No organisers information</p>
+                                        <p class="gh-list-metadata no-information">No organisers information</p>
                                     <% } %>
                                 <% } %>
                             <% } %>

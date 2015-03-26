@@ -146,7 +146,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                 var termStartDate = gh.utils.convertISODatetoUnixDate(term.start);
                 var termEndDate = gh.utils.convertISODatetoUnixDate(term.end);
                 if (eventStartDate >= termStartDate && eventStartDate <= termEndDate) {
-                    term['events'].push(evt);
+                    term.events.push(evt);
                 }
             });
         });

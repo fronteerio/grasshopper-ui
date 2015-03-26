@@ -586,7 +586,7 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 14px 0;
 }
 
-.list-group .list-group-item .gh-list-description p.metadata:not(.no-information){
+.list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
     font-weight: 400;
 }
 

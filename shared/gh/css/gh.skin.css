@@ -314,7 +314,7 @@ ul.nav-tabs li.active {
     border-top-color: #171717;
 }
 
-.list-group .list-group-item .list-group .list-group-item .gh-list-description p.metadata:not(.no-information){
+.list-group .list-group-item .list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
     color: #FFF;
 }
 
