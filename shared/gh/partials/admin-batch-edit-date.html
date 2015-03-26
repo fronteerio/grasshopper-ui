@@ -34,48 +34,10 @@
     </div>
 
     <div id="gh-batch-edit-day-picker-container">
-        <% _.each(data.daysInUse, function(dayInUse, index) { %>
-            <div class="form-inline gh-batch-edit-time-picker">
-                <select class="pull-left form-control gh-batch-edit-day-picker" data-prev="<%- index %>">
-                    <option value="4" <% if (parseInt(index, 10) === 4) { %> selected="true" <% } %>>Thursdays</option>
-                    <option value="5" <% if (parseInt(index, 10) === 5) { %> selected="true" <% } %>>Fridays</option>
-                    <option value="6" <% if (parseInt(index, 10) === 6) { %> selected="true" <% } %>>Saturdays</option>
-                    <option value="0" <% if (parseInt(index, 10) === 0) { %> selected="true" <% } %>>Sundays</option>
-                    <option value="1" <% if (parseInt(index, 10) === 1) { %> selected="true" <% } %>>Mondays</option>
-                    <option value="2" <% if (parseInt(index, 10) === 2) { %> selected="true" <% } %>>Tuesdays</option>
-                    <option value="3" <% if (parseInt(index, 10) === 3) { %> selected="true" <% } %>>Wednesdays</option>
-                </select>
-                <div class="pull-left gh-batch-edit-date-start">
-                    <select class="form-control gh-batch-edit-hours-picker gh-batch-edit-hours-start">
-                        <% for (var i = 7; i < 20; i += 1) { %>
-                            <option value="<%= i %>" <% if (parseInt(dayInUse.startHour, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
-                        <% } %>
-                    </select>
-                    <select class="form-control gh-batch-edit-minutes-picker gh-batch-edit-minutes-start">
-                        <% for (var i = 0; i < 60; i += 15) { %>
-                            <option value="<%= i %>" <% if (parseInt(dayInUse.startMinute, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
-                        <% } %>
-                    </select>
-                </div>
-                <p class="pull-left gh-batch-edit-date-to">to</p>
-                <div class="pull-left gh-batch-edit-date-end">
-                    <select class="form-control gh-batch-edit-hours-picker gh-batch-edit-hours-end">
-                        <% for (var i = 7; i < 20; i += 1) { %>
-                            <option value="<%= i %>" <% if (parseInt(dayInUse.endHour, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
-                        <% } %>
-                    </select>
-                    <select class="form-control gh-batch-edit-minutes-picker gh-batch-edit-minutes-end">
-                        <% for (var i = 0; i < 60; i += 15) { %>
-                            <option value="<%= i %>" <% if (parseInt(dayInUse.endMinute, 10) === i ) { %> selected="true" <% } %>><%- data.gh.utils.addLeadingZero(i) %></option>
-                        <% } %>
-                    </select>
-                </div>
-
-                <!-- Only show the delete button if more than one days are in use -->
-                <% if (_.keys(data.daysInUse).length > 1) { %>
-                    <button class="btn btn-link gh-batch-edit-date-delete" title="Delete day from selection"><i class="fa fa-times"></i></button>
-                <% } %>
-            </div>
+        <% _.each(data.daysInUse, function(dayInUse, dayIndex) { %>
+            <% data.dayInUse = dayInUse %>
+            <% data.dayIndex = dayIndex %>
+            <%= _.partial('admin-batch-edit-time-picker', {'data': data}) %>
         <% }); %>
         <button type="button" class="btn btn-default gh-btn-secondary gh-batch-edit-date-add-day"><i class="fa fa-plus-square"></i> Add another day</button>
     </div>

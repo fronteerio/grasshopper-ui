@@ -200,6 +200,11 @@
             <%= _.partial('visibility-button', {'data': data}) %>
         </script>
 
+        <!-- Add another day selector -->
+        <script id="gh-admin-batch-edit-time-picker" type="text/template">
+            <%= _.partial('admin-batch-edit-time-picker', {'data': data}) %>
+        </script>
+
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>
 </html>
