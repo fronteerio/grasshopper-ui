@@ -30,43 +30,50 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         if (!series[seriesId]) {
             return gh.api.seriesAPI.getSeries(seriesId, false, function(err, data) {
                 if (err) {
-                    return console.error(err);
+                    return gh.utils.notification('Could not fetch series information', constants.messaging.default.error, 'error');
                 }
+
+                // Cache the series information
                 series[seriesId] = data;
 
-                // Retrieve the events that belong to the series
-                if (!series[seriesId]['Events']) {
-                    series[seriesId]['Events'] = [];
-
-                    /**
-                     * Get the series's events
-                     *
-                     * @param  {Number}    offset    The paging number of the results to retrieve
-                     * @private
-                     */
-                    var _getSeriesEvents = function(offset) {
-
-                        // Set a default offset
-                        offset = offset || 0;
-
-                        //
-                        gh.api.seriesAPI.getSeriesEvents(seriesId, 10, offset, true, function(err, data) {
-                            if (err) {
-                                return console.error(err);
-                            }
-                            series[seriesId]['Events'] = _.union(series[seriesId]['Events'], data.results);
-
-                            if (data.results.length === 10) {
-                                return _getSeriesEvents(offset += 10);
-                            }
-                            return retrieveSeries(seriesId);
-                        });
-                    };
-
-                    // Start fetching the events for the series
-                    return _getSeriesEvents();
+                // Skip the data retrieval if the events have already been cached
+                if (series[seriesId]['Events']) {
+                    return retrieveSeries(seriesId);
                 }
-                return retrieveSeries(seriesId);
+
+                // Retrieve the events that belong to the series
+                series[seriesId]['Events'] = [];
+
+                /**
+                 * Get the series' events
+                 *
+                 * @param  {Number}    [offset]    Number from where we should continue retrieving events (e.g 50)
+                 * @private
+                 */
+                var _getSeriesEvents = function(offset) {
+
+                    // Set a default offset. This represents the number from where we should continue retrieving events from the API.
+                    offset = offset || 0;
+
+                    // Retrieve the events for the series
+                    gh.api.seriesAPI.getSeriesEvents(seriesId, 25, offset, true, function(err, data) {
+                        if (err) {
+                            return gh.utils.notification('Could not fetch events for series', constants.messaging.default.error, 'error');
+                        }
+
+                        // Cache the events for the series
+                        series[seriesId]['Events'] = _.union(series[seriesId]['Events'], data.results);
+
+                        // Continue retrieving events for the series
+                        if (data.results.length === 25) {
+                            return _getSeriesEvents(offset += 25);
+                        }
+                        return retrieveSeries(seriesId);
+                    });
+                };
+
+                // Start fetching the events for the series
+                return _getSeriesEvents();
             });
         }
 
@@ -86,7 +93,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
-     * Collect the series events's locations
+     * Collect the series events' locations
      *
      * @param  {Object[]}    events    A collection of series events
      * @return {String[]}              A collection of locations
@@ -97,7 +104,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
-     * Collect the series events's organisers
+     * Collect the series events' organisers
      *
      * @param  {Object[]}    events    A collection of series events
      * @return {String[]}              A collection of organisers
@@ -115,7 +122,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     };
 
     /**
-     * Process the series's events
+     * Process the series' events
      *
      * @param  {Object[]}    events    A collection of series events
      * @return {Object}                Object containing the events grouped by term

@@ -676,13 +676,11 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle {
-    filter: alpha(opacity=75); /* For IE8 and earlier */
     font-size: 20px;
     opacity: 0.75;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle:hover {
-    filter: alpha(opacity=100); /* For IE8 and earlier */
     font-size: 20px;
     opacity: 1;
 }
@@ -870,13 +868,6 @@ tbody tr:last-child > td.fc-widget-content {
     overflow-y: auto;
 }
 
-/* series */
-.popover.gh-series-popover {
-    margin-left: 275px;
-    max-width: 515px;
-    width: 515px;
-}
-
 
 /**********/
 /* EVENTS */
@@ -901,6 +892,12 @@ tbody tr:last-child > td.fc-widget-content {
 /***************/
 /* SERIES INFO */
 /***************/
+
+.gh-series-popover {
+    margin-left: 275px;
+    max-width: 515px;
+    width: 515px;
+}
 
 .gh-series-popover .term-name {
     display: block;

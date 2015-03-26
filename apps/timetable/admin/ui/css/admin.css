@@ -934,7 +934,7 @@ tr.info .gh-event-delete button {
 /*************/
 
 #gh-borrow-series-modal .list-group-item .list-group {
-    margin-bottom: 30px;
+    padding-bottom: 30px;
 }
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-list-description {
