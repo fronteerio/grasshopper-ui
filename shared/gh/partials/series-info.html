@@ -2,7 +2,11 @@
 
 <%
     var numEvents = 0;
-    _.each(_.map(data.terms, function(term) { return term.events.length; }), function(termEvents) {
+    _.each(_.map(data.terms, function(term) {
+        if (term.events) {
+            return term.events.length;
+        }
+    }), function(termEvents) {
         numEvents += termEvents;
     });
 %>
@@ -24,10 +28,10 @@
     <% } %>
 </div>
 
-<% if (data.organisers.length) { %>
+<% if (data.organisers && data.organisers.length) { %>
     <p class="gh-popover-organiser"><%- data.organisers.join(', ') %></p>
 <% } %>
 
-<% if (data.locations.length) { %>
+<% if (data.locations && data.locations.length) { %>
     <p class="gh-popover-location"><%- data.locations.join(', ') %></p>
 <% } %>
