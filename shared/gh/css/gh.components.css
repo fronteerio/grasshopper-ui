@@ -896,10 +896,6 @@ tbody tr:last-child > td.fc-widget-content {
     min-width: 515px;
 }
 
-.gh-student .popover.gh-series-popover .arrow {
-    top: 26px !important;
-}
-
 .gh-student .popover.gh-series-popover .term-name {
     display: block;
     margin-bottom: 5px;

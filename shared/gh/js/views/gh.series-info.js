@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constants, moment) {
 
     // Cache the retrieved series
     var series = {};
@@ -21,10 +21,11 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
     /**
      * Retrieve the series information
      *
-     * @param  {Number}    seriesId    The ID of the series that needs to be retrieved
+     * @param  {Object}    clickover    Object representing the clickover component
+     * @param  {Number}    seriesId     The ID of the series that needs to be retrieved
      * @private
      */
-    var retrieveSeries = function(seriesId) {
+    var retrieveSeries = function(clickover, seriesId) {
 
         // Fetch the series if it hasn't been retrieved yet
         if (!series[seriesId]) {
@@ -38,7 +39,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
                 // Skip the data retrieval if the events have already been cached
                 if (series[seriesId]['Events']) {
-                    return retrieveSeries(seriesId);
+                    return retrieveSeries(clickover, seriesId);
                 }
 
                 // Retrieve the events that belong to the series
@@ -68,7 +69,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
                         if (data.results.length === 25) {
                             return _getSeriesEvents(offset += 25);
                         }
-                        return retrieveSeries(seriesId);
+                        return retrieveSeries(clickover, seriesId);
                     });
                 };
 
@@ -90,6 +91,9 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
         gh.utils.renderTemplate($('#gh-series-info-template'), {
             'data': data
         }, $('.popover.gh-series-popover').find('.series-info-container'));
+
+        // Reset the popover window's position
+        clickover.resetPosition();
     };
 
     /**
@@ -189,7 +193,7 @@ define(['gh.core', 'moment', 'clickover'], function(gh, moment) {
 
             // Retrieve the series information for display in the popover
             'onShown': function() {
-                retrieveSeries(seriesId);
+                retrieveSeries(this, seriesId);
             }
         };
 
