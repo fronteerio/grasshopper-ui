@@ -527,6 +527,16 @@ tbody .fc-sun {
     color: #999;
 }
 
+/* Series info popover */
+
+.popover.gh-borrowed-popover {
+    background-color: #D7E0DC;
+}
+
+.popover.gh-borrowed-popover .arrow:after {
+    border-right-color: #D7E0DC;
+}
+
 
 /**********/
 /* EVENTS */

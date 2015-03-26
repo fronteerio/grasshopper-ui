@@ -643,6 +643,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // all popovers are hidden before adding a new one
         _.defer(function() {
             var options = {
+                'class_name': 'gh-event-popover',
                 'container': 'body',
                 'content': $content.html(),
                 'global_close': true,

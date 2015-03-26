@@ -69,12 +69,9 @@
 /* POPOVER */
 /***********/
 
-/* Series */
-
-.gh-admin .popover.gh-series-popover {
-    margin-left: 20px;
-    padding: 3px;
-    width: 250px;
+.popover.gh-datepicker-popover {
+    min-width: 450px !important;
+    padding: 5px 5px 20px;
 }
 
 

@@ -45,31 +45,21 @@
 }
 
 
+/***********/
+/* POPOVER */
+/***********/
+
+.popover.gh-datepicker-popover {
+    background-color: #FFF;
+}
+
+
 /**********/
 /* CHOSEN */
 /**********/
 
 .chosen-container .chosen-results li.highlighted {
     background-color: #92308A;
-}
-
-
-/***********/
-/* POPOVER */
-/***********/
-
-/* event */
-.popover {
-    background-color: #FFF;
-}
-
-/* series */
-.popover.gh-series-popover {
-    background-color: #D7E0DC;
-}
-
-.popover.gh-series-popover .arrow:after {
-    border-right-color: #D7E0DC;
 }
 
 

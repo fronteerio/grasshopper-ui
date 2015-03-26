@@ -185,7 +185,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         var $content = $trigger.closest('.gh-list-group-item-container').find('.popover[data-id="' + seriesId + '"]');
 
         var options = {
-            'class_name': 'gh-series-popover',
+            'class_name': 'gh-series-popover gh-series-info-popover',
             'container': 'body',
             'content': $content.html(),
             'global_close': true,

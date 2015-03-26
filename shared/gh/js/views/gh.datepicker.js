@@ -212,6 +212,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         // Show the popover window
         _.defer(function() {
             $trigger.clickover({
+                'class_name': 'gh-datepicker-popover',
                 'container': 'body',
                 'content': content,
                 'global_close': false,
