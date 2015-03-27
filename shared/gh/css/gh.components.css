@@ -618,9 +618,10 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 14px 0;
 }
 
+
 .list-group .list-group-item .gh-list-action,
-.list-group .list-group-item .gh-list-description,
-.list-group .list-group-item .gh-series-borrowed {
+.list-group .list-group-item .gh-series-borrowed,
+.list-group .list-group-item .list-group .gh-list-description {
     border-top-style: solid;
     border-top-width: 1px;
 }

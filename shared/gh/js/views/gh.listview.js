@@ -180,7 +180,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
      */
     var setUpSeriesPopover = function() {
         var $trigger = $(this);
-        var $content = $('.list-group-item .popover[data-id="' + $trigger.data('id') + '"]');
+        var $content = $('.list-group-item .popover.borrowing[data-id="' + $trigger.data('id') + '"]');
 
         var options = {
             'class_name': 'gh-series-popover gh-borrowed-popover',
