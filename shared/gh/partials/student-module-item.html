@@ -55,17 +55,17 @@
             <% } %>
 
             <!-- Borrowed status -->
-            <% if (isChild) { %>
+            <% if (isChild && d.borrowedFrom) { %>
 
                 <!-- Borrowed popover-->
-                <% if (d.borrowedFrom) { %>
-                    <%= _.partial('series-borrowed-popover', {'data': d}) %>
-                <% } %>
+                <%= _.partial('series-borrowed-popover', {'data': d}) %>
 
                 <!-- Borrowed icon -->
-                <div class="gh-list-borrowed-info">
+                <div class="gh-series-borrowed">
                     <% if (d.borrowedFrom) { %>
-                        <i class="fa fa-link" data-id="<%- d.id %>"></i>
+                        <span class="gh-borrowed-icon-container">
+                            <i class="fa fa-link" data-id="<%- d.id %>"></i>
+                        </span>
                     <% } %>
                 </div>
             <% } %>

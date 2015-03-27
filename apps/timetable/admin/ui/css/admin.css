@@ -276,7 +276,12 @@
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
+    padding-right: 5px;
     width: 40px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-action i.fa-link {
+    padding-right: 0!important;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description {
