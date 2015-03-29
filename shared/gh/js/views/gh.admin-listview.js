@@ -48,40 +48,6 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series', 'clicko
         });
     };
 
-    /**
-     * Set up and show the series popover
-     *
-     * @private
-     */
-    var setUpSeriesPopover = function() {
-        var $trigger = $(this);
-        var $content = $('.gh-series-select .popover[data-id="' + $trigger.data('id') + '"]');
-
-        var options = {
-            'class_name': 'gh-series-popover',
-            'container': 'body',
-            'content': $content.html(),
-            'global_close': true,
-            'html': true
-        };
-
-        $trigger.clickover(options);
-        $trigger.trigger('click');
-    };
-
-    /**
-     * Dismiss the popover window
-     *
-     * @private
-     */
-    var dismissSeriesPopover = function() {
-        var $trigger = $(this);
-        // Only invoke a click when a popover is actually being shown
-        if ($('.popover.in').length) {
-            $trigger.trigger('click');
-        }
-    };
-
 
     /////////////
     // BINDING //
@@ -95,12 +61,6 @@ define(['gh.core', 'gh.new-module', 'gh.borrow-series', 'gh.new-series', 'clicko
     var addBinding = function() {
         // Select a series in the sidebar
         $('body').on('click', '.gh-series-select', selectSeries);
-
-        // Show extra information for the borrowed series
-        $('body').on('mouseover', '.gh-series-select .fa-link', setUpSeriesPopover);
-        // Hide the popover window
-        $('body').on('mouseout', '.gh-series-select .fa-link', dismissSeriesPopover);
-
         // Set up the modules in the sidebar
         $(document).on('gh.part.selected.admin', setUpModules);
     };

@@ -69,12 +69,9 @@
 /* POPOVER */
 /***********/
 
-/* Series */
-
-.gh-admin .popover.gh-series-popover {
-    margin-left: 20px;
-    padding: 3px;
-    width: 250px;
+.popover.gh-datepicker-popover {
+    min-width: 450px !important;
+    padding: 5px 5px 20px;
 }
 
 
@@ -279,7 +276,12 @@
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
+    padding-right: 5px;
     width: 40px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-action i.fa-link {
+    padding-right: 0!important;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description {

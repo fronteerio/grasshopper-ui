@@ -310,12 +310,21 @@ ul.nav-tabs li.active {
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action,
-.list-group .list-group-item .list-group .list-group-item .gh-list-description {
+.list-group .list-group-item .list-group .list-group-item .gh-list-description,
+.list-group .list-group-item .list-group .list-group-item .gh-series-borrowed {
     border-top-color: #171717;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
     color: #FFF;
+}
+
+.list-group .list-group-item .gh-borrowed-icon-container:hover {
+    background-color: #D7E0DC;
+}
+
+.list-group .list-group-item .gh-borrowed-icon-container:hover .fa-link {
+    color: #171717;
 }
 
 
@@ -525,6 +534,16 @@ tbody .fc-sun {
 .popover small {
     border-top-color: #DDD;
     color: #999;
+}
+
+/* Series info popover */
+
+.popover.gh-borrowed-popover {
+    background-color: #D7E0DC;
+}
+
+.popover.gh-borrowed-popover .arrow:after {
+    border-right-color: #D7E0DC;
 }
 
 

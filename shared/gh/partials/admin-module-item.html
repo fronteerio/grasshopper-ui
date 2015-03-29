@@ -23,7 +23,7 @@
                             <%= _.partial('series-borrowed-popover', {'data': d}) %>
                         <% } %>
                         <div class="gh-list-action">
-                            <span <% if(d.borrowedFrom) { %>class="gh-series-borrowed"<% } %>>
+                            <span <% if(d.borrowedFrom) { %>class="gh-borrowed-icon-container"<% } %>>
                             <% if(d.borrowedFrom) { %>
                                 <i class="fa fa-link" data-id="<%- d.id %>"></i>
                             <% } else { %>

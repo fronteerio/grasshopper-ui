@@ -53,6 +53,24 @@
             <% if (!isChild) { %>
                 </button>
             <% } %>
+
+            <!-- Borrowed status -->
+            <% if (isChild && d.borrowedFrom) { %>
+
+                <!-- Borrowed popover-->
+                <%= _.partial('series-borrowed-popover', {'data': d}) %>
+
+                <!-- Borrowed icon -->
+                <div class="gh-series-borrowed">
+                    <% if (d.borrowedFrom) { %>
+                        <span class="gh-borrowed-icon-container">
+                            <i class="fa fa-link" data-id="<%- d.id %>"></i>
+                        </span>
+                    <% } %>
+                </div>
+            <% } %>
+
+            <!-- Series actions -->
             <div class="gh-list-action">
                 <% if (d.subscribed || (!isChild && subscribedAll)) { %>
                     <button class="btn btn-link <% if (isChild) { %> gh-remove-from-calendar <% } else { %> gh-remove-all-from-calendar <% } %>">

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.series-info'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.series-info', 'clickover'], function(gh, constants) {
 
     var modules = null;
 
