@@ -69,7 +69,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
             'data': {
-                'parts': parts
+                'parts': parts,
+                'excludePart': History.getState().data.part
             }
         }, $('#gh-borrow-series-part'));
 
