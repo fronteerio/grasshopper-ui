@@ -179,7 +179,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // Change the view
         calendar.fullCalendar('changeView', currentView);
         // Set the view mode label
-        $('#gh-switch-view-label').html(getReadableView());
+        $('#gh-switch-view-label').html(getReadableView() + ' view');
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -316,7 +316,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
             var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate());
 
             // Set the label
-            label = 'Outside term';
+            label = 'Outside term week';
             if (weekNumber) {
                 label = 'Week ' + weekNumber;
             }
