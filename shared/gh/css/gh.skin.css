@@ -374,8 +374,29 @@ ul.nav-tabs li.active {
     border-color: #CCC !important;
 }
 
+.chosen-container .chosen-search input::-webkit-input-placeholder {
+   color: #555;
+}
+
+.chosen-container .chosen-search input::-moz-placeholder {  /* Firefox 19+ */
+   color: #555;
+}
+
+.chosen-container .chosen-search input:-ms-input-placeholder {
+   color: #555;
+}
+
+.chosen-container .chosen-results li.no-results {
+    background: none !important;
+}
+
 .chosen-container .chosen-results li.highlighted {
     background-color: #127077;
+}
+
+.chosen-container.chosen-with-drop .chosen-drop,
+.chosen-container.chosen-with-drop .chosen-single {
+    border-color: #DDD !important;
 }
 
 

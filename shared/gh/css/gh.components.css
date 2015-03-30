@@ -845,6 +845,19 @@ tbody tr:last-child > td.fc-widget-content {
     background-image: none;
 }
 
+.chosen-container.chosen-with-drop .chosen-drop,
+.chosen-container.chosen-with-drop .chosen-single {
+    border-style: solid;
+}
+
+.chosen-container.chosen-with-drop .chosen-drop {
+    border-width: 0 1px 1px 1px;
+}
+
+.chosen-container.chosen-with-drop .chosen-single {
+    border-width: 1px 1px 0 1px;
+}
+
 
 /**********/
 /* EVENTS */
