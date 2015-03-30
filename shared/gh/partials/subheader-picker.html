@@ -1,5 +1,5 @@
 <option value=""></option>
-<%_.each(data.courses, function(course) { %>
+<%_.each(data.triposPickerData.courses, function(course) { %>
     <% if (course.subjects.length === 0) { %>
         <option value="<%- course.id %>"><%- course.displayName %></option>
     <% } else { %>

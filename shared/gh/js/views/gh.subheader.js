@@ -157,7 +157,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Massage the data so that courses are linked to their child subjects
         // Render the results in the tripos picker
         gh.utils.renderTemplate($('#gh-subheader-picker-template'), {
-            'data': triposPickerData
+            'data': {
+                'triposPickerData': triposPickerData
+            }
         }, $('#gh-subheader-tripos'));
 
         // Show the subheader tripos picker
