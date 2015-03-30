@@ -549,9 +549,15 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item {
-    border: none;
+    border-width: 0 0 1px 0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     margin: 0;
     padding: 0;
+}
+
+.list-group .list-group-item .list-group .list-group-item {
+    border-bottom-width: 0;
 }
 
 .list-group .list-group-item .gh-list-group-item-container {
@@ -578,6 +584,10 @@ tbody tr:last-child > td.fc-widget-content {
 .list-group-item:first-child,
 .list-group-item:last-child {
     border-radius: 0;
+}
+
+.list-group-item .gh-list-action {
+    border-top: none;
 }
 
 .list-group .list-group-item p {
@@ -619,7 +629,7 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 
-.list-group .list-group-item .gh-list-action,
+.list-group .list-group-item .list-group .gh-list-action,
 .list-group .list-group-item .gh-series-borrowed,
 .list-group .list-group-item .list-group .gh-list-description {
     border-top-style: solid;
