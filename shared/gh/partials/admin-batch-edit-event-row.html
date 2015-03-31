@@ -3,20 +3,29 @@
 <% } else { %>
 <tr data-tempid="<%= data.ev.tempId %>" class="<% if (data.ev.selected) { %>info<% } %> active gh-new-event-row">
 <% } %>
+    <!-- Event select -->
     <td>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" class="gh-select-single" title="Click to select the event" <% if (data.ev.selected) { %> checked="checked" <% } %>> <span class="sr-only">Select</span>
-            </label>
-        </div>
+        <% if (!data.borrowedFrom) { %>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" class="gh-select-single" title="Click to select the event" <% if (data.ev.selected) { %> checked="checked" <% } %>> <span class="sr-only">Select</span>
+                </label>
+            </div>
+        <% } %>
     </td>
-    <td class="gh-jeditable-events gh-event-description" tabindex="0" title="Click to edit the event name"><%- data.ev.displayName %></td>
-    <td class="gh-event-date" data-start="<%- data.ev.start %>" data-end="<%- data.ev.end %>" tabindex="0" title="Click to edit the event start and end times">
+
+    <!-- Event description -->
+    <td class="gh-event-description <% if (!data.borrowedFrom) { %>gh-jeditable-events<% } else { %>gh-disabled<% } %>" tabindex="0" <% if (!data.borrowedFrom) { %>title="Click to edit the event name"<% } %>><%- data.ev.displayName %></td>
+
+    <!-- Event data -->
+    <td class="gh-event-date <% if (data.borrowedFrom) { %>gh-disabled<% }%>" data-start="<%- data.ev.start %>" data-end="<%- data.ev.end %>" tabindex="0" <% if (!data.borrowedFrom) { %>title="Click to edit the event start and end times"<% } %>>
         <%= _.partial('admin-edit-date-field', {
             'data': data.ev,
             'utils': data.utils
         }) %>
     </td>
+
+    <!-- Event lecturers -->
     <td class="gh-event-organisers-fields hide">
         <% var organiserString = []; %>
         <% _.each(data.ev.organisers, function(organiser) { %>
@@ -29,9 +38,15 @@
             <% } %>
         <% }); %>
     </td>
-    <td class="gh-event-organisers" tabindex="0" title="Click to add a lecturer for this event"><%- organiserString.join(', ') %></td>
-    <td class="gh-jeditable-events gh-event-location" tabindex="0" title="Click to add a location for this event"><%- data.ev.location %></td>
-    <td class="gh-jeditable-events-select gh-event-type" data-type="<%- data.ev.type %>" data-first="<% if (data.ev.type) { %><%- data.ev.type.substr(0,1) %><% } %>" tabindex="0" title="Click to edit the event type"><%- data.ev.type %></td>
+    <td class="gh-event-organisers <% if (!data.borrowedFrom) { %> gh-edit-event-organisers<% } else { %>gh-disabled<% } %>" tabindex="0" <% if (!data.borrowedFrom) { %>title="Click to add a lecturer for this event"<% } %>><%- organiserString.join(', ') %></td>
+
+    <!-- Event location -->
+    <td class="gh-event-location <% if (!data.borrowedFrom) { %>gh-jeditable-events<% } else { %>gh-disabled<% } %>" tabindex="0" <% if (!data.borrowedFrom) { %>title="Click to add a location for this event"<% } %>><%- data.ev.location %></td>
+
+    <!-- Event type -->
+    <td class="gh-event-type <% if (!data.borrowedFrom) { %>gh-jeditable-events-select<% } else { %>gh-disabled<% } %>" data-type="<%- data.ev.type %>" data-first="<% if (data.ev.type) { %><%- data.ev.type.substr(0,1) %><% } %>" tabindex="0" <% if (!data.borrowedFrom) { %>title="Click to edit the event type"<% } %>><%- data.ev.type %></td>
+
+    <!-- Delete row -->
     <td class="gh-event-delete" tabindex="0" title="Select the row and click to delete this event">
         <button type="button" class="btn btn-link"><i class="fa fa-trash"></i></button>
     </td>

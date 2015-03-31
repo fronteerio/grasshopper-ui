@@ -434,6 +434,10 @@
     padding-top: 7px;
 }
 
+#gh-batch-edit-container h1.gh-disabled {
+    cursor: default !important;
+}
+
 #gh-batch-edit-container h1.editing {
     width: 80%;
 }
@@ -705,6 +709,10 @@
     white-space: nowrap;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-disabled {
+    cursor: default !important;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.danger.gh-fade td,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
     -webkit-transition: background-color 2s;
@@ -724,13 +732,13 @@
     padding: 6px 0px 6px 15px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:not(.gh-disabled):empty:hover::before {
     content: 'Add lecturer';
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before {
     content: 'Add location';
 }
 
@@ -828,7 +836,7 @@
     height: 34px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before {
     content: 'Add type';
 }
 
