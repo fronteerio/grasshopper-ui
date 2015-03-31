@@ -36,7 +36,7 @@
                 <% } %>
 
                 <!-- Series title -->
-                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="<% if (!data.records.borrowedFrom) { %> gh-jeditable-series-title<% } else { %>gh-disabled<% } %>"><%- data.records.series.displayName %></h1>
+                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="<% if (!data.records.borrowedFrom) { %> gh-jeditable-series-title<% } else { %>gh-disabled<% } %>"<% if (!data.records.borrowedFrom) { %> title="Click to edit the title of this series"<% } %>><%- data.records.series.displayName %></h1>
 
                 <!-- Borrowed data -->
                 <% if (data.records.borrowedFrom && (data.records.tripos || data.records.part)) { %>
