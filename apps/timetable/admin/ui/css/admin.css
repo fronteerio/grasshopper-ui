@@ -396,7 +396,7 @@
 /*****************/
 
 #gh-batch-edit-container {
-    padding: 30px 30px 12px;
+    padding: 30px 30px 5px;
     width: 100%;
 }
 
@@ -429,7 +429,7 @@
     display: inline-block;
     font-size: 25px;
     font-weight: 400;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     max-width: 80%;
     min-height: 40px;
     padding-top: 7px;
@@ -457,6 +457,17 @@
     font-weight: 400;
     margin-left: 3px;
     text-decoration: none;
+}
+
+#gh-batch-edit-header button,
+#gh-batch-edit-header input[type="text"],
+#gh-batch-edit-header select,
+#gh-batch-edit-header ul.as-selections {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
 }
 
 #gh-batch-edit-header input[type="text"],
