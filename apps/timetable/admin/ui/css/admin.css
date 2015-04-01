@@ -333,7 +333,8 @@
 }
 
 #gh-new-module-form .form-group input,
-#gh-new-series-form .form-group input {
+#gh-new-series-form .form-group input,
+#gh-rename-module-form .form-group input {
     font-size: 28px;
     font-weight: 400;
     height: 41px;
@@ -343,6 +344,16 @@
 }
 
 #gh-new-module-form .form-group input {
+    margin: 0;
+    width: 100%;
+}
+
+
+/******************/
+/* RENAME MODULES */
+/******************/
+
+#gh-rename-module-form .form-group input {
     margin: 0;
     width: 100%;
 }

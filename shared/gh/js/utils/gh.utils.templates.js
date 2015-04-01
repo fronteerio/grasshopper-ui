@@ -72,6 +72,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!gh/partials/header-template.html',
             'text!gh/partials/new-module-modal.html',
             'text!gh/partials/new-series.html',
+            'text!gh/partials/rename-module-modal.html',
             'text!gh/partials/series-borrowed-popover.html',
             'text!gh/partials/series-info.html',
             'text!gh/partials/series-info-popover.html',

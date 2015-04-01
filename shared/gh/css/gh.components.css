@@ -581,6 +581,17 @@ tbody tr:last-child > td.fc-widget-content {
     text-decoration: none;
 }
 
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list + ul {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 9px;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .gh-list-group-item-container .gh-toggle-list + ul {
+    display: block;
+}
+
 .list-group-item:first-child,
 .list-group-item:last-child {
     border-radius: 0;
