@@ -1,7 +1,7 @@
 <% if (data.ev && !data.ev.isNew) { %>
-<tr data-eventid="<%= data.ev.id %>">
+<tr data-eventid="<%= data.ev.id %>"<% if (data.borrowedFrom) { %> class="borrowed"<% } %>>
 <% } else { %>
-<tr data-tempid="<%= data.ev.tempId %>" class="<% if (data.ev.selected) { %>info<% } %> active gh-new-event-row">
+<tr data-tempid="<%= data.ev.tempId %>" class="<% if (data.ev.selected) { %>info<% } %> active gh-new-event-row<% if (data.borrowedFrom) { %> borrowed<% } %>">
 <% } %>
     <!-- Event select -->
     <td>

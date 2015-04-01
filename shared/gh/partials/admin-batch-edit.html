@@ -90,18 +90,25 @@
                     <div class="gh-batch-edit-events-container <% if (term.name === 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>
-                                        <div class="checkbox">
-                                            <label>
-                                                <% if (!data.records.borrowedFrom) { %>
+                                <tr<% if (data.records.borrowedFrom) { %> class="gh-disabled borrowed"<% } %>>
+                                    <% if (!data.records.borrowedFrom) { %>
+                                        <th class="gh-batch-edit-row-select">
+                                            <div class="checkbox">
+                                                <label>
                                                     <input type="checkbox" class="gh-select-all">
-                                                <% } %>
-                                                <span><% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %></span>
-                                            </label>
-                                        </div>
-                                    </th>
-                                    <th></th>
+                                                    <span>
+                                                        <% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                    <% } else { %>
+                                        <th></th>
+                                        <th>
+                                            <% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %>
+                                        </th>
+                                    <% } %>
                                     <th></th>
                                     <th></th>
                                     <th></th>

@@ -435,10 +435,6 @@
     padding-top: 7px;
 }
 
-#gh-batch-edit-container h1.gh-disabled {
-    cursor: default !important;
-}
-
 #gh-batch-edit-container h1.editing {
     width: 80%;
 }
@@ -478,6 +474,16 @@
 #gh-batch-edit-header .table thead tr th:nth-child(1),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(1) {
     width: 25px;
+}
+
+#gh-batch-edit-header .table thead tr.borrowed th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr.borrowed > th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(1) {
+    width: 0 !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(2) {
+    padding-left: 10px !important;
 }
 
 #gh-batch-edit-header .table thead tr th:nth-child(3),
@@ -710,10 +716,6 @@
     white-space: nowrap;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-disabled {
-    cursor: default !important;
-}
-
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.danger.gh-fade td,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
     -webkit-transition: background-color 2s;
@@ -723,7 +725,6 @@
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
     height: auto;
-    overflow: visible;
     padding-bottom: 4px;
     padding-top: 3px;
 }
