@@ -70,6 +70,7 @@
 /***********/
 
 .popover.gh-datepicker-popover {
+    margin-top: -5px;
     min-width: 450px !important;
     padding: 5px 5px 20px;
 }
