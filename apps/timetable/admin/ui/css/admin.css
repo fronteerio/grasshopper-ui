@@ -70,6 +70,7 @@
 /***********/
 
 .popover.gh-datepicker-popover {
+    margin-top: -5px;
     min-width: 450px !important;
     padding: 5px 5px 20px;
 }
@@ -763,13 +764,17 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:not(:first-child) .table > thead > tr > th {
-    height: 60px;
+    height: 65px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     font-size: 16px;
     margin: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox {
+    margin-bottom: 4px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
@@ -788,6 +793,10 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
     margin-top: 2px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .gh-new-event {
+    margin-bottom: -5px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form {
