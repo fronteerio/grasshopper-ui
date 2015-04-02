@@ -439,7 +439,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             _.defer(function() {
                 $row = $($row);
 
-                 // Get the date the event starts on
+                // Get the date the event starts on
                 var eventStart = new Date($row.find('.gh-event-date').attr('data-start'));
 
                 // If the event falls on the day that needs to be deleted, delete it

@@ -403,6 +403,18 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     };
 
     /**
+     * Hide the batch date editing functionality when the escape key has been pressed
+     *
+     * @param  {Event}    ev    Standard jQuery event
+     * @private
+     */
+    var hideBatchEditDateOnEscape = function(ev) {
+        if (parseInt(ev.keyCode, 10) === 27) {
+            toggleBatchEditDate();
+        }
+    };
+
+    /**
      * Show/hide the date batch editing functionality
      *
      * @private
@@ -410,8 +422,10 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     var toggleBatchEditDate = function() {
         $('#gh-batch-edit-header').toggleClass('gh-batch-edit-time-open');
         if ($('#gh-batch-edit-header').hasClass('gh-batch-edit-time-open')) {
+            $(document).on('keyup', hideBatchEditDateOnEscape);
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Started']);
         } else {
+            $(document).off('keyup', hideBatchEditDateOnEscape);
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Closed']);
         }
     };
