@@ -221,21 +221,29 @@
 }
 
 
+/************************/
+/* DELETE SERIES/MODULE */
+/************************/
+
+#gh-delete-series-modal small {
+    color: #6C6C6C;
+}
+
+
 /*****************/
-/* DELETE SERIES */
+/* BORROWED LIST */
 /*****************/
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+ul.gh-borrowed-list {
     border-bottom-color: #CCC;
     border-top-color: #CCC;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+ul.gh-borrowed-list li {
     border-bottom-color: #CCC;
 }
 
-#gh-delete-series-modal small,
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p:first-child {
+ul.gh-borrowed-list li p:first-child {
     color: #6C6C6C;
 }
 
