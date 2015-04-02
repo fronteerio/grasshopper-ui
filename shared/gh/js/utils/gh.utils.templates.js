@@ -62,6 +62,8 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!gh/partials/admin-modules.html',
             'text!gh/partials/borrow-series-modal.html',
             'text!gh/partials/calendar.html',
+            'text!gh/partials/delete-module-modal.html',
+            'text!gh/partials/delete-module-overview.html',
             'text!gh/partials/delete-series-modal.html',
             'text!gh/partials/editable-parts.html',
             'text!gh/partials/empty-timetable.html',

@@ -140,7 +140,7 @@
             <%= _.partial('new-module-modal', {'data': data}) %>
         </script>
 
-        <!-- Rename module -->
+        <!-- Rename module modal -->
         <div id="gh-rename-module-modal-container"><!-- --></div>
         <script id="gh-rename-module-modal-template" type="text/template">
             <%= _.partial('rename-module-modal', {'data': data}) %>
@@ -149,6 +149,12 @@
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
             <%= _.partial('admin-batch-edit', {'data': data}) %>
+        </script>
+
+        <!-- Delete module modal -->
+        <div id="gh-delete-module-modal-container"><!-- --></div>
+        <script id="gh-delete-module-modal-template" type="text/template">
+            <%= _.partial('delete-module-modal', {'data': data}) %>
         </script>
 
         <!-- Delete series modal -->

@@ -367,11 +367,30 @@
     font-weight: 600;
 }
 
-#gh-delete-series-modal #gh-delete-series-borrowed-list-description {
+#gh-delete-series-modal small {
+    font-size: 15px;
+}
+
+
+/*****************/
+/* DELETE MODULE */
+/*****************/
+
+#gh-delete-module-modal #delete-module-body-preload-container {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+
+/*****************/
+/* BORROWED LIST */
+/*****************/
+
+.gh-borrowed-list-description {
     margin: 20px 0 5px;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+ul.gh-borrowed-list {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-top-style: solid;
@@ -382,23 +401,19 @@
     padding: 0;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+ul.gh-borrowed-list li {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     list-style: none;
     padding: 12px;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li:last-child {
+ul.gh-borrowed-list li:last-child {
     border-bottom: none;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p {
+ul.gh-borrowed-list li p {
     margin: 0;
-}
-
-#gh-delete-series-modal small {
-    font-size: 15px;
 }
 
 

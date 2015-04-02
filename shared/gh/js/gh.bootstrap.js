@@ -80,6 +80,7 @@ requirejs.config({
         'gh.borrow-series': 'gh/js/views/gh.borrow-series',
         'gh.calendar': 'gh/js/views/gh.calendar',
         'gh.datepicker': 'gh/js/views/gh.datepicker',
+        'gh.delete-module': 'gh/js/views/gh.delete-module',
         'gh.delete-series': 'gh/js/views/gh.delete-series',
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.new-module': 'gh/js/views/gh.new-module',
