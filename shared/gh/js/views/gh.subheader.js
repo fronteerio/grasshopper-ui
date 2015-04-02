@@ -183,7 +183,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      *
      * @private
      */
-    var handleStateChange = function(a, b, c) {
+    var handleStateChange = function() {
+        // Close all modal dialogs
+        $('.modal').modal('hide');
 
         // Make sure that all state data is set before handling the statechange event
         gh.utils.setStateData();
