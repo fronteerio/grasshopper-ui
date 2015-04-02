@@ -50,7 +50,12 @@
                 <% } %>
 
                 <% if (!data.records.borrowedFrom) { %>
-                    <div id="gh-batch-edit-header">
+                    <div id="gh-batch-edit-header" class="gh-disabled">
+                        <div id="gh-batch-edit-header-disabled-overlay">
+                            <p class="text-center">
+                                <i class="fa fa-info-circle"></i> <strong>Batch edit:</strong> Select one or more events first to batch edit them here all at once!
+                            </p>
+                        </div>
                         <table class="table">
                             <thead>
                                 <tr>
