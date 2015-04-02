@@ -606,6 +606,14 @@
     margin-bottom: 20px;
 }
 
+#gh-batch-edit-container #gh-batch-edit-date-container .gh-batch-edit-date-processing {
+    margin: 0 0 14px 14px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container .gh-batch-edit-date-processing i.fa-spinner {
+    margin-right: 4px;
+}
+
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
     display: table-cell;
     min-height: 36px;

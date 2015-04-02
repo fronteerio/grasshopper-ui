@@ -253,7 +253,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         // Show the notification
         $notificationContainer.notify({
             'fadeOut': {
-                'enabled': sticky,
+                'enabled': !sticky,
                 'delay': 5000
             },
             'type': type ? type : 'success',
@@ -269,13 +269,15 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             $notification.addClass('gh-notification-in');
         }, 10);
 
-        // Fade out and remove the container after 5 seconds if it's not marked as sticky
-        /* istanbul ignore next */
-        var fadeTimeout = setTimeout(function() {
-            if (!sticky) {
-                $notification.addClass('gh-notification-fade');
-            }
-        }, 5000);
+        if (!sticky) {
+            // Fade out and remove the container after 5 seconds if it's not marked as sticky
+            /* istanbul ignore next */
+            var fadeTimeout = setTimeout(function() {
+                if (!sticky) {
+                    $notification.addClass('gh-notification-fade');
+                }
+            }, 5000);
+        }
 
         // Close the notification when the 'X' is clicked
         /* istanbul ignore next */
