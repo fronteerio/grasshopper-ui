@@ -255,6 +255,25 @@
     color: #171717;
 }
 
+#gh-batch-edit-header button:not(:disabled),
+#gh-batch-edit-header input:not(:disabled)[type="text"],
+#gh-batch-edit-header select:not(:disabled),
+#gh-batch-edit-header ul.as-selections:not(.gh-disabled) {
+    border-color: #171717 !important;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]::-webkit-input-placeholder {
+    color: #555;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]::-moz-placeholder {
+    color: #555;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]:-ms-input-placeholder {
+    color: #555;
+}
+
 #gh-batch-edit-container {
     background-color: #FFF;
 }
