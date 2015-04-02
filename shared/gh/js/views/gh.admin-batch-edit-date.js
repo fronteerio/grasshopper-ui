@@ -162,6 +162,10 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // For each selected term, add another day
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
+            // Generate a default location and organisers list based on what was previously added
+            var defaultLocation = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-location:not(:empty)')[0]).text();
+            var $hiddenOrganiserFields = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-organisers:not(:empty)')).prev();
+            var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
             // For each selected week, add another day
             _.each($weeks, function(chk) {
                 _.defer(function() {
@@ -192,9 +196,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             'selected': true,
                             'displayName': $('.gh-jeditable-series-title').text(),
                             'end': gh.utils.convertUnixDatetoISODate(moment(endDate).toISOString()),
-                            'location': '',
+                            'location': defaultLocation,
                             'type': gh.config.events.default,
-                            'organisers': null,
+                            'organisers': defaultOrganisers,
                             'start': gh.utils.convertUnixDatetoISODate(moment(startDate).toISOString())
                         },
                         'startDate': startDate
@@ -255,6 +259,10 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // For each term selected, add events
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
+            // Generate a default location and organisers list based on what was previously added
+            var defaultLocation = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-location:not(:empty)')[0]).text();
+            var $hiddenOrganiserFields = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-organisers:not(:empty)')).prev();
+            var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
             // For each selected week, add events
             _.each($weeks, function(chk) {
                 // For each row of days, add the event
@@ -292,9 +300,9 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                                         'selected': true,
                                         'displayName': $('.gh-jeditable-series-title').text(),
                                         'end': gh.utils.convertUnixDatetoISODate(moment(endDate).toISOString()),
-                                        'location': '',
+                                        'location': defaultLocation,
                                         'type': gh.config.events.default,
-                                        'organisers': null,
+                                        'organisers': defaultOrganisers,
                                         'start': gh.utils.convertUnixDatetoISODate(moment(startDate).toISOString())
                                     },
                                     'startDate': startDate

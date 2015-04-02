@@ -393,6 +393,35 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
     };
 
 
+    //////////////////
+    //  BATCH EDIT  //
+    //////////////////
+
+    /**
+     * Create and return user objects found in the provided $hiddenFields container
+     *
+     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
+     * @return {User[]}                     Array of user objects
+     */
+    var getOrganiserObjects = exports.getOrganiserObjects = function($hiddenFields) {
+        // Get all hidden fields in the container
+        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
+        // Cache the Array of organisers to return
+        var organisers = [];
+
+        // Create a user object for each hidden field in the container
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push({
+                'displayName': hiddenField.value,
+                'id': $(hiddenField).attr('data-id')
+            });
+        });
+
+        // Return the Array of user objects
+        return organisers;
+    };
+
+
     //////////////////////
     //  INITIALISATION  //
     //////////////////////

@@ -59,6 +59,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $tableBody.find('tr:not(.gh-batch-edit-events-container-empty)').remove();
         // Repopulate the table with the sorted data in the DOM
         $tableBody.append(sortedTable);
+        // Reinitialise jEditable fields
+        setUpJEditable();
     };
 
     /**
@@ -119,31 +121,6 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     };
 
     /**
-     * Create and return user objects found in the provided $hiddenFields container
-     *
-     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
-     * @return {User[]}                     Array of user objects
-     * @private
-     */
-    var getOrganiserObjects = function($hiddenFields) {
-        // Get all hidden fields in the container
-        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
-        // Cache the Array of organisers to return
-        var organisers = [];
-
-        // Create a user object for each hidden field in the container
-        _.each($hiddenFields, function(hiddenField) {
-            organisers.push({
-                'displayName': hiddenField.value,
-                'id': $(hiddenField).attr('data-id')
-            });
-        });
-
-        // Return the Array of user objects
-        return organisers;
-    };
-
-    /**
      * Add a new event row to the table and initialise the editable fields in it
      *
      * @param {Event}     ev      Standard jQuery event
@@ -170,7 +147,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': $lastEventInTerm.find('.gh-event-location').text(),
-                'organisers': getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
+                'organisers': gh.utils.getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
                 'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
                 'type': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default
             };
