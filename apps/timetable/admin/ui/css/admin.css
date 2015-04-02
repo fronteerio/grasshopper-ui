@@ -460,7 +460,7 @@
 }
 
 #gh-batch-edit-header button,
-#gh-batch-edit-header input[type="text"],
+#gh-batch-edit-header input[type="text"]:not(.as-input),
 #gh-batch-edit-header select,
 #gh-batch-edit-header ul.as-selections {
     -webkit-border-radius: 5px;
@@ -468,6 +468,10 @@
             border-radius: 5px;
     border-style: solid;
     border-width: 1px;
+}
+
+#gh-batch-edit-header ul.as-selections {
+    overflow: hidden !important;
 }
 
 #gh-batch-edit-header input[type="text"],
