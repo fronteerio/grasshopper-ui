@@ -21,9 +21,45 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     // Keep track of when the user started
     var timeFromStart = null;
 
+
     ///////////////
     // UTILITIES //
     ///////////////
+
+    /**
+     * Sort given objects based on the data-start attribute.
+     * The list will be ordered from A to Z.
+     *
+     * @see Array#sort
+     * @private
+     */
+    var sortByDate = function(a, b) {
+        if (new Date($(a).find('.gh-event-date').attr('data-start')) < new Date($(b).find('.gh-event-date').attr('data-start'))) {
+            return -1;
+        } else if (new Date($(a).find('.gh-event-date').attr('data-start')) > new Date($(b).find('.gh-event-date').attr('data-start'))) {
+            return 1;
+        }
+        return 0;
+    };
+
+    /**
+     * Sort table rows from A to Z based on the start date of the event
+     *
+     * @param  {Object}    $tableBody    jQuery selector containing the table's tbody element
+     * @private
+     */
+    var sortEventTable = function($tableBody) {
+        // Make sure the table is in an initialised jQuery object
+        $tableBody = $($tableBody);
+        // Array used to cache the table rows before sorting
+        var sortedTable = [];
+        // Sort the table
+        sortedTable = $tableBody.find('tr:not(.gh-batch-edit-events-container-empty)').sort(sortByDate);
+        // Remove all data from the unsorted table in the DOM
+        $tableBody.find('tr:not(.gh-batch-edit-events-container-empty)').remove();
+        // Repopulate the table with the sorted data in the DOM
+        $tableBody.append(sortedTable);
+    };
 
     /**
      * Hide the empty term description container. The container will only be hidden if there are events left in the term
@@ -166,6 +202,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         toggleBatchEditEnabled();
         // Trigger a change event on the newly added row to update the batch edit
         $eventContainer.find('.gh-select-single').trigger('change');
+        // Sort the table
+        sortEventTable($eventContainer);
     };
 
     /**
@@ -1183,6 +1221,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             // Add an `active` class to the updated row to indicate that changes where made
             $(trigger).parent().addClass('active');
         }
+        // Sort the table
+        sortEventTable($(trigger).closest('tbody'));
         // Show the save button
         toggleSubmit();
     };
