@@ -16,8 +16,8 @@
                 <% } %>
 
                 <% if (data.isBorrowedTo && !data.isBorrowedFrom) { %>
-                    <p id="gh-delete-series-borrowed-list-description">The series has been borrowed in <%= data.series.OrgUnits.length - 1 %> other module<% if (data.series.OrgUnits.length - 1 !== 1) { %>s<% } %>:</p>
-                    <ul id="gh-delete-series-borrowed-list">
+                    <p class="gh-borrowed-list-description">The series has been borrowed in <%= data.series.OrgUnits.length - 1 %> other module<% if (data.series.OrgUnits.length - 1 !== 1) { %>s<% } %>:</p>
+                    <ul class="gh-borrowed-list">
                     <% _.each(data.series.OrgUnits, function(orgunit, index) { %>
                         <% if (index) { %>
                             <li>
