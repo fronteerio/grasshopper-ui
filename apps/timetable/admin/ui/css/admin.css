@@ -488,7 +488,7 @@
 
 #gh-batch-edit-header .table thead tr th:nth-child(3),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
-    width: 180px;
+    width: 220px;
 }
 
 #gh-batch-edit-header .table thead tr th:nth-child(4),
@@ -894,17 +894,10 @@
     text-overflow: ellipsis;
 }
 
-.gh-event-date {
-    max-width: 250px !important;
-    min-width: 210px !important;
-}
-
 .gh-event-display-date {
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
-    max-width: 170px;
-    text-overflow: ellipsis;
 }
 
 .gh-event-delete,
