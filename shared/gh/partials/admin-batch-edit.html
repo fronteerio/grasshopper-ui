@@ -11,29 +11,32 @@
      <div class="tab-content">
         <div id="gh-batch-list-view" class="tab-pane active" role="tabpanel">
             <div id="gh-batch-edit-container">
-                <ul class="nav nav-pills pull-right" role="tablist">
-                    <li role="presentation" class="dropdown">
-                        <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Series settings</span>
-                            <i class="fa fa-cog"></i>
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
-                            <li role="presentation">
-                                <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
-                            </li>
-                            <li role="presentation">
-                                <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
-                            </li>
-                            <li role="presentation">
-                                <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+
+                <% if (!data.records.borrowedFrom) { %>
+                    <ul class="nav nav-pills pull-right" role="tablist">
+                        <li role="presentation" class="dropdown">
+                            <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Series settings</span>
+                                <i class="fa fa-cog"></i>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
+                                </li>
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
+                                </li>
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                <% } %>
 
                 <!-- Series title -->
-                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="gh-jeditable-series-title"><%- data.records.series.displayName %></h1>
+                <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="<% if (!data.records.borrowedFrom) { %> gh-jeditable-series-title<% } else { %>gh-disabled<% } %>"<% if (!data.records.borrowedFrom) { %> title="Click to edit the title of this series"<% } %>><%- data.records.series.displayName %></h1>
 
                 <!-- Borrowed data -->
                 <% if (data.records.borrowedFrom && (data.records.tripos || data.records.part)) { %>
@@ -46,38 +49,40 @@
                         <% } %>
                 <% } %>
 
-                <div id="gh-batch-edit-header">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Batch edit:</th>
-                                <th>
-                                    <input type="text" id="gh-batch-edit-title" placeholder="Event titles" disabled>
-                                </th>
-                                <th>
-                                    <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Dates &amp; times</button>
-                                </th>
-                                <th class="gh-batch-event-organisers">
-                                    <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers" disabled>
-                                </th>
-                                <th>
-                                    <input type="text" id="gh-batch-edit-location" placeholder="Locations" disabled>
-                                </th>
-                                <th>
-                                    <%= _.partial('admin-batch-edit-event-type', {
-                                        'data': {
-                                            'id': 'gh-batch-edit-type',
-                                            'types': data.gh.config.events.types,
-                                            'disable': true
-                                        }
-                                    }) %>
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div id="gh-batch-edit-date-container"><!-- --></div>
+                <% if (!data.records.borrowedFrom) { %>
+                    <div id="gh-batch-edit-header">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Batch edit:</th>
+                                    <th>
+                                        <input type="text" id="gh-batch-edit-title" placeholder="Event titles" disabled>
+                                    </th>
+                                    <th>
+                                        <button type="button" id="gh-batch-edit-time" class="btn btn-default pull-right" disabled><i class="fa fa-calendar"></i> Dates &amp; times</button>
+                                    </th>
+                                    <th class="gh-batch-event-organisers">
+                                        <input type="text" id="gh-batch-edit-organisers" placeholder="Organisers" disabled>
+                                    </th>
+                                    <th>
+                                        <input type="text" id="gh-batch-edit-location" placeholder="Locations" disabled>
+                                    </th>
+                                    <th>
+                                        <%= _.partial('admin-batch-edit-event-type', {
+                                            'data': {
+                                                'id': 'gh-batch-edit-type',
+                                                'types': data.gh.config.events.types,
+                                                'disable': true
+                                            }
+                                        }) %>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="gh-batch-edit-date-container"><!-- --></div>
+                <% } %>
             </div>
 
             <div id="gh-batch-edit-term-container">
@@ -85,21 +90,31 @@
                     <div class="gh-batch-edit-events-container <% if (term.name === 'OT') { %>gh-ot<% } %>" data-term="<%- term.name.toLowerCase().replace(/\ /g, '') %>" data-start="<%- term.start %>" data-end="<%- term.end %>">
                         <table class="table">
                             <thead>
-                                <tr>
+                                <tr<% if (data.records.borrowedFrom) { %> class="gh-disabled borrowed"<% } %>>
+                                    <% if (!data.records.borrowedFrom) { %>
+                                        <th class="gh-batch-edit-row-select">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" class="gh-select-all">
+                                                    <span>
+                                                        <% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                    <% } else { %>
+                                        <th></th>
+                                        <th>
+                                            <% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %>
+                                        </th>
+                                    <% } %>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" class="gh-select-all"><span><% if (term.name !== 'OT') { %><%- term.name %><% } else { %>Out of term<% } %></span>
-                                            </label>
-                                        </div>
-                                    </th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>
-                                        <% if (term.name !== 'OT') { %>
+                                        <% if (term.name !== 'OT' && !data.records.borrowedFrom) { %>
                                             <button type="button" class="btn btn-default pull-right gh-btn-secondary gh-new-event"><i class="fa fa-plus-square"></i> Add event</button>
                                         <% } %>
                                     </th>
@@ -109,14 +124,17 @@
                                 <tr class="gh-batch-edit-events-container-empty" <% if (term.events.length) { %>style="display: none;"<% } %>>
                                     <td colspan="7">
                                         <p>No events in <%- term.name %> yet</p>
-                                        <button type="button" class="btn btn-default gh-btn-secondary gh-new-events"><i class="fa fa-plus-square"></i> Add events</button>
+                                        <% if (!data.records.borrowedFrom) { %>
+                                            <button type="button" class="btn btn-default gh-btn-secondary gh-new-events"><i class="fa fa-plus-square"></i> Add events</button>
+                                        <% } %>
                                     </td>
                                 </tr>
                                 <% _.each(term.events, function(ev) { %>
                                     <%= _.partial('admin-batch-edit-event-row', {
                                         'data': {
                                             'ev': ev,
-                                            'utils': data.gh.utils
+                                            'utils': data.gh.utils,
+                                            'borrowedFrom': data.records.borrowedFrom
                                         }
                                     }) %>
                                 <% }); %>

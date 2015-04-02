@@ -502,9 +502,19 @@ ul.gh-borrowed-list li p {
     width: 25px;
 }
 
+#gh-batch-edit-header .table thead tr.borrowed th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr.borrowed > th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(1) {
+    width: 0 !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(2) {
+    padding-left: 10px !important;
+}
+
 #gh-batch-edit-header .table thead tr th:nth-child(3),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
-    width: 180px;
+    width: 220px;
 }
 
 #gh-batch-edit-header .table thead tr th:nth-child(4),
@@ -741,7 +751,6 @@ ul.gh-borrowed-list li p {
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
     height: auto;
-    overflow: visible;
     padding-bottom: 4px;
     padding-top: 3px;
 }
@@ -751,13 +760,13 @@ ul.gh-borrowed-list li p {
     padding: 6px 0px 6px 15px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:not(.gh-disabled):empty:hover::before {
     content: 'Add lecturer';
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before {
     content: 'Add location';
 }
 
@@ -863,7 +872,7 @@ ul.gh-borrowed-list li p {
     height: 34px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before {
     content: 'Add type';
 }
 
@@ -911,17 +920,10 @@ ul.gh-borrowed-list li p {
     text-overflow: ellipsis;
 }
 
-.gh-event-date {
-    max-width: 250px !important;
-    min-width: 210px !important;
-}
-
 .gh-event-display-date {
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
-    max-width: 170px;
-    text-overflow: ellipsis;
 }
 
 .gh-event-delete,
