@@ -71,6 +71,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
     /**
      * Delete the module and all series inside of it
      *
+     * @return {Boolean}    Returns `false` to avoid default form submit behaviour
      * @private
      */
     var submitDeleteModal = function() {
@@ -216,10 +217,18 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         var getBorrowedParents = function(module, _callback) {
             // Get the module's parent's info (part)
             orgUnitAPI.getOrgUnit(module.ParentId, false, function(err, part) {
+                if (err) {
+                    return gh.utils.notification('Could not get the part\'s information', constants.messaging.default.error, 'error');
+                }
+
                 module.part = part;
 
                 // Get the part's parent's info (tripos)
                 orgUnitAPI.getOrgUnit(part.ParentId, false, function(err, tripos) {
+                    if (err) {
+                        return gh.utils.notification('Could not get the tripos\' information', constants.messaging.default.error, 'error');
+                    }
+
                     module.tripos = tripos;
 
                     done++;
@@ -295,7 +304,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         // Get the organisational unit info (module)
         orgUnitAPI.getOrgUnit(moduleId, true, function(err, moduleOrgUnit) {
             if (err) {
-                gh.utils.notification('Could not fetch module information', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not fetch module information', constants.messaging.default.error, 'error');
             }
 
             // Cache the module on the template data object
