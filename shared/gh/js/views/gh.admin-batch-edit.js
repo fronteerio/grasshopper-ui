@@ -351,13 +351,13 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
 
         if (disable) {
             // Disable jEditable fields
-            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('disable');
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-edit-event-organisers, .gh-event-type').editable('disable');
 
             // Disable the date picker. This one is not a jEditable field so needs special handling
             $('.gh-event-date').addClass('gh-disabled');
         } else {
             // Enable jEditable fields
-            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-event-organisers, .gh-event-type').editable('enable');
+            $('.gh-jeditable-series-title, .gh-jeditable-events, .gh-edit-event-organisers, .gh-event-type').editable('enable');
 
             // Enable the date picker. This one is not a jEditable field so needs special handling
             $('.gh-event-date').removeClass('gh-disabled');
@@ -651,7 +651,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
      */
     var editableOrganiserSubmitted = function() {
         // Retrieve the values from the AutoSuggest field and create a String to show
-        var $hiddenFields = $(this).closest('.gh-event-organisers').prev('.gh-event-organisers-fields').find('input[data-add="true"]');
+        var $hiddenFields = $(this).closest('.gh-edit-event-organisers').prev('.gh-event-organisers-fields').find('input[data-add="true"]');
         var organisers = [];
 
         // Create the stringified organiser Array
@@ -727,7 +727,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         });
 
         // Apply jEditable to the organisers
-        $('.gh-event-organisers').editable(editableOrganiserSubmitted, {
+        $('.gh-edit-event-organisers').editable(editableOrganiserSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'placeholder': '',
             'select': true,
@@ -1411,7 +1411,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // Keyboard accessibility
         $('body').on('keypress', 'td.gh-jeditable-events', handleEditableKeyPress);
         $('body').on('keypress', 'td.gh-jeditable-events-select', handleEditableKeyPress);
-        $('body').on('keypress', 'td.gh-event-organisers', handleEditableKeyPress);
+        $('body').on('keypress', 'td.gh-edit-event-organisers', handleEditableKeyPress);
 
         // Tabs
         $(document).on('shown.bs.tab', '#gh-batch-edit-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
