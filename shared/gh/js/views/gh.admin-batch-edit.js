@@ -337,6 +337,22 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     };
 
     /**
+     * Reset all batch header fields
+     *
+     * @private
+     */
+    var resetBatchHeader = function() {
+        // Reset the title
+        $('#gh-batch-edit-title').val('');
+        // Reset the location
+        $('#gh-batch-edit-location').val('');
+        // Reset the type
+        $('#gh-batch-edit-type').val('Lecture');
+        // Reset the organisers
+        $(document).trigger('gh.batchorganiser.reset');
+    };
+
+    /**
      * Toggles each and every action in the UI to be disabled or enabled based on
      * the parameter passed in to the function
      *
@@ -1098,6 +1114,10 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
                 deleteEvents(eventsToDelete, function(deleteErr) {
                     // Re-enable all elements in the UI
                     disableEnableAll(false);
+                    // Keep the batch edit header disabled as there is no selection after saving
+                    toggleBatchEditEnabled();
+                    // Reset the batch edit header
+                    resetBatchHeader();
 
                     if (updateErr || newErr || deleteErr) {
                         // Show an error notification
