@@ -346,6 +346,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             $('.gh-batch-edit-events-container:not(.gh-ot) thead .gh-select-all:checked').length) {
             $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
             $('.as-selections', $('#gh-batch-edit-header')).removeClass('gh-disabled');
+            $('#gh-batch-edit-header').removeClass('gh-disabled');
         } else {
             if ($('#gh-batch-edit-header').hasClass('gh-batch-edit-time-open')) {
                 gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Closed']);
@@ -353,7 +354,24 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
             $('input, button, select', $('#gh-batch-edit-header')).attr('disabled', 'disabled');
             $('.as-selections', $('#gh-batch-edit-header')).addClass('gh-disabled');
+            $('#gh-batch-edit-header').addClass('gh-disabled');
         }
+    };
+
+    /**
+     * Reset all batch header fields
+     *
+     * @private
+     */
+    var resetBatchHeader = function() {
+        // Reset the title
+        $('#gh-batch-edit-title').val('');
+        // Reset the location
+        $('#gh-batch-edit-location').val('');
+        // Reset the type
+        $('#gh-batch-edit-type').val(gh.config.events.default);
+        // Reset the organisers
+        $(document).trigger('gh.batchorganiser.reset');
     };
 
     /**
@@ -716,7 +734,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             'disable': false,
             'height': '38px',
             'maxlength': 255,
-            'onblur': 'submit',
+            'onblur': 'cancel',
             'placeholder': 'Click to add a title for this series',
             'select': true,
             'type': 'series-title',
@@ -731,7 +749,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('.gh-jeditable-events').editable(editableEventSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'height': '38px',
-            'onblur': 'submit',
+            'onblur': 'cancel',
             'placeholder': '',
             'select' : true,
             'callback': function(value, settings) {
@@ -747,6 +765,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'disable': false,
+            'onblur': 'cancel',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit the event type',
@@ -763,6 +782,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // Apply jEditable to the organisers
         $('.gh-edit-event-organisers').editable(editableOrganiserSubmitted, {
             'cssclass': 'gh-jeditable-form',
+            'onblur': 'cancel',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to add a lecturer for this event',
@@ -1132,6 +1152,10 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
                 deleteEvents(eventsToDelete, function(deleteErr) {
                     // Re-enable all elements in the UI
                     disableEnableAll(false);
+                    // Keep the batch edit header disabled as there is no selection after saving
+                    toggleBatchEditEnabled();
+                    // Reset the batch edit header
+                    resetBatchHeader();
 
                     if (updateErr || newErr || deleteErr) {
                         // Show an error notification

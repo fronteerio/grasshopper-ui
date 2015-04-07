@@ -263,6 +263,14 @@ ul.gh-borrowed-list li p:first-child {
     color: #171717;
 }
 
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay {
+    background-color: #DDD;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p i {
+    color: #62326E;
+}
+
 #gh-batch-edit-header button:not(:disabled),
 #gh-batch-edit-header input:not(:disabled)[type="text"],
 #gh-batch-edit-header select:not(:disabled),

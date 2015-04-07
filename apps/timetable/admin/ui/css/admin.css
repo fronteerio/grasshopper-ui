@@ -485,6 +485,35 @@ ul.gh-borrowed-list li p {
     text-decoration: none;
 }
 
+#gh-batch-edit-header {
+    position: relative;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+            transition: opacity .3s;
+    width: 100%;
+    z-index: -1;
+}
+
+#gh-batch-edit-header.gh-disabled:hover #gh-batch-edit-header-disabled-overlay {
+    opacity: 1;
+    z-index: 1;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p {
+    font-weight: 400;
+    margin: 14px 0;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p strong {
+    font-weight: 600;
+}
+
 #gh-batch-edit-header button,
 #gh-batch-edit-header input[type="text"]:not(.as-input),
 #gh-batch-edit-header select,
