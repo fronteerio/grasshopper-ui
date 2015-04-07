@@ -163,8 +163,8 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         // For each selected term, add another day
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
             // Generate a default location and organisers list based on what was previously added
-            var defaultLocation = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-location:not(:empty)')[0]).text();
-            var $hiddenOrganiserFields = $($('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('.gh-event-organisers:not(:empty)')).prev();
+            var defaultLocation = $($('.gh-batch-edit-events-container').find('.gh-event-location:not(:empty)')[0]).text();
+            var $hiddenOrganiserFields = $($('.gh-batch-edit-events-container').find('.gh-event-organisers:not(:empty)')[0]).prev();
             var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
             // For each selected week, add another day
             _.each($weeks, function(chk) {

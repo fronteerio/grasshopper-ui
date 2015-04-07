@@ -143,13 +143,18 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // If an event was already added to the term, clone that event to the new event
         var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
         if ($lastEventInTerm.length) {
+            // Generate a default location and organisers list based on what was previously added
+            var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
+            var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
+            var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
+
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $lastEventInTerm.find('.gh-event-description').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
-                'location': $lastEventInTerm.find('.gh-event-location').text(),
-                'organisers': gh.utils.getOrganiserObjects($lastEventInTerm.find('.gh-event-organisers-fields')),
+                'location': defaultLocation,
+                'organisers': defaultOrganisers,
                 'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
-                'type': $lastEventInTerm.find('.gh-event-type').attr('data-type') || gh.config.events.default
+                'type': gh.config.events.default
             };
         // If no events were previously added to the term, create a default event object
         } else {
