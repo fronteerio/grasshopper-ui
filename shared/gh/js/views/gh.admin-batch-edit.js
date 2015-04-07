@@ -349,7 +349,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // Reset the location
         $('#gh-batch-edit-location').val('');
         // Reset the type
-        $('#gh-batch-edit-type').val('Lecture');
+        $('#gh-batch-edit-type').val(gh.config.events.default);
         // Reset the organisers
         $(document).trigger('gh.batchorganiser.reset');
     };
