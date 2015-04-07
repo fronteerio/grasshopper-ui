@@ -73,15 +73,15 @@
             <!-- Series actions -->
             <div class="gh-list-action">
                 <% if (d.subscribed || (!isChild && subscribedAll)) { %>
-                    <button class="btn btn-link <% if (isChild) { %> gh-remove-from-calendar <% } else { %> gh-remove-all-from-calendar <% } %>">
+                    <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (d.borrowedFrom && d.borrowedFrom.published) { %>disabled<% } %>>
                         <i class="fa fa-remove"></i>
                     </button>
                 <% } else { %>
-                    <button class="btn btn-link <% if (isChild) { %> gh-add-to-calendar <% } else { %> gh-add-all-to-calendar <% } %>">
+                    <button class="btn btn-link <% if (isChild) { %>gh-add-to-calendar<% } else { %>gh-add-all-to-calendar<% } %>" <% if (d.borrowedFrom && d.borrowedFrom.published) { %>disabled<% } %>>
                         <% if (!isChild && subscribedSome) { %>
-                        <i class="fa fa-minus"></i>
+                            <i class="fa fa-minus"></i>
                         <% } else { %>
-                        <i class="fa fa-plus"></i>
+                            <i class="fa fa-plus"></i>
                         <% } %>
                     </button>
                 <% } %>

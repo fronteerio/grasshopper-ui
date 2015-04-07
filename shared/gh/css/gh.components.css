@@ -666,6 +666,10 @@ tbody tr:last-child > td.fc-widget-content {
     top: 0;
 }
 
+.list-group .list-group-item .gh-list-action .btn-link:disabled {
+    cursor: default !important;
+}
+
 .list-group .list-group-item .gh-list-action .btn-link i {
     font-size: 19px;
     padding: 0;
