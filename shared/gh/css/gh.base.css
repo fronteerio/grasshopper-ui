@@ -266,6 +266,12 @@ select[disabled],
     position: relative;
 }
 
+.modal-header button[data-dismiss="modal"] {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
 .modal-body {
     padding: 40px 25px 25px;
 }
