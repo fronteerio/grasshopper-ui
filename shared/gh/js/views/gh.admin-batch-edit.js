@@ -142,14 +142,13 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
 
         // If an event was already added to the term, clone that event to the new event
         var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
+        // Generate default values based on what was previously added
+        var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
+        var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
+        var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
         if ($lastEventInTerm.length) {
-            // Generate a default location and organisers list based on what was previously added
-            var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
-            var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
-            var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
-
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
-                'displayName': $lastEventInTerm.find('.gh-event-description').text(),
+                'displayName': $('.gh-jeditable-series-title').text(),
                 'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
@@ -161,8 +160,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
                 'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
-                'location': '',
-                'organisers': [],
+                'location': defaultLocation,
+                'organisers': defaultOrganisers,
                 'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
                 'type': gh.config.events.default
             };
