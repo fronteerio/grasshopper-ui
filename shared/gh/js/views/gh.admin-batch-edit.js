@@ -326,6 +326,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             $('.gh-batch-edit-events-container:not(.gh-ot) thead .gh-select-all:checked').length) {
             $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
             $('.as-selections', $('#gh-batch-edit-header')).removeClass('gh-disabled');
+            $('#gh-batch-edit-header').removeClass('gh-disabled');
         } else {
             if ($('#gh-batch-edit-header').hasClass('gh-batch-edit-time-open')) {
                 gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Closed']);
@@ -333,6 +334,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             $('#gh-batch-edit-header').removeClass('gh-batch-edit-time-open');
             $('input, button, select', $('#gh-batch-edit-header')).attr('disabled', 'disabled');
             $('.as-selections', $('#gh-batch-edit-header')).addClass('gh-disabled');
+            $('#gh-batch-edit-header').addClass('gh-disabled');
         }
     };
 

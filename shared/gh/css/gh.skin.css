@@ -450,6 +450,7 @@ tbody .fc-sun {
 
 .fc-event-container .fc-event {
     background-color: #E7F8F0;
+    border-bottom-color: #198289;
     border-left-color: #198289;
 }
 
