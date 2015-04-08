@@ -361,6 +361,18 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
     var dateDisplay = exports.dateDisplay = function(date) {
 
         /**
+         * Returns the first 3 letters of the day's name from a UTC string
+         *
+         * @return {Number}
+         */
+        var dayName = function() {
+            if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
+                throw new Error('A valid date should be provided');
+            }
+            return moment(date).utc().format('ddd');
+        };
+
+        /**
          * Returns the day from a UTC string
          *
          * @return {Number}
@@ -385,6 +397,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         };
 
         return {
+            'dayName': dayName,
             'dayNumber': dayNumber,
             'monthName': monthName
         };

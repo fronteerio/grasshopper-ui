@@ -376,24 +376,6 @@ tr.info .gh-event-delete button i {
     color: #4D4D4D;
 }
 
-/* Calendar icon */
-.gh-event-calendar-icon {
-    border-color: #888;
-}
-
-.gh-event-calendar-icon .month {
-    background-color: #888;
-    color: #FFF;
-    text-shadow: 1px 1px 1px rgba(136,136,136,0.004);
-
-}
-
-.gh-event-calendar-icon .day {
-    background-color: #FFF;
-    color: #4D4D4D;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.004);
-}
-
 
 /*************/
 /* BORROWING */
