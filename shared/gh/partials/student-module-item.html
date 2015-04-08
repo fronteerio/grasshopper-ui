@@ -60,6 +60,9 @@
                 <!-- Borrowed popover-->
                 <%= _.partial('series-borrowed-popover', {'data': d}) %>
 
+                <!-- Borrowed popover-->
+                <%= _.partial('series-borrowed-published-popover', {'data': d}) %>
+
                 <!-- Borrowed icon -->
                 <div class="gh-series-borrowed">
                     <% if (d.borrowedFrom) { %>
@@ -72,6 +75,12 @@
 
             <!-- Series actions -->
             <div class="gh-list-action">
+
+                <!-- Disabled button overlay -->
+                <% if (d.borrowedFrom && d.borrowedFrom.published) { %>
+                    <div class="gh-disabled-overlay" data-id="<%- d.id %>"></div>
+                <% } %>
+
                 <% if (d.subscribed || (!isChild && subscribedAll)) { %>
                     <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (d.borrowedFrom && d.borrowedFrom.published) { %>disabled<% } %>>
                         <i class="fa fa-remove"></i>
