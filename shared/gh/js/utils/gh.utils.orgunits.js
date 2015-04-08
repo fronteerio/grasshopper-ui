@@ -24,7 +24,7 @@ define(['exports'], function(exports) {
     //////////////
 
     /**
-     * Decorate a borrowed serie with its parent info
+     * Decorate a borrowed series with its parent info
      *
      * @param  {Object[]}    series    A collection of series
      */
@@ -36,7 +36,7 @@ define(['exports'], function(exports) {
                 _.each(_triposData, function(orgUnitType) {
 
                     // Add the parent info to the organisational unit, if any
-                    var parent = _.find(orgUnitType, function(orgUnit) { return orgUnit.id === serie.borrowedFrom.ParentId});
+                    var parent = _.find(orgUnitType, function(orgUnit) { return orgUnit.id === serie.borrowedFrom.ParentId; });
                     if (parent) {
                         serie.borrowedFrom.Parent = parent;
                     }
@@ -61,21 +61,12 @@ define(['exports'], function(exports) {
             _.each(_triposData, function(_orgUnitType) {
 
                 // Add the parent info to the organisational unit, if any
-                var parent = _.find(_orgUnitType, function(_el) { return _el.id === orgUnit.ParentId});
+                var parent = _.find(_orgUnitType, function(_el) { return _el.id === orgUnit.ParentId; });
                 if (parent) {
                     orgUnit.Parent = parent;
                 }
             });
         }
-    };
-
-    /**
-     * Return the complete tripos tree
-     *
-     * @return {Object}    Object containing the tripos data
-     */
-    var getTriposData = exports.getTriposData = function() {
-        return _triposData;
     };
 
     /**
@@ -129,7 +120,7 @@ define(['exports'], function(exports) {
                 });
             });
 
-            return callback(null, getTriposData());
+            return callback(null, _triposData);
         });
     };
 
