@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, state, templates, time) {
+define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, orgunits, state, templates, time) {
 
 
     ///////////////
@@ -102,36 +102,6 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             server.respond();
             server.restore();
         });
-    };
-
-    /**
-     * Sort given objects based on the displayName property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByDisplayName = exports.sortByDisplayName = function(a, b) {
-        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
-            return -1;
-        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
-            return 1;
-        }
-        return 0;
-    };
-
-    /**
-     * Sort given objects based on the host property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByHost = exports.sortByHost = function(a, b) {
-        if (a.host.toLowerCase() < b.host.toLowerCase()){
-            return -1;
-        } else if (a.host.toLowerCase() > b.host.toLowerCase()) {
-            return 1;
-        }
-        return 0;
     };
 
 
@@ -338,59 +308,6 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
     };
 
 
-    ////////////////
-    //  TRIPOSES  //
-    ////////////////
-
-    /**
-     * Return the tripos structure
-     *
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The tripos structure
-     */
-    /* istanbul ignore next */
-    var getTriposStructure = exports.getTriposStructure = function(callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('An invalid value for callback was provided');
-        }
-
-        var core = require('gh.core');
-        var appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
-        require('gh.api.orgunit').getOrgUnits(null, false, true, null, ['course', 'subject', 'part'], function(err, data) {
-            if (err) {
-                return callback(err);
-            }
-
-            var triposData = {
-                'courses': [],
-                'subjects': [],
-                'parts': [],
-                'modules': []
-            };
-
-            triposData.courses = _.filter(data.results, function(course) {
-                return course.type === 'course';
-            });
-
-            triposData.subjects = _.filter(data.results, function(subject) {
-                return subject.type === 'subject';
-            });
-
-            triposData.parts = _.filter(data.results, function(part) {
-                return part.type === 'part';
-            });
-
-            // Sort the data before displaying it
-            triposData.courses.sort(sortByDisplayName);
-            triposData.subjects.sort(sortByDisplayName);
-            triposData.parts.sort(sortByDisplayName);
-
-            return callback(null, triposData);
-        });
-    };
-
-
     //////////////////////
     //  INITIALISATION  //
     //////////////////////
@@ -405,6 +322,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         // Gather all the specific funtionality classes
         var utilClasses = [
             instrumentation,
+            orgunits,
             state,
             templates,
             time
