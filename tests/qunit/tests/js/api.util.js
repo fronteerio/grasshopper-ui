@@ -877,6 +877,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
     });
 
+    // Test the 'RenderTemplate - Partials' functionality
     QUnit.test('renderTemplate - Partials', function(assert) {
         // Verify that a partial can be used to render a template
         // Add a template to the page
@@ -898,6 +899,16 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     ////////////////
     //  TRIPOSES  //
     ////////////////
+
+    // Test the 'decorateBorrowedSeriesWithParentInfo' functionality
+    QUnit.asyncTest('decorateBorrowedSeriesWithParentInfo', function(assert) {
+        expect(1);
+    });
+
+    // Test the 'addParentInfoToOrgUnit' functionality
+    QUnit.asyncTest('addParentInfoToOrgUnit', function(assert) {
+        expect(1);
+    });
 
     QUnit.asyncTest('getTriposStructure', function(assert) {
         expect(2);

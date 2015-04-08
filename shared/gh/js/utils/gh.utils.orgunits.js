@@ -54,9 +54,8 @@ define(['exports'], function(exports) {
      * Decorate an organisational unit with its parent info
      *
      * @param  {Object}    orgUnit    The organisational unit that needs to be decorated with his parent info
-     * @private
      */
-    var addParentInfoToOrgUnit = function(orgUnit) {
+    var addParentInfoToOrgUnit = exports.addParentInfoToOrgUnit = function(orgUnit) {
         if (orgUnit.ParentId) {
             _.each(_triposData, function(_orgUnitType) {
 
