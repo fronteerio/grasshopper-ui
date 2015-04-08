@@ -938,9 +938,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(organisers[0].id, '1', 'Verify that the first user has the correct ID');
         assert.equal(organisers[1].displayName, 'Mathieu Decoene', 'Verify that the second user has the correct displayName');
         assert.equal(organisers[1].id, undefined, 'Verify that the second user has no ID');
-
     });
-
 
     testAPI.init();
 });
