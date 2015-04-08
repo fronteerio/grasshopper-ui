@@ -269,6 +269,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             $notification.addClass('gh-notification-in');
         }, 10);
 
+        /* istanbul ignore else */
         if (!sticky) {
             // Fade out and remove the container after 5 seconds if it's not marked as sticky
             /* istanbul ignore next */
@@ -404,6 +405,9 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
      * @return {User[]}                     Array of user objects
      */
     var getOrganiserObjects = exports.getOrganiserObjects = function($hiddenFields) {
+        if (!$hiddenFields) {
+            throw new Error('An invalid value for $hiddenFields was provided');
+        }
         // Get all hidden fields in the container
         $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
         // Cache the Array of organisers to return
