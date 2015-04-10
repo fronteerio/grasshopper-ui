@@ -223,7 +223,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
         // Show the notification
         $notificationContainer.notify({
             'fadeOut': {
-                'enabled': sticky,
+                'enabled': !sticky,
                 'delay': 5000
             },
             'type': type ? type : 'success',
@@ -239,13 +239,16 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
             $notification.addClass('gh-notification-in');
         }, 10);
 
-        // Fade out and remove the container after 5 seconds if it's not marked as sticky
-        /* istanbul ignore next */
-        var fadeTimeout = setTimeout(function() {
-            if (!sticky) {
-                $notification.addClass('gh-notification-fade');
-            }
-        }, 5000);
+        /* istanbul ignore else */
+        if (!sticky) {
+            // Fade out and remove the container after 5 seconds if it's not marked as sticky
+            /* istanbul ignore next */
+            var fadeTimeout = setTimeout(function() {
+                if (!sticky) {
+                    $notification.addClass('gh-notification-fade');
+                }
+            }, 5000);
+        }
 
         // Close the notification when the 'X' is clicked
         /* istanbul ignore next */
@@ -305,6 +308,38 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
             'notfound': notfound,
             'unavailable': unavailable
         };
+    };
+
+
+    //////////////////
+    //  BATCH EDIT  //
+    //////////////////
+
+    /**
+     * Create and return user objects found in the provided $hiddenFields container
+     *
+     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
+     * @return {User[]}                     Array of user objects
+     */
+    var getOrganiserObjects = exports.getOrganiserObjects = function($hiddenFields) {
+        if (!$hiddenFields) {
+            throw new Error('An invalid value for $hiddenFields was provided');
+        }
+        // Get all hidden fields in the container
+        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
+        // Cache the Array of organisers to return
+        var organisers = [];
+
+        // Create a user object for each hidden field in the container
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push({
+                'displayName': hiddenField.value,
+                'id': $(hiddenField).attr('data-id')
+            });
+        });
+
+        // Return the Array of user objects
+        return organisers;
     };
 
 
