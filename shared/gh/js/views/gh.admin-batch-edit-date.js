@@ -169,44 +169,53 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             // For each selected week, add another day
             _.each($weeks, function(chk) {
                 _.defer(function() {
+
                     // Get the week number
                     var eventWeek = parseInt(chk.value, 10);
 
                     // Get the date by week and day
                     var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
+                    if (!_.contains([2,3], dayOfTheWeek)) {
+                        dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
+                    }
 
-                    var eventYear = dateByWeekAndDay.getFullYear();
-                    var eventMonth = dateByWeekAndDay.getMonth();
-                    var eventDay = dateByWeekAndDay.getDate();
-                    var eventStartHour = 13;
-                    var eventStartMinute = 0;
-                    var eventEndHour = 14;
-                    var eventEndMinute = 0;
+                    // Only add a new event for the generated day if the day is within a term
+                    if (gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dateByWeekAndDay).utc().format()), true)) {
 
-                    // Create the start date of the event
-                    var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
-                    // Create the end date of the event
-                    var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+                        var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                        var eventMonth = moment(dateByWeekAndDay).subtract({'months': 1}).utc().format('MM');
+                        var eventDay = moment(dateByWeekAndDay).utc().format('DD');
 
-                    $(document).trigger('gh.batchedit.addevent', {
-                        'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
-                        'eventObj': {
-                            'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
-                            'isNew': true, // Used in the template to know this one needs special handling
-                            'selected': true,
-                            'displayName': $('.gh-jeditable-series-title').text(),
-                            'end': gh.utils.convertUnixDatetoISODate(moment(endDate).toISOString()),
-                            'location': defaultLocation,
-                            'type': gh.config.events.default,
-                            'organisers': defaultOrganisers,
-                            'start': gh.utils.convertUnixDatetoISODate(moment(startDate).toISOString())
-                        },
-                        'startDate': startDate
-                    });
+                        var eventStartHour = 13;
+                        var eventStartMinute = 0;
+                        var eventEndHour = 14;
+                        var eventEndMinute = 0;
 
-                    // Update processing progress indication
-                    currentEvent = currentEvent + 1;
-                    updateEventManipulationProgress(currentEvent, totalEvents);
+                        // Create the start date of the event
+                        var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
+                        // Create the end date of the event
+                        var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+
+                        $(document).trigger('gh.batchedit.addevent', {
+                            'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
+                            'eventObj': {
+                                'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
+                                'isNew': true, // Used in the template to know this one needs special handling
+                                'selected': true,
+                                'displayName': $('.gh-jeditable-series-title').text(),
+                                'end': gh.utils.convertUnixDatetoISODate(moment(endDate).toISOString()),
+                                'location': defaultLocation,
+                                'type': gh.config.events.default,
+                                'organisers': defaultOrganisers,
+                                'start': gh.utils.convertUnixDatetoISODate(moment(startDate).toISOString())
+                            },
+                            'startDate': startDate
+                        });
+
+                        // Update processing progress indication
+                        currentEvent = currentEvent + 1;
+                        updateEventManipulationProgress(currentEvent, totalEvents);
+                    }
                 });
             });
         });
@@ -248,7 +257,6 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      * @private
      */
     var addAnotherEvent = function(forceAdd) {
-
         // Default the container to look for selected weeks in
         var $weeks = $('#gh-batch-edit-date-picker input:checked');
         var $days = $('.gh-batch-edit-time-picker');
@@ -263,22 +271,28 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
             var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
             var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
+
             // For each selected week, add events
             _.each($weeks, function(chk) {
+
                 // For each row of days, add the event
                 if ($days.length) {
                     _.each($days, function($timePickerContainer) {
                         _.defer(function() {
+
                             // Get the week number
                             var eventWeek = parseInt(chk.value, 10);
+
                             // Get the day number
                             var eventDay = parseInt($('.gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
+
                             // Get the date by week and day
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
 
-                            var eventYear = dateByWeekAndDay.getFullYear();
-                            var eventMonth = dateByWeekAndDay.getMonth();
-                            eventDay = dateByWeekAndDay.getDate();
+                            var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                            var eventMonth = moment(dateByWeekAndDay).subtract({'months': 1}).utc().format('MM');
+                            eventDay = moment(dateByWeekAndDay).utc().format('DD');
+
                             var eventStartHour = parseInt($('.gh-batch-edit-hours-start', $timePickerContainer).val(), 10);
                             var eventStartMinute = parseInt($('.gh-batch-edit-minutes-start', $timePickerContainer).val(), 10);
                             var eventEndHour = parseInt($('.gh-batch-edit-hours-end', $timePickerContainer).val(), 10);
