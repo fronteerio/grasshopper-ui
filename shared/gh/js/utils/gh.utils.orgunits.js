@@ -32,6 +32,7 @@ define(['exports'], function(exports) {
         _.each(series, function(serie) {
 
             // Only decorate borrowed series
+            /* istanbul ignore else */
             if (serie.borrowedFrom) {
                 _.each(_triposData, function(orgUnitType) {
 
@@ -75,15 +76,20 @@ define(['exports'], function(exports) {
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The tripos structure
      */
-    /* istanbul ignore next */
-    var getTriposStructure = exports.getTriposStructure = function(callback) {
+    var getTriposStructure = exports.getTriposStructure = function(appId, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('An invalid value for callback was provided');
+        } else if (appId && !_.isNumber(appId)) {
+            throw new Error('An invalid value for appId was provided');
         }
 
         var core = require('gh.core');
-        var appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
-        require('gh.api.orgunit').getOrgUnits(null, false, true, null, ['course', 'subject', 'part'], function(err, data) {
+        /* istanbul ignore next */
+        if (!appId) {
+            appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
+        }
+        /* istanbul ignore next */
+        require('gh.api.orgunit').getOrgUnits(appId, false, true, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
                 return callback(err);
             }
