@@ -38,6 +38,7 @@ define(['exports'], function(exports) {
 
                     // Add the parent info to the organisational unit, if any
                     var parent = _.find(orgUnitType, function(orgUnit) { return orgUnit.id === serie.borrowedFrom.ParentId; });
+                    /* istanbul ignore next */
                     if (parent) {
                         serie.borrowedFrom.Parent = parent;
                     }
@@ -61,7 +62,7 @@ define(['exports'], function(exports) {
             _.each(_triposData, function(_orgUnitType) {
 
                 // Add the parent info to the organisational unit, if any
-                var parent = _.find(_orgUnitType, function(_el) { return _el.id === orgUnit.ParentId; });
+                var parent = _.find(_orgUnitType, function(_orgUnit) { return _orgUnit.id === orgUnit.ParentId; });
                 if (parent) {
                     orgUnit.Parent = parent;
                 }
