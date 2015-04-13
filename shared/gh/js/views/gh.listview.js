@@ -37,6 +37,11 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Sort the data before displaying it
         modules.results.sort(utils.sortByDisplayName);
         $.each(modules.results, function(i, module) {
+
+            // Decorate the series with their parent info
+            utils.decorateBorrowedSeriesWithParentInfo(module.Series);
+
+            // Sort the series by their display name
             module.Series.sort(utils.sortByDisplayName);
         });
 
@@ -169,45 +174,6 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
     };
 
 
-    ///////////////
-    //  POPOVER  //
-    ///////////////
-
-    /**
-     * Set up and show the series popover
-     *
-     * @private
-     */
-    var setUpSeriesPopover = function() {
-        var $trigger = $(this);
-        var $content = $('.list-group-item .popover.borrowing[data-id="' + $trigger.data('id') + '"]');
-
-        var options = {
-            'class_name': 'gh-series-popover gh-borrowed-popover',
-            'container': 'body',
-            'content': $content.html(),
-            'global_close': true,
-            'html': true
-        };
-
-        $trigger.clickover(options);
-        $trigger.trigger('click');
-    };
-
-    /**
-     * Dismiss the popover window
-     *
-     * @private
-     */
-    var dismissSeriesPopover = function() {
-        var $trigger = $(this);
-        // Only invoke a click when a popover is actually being shown
-        if ($('.popover.in').length) {
-            $trigger.trigger('click');
-        }
-    };
-
-
     /////////////
     // BINDING //
     /////////////
@@ -220,11 +186,6 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
     var addBinding = function() {
         // Toggle a list item
         $('body').on('click', '.gh-toggle-list', toggleList);
-
-        // Hide the popover window
-        $('body').on('mouseout', '.list-group-item .fa-link', dismissSeriesPopover);
-        // Show extra information for the borrowed series
-        $('body').on('mouseover', '.list-group-item .fa-link', setUpSeriesPopover);
 
         // Set up the modules list
         $(document).on('gh.part.selected', setUpModules);

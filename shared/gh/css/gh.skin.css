@@ -34,6 +34,10 @@ select[disabled],
     border-color: #EEE !important;
 }
 
+.gh-disabled-overlay {
+    background-color: #171717;
+}
+
 #gh-page-container #gh-subheader h1,
 #gh-page-container #gh-subheader h2,
 #gh-page-container #gh-subheader h3,
@@ -560,11 +564,13 @@ tbody .fc-sun {
 
 /* Series info popover */
 
-.popover.gh-borrowed-popover {
+.popover.gh-borrowed-popover,
+.popover.gh-borrowed-published-popover {
     background-color: #D7E0DC;
 }
 
-.popover.gh-borrowed-popover .arrow:after {
+.popover.gh-borrowed-popover .arrow:after,
+.popover.gh-borrowed-published-popover .arrow:after {
     border-right-color: #D7E0DC;
 }
 

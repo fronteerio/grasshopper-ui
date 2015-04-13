@@ -65,6 +65,7 @@ requirejs.config({
         // GH utilities
         'gh.utils': 'gh/js/utils/gh.utils',
         'gh.utils.instrumentation': 'gh/js/utils/gh.utils.instrumentation',
+        'gh.utils.orgunits': 'gh/js/utils/gh.utils.orgunits',
         'gh.utils.state': 'gh/js/utils/gh.utils.state',
         'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
         'gh.utils.time': 'gh/js/utils/gh.utils.time',
@@ -88,6 +89,8 @@ requirejs.config({
         'gh.new-series': 'gh/js/views/gh.new-series',
         'gh.rename-module': 'gh/js/views/gh.rename-module',
         'gh.series-info': 'gh/js/views/gh.series-info',
+        'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
+        'gh.series-borrowed-published-popover': 'gh/js/views/gh.series-borrowed-published-popover',
         'gh.student-listview': 'gh/js/views/gh.student-listview',
         'gh.subheader': 'gh/js/views/gh.subheader',
         'gh.video': 'gh/js/views/gh.video',

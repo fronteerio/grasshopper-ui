@@ -60,6 +60,9 @@
                 <!-- Borrowed popover-->
                 <%= _.partial('series-borrowed-popover', {'data': d}) %>
 
+                <!-- Borrowed popover-->
+                <%= _.partial('series-borrowed-published-popover', {'data': d}) %>
+
                 <!-- Borrowed icon -->
                 <div class="gh-series-borrowed">
                     <% if (d.borrowedFrom) { %>
@@ -72,16 +75,22 @@
 
             <!-- Series actions -->
             <div class="gh-list-action">
+
+                <!-- Disabled button overlay -->
+                <% if (d.borrowedFrom && d.borrowedFrom.Parent && !d.borrowedFrom.Parent.published) { %>
+                    <div class="gh-disabled-overlay" data-id="<%- d.id %>"></div>
+                <% } %>
+
                 <% if (d.subscribed || (!isChild && subscribedAll)) { %>
-                    <button class="btn btn-link <% if (isChild) { %> gh-remove-from-calendar <% } else { %> gh-remove-all-from-calendar <% } %>">
+                    <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (d.borrowedFrom && d.borrowedFrom.Parent && !d.borrowedFrom.Parent.published) { %>disabled<% } %>>
                         <i class="fa fa-remove"></i>
                     </button>
                 <% } else { %>
-                    <button class="btn btn-link <% if (isChild) { %> gh-add-to-calendar <% } else { %> gh-add-all-to-calendar <% } %>">
+                    <button class="btn btn-link <% if (isChild) { %>gh-add-to-calendar<% } else { %>gh-add-all-to-calendar<% } %>" <% if (d.borrowedFrom && d.borrowedFrom.Parent && !d.borrowedFrom.Parent.published) { %>disabled<% } %>>
                         <% if (!isChild && subscribedSome) { %>
-                        <i class="fa fa-minus"></i>
+                            <i class="fa fa-minus"></i>
                         <% } else { %>
-                        <i class="fa fa-plus"></i>
+                            <i class="fa fa-plus"></i>
                         <% } %>
                     </button>
                 <% } %>

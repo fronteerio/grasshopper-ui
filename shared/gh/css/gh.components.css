@@ -17,6 +17,7 @@
     outline: -webkit-focus-ring-color auto 5px;
 }
 
+
 /**********/
 /* HEADER */
 /**********/
@@ -627,7 +628,7 @@ tbody tr:last-child > td.fc-widget-content {
     border-radius: 3px;
     display: block;
     height: 25px;
-    padding: 5px 0 5px;
+    overflow: hidden;
     text-align: center;
     width: 25px;
 }
@@ -671,6 +672,10 @@ tbody tr:last-child > td.fc-widget-content {
     top: 0;
 }
 
+.list-group .list-group-item .gh-list-action .btn-link:disabled {
+    cursor: default !important;
+}
+
 .list-group .list-group-item .gh-list-action .btn-link i {
     font-size: 19px;
     padding: 0;
@@ -711,6 +716,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .gh-series-borrowed .fa-link {
     font-weight: 400;
+    padding: 5px;
 }
 
 /* Nested list */
@@ -967,6 +973,10 @@ tbody tr:last-child > td.fc-widget-content {
 
 .gh-student .popover.gh-series-popover.gh-borrowed-popover {
     margin-left: 60px;
+}
+
+.gh-student .popover.gh-series-popover.gh-borrowed-published-popover {
+    margin-left: 5px;
 }
 
 /* Series info popover */
