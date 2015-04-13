@@ -179,7 +179,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // Change the view
         calendar.fullCalendar('changeView', currentView);
         // Set the view mode label
-        $('#gh-switch-view-label').html(getReadableView());
+        $('#gh-switch-view-label').html(getReadableView() + ' view');
         // Set the current day
         setCurrentDay();
         // Set the period label
@@ -316,7 +316,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
             var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate());
 
             // Set the label
-            label = 'Outside term';
+            label = 'Outside term week';
             if (weekNumber) {
                 label = 'Week ' + weekNumber;
             }
@@ -348,7 +348,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var setDocumentTitle = function() {
-        if (!$('body').data('isadminui')) {
+        if (!$('body').hasClass('gh-admin')) {
             var title = calendar.fullCalendar('getView').title;
 
             // Set the document title
@@ -643,6 +643,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // all popovers are hidden before adding a new one
         _.defer(function() {
             var options = {
+                'class_name': 'gh-event-popover',
                 'container': 'body',
                 'content': $content.html(),
                 'global_close': true,

@@ -37,6 +37,11 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Sort the data before displaying it
         modules.results.sort(utils.sortByDisplayName);
         $.each(modules.results, function(i, module) {
+
+            // Decorate the series with their parent info
+            utils.decorateBorrowedSeriesWithParentInfo(module.Series);
+
+            // Sort the series by their display name
             module.Series.sort(utils.sortByDisplayName);
         });
 
@@ -203,6 +208,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
     var addBinding = function() {
         // Toggle a list item
         $('body').on('click', '.gh-toggle-list', toggleList);
+
         // Set up the modules list
         $(document).on('gh.part.selected', setUpModules);
         // Refresh the modules list

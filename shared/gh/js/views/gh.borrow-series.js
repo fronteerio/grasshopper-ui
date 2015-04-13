@@ -69,7 +69,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
             'data': {
-                'parts': parts
+                'parts': parts,
+                'excludePart': History.getState().data.part
             }
         }, $('#gh-borrow-series-part'));
 
@@ -101,7 +102,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         var partId = $(this).closest('#gh-modules-list-container').data('partid');
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(function(err, _triposData) {
+        gh.utils.getTriposStructure(null, function(err, _triposData) {
             // Cache the triposdata for use in the other picker
             triposData = _triposData;
 

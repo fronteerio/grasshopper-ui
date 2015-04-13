@@ -2,7 +2,7 @@
     <head>
         <title>My Timetable</title>
 
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -37,7 +37,7 @@
         <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body>
+    <body class="gh-student">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -45,7 +45,7 @@
                         <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
                     </a>
                     <div id="gh-content-description">
-                        <p style="display: none;">Choose a tripos &amp; part<br/> to see available modules</p>
+                        <p style="display: none;">Select your area of study<br/>to see available modules</p>
                     </div>
                 </div>
                 <div id="gh-modules-container"><!-- --></div>
@@ -56,7 +56,12 @@
                     <div id="gh-subheader"><!-- --></div>
                 </div>
                 <div id="gh-empty" style="display: none;"><!-- --></div>
-                <main id="gh-main"><!-- --></main>
+                <main id="gh-main">
+                    <div id="gh-calendar-loading-container">
+                        <h2>Loading Timetable</h2>
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>
+                </main>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -105,6 +110,16 @@
         <!-- Empty part template -->
         <script id="gh-empty-template" type="text/template">
             <%= _.partial('empty-timetable', {'data': data}) %>
+        </script>
+
+        <!-- Additional series info popover -->
+        <script id="gh-series-info-popover-template" type="text/template">
+            <%= _.partial('series-info-popover', {'data': data}) %>
+        </script>
+
+        <!-- Additional series info -->
+        <script id="gh-series-info-template" type="text/template">
+            <%= _.partial('series-info', {'data': data}) %>
         </script>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>

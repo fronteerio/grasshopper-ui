@@ -90,7 +90,7 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
             // Don't attempt to fetch any configuration when the global admin UI or QUnit
             // is loaded up as it has its own way of dealing with configuration
             /* istanbul ignore else */
-            if ($('body').data('isglobaladminui') || $('body').data('isqunit')) {
+            if ($('body').hasClass('gh-global-admin') || $('body').data('isqunit')) {
                 callback();
             // Fetch the configuration and cache it on the global gh object when we're loading
             // up the student UI or student admin UI

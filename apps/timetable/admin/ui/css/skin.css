@@ -45,31 +45,21 @@
 }
 
 
+/***********/
+/* POPOVER */
+/***********/
+
+.popover.gh-datepicker-popover {
+    background-color: #FFF;
+}
+
+
 /**********/
 /* CHOSEN */
 /**********/
 
 .chosen-container .chosen-results li.highlighted {
     background-color: #92308A;
-}
-
-
-/***********/
-/* POPOVER */
-/***********/
-
-/* event */
-.popover {
-    background-color: #FFF;
-}
-
-/* series */
-.popover.gh-series-popover {
-    background-color: #D7E0DC;
-}
-
-.popover.gh-series-popover .arrow:after {
-    border-right-color: #D7E0DC;
 }
 
 
@@ -168,14 +158,6 @@
     background-color: transparent !important;
 }
 
-.list-group .list-group-item .gh-list-action .gh-series-borrowed:hover {
-    background-color: #D7E0DC;
-}
-
-.list-group .list-group-item .gh-list-action .gh-series-borrowed:hover > .fa-link {
-    color: #171717;
-}
-
 .list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
     background-color: #42305B;
 }
@@ -239,21 +221,29 @@
 }
 
 
+/************************/
+/* DELETE SERIES/MODULE */
+/************************/
+
+#gh-delete-series-modal small {
+    color: #6C6C6C;
+}
+
+
 /*****************/
-/* DELETE SERIES */
+/* BORROWED LIST */
 /*****************/
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+ul.gh-borrowed-list {
     border-bottom-color: #CCC;
     border-top-color: #CCC;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+ul.gh-borrowed-list li {
     border-bottom-color: #CCC;
 }
 
-#gh-delete-series-modal small,
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p:first-child {
+ul.gh-borrowed-list li p:first-child {
     color: #6C6C6C;
 }
 
@@ -271,6 +261,33 @@
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
     background-color: #F4F4F4;
     color: #171717;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay {
+    background-color: #DDD;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p i {
+    color: #62326E;
+}
+
+#gh-batch-edit-header button:not(:disabled),
+#gh-batch-edit-header input:not(:disabled)[type="text"],
+#gh-batch-edit-header select:not(:disabled),
+#gh-batch-edit-header ul.as-selections:not(.gh-disabled) {
+    border-color: #171717 !important;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]::-webkit-input-placeholder {
+    color: #555;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]::-moz-placeholder {
+    color: #555;
+}
+
+#gh-batch-edit-header input:not(:disabled)[type="text"]:-ms-input-placeholder {
+    color: #555;
 }
 
 #gh-batch-edit-container {
@@ -388,6 +405,10 @@ tr.info .gh-event-delete button i {
 
 #gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description p {
     color: #171717;
+}
+
+#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
+    border-top-color: #171717;
 }
 
 #gh-borrow-series-modal .list-group .list-group-item i.fa-check {

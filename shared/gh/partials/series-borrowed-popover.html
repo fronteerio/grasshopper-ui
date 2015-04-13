@@ -1,0 +1,20 @@
+<div class="popover fade gh-series-popover borrowing" role="tooltip" data-id="<%- data.id %>">
+
+    <!-- Module -->
+    This series belongs to <strong><%- data.borrowedFrom.displayName %></strong>
+
+    <!-- Part -->
+    <% if (data.borrowedFrom.Parent) { %>
+        in <strong><%- data.borrowedFrom.Parent.displayName %></strong>
+
+        <!-- Tripos -->
+        <% if (data.borrowedFrom.Parent.Parent) { %>
+            in <strong><%- data.borrowedFrom.Parent.Parent.displayName %></strong>
+
+            <!-- Course -->
+            <% if (data.borrowedFrom.Parent.Parent.Parent) { %>
+                in <strong><%- data.borrowedFrom.Parent.Parent.Parent.displayName %></strong>
+            <% } %>
+        <% } %>
+    <% } %>
+</div>

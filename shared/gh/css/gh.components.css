@@ -17,6 +17,7 @@
     outline: -webkit-focus-ring-color auto 5px;
 }
 
+
 /**********/
 /* HEADER */
 /**********/
@@ -38,7 +39,7 @@
 
 #gh-right-container #gh-subheader form {
     margin: 0 0 0 40px;
-    min-width: 960px;
+    min-width: 900px;
     padding: 28px 0 0;
 }
 
@@ -85,6 +86,21 @@
 /************/
 /* CALENDAR */
 /************/
+
+#gh-calendar-loading-container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#gh-calendar-loading-container h2 {
+    font-size: 30px;
+    font-weight: 200;
+    margin-bottom: 12px;
+}
+
+#gh-calendar-loading-container i {
+    font-size: 25px;
+}
 
 #gh-calendar-container {
     opacity: 1;
@@ -272,6 +288,8 @@
        -moz-border-radius: 0;
             border-radius: 0;
     border: none;
+    border-bottom-style: solid;
+    border-bottom-width: 1px !important;
     border-left-style: solid;
     border-left-width: 5px;
     cursor: pointer;
@@ -534,11 +552,15 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item {
-    border: none;
+    border-width: 0 0 1px 0;
     border-bottom-style: solid;
     border-bottom-width: 1px;
     margin: 0;
     padding: 0;
+}
+
+.list-group .list-group-item .list-group .list-group-item {
+    border-bottom-width: 0;
 }
 
 .list-group .list-group-item .gh-list-group-item-container {
@@ -562,9 +584,24 @@ tbody tr:last-child > td.fc-widget-content {
     text-decoration: none;
 }
 
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list + ul {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 9px;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .gh-list-group-item-container .gh-toggle-list + ul {
+    display: block;
+}
+
 .list-group-item:first-child,
 .list-group-item:last-child {
     border-radius: 0;
+}
+
+.list-group-item .gh-list-action {
+    border-top: none;
 }
 
 .list-group .list-group-item p {
@@ -582,19 +619,43 @@ tbody tr:last-child > td.fc-widget-content {
     opacity: 1;
 }
 
+.list-group .list-group-item span.gh-borrowed-icon-container {
+    border-radius: 3px;
+    display: block;
+    height: 25px;
+    overflow: hidden;
+    text-align: center;
+    width: 25px;
+}
+
 .list-group .list-group-item .gh-list-action,
+.list-group .list-group-item .gh-list-description,
 .list-group .list-group-item .gh-list-icon,
-.list-group .list-group-item .gh-list-description {
+.list-group .list-group-item .gh-series-borrowed {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.list-group .list-group-item .gh-list-action,
+.list-group .list-group-item .gh-list-description,
+.list-group .list-group-item .gh-list-icon {
     padding: 14px 0;
 }
 
+
+.list-group .list-group-item .list-group .gh-list-action,
+.list-group .list-group-item .gh-series-borrowed,
+.list-group .list-group-item .list-group .gh-list-description {
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+/* List action */
+
 .list-group .list-group-item .gh-list-action {
-    display: table-cell;
-    max-width: 50px;
     overflow: hidden;
     position: relative;
     text-align: center;
-    vertical-align: middle;
     width: 50px;
 }
 
@@ -606,21 +667,34 @@ tbody tr:last-child > td.fc-widget-content {
     top: 0;
 }
 
+.list-group .list-group-item .gh-list-action .btn-link:disabled {
+    cursor: default !important;
+}
+
 .list-group .list-group-item .gh-list-action .btn-link i {
     font-size: 19px;
     padding: 0;
 }
 
-.list-group .list-group-item .gh-list-action .fa-link {
+/* List description */
+
+.list-group .list-group-item .gh-list-description {
+    max-width: 230px;
+    overflow: auto;
+    padding: 12px 0 12px 0;
+    width: auto;
+}
+
+.list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
     font-weight: 400;
 }
 
+/* List icon */
+
 .list-group .list-group-item .gh-list-icon {
-    display: table-cell;
     max-width: 40px;
     overflow: hidden;
     text-align: center;
-    vertical-align: middle;
     width: 40px;
 }
 
@@ -628,27 +702,22 @@ tbody tr:last-child > td.fc-widget-content {
     font-size: 26px;
 }
 
-.list-group .list-group-item .gh-list-description {
-    display: table-cell;
-    overflow: auto;
-    padding: 18px 5px 10px 0;
-    vertical-align: middle;
-    width: 230px;
+/* List borrowed */
+
+.list-group .list-group-item .gh-series-borrowed {
+    height: 100%;
+    width: 30px;
 }
 
-.list-group .list-group-item .list-group .list-group-item .gh-list-action > span {
-    border-radius: 3px;
-    display: block;
-    height: 25px;
-    padding: 5px 0 5px 5px;
-    text-align: center;
-    width: 25px;
+.list-group .list-group-item .gh-series-borrowed .fa-link {
+    font-weight: 400;
+    padding: 5px;
 }
 
 /* Nested list */
+
 .list-group .list-group-item .list-group .list-group-item {
     cursor: pointer;
-    margin-left: 40px;
 }
 
 .list-group .list-group-item.gh-list-group-item-open .list-group {
@@ -657,16 +726,37 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .list-group .list-group-item:first-child {
     border-top-style: solid;
-    border-top-width: 1px;
+    border-top-width: 0;
 }
 
 .list-group .list-group-item .list-group .list-group-item:last-child {
     border-bottom: none;
 }
 
-.list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    padding: 12px 5px 12px 20px;
-    width: 230px;
+.list-group .list-group-item .list-group .list-group-item .gh-list-info {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    visibility: hidden;
+    width: 60px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle {
+    font-size: 20px;
+    opacity: 0.75;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle:hover {
+    font-size: 20px;
+    opacity: 1;
+}
+
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-info {
+    visibility: visible;
+}
+
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-info .fa-info-circle {
+    padding: 10px;
 }
 
 
@@ -784,6 +874,40 @@ tbody tr:last-child > td.fc-widget-content {
     background-image: none;
 }
 
+.chosen-container.chosen-with-drop .chosen-drop,
+.chosen-container.chosen-with-drop .chosen-single {
+    border-style: solid;
+}
+
+.chosen-container.chosen-with-drop .chosen-drop {
+    border-width: 0 1px 1px 1px;
+}
+
+.chosen-container.chosen-with-drop .chosen-single {
+    border-width: 1px 1px 0 1px;
+}
+
+
+/**********/
+/* EVENTS */
+/**********/
+
+.gh-event-type:not(:empty)::before {
+    border-radius: 12px;
+    content: attr(data-first);
+    display: inline-block;
+    height: 20px;
+    margin-right: 6px;
+    padding: 1px;
+    text-align: center;
+    width: 20px;
+}
+
+.gh-event-type:not(:empty) span {
+    display: none;
+}
+
+
 
 /***********/
 /* POPOVER */
@@ -834,24 +958,43 @@ tbody tr:last-child > td.fc-widget-content {
     overflow-y: auto;
 }
 
+/* Series borrowed info popover */
 
-/**********/
-/* EVENTS */
-/**********/
-
-.gh-event-type:not(:empty)::before {
-    border-radius: 12px;
-    content: attr(data-first);
-    display: inline-block;
-    height: 20px;
-    margin-right: 6px;
-    padding: 1px;
-    text-align: center;
-    width: 20px;
+.popover.gh-series-popover.gh-borrowed-popover {
+    margin-left: 20px;
+    padding: 3px;
+    width: 250px;
 }
 
-.gh-event-type:not(:empty) span {
-    display: none;
+.gh-student .popover.gh-series-popover.gh-borrowed-popover {
+    margin-left: 60px;
+}
+
+.gh-student .popover.gh-series-popover.gh-borrowed-published-popover {
+    margin-left: 5px;
+}
+
+/* Series info popover */
+
+.gh-student .popover.gh-series-popover.gh-series-info-popover {
+    margin-left: 275px;
+    min-width: 515px;
+}
+
+.gh-student .popover.gh-series-popover.gh-series-info-popover .term-name {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.gh-student .popover.gh-series-popover.gh-series-info-popover .col-sm-4 {
+    margin-bottom: 15px;
+}
+
+.gh-student .popover.gh-series-popover.gh-series-info-popover .gh-popover-location,
+.gh-student .popover.gh-series-popover.gh-series-info-popover .gh-popover-organiser {
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 8px 0 5px;
 }
 
 

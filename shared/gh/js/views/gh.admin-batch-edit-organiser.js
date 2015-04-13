@@ -44,6 +44,18 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
     };
 
     /**
+     * Reset the AutoSuggest component by deleting all of its selected users
+     *
+     * @private
+     */
+    var resetAutoSuggest = function() {
+        // For each of the users, click the `remove` button
+        _.each($('.gh-batch-event-organisers .as-selection-item .as-close'), function($close) {
+            $($close).click();
+        });
+    };
+
+    /**
      * Update a given organiser field in the DOM
      *
      * @param  {jQuery}    $field    jQuery selector of the td element that makes up the organiser field
@@ -213,6 +225,9 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
                 $(document).trigger('gh.batchedit.togglesubmit');
             }
         });
+
+        // Style the Autosuggest as disabled by default
+        $('.gh-batch-event-organisers .as-selections').addClass('gh-disabled');
     };
 
     /**
@@ -274,7 +289,10 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
      * @private
      */
     var addBinding = function() {
+        // Set up the AutoSuggest
         $(document).on('gh.batchorganiser.setup', setUpAutoSuggest);
+        // Reset the AutoSuggest
+        $(document).on('gh.batchorganiser.reset', resetAutoSuggest);
         // Close the AutoSuggest when the body is clicked
         $(document).on('click', 'body', closeAutoSuggest);
         // Close the AutoSuggest when the component loses focus

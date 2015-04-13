@@ -157,7 +157,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Massage the data so that courses are linked to their child subjects
         // Render the results in the tripos picker
         gh.utils.renderTemplate($('#gh-subheader-picker-template'), {
-            'data': triposPickerData
+            'data': {
+                'triposPickerData': triposPickerData
+            }
         }, $('#gh-subheader-tripos'));
 
         // Show the subheader tripos picker
@@ -181,7 +183,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      *
      * @private
      */
-    var handleStateChange = function(a, b, c) {
+    var handleStateChange = function() {
+        // Close all modal dialogs
+        $('.modal').modal('hide');
 
         // Make sure that all state data is set before handling the statechange event
         gh.utils.setStateData();
@@ -200,7 +204,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             // There is no state for the tripos, make sure it's reset
             setUpTriposPicker();
             // Show the contextual help
-            if (!$('body').data('isadminui')) {
+            if (!$('body').hasClass('gh-admin')) {
                 $('#gh-content-description p').show();
             }
             // Resetting the tripos means destroying the part picker and hiding it
@@ -218,7 +222,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             $('#gh-subheader-part').trigger('change', {'selected': state.part});
             $('#gh-subheader-part').trigger('chosen:updated');
             // Hide the contextual help
-            if (!$('body').data('isadminui')) {
+            if (!$('body').hasClass('gh-admin')) {
                 $('#gh-content-description p').hide();
             }
 
@@ -240,7 +244,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
             // Show the informational message to the user, if there is one
             gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
             // Show the contextual help
-            if (!$('body').data('isadminui')) {
+            if (!$('body').hasClass('gh-admin')) {
                 $('#gh-content-description p').show();
             }
 
@@ -249,7 +253,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         }
 
         // ADMIN ONLY LOGIC
-        if ($('body').data('isadminui')) {
+        if ($('body').hasClass('gh-admin')) {
             // If the URL shows a module and series, go into batch edit mode
             if (state.module && state.series) {
                 // Set up batch edit, this will redirect the user to the correct batch edit view as well

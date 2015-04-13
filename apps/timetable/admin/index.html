@@ -2,7 +2,7 @@
     <head>
         <title>Timetable Administration</title>
 
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -41,7 +41,7 @@
         <link rel="stylesheet" href="/apps/timetable/admin/ui/css/skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body data-isadminui="true">
+    <body class="gh-admin">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -140,9 +140,21 @@
             <%= _.partial('new-module-modal', {'data': data}) %>
         </script>
 
+        <!-- Rename module modal -->
+        <div id="gh-rename-module-modal-container"><!-- --></div>
+        <script id="gh-rename-module-modal-template" type="text/template">
+            <%= _.partial('rename-module-modal', {'data': data}) %>
+        </script>
+
         <!-- Batch edit template -->
         <script id="gh-batch-edit-template" type="text/template">
             <%= _.partial('admin-batch-edit', {'data': data}) %>
+        </script>
+
+        <!-- Delete module modal -->
+        <div id="gh-delete-module-modal-container"><!-- --></div>
+        <script id="gh-delete-module-modal-template" type="text/template">
+            <%= _.partial('delete-module-modal', {'data': data}) %>
         </script>
 
         <!-- Delete series modal -->
@@ -198,6 +210,11 @@
         <!-- Visibility template -->
         <script id="gh-visibility-button-template" type="text/template">
             <%= _.partial('visibility-button', {'data': data}) %>
+        </script>
+
+        <!-- Add another day selector -->
+        <script id="gh-admin-batch-edit-time-picker" type="text/template">
+            <%= _.partial('admin-batch-edit-time-picker', {'data': data}) %>
         </script>
 
         <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>

@@ -1,0 +1,22 @@
+<p>You are deleting the module <%- data.moduleOrgUnit.displayName %> and <strong>ALL series inside it</strong> from <%- data.triposOrgUnit.displayName %>/<%- data.partOrgUnit.displayName %></p>
+<p>Students will not be able to add this module or any of the lecture series to their calendars, and in calendars already added, it will be removed within a few hours</p>
+
+<% if (data.borrowedElsewhere.length) { %>
+    <p class="gh-borrowed-list-description"><%= data.borrowedElsewhere.length %> other module<% if (data.borrowedElsewhere.length !== 1) { %>s<% } %> borrowed a series from this module:</p>
+
+    <ul class="gh-borrowed-list">
+    <% _.each(data.borrowedElsewhere, function(orgunit, index) { %>
+        <li>
+            <p><%- orgunit.tripos.displayName %> / <%- orgunit.part.displayName %></p>
+            <p><%- orgunit.displayName %></p>
+        </li>
+    <% }); %>
+    </ul>
+<% } %>
+
+<form id="gh-delete-module-form" role="form" data-toggle="validator">
+    <div class="form-group">
+        <label for="gh-delete-module-confirm-text"><strong>Please enter the word &quot;DELETE&quot; below to confirm</strong></label>
+        <input type="text" class="form-control" id="gh-delete-module-confirm-text" placeholder="Type DELETE here" required>
+    </div>
+</form>
