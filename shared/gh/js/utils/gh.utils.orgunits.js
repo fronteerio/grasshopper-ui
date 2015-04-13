@@ -37,7 +37,10 @@ define(['exports'], function(exports) {
                 _.each(_triposData, function(orgUnitType) {
 
                     // Add the parent info to the organisational unit, if any
-                    var parent = _.find(orgUnitType, function(orgUnit) { return orgUnit.id === serie.borrowedFrom.ParentId; });
+                    var parent = _.find(orgUnitType, function(orgUnit) {
+                        return orgUnit.id === serie.borrowedFrom.ParentId;
+                    });
+
                     /* istanbul ignore next */
                     if (parent) {
                         serie.borrowedFrom.Parent = parent;
@@ -62,7 +65,10 @@ define(['exports'], function(exports) {
             _.each(_triposData, function(_orgUnitType) {
 
                 // Add the parent info to the organisational unit, if any
-                var parent = _.find(_orgUnitType, function(_orgUnit) { return _orgUnit.id === orgUnit.ParentId; });
+                var parent = _.find(_orgUnitType, function(_orgUnit) {
+                    return _orgUnit.id === orgUnit.ParentId;
+                });
+
                 if (parent) {
                     orgUnit.Parent = parent;
                 }
@@ -73,9 +79,46 @@ define(['exports'], function(exports) {
     /**
      * Return the tripos structure
      *
+     * @param  {Number}      [appId]              The application to retrieve the tripos structure for
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The tripos structure
+     *
+     * * The returned tripos structure will be something in the lines of:
+     * *
+     * * {
+     * *     'courses': [
+     * *         {orgUnit}
+     * *     ],
+     * *     'subjects': [
+     * *         {orgUnit}
+     * *     ],
+     * *     'parts': [
+     * *         {
+     * *             'id': {Number},
+     * *             'displayName': {String},
+     * *             'ParentId': {Number},
+     * *             'Parent': {
+     * *                 'id': {Number},
+     * *                 'displayName': {String},
+     * *                 'ParentId': {Number},
+     * *                 'Parent': {
+     * *                     'id': {Number},
+     * *                     'displayName': {String},
+     * *                     'ParentId': {null},
+     * *                     ...
+     * *                 },
+     * *             },
+     * *             ...
+     * *         },
+     * *         {
+     * *             'id':          {Number},
+     * *             'displayName': {String},
+     * *             'ParentId':    {null}
+     * *             ...
+     * *         }
+     * *     ]
+     * * }
      */
     var getTriposStructure = exports.getTriposStructure = function(appId, callback) {
         if (!_.isFunction(callback)) {
@@ -85,11 +128,10 @@ define(['exports'], function(exports) {
         }
 
         var core = require('gh.core');
-        /* istanbul ignore next */
         if (!appId) {
             appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
         }
-        /* istanbul ignore next */
+
         require('gh.api.orgunit').getOrgUnits(appId, false, true, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
                 return callback(err);

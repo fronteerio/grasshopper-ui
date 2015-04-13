@@ -1012,8 +1012,9 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         });
     });
 
+    // Test the 'getTriposStructure' functionality
     QUnit.asyncTest('getTriposStructure', function(assert) {
-        expect(3);
+        expect(8);
 
         // Verify that an error is thrown when an invalid value for app id was provided
         assert.throws(function() {
@@ -1030,7 +1031,30 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
             gh.utils.getTriposStructure(null, 'invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-        QUnit.start();
+        // Retrieve the tripos structure for the test application
+        var testApp = testAPI.getTestApp();
+        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+            assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
+            assert.ok(data, 'Verify that the tripos structure is returned');
+
+            // Retrieve the tripos structure when the application ID was set in the `me` object
+            gh.data.me.AppId = testApp.id;
+            gh.utils.getTriposStructure(null, function(err, data) {
+                assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
+                assert.ok(data, 'Verify that the tripos structure is returned');
+
+                // Remove the application ID from the `me` object
+                if (gh.data.me.AppId) {
+                    delete gh.data.me.AppId;
+                }
+
+                // Retrieve the tripos structure when no application ID was set
+                gh.utils.getTriposStructure(null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when no application ID is set');
+                    QUnit.start();
+                });
+            });
+        });
     });
 
 

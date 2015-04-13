@@ -65,7 +65,6 @@ define(['gh.utils', 'clickover'], function(utils) {
      * @private
      */
     var addBinding = function() {
-
         // Hide the popover window
         $('body').on('mouseout', '.list-group-item .fa-link', dismissSeriesPopover);
         // Show extra information for the borrowed series
