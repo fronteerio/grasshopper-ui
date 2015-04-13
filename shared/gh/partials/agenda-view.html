@@ -76,7 +76,9 @@
                                     </div>
                                 <% } %>
                                 <span class="gh-agenda-view-event-name"><%- event.displayName %></span>
-                                <span class="gh-agenda-view-event-module"> in S5 Advanced Social Anthropology II Political Economy</span>
+                                <% if (event.context) { %>
+                                    <span class="gh-agenda-view-event-module"> in <%- event.context.displayName %></span>
+                                <% } %>
                                 <br/>
                                 <span class="gh-agenda-view-event-time"><%- moment.utc(event.start).format('h:mma') %> - <%- moment.utc(event.end).format('h:mma') %></span>
                                 <span class="gh-agenda-view-middot">&middot;</span>
@@ -85,7 +87,9 @@
                                 <% var organisers = _.map(event.organisers, function(organiser) { return organiser.displayName || organiser }); %>
                                 <span class="gh-agenda-view-event-organisers"><% if (organisers.length) { %><%- organisers.join(', ') %><% } else { %>Lecturer not known<% } %></span>
                                 <br/>
-                                <span class="gh-agenda-view-event-belongs">Archeology &amp; Anthropology Tripos > Part IIB</span>
+                                <% if (event.context && event.context.Parent) { %>
+                                    <span class="gh-agenda-view-event-belongs"><%- event.context.Parent.displayName %><% if (event.context.Parent.Parent) { %> &gt; <%- event.context.Parent.Parent.displayName %><% } %></span>
+                                <% } %>
                             </div>
                             <% if (!term.events[weekIndex][eventIndex + 1]) { %>
                                 <!-- If there is no next event, make sure to close all div elements properly -->
@@ -95,7 +99,7 @@
                     <% }); %>
 
                     <% if ((parseInt(weekIndex, 10) + 1) < weeksInTerm) { %>
-                        <button class="btn btn-default gh-btn-load-next-week" data-week="<%- weekIndex %>" data-term="<%- term.name %>">Load next week in <%- term.label %></button>
+                        <button class="btn btn-default gh-btn-load-next-week" data-week="<%- weekIndex %>" data-term="<%- term.name %>"><i class="fa fa-spinner fa-spin" style="display: none"></i> Load week <%- (parseInt(weekIndex, 10) + 2) %> in <%- term.label %></button>
                     <% } %>
                 </div>
             <% }); %>

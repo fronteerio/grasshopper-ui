@@ -21,11 +21,31 @@ define(['gh.core'], function(gh) {
     var terms = config.terms[config.academicYear];
 
     /**
+     * Add the parent info to all events in the terms
+     *
+     * @private
+     */
+    var addParentInfo = function() {
+        _.each(terms, function(term) {
+            _.each(term.events, function(week) {
+                _.each(week, function(event) {
+                    if (event.context) {
+                        gh.utils.addParentInfoToOrgUnit(event.context);
+                    }
+                });
+            });
+        });
+    };
+
+    /**
      * Render the agenda view
      *
      * @private
      */
     var renderAgendaView = function(terms) {
+        // Add parent info to all events that have context
+        addParentInfo();
+
         gh.utils.renderTemplate($('#gh-my-agenda-view-template'), {
             'data': {
                 'openedTerms': require('gh.core').utils.localDataStorage().get('myagenda'),
@@ -41,6 +61,8 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var loadNextWeek = function() {
+        // Show the loading indicator
+        $(this).find('i').show();
         // Get the next week to load
         var nextWeek = parseInt($(this).attr('data-week'), 10) + 1;
         // Get the term to load the next week for
@@ -53,16 +75,16 @@ define(['gh.core'], function(gh) {
     };
 
     /**
-     * Get all events for every term in the users calendar
+     * Get all events for the specified week and term in the user's calendar
      *
      * @private
      */
     var getAgendaViewData = function(term, week) {
         var startOffsetDays = week * 7;
-        var endOffsetDays = (week * 7) + 7;
+        var endOffsetDays = startOffsetDays + 7;
 
         var startDate = gh.utils.convertUnixDatetoISODate(moment(term.start).add({'days': startOffsetDays}).toISOString());
-        var endDate = gh.utils.convertUnixDatetoISODate(moment(startDate).add({'days': endOffsetDays}).toISOString());
+        var endDate = gh.utils.convertUnixDatetoISODate(moment(term.start).add({'days': endOffsetDays}).toISOString());
 
         // Get the user's events for each term in the year
         gh.api.userAPI.getUserCalendar(gh.data.me.id, startDate, endDate, function(err, data) {
@@ -95,8 +117,11 @@ define(['gh.core'], function(gh) {
 
     /**
      * Add handlers to various elements in the agenda view
+     *
+     * @private
      */
     var addBinding = function() {
+        // Load up the first week of each term when the 'my agenda' tab is shown
         $(document).on('shown.bs.tab', '#gh-calendar-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
             if ($(ev.target).attr('aria-controls') === 'gh-my-agenda-view') {
                 // Load the first week of each term by default
@@ -106,6 +131,7 @@ define(['gh.core'], function(gh) {
             }
         });
 
+        // Toggle the visiblity of a term when the header is clicked
         $(document).on('click', '.agenda-view-term-header > button', toggleTerm);
 
         // Load next week in term
