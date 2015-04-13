@@ -196,6 +196,29 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         });
     };
 
+    /**
+     * Open the external link
+     *
+     * @return {Boolean}    Return false to discard the natural link behaviour
+     */
+    var openExternalLink = function() {
+
+        // Retrieve the url from the link
+        var url = $(this).attr('href');
+
+        // If no protocol was provided, prepend 'http://'
+        var regExp = new RegExp(/\:\/\//g);
+        if (!regExp.test(url)) {
+            url = 'http://' + url;
+        }
+
+        // Open the external link in a new window
+        window.open(url, "_blank");
+
+        // Discard the natural behaviour;
+        return false;
+    };
+
 
     //////////////////////
     //  INITIALISATION  //
@@ -208,6 +231,9 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var addBinding = function() {
         $('body').on('submit', '#gh-signout-form', doLogout);
+
+        // Open the external link for
+        $('body').on('click', '#gh-empty-access', openExternalLink);
 
         // Track an event when the user clicks the Cambridge logo
         $('body').on('click', '#gh-header-logo', function() {
