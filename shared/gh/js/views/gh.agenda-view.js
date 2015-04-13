@@ -40,12 +40,14 @@ define(['gh.core'], function(gh) {
     /**
      * Render the agenda view
      *
+     * @param {Object}    terms    The terms containing the events per week
      * @private
      */
     var renderAgendaView = function(terms) {
         // Add parent info to all events that have context
         addParentInfo();
 
+        // Render the agenda view
         gh.utils.renderTemplate($('#gh-my-agenda-view-template'), {
             'data': {
                 'openedTerms': require('gh.core').utils.localDataStorage().get('myagenda'),
@@ -77,6 +79,8 @@ define(['gh.core'], function(gh) {
     /**
      * Get all events for the specified week and term in the user's calendar
      *
+     * @param {Object}    term    The term to get the events for
+     * @param {Number}    week    The week of the term to get evens for
      * @private
      */
     var getAgendaViewData = function(term, week) {

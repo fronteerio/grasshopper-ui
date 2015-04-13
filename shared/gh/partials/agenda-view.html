@@ -1,5 +1,5 @@
 <%
-    prevDate = null;
+    var prevDate = null;
 
     /**
      * Compare two dates to each other and return true if the year, month and day match each other
@@ -10,10 +10,7 @@
      * @private
      */
     var isADifferentDay = function(_prevDate, currDate) {
-        if (moment(_prevDate).format('YYYYMMDD') === moment(currDate).format('YYYYMMDD')) {
-            return true;
-        }
-        return false;
+        return moment(_prevDate).format('YYYYMMDD') === moment(currDate).format('YYYYMMDD');
     };
 
     /**
@@ -33,10 +30,7 @@
      * @private
      */
     var isToday = function(date) {
-        if (moment(date).format('YYYYMMDD') === moment(new Date()).format('YYYYMMDD')) {
-            return true;
-        }
-        return false;
+        return moment(date).format('YYYYMMDD') === moment(new Date()).format('YYYYMMDD');
     }
 %>
 

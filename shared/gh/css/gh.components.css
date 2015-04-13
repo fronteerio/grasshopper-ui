@@ -1032,8 +1032,8 @@ tbody tr:last-child > td.fc-widget-content {
     width: 23px;
 }
 
-.gh-event-calendar-icon .month,
-.gh-event-calendar-icon .day {
+.gh-event-calendar-icon .day,
+.gh-event-calendar-icon .month {
     display: block;
     font-weight: 800;
     text-align: center;
@@ -1069,7 +1069,6 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .gh-event-calendar-icon.gh-event-calendar-icon-xl + .dayname {
-    color: #919191;
     display: block;
     font-size: 12px;
     margin-top: 57px;
@@ -1095,13 +1094,13 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .agenda-view-term .agenda-view-term-header {
-    border-bottom: 5px solid #D8E0DC;
+    border-bottom-style: solid;
+    border-bottom-width: 5px;
     padding: 12px 12px 7px;
 }
 
 .agenda-view-term .agenda-view-term-header button,
 .agenda-view-term .agenda-view-term-header button i {
-    color: #333;
     font-size: 19px;
     font-weight: 600;
     height: 38px;
@@ -1113,7 +1112,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week {
-    border-bottom: 3px solid #D8E0DC;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
     font-weight: 400;
     margin-bottom: 15px;
     padding: 0 12px 15px;
@@ -1137,10 +1137,6 @@ tbody tr:last-child > td.fc-widget-content {
     margin: 15px 0 12px;
 }
 
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 span {
-    color: #919191;
-}
-
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
     border-bottom: 1px solid #EEE;
     padding: 12px;
@@ -1152,12 +1148,6 @@ tbody tr:last-child > td.fc-widget-content {
     clear: both;
 }
 
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today {
-    background-color: #EBF3F0;
-}
-
-/*
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event:last-child,*/
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week div.gh-agenda-view-term-event:last-of-type,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information:last-child,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today:last-child,
@@ -1178,11 +1168,13 @@ tbody tr:last-child > td.fc-widget-content {
     overflow: auto;
     padding: 12px 12px 12px 0;
     position: relative;
-    border-bottom: 1px solid #EEE;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today .gh-agenda-view-event-information {
-    border-bottom: 1px solid #FFF;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-calendar-icon-container + .gh-agenda-view-event-information {
@@ -1202,14 +1194,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 span.gh-agenda-view-middot {
-    color: #919191;
     font-size: 30px;
     line-height: 0;
     margin: 0 3px;
     vertical-align: sub;
-}
-
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-module,
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-belongs {
-    color: #919191;
 }

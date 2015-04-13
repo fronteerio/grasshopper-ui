@@ -279,6 +279,26 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         var date = '2015-02-18T16:00:00.000Z';
 
         /* DAY */
+        /* Day name */
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(null).dayName();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(9999).dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay('invalid_date').dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the corret day name is returned
+        assert.strictEqual(gh.utils.dateDisplay(date).dayName(), 'Wed', 'Verify that the correct day name is returned');
+
+        /* Day number */
 
         // Verify that a date needs to be provided
         assert.throws(function() {
