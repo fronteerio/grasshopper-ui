@@ -899,6 +899,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //  TRIPOSES  //
     ////////////////
 
+    // Test the 'getTriposStructure' functionality
     QUnit.asyncTest('getTriposStructure', function(assert) {
         expect(2);
 
@@ -913,6 +914,30 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         QUnit.start();
+    });
+
+
+    //////////////////
+    //  BATCH EDIT  //
+    //////////////////
+
+    // Test the 'getOrganiserObjects' functionality
+    QUnit.test('getOrganiserObjects', function(assert) {
+        // Append a test container with hidden fields to the body
+        var hiddenFields = '<td class="gh-event-organisers-fields hide"><input type="hidden" name="gh-event-organiser" value="Bert Pareyn" data-add="true" data-id="1"><input type="hidden" name="gh-event-organiser" value="Mathieu Decoene" data-add="true"></td>';
+        $('body').append(hiddenFields);
+        // Select the hidden fields container
+        var $hiddenFields = $('.gh-event-organisers-fields');
+        // Verify that an error is thrown when no $hiddenFields was provided
+        assert.throws(function() {
+            gh.utils.getOrganiserObjects();
+        }, 'Verify that an error is thrown when no $hiddenFields was provided');
+        // Verify that the $hiddenFields can be successfully returned as user objects
+        var organisers = gh.utils.getOrganiserObjects($hiddenFields);
+        assert.equal(organisers[0].displayName, 'Bert Pareyn', 'Verify that the first user has the correct displayName');
+        assert.equal(organisers[0].id, '1', 'Verify that the first user has the correct ID');
+        assert.equal(organisers[1].displayName, 'Mathieu Decoene', 'Verify that the second user has the correct displayName');
+        assert.equal(organisers[1].id, undefined, 'Verify that the second user has no ID');
     });
 
     testAPI.init();
