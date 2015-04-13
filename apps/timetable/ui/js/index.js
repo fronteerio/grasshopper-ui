@@ -202,7 +202,6 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @return {Boolean}    Return false to discard the natural link behaviour
      */
     var openExternalLink = function() {
-
         // Retrieve the url from the link
         var url = $(this).attr('href');
 
@@ -215,7 +214,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         // Open the external link in a new window
         window.open(url, "_blank");
 
-        // Discard the natural behaviour;
+        // Discard the natural behaviour
         return false;
     };
 
@@ -232,7 +231,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
     var addBinding = function() {
         $('body').on('submit', '#gh-signout-form', doLogout);
 
-        // Open the external link for
+        // Open the external timetable
         $('body').on('click', '#gh-empty-access', openExternalLink);
 
         // Track an event when the user clicks the Cambridge logo
