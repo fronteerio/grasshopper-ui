@@ -184,7 +184,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var fetchTriposData = function(callback) {
         // Fetch the triposes
-        gh.utils.getTriposStructure(function(err, data) {
+        gh.utils.getTriposStructure(null, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
