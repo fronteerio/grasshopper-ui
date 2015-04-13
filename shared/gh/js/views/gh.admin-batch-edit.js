@@ -1400,8 +1400,12 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
 
         // External edit
         $(document).on('gh.datepicker.change', batchEditDate);
-        $('body').on('click', '.gh-event-date:not(.gh-disabled)', function() {
-            $(document).trigger('gh.datepicker.show', this);
+        $('body').on('click', '.gh-event-date:not(.gh-disabled)', function(ev) {
+            // @see gh.datepicker.js for parameter instructions
+            $(document).trigger('gh.datepicker.show', {
+                'ev': ev,
+                'trigger': this
+            });
         });
 
         // Settings
