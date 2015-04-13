@@ -88,7 +88,13 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
     var onPartSelected = function(evt, data) {
         if (!data.modules.results.length) {
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
-                gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
+                // Render the 'empty-timetable' template
+                gh.utils.renderTemplate($('#gh-empty-template'), {
+                    'data': {
+                        'gh': gh,
+                        'record': data
+                    }
+                }, $('#gh-empty'));
                 $('#gh-left-container').addClass('gh-minimised');
                 $('#gh-main').hide();
                 $('#gh-empty').show();
@@ -196,28 +202,6 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         });
     };
 
-    /**
-     * Open the external link
-     *
-     * @return {Boolean}    Return false to discard the natural link behaviour
-     */
-    var openExternalLink = function() {
-        // Retrieve the url from the link
-        var url = $(this).attr('href');
-
-        // If no protocol was provided, prepend 'http://'
-        var regExp = new RegExp(/\:\/\//g);
-        if (!regExp.test(url)) {
-            url = 'http://' + url;
-        }
-
-        // Open the external link in a new window
-        window.open(url, "_blank");
-
-        // Discard the natural behaviour
-        return false;
-    };
-
 
     //////////////////////
     //  INITIALISATION  //
@@ -229,11 +213,8 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @private
      */
     var addBinding = function() {
+        // Sign out the user when the form is submitted
         $('body').on('submit', '#gh-signout-form', doLogout);
-
-        // Open the external timetable
-        $('body').on('click', '#gh-empty-access', openExternalLink);
-
         // Track an event when the user clicks the Cambridge logo
         $('body').on('click', '#gh-header-logo', function() {
             gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
