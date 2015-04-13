@@ -1,11 +1,8 @@
-<div class="popover fade gh-series-popover borrowing" role="tooltip" data-id="<%- data.id %>">
-
-    <!-- Module -->
-    This series belongs to <strong><%- data.borrowedFrom.displayName %></strong>
+<div class="popover fade gh-series-popover published" role="tooltip" data-id="<%- data.id %>">
 
     <!-- Part -->
     <% if (data.borrowedFrom.Parent) { %>
-        in <strong><%- data.borrowedFrom.Parent.displayName %></strong>
+        This series belongs to <strong><%- data.borrowedFrom.Parent.displayName %></strong>
 
         <!-- Tripos -->
         <% if (data.borrowedFrom.Parent.Parent) { %>
@@ -16,5 +13,7 @@
                 in <strong><%- data.borrowedFrom.Parent.Parent.Parent.displayName %></strong>
             <% } %>
         <% } %>
+
+        which is not published yet.
     <% } %>
 </div>
