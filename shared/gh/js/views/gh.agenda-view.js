@@ -28,10 +28,28 @@ define(['gh.core'], function(gh) {
     var renderAgendaView = function(terms) {
         gh.utils.renderTemplate($('#gh-my-agenda-view-template'), {
             'data': {
+                'openedTerms': require('gh.core').utils.localDataStorage().get('myagenda'),
                 'terms': terms,
                 'utils': gh.utils
             }
         }, $('#gh-my-agenda-view-container'));
+    };
+
+    /**
+     * Load the next week in a term
+     *
+     * @private
+     */
+    var loadNextWeek = function() {
+        // Get the next week to load
+        var nextWeek = parseInt($(this).attr('data-week'), 10) + 1;
+        // Get the term to load the next week for
+        var termName = $(this).attr('data-term');
+        var term = _.find(terms, function(term) {
+            return term.name === termName;
+        });
+        // Load and render the next week
+        getAgendaViewData(term, nextWeek);
     };
 
     /**
@@ -66,6 +84,13 @@ define(['gh.core'], function(gh) {
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
         // Toggle the event container
         $(this).parent().next().toggle();
+        // Get the expanded terms to store in the local storage
+        var expandedTerms = $('.agenda-view-term-header .fa-caret-down').map(function(index, value) {
+            return $(value).attr('data-term');
+        });
+        expandedTerms = _.map(expandedTerms, function(id) { return id; });
+        // Store the toggled terms in the local storage
+        gh.utils.localDataStorage().store('myagenda', expandedTerms);
     };
 
     /**
@@ -74,6 +99,7 @@ define(['gh.core'], function(gh) {
     var addBinding = function() {
         $(document).on('shown.bs.tab', '#gh-calendar-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
             if ($(ev.target).attr('aria-controls') === 'gh-my-agenda-view') {
+                // Load the first week of each term by default
                 getAgendaViewData(terms[0], 0);
                 getAgendaViewData(terms[1], 0);
                 getAgendaViewData(terms[2], 0);
@@ -81,6 +107,9 @@ define(['gh.core'], function(gh) {
         });
 
         $(document).on('click', '.agenda-view-term-header > button', toggleTerm);
+
+        // Load next week in term
+        $(document).on('click', '.gh-btn-load-next-week', loadNextWeek);
     };
 
     addBinding();

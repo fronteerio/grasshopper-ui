@@ -1113,6 +1113,15 @@ tbody tr:last-child > td.fc-widget-content {
     border-bottom: none !important;
 }
 
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-btn-load-next-week {
+    display: none;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week:last-child .gh-btn-load-next-week {
+    display: block;
+    margin-top: 20px;
+}
+
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 {
     font-size: 16px;
     margin: 15px 0 12px;
@@ -1131,7 +1140,7 @@ tbody tr:last-child > td.fc-widget-content {
     background-color: #EBF3F0;
 }
 
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event:last-child,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week div:last-of-type,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information:last-child,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today:last-child,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today .gh-agenda-view-event-information:last-child {

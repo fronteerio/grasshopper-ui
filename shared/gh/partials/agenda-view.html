@@ -41,12 +41,15 @@
 %>
 
 <% _.each(data.terms, function(term) { %>
+    <% var termOpened = _.indexOf(data.openedTerms, term.name) !== -1; %>
+    <% var weeksInTerm = data.utils.getWeeksInTerm(term) %>
     <div class="agenda-view-term">
         <div class="agenda-view-term-header">
-            <button class="btn btn-link"><i class="fa fa-caret-right"></i> <%- term.label %></button>
+            <button class="btn btn-link"><i class="fa <% if (termOpened) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>" data-term="<%- term.name %>"></i> <%- term.label %></button>
         </div>
-        <div class="agenda-view-term-events" style="display: none;">
+        <div class="agenda-view-term-events" <% if (!termOpened) { %>style="display: none;"<% } %>>
             <% _.each(term.events, function(week, weekIndex) { %>
+                <% prevDate = null %>
                 <div class="gh-agenda-view-term-week">
                     <h3>Week <%- parseInt(weekIndex, 10) + 1 %><% if (parseInt(weekIndex, 10) + 1 === getCurrentAcademicWeekNumber()) { %> <span>- this week</span><% } %></h3>
                     <% _.each(week, function(event, eventIndex) { %>
@@ -75,23 +78,27 @@
                                 <span class="gh-agenda-view-event-name"><%- event.displayName %></span>
                                 <span class="gh-agenda-view-event-module"> in S5 Advanced Social Anthropology II Political Economy</span>
                                 <br/>
-                                <span class="gh-agenda-view-event-time">2 - 3pm</span>
+                                <span class="gh-agenda-view-event-time"><%- moment.utc(event.start).format('h:mma') %> - <%- moment.utc(event.end).format('h:mma') %></span>
                                 <span class="gh-agenda-view-middot">&middot;</span>
-                                <span class="gh-agenda-view-event-location">Room 6</span>
+                                <span class="gh-agenda-view-event-location"><% if (event.location) { %><%- event.location%><% } else { %>Location not known<% } %></span>
                                 <span class="gh-agenda-view-middot">&middot;</span>
-                                <span class="gh-agenda-view-event-organisers">Dr S. Sontag</span>
+                                <% var organisers = _.map(event.organisers, function(organiser) { return organiser.displayName || organiser }); %>
+                                <span class="gh-agenda-view-event-organisers"><% if (organisers.length) { %><%- organisers.join(', ') %><% } else { %>Lecturer not known<% } %></span>
                                 <br/>
                                 <span class="gh-agenda-view-event-belongs">Archeology &amp; Anthropology Tripos > Part IIB</span>
                             </div>
-                            <!-- If there is no next event, make sure to close all div elements properly -->
                             <% if (!term.events[weekIndex][eventIndex + 1]) { %>
+                                <!-- If there is no next event, make sure to close all div elements properly -->
                                 </div>
                             <% } %>
                         <% prevDate = event.start %>
                     <% }); %>
+
+                    <% if ((parseInt(weekIndex, 10) + 1) < weeksInTerm) { %>
+                        <button class="btn btn-default gh-btn-load-next-week" data-week="<%- weekIndex %>" data-term="<%- term.name %>">Load next week in <%- term.label %></button>
+                    <% } %>
                 </div>
             <% }); %>
-            <button id="gh-btn-load-next-week" class="btn btn-default">Load next week</button>
         </div>
     </div>
 <% }); %>
