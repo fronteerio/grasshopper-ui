@@ -205,9 +205,9 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         if (!msg) {
             throw new Error('A custom message object should be provided');
         } else if (!msg.ev) {
-            throw new Error('The original jQuery event should be provided');
+            throw new Error('The original jQuery event should be provided in the custom message');
         } else if (!msg.trigger) {
-            throw new Error('The trigger should be provided');
+            throw new Error('The trigger should be provided in the custom message');
         }
 
         // Calculate the number of weeks in a term based on the date
