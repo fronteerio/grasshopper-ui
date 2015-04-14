@@ -129,6 +129,7 @@ select[disabled],
     height: 100%;
     padding: 0;
     position: fixed;
+    transition: width .3s;
     width: 320px;
     z-index: 3;
 }
@@ -144,11 +145,13 @@ select[disabled],
             box-sizing: initial;
     width: 196px;
     padding: 39px 46px 36px 40px;
+    transition: padding .3s;
 }
 
 #gh-page-container #gh-left-container #gh-content-description p {
     margin: 0;
     padding: 32px 39px 30px;
+    transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-meta-container {
@@ -158,7 +161,7 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    height: 100%;
+    height: calc(100% + 1px);
     padding-bottom: 45px;
     padding-top: 215px;
 }
@@ -166,16 +169,36 @@ select[disabled],
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    height: 45px;
+    height: 44px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+#gh-page-container #gh-page-container #gh-left-container #gh-modules-list-container ul {
+    transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     margin: 0;
     padding: 13px 40px;
+    transition: opacity .3s;
+    width: 300px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules {
+    position: relative;
+    width: 50px;
+    z-index: 1;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules i {
+    font-size: 26px;
+    font-weight: 500;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    opacity: 1;
     overflow: hidden;
+    transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
@@ -193,7 +216,7 @@ select[disabled],
 }
 
 #gh-page-container #gh-right-container #gh-header-container {
-    left: 320px;
+    position: relative;
     right: 0;
     z-index: 3;
 }
@@ -225,6 +248,7 @@ select[disabled],
 
 #gh-page-container #gh-right-container #gh-subheader {
     position: relative;
+    z-index: 10;
 }
 
 #gh-page-container #gh-left-container #gh-content-description {
@@ -232,9 +256,77 @@ select[disabled],
 }
 
 #gh-page-container #gh-right-container {
-    padding-left: 320px;
-    width: 100%;
     height: 100%;
+    padding-left: 320px;
+    transition: padding-left .3s;
+    width: 100%;
+}
+
+
+/********************/
+/* COLLAPSE MODULES */
+/********************/
+
+.fa-angle-double-right,
+.gh-collapsed .fa-angle-double-left {
+    display: none;
+}
+
+.fa-angle-double-left,
+.gh-collapsed .fa-angle-double-right {
+    display: block;
+}
+
+/* Main containers */
+
+.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container {
+    left: 50px;
+    position: fixed;
+}
+
+.gh-collapsed-finished main {
+    margin-top: 215px;
+}
+
+.gh-collapsed-finished #gh-empty {
+    margin-left: 0;
+    margin-top: 250px;
+}
+
+/* Content containers */
+
+.gh-collapsed #gh-page-container #gh-left-container {
+    width: 50px !important;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container {
+    padding-left: 50px;
+    position: absolute;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container #gh-toolbar-container {
+    width: 100%;
+}
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    height: 100%;
+    opacity: 0;
+}
+
+/* Content */
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-header-logo img {
+    padding: 39px 46px 36px 8px;
+}
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
+    border-bottom: none !important;
+}
+
+.gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p,
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
+    opacity: 0;
 }
 
 

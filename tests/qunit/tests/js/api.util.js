@@ -280,6 +280,28 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
         /* DAY */
 
+        /* Day name */
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(null).dayName();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(9999).dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay('invalid_date').dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the corret day name is returned
+        assert.strictEqual(gh.utils.dateDisplay(date).dayName(), 'Wed', 'Verify that the correct day name is returned');
+
+        /* Day number */
+
         // Verify that a date needs to be provided
         assert.throws(function() {
             gh.utils.dateDisplay(null).dayNumber();
@@ -635,6 +657,29 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
         // Verify that the returned string contains uppercase and/or lowercase characters when lowercase is not specified
         assert.ok((/[A-Z0-9]/g).test(gh.utils.generateRandomString()));
+    });
+
+    // Test the 'validateExternalURL' functionality
+    QUnit.test('validateExternalURL', function(assert) {
+
+        // Verify that an error is thrown when no url was provided
+        assert.throws(function() {
+            gh.utils.validateExternalURL();
+        }, 'Verify that an error is thrown when no url was provided');
+
+        // Verify that an error is thrown when an invalid url was provided
+        assert.throws(function() {
+            gh.utils.validateExternalURL(999);
+        }, 'Verify that an error is thrown when an invalid url was provided');
+
+        // Verify that a valid url doesn't get prepended with another protocol
+        assert.strictEqual(gh.utils.validateExternalURL('http://google.be'), 'http://google.be');
+
+        // Verify that an invalid url is prepended with a protocol
+        assert.strictEqual(gh.utils.validateExternalURL('www.google.be'), 'http://www.google.be');
+
+        // Verify that an invalid url is prepended with a protocol
+        assert.strictEqual(gh.utils.validateExternalURL('google.be'), 'http://google.be');
     });
 
     // Test the 'mockRequest' functionality

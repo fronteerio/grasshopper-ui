@@ -623,6 +623,7 @@ tbody .fc-sun {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
 }
 
+
 /***************/
 /* SERIES INFO */
 /***************/
@@ -630,4 +631,82 @@ tbody .fc-sun {
 .gh-series-popover .gh-popover-location,
 .gh-series-popover .gh-popover-organiser {
     border-top-color: #DDD;
+}
+
+
+/*****************/
+/* CALENDAR ICON */
+/*****************/
+
+.gh-event-calendar-icon {
+    border-color: #888;
+}
+
+.gh-event-calendar-icon .month {
+    background-color: #888;
+    color: #FFF;
+    text-shadow: 1px 1px 1px rgba(136,136,136,0.004);
+
+}
+
+.gh-event-calendar-icon .day {
+    background-color: #FFF;
+    color: #4D4D4D;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.004);
+}
+
+.gh-event-calendar-icon.gh-event-calendar-icon-xl + .dayname {
+    color: #919191;
+}
+
+
+/***************/
+/* AGENDA VIEW */
+/***************/
+
+.agenda-view-term .agenda-view-term-header {
+    border-bottom-color: #D8E0DC;
+}
+
+.agenda-view-term .agenda-view-term-header button,
+.agenda-view-term .agenda-view-term-header button i {
+    color: #333;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week {
+    border-bottom-color: #D8E0DC;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 span {
+    color: #919191;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week  .gh-agenda-view-no-events {
+    background-color: #F5F5F5;
+    color: #999;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
+    border-bottom-color: #EEE;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today {
+    background-color: #EBF3F0;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information {
+    border-bottom-color: #EEE;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today .gh-agenda-view-event-information {
+    border-bottom-color: #FFF;
+}
+
+span.gh-agenda-view-middot {
+    color: #919191;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-module,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-belongs {
+    color: #919191;
 }
