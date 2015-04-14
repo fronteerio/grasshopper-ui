@@ -179,17 +179,29 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
      * @private
      */
     var toggleModulesCollapse = function() {
+        // Scroll to the top first for the best animation experience
+        window.scrollTo(0, 0);
+
+        // Toggle the gh-collapsed class which triggers all animations
         $('html').toggleClass('gh-collapsed');
 
         // If the modules are toggled, set the display of the module list to none
         if ($('html').hasClass('gh-collapsed')) {
             setTimeout(function() {
+                // Hide the modules list after the animations complete
                 $('#gh-modules-list').css('display', 'none');
+                // Toggle the animation finished class
+                $('html').toggleClass('gh-collapsed-finished');
+                // Trigger a window resize event to let all components adjust themselves
                 $(window).trigger('resize');
             }, 300);
         } else {
+            // Show the modules list before the animation starts
             $('#gh-modules-list').css('display', 'block');
+            // Toggle the animation finished class
+            $('html').toggleClass('gh-collapsed-finished');
             setTimeout(function() {
+                // Trigger a window resize event to let all components adjust themselves
                 $(window).trigger('resize');
             }, 300);
         }

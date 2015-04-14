@@ -13,6 +13,18 @@
  * permissions and limitations under the License.
  */
 
+/*************/
+/* COLLAPSED */
+/*************/
+
+.gh-collapsed main {
+    margin-top: 0 !important;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container {
+    padding-left: 0 !important;
+}
+
 /************/
 /* CALENDAR */
 /************/

@@ -129,6 +129,7 @@ select[disabled],
     height: 100%;
     padding: 0;
     position: fixed;
+    transition: width .3s;
     width: 320px;
     z-index: 3;
 }
@@ -144,6 +145,7 @@ select[disabled],
             box-sizing: initial;
     width: 196px;
     padding: 39px 46px 36px 40px;
+    transition: padding .3s;
 }
 
 #gh-page-container #gh-left-container #gh-content-description p {
@@ -197,7 +199,9 @@ select[disabled],
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    opacity: 1;
     overflow: hidden;
+    transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
@@ -215,7 +219,7 @@ select[disabled],
 }
 
 #gh-page-container #gh-right-container #gh-header-container {
-    left: 320px;
+    position: relative;
     right: 0;
     z-index: 3;
 }
@@ -258,25 +262,32 @@ select[disabled],
     padding-left: 320px;
     width: 100%;
     height: 100%;
+    transition: padding-left .3s;
 }
 
 /* Collapse modules */
 
-#gh-page-container #gh-left-container {
-    transition: width .3s;
+/* Main elements */
+
+.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container {
+    left: 50px;
+    position: fixed;
 }
 
-#gh-page-container #gh-left-container #gh-modules-list-container {
-    transition: background-color .3s;
+.gh-collapsed-finished main {
+    margin-top: 215px;
 }
 
-#gh-page-container #gh-right-container {
-    transition: padding-left .3s;
+.gh-collapsed-finished #gh-empty {
+    margin-left: 0;
+    margin-top: 250px;
 }
 
-/*#gh-page-container #gh-right-container #gh-header h1 {
-    transition: margin-left .3s;
-}*/
+/* Content containers */
+
+.gh-collapsed #gh-page-container #gh-left-container {
+    width: 50px !important;
+}
 
 .gh-collapsed #gh-page-container #gh-left-container #gh-meta-container #gh-content-description p,
 .gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
@@ -285,9 +296,8 @@ select[disabled],
     transition: opacity .3s;
 }
 
-.gh-collapsed #gh-page-container #gh-left-container {
-    /*position: relative !important;*/
-    width: 50px !important;
+.gh-collapsed #gh-page-container #gh-left-container #gh-header-logo img {
+    padding: 39px 46px 36px 8px;
 }
 
 .gh-collapsed #gh-page-container #gh-right-container {
@@ -296,17 +306,7 @@ select[disabled],
 }
 
 .gh-collapsed #gh-page-container #gh-right-container #gh-toolbar-container {
-    position: fixed;
-    top: 215px;
     width: 100%;
-}
-
-.gh-collapsed #gh-page-container #gh-right-container #gh-header-container {
-    position: fixed;
-}
-
-.gh-collapsed #gh-page-container #gh-right-container #gh-header-container #gh-header h1 {
-    /*margin-left: 310px;*/
 }
 
 .gh-collapsed div#gh-batch-edit-container {
@@ -317,22 +317,18 @@ select[disabled],
     margin-top: 215px;
 }
 
-.gh-collapsed #gh-left-container #gh-modules-list-container {
-    background-color: #FFF;
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    opacity: 0;
     height: 100%;
 }
 
-.gh-collapsed #gh-left-container #gh-modules-list-container ul {
-    opacity: 0;
-}
-
-.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary {
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
     border-bottom: none !important;
 }
 
 .gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p,
-.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
-.gh-collapsed #gh-left-container #gh-modules-container #gh-result-summary p {
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     opacity: 0;
 }
 
