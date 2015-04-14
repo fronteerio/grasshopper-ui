@@ -63,6 +63,27 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
     };
 
     /**
+     * Validate an external URL
+     *
+     * @param  {String}    url    The url that needs to be validated
+     * @return {String}           The validated url
+     */
+    var validateExternalURL = exports.validateExternalURL = function(url) {
+        if (!_.isString(url)) {
+            throw new Error('An invalid value for url was provided');
+        }
+
+        // If no protocol was provided, prepend 'http://'
+        var regExp = new RegExp(/\:\/\//g);
+        if (!regExp.test(url)) {
+            url = 'http://' + url;
+        }
+
+        // Return the validated url
+        return url;
+    };
+
+    /**
      * Mock a XMLHttpRequest
      *
      * @param  {String}           type           The request type. (e.g. 'GET', 'POST'...)
