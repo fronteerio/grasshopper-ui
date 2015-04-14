@@ -87,6 +87,11 @@
 /* CALENDAR */
 /************/
 
+#gh-my-calendar-view,
+#gh-calendar-view-container {
+    margin-top: 30px;
+}
+
 #gh-calendar-loading-container {
     margin-top: 100px;
     text-align: center;
@@ -116,7 +121,7 @@
 
 /* Toolbar */
 #gh-toolbar-container {
-    height: 134px;
+    height: 44px;
 }
 
 .gh-toolbar-primary .gh-toolbar-actions {
@@ -125,6 +130,7 @@
 
 /* Default buttons */
 #gh-toolbar-container .btn-default,
+.gh-toolbar-secondary .btn-default,
 .nav-tabs > li > a {
     font-weight: 400;
     height: 100%;
@@ -135,7 +141,7 @@
     font-weight: 600;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default {
+.gh-toolbar-secondary .btn-default {
     padding: 8px 12px;
 }
 
@@ -153,10 +159,10 @@
 }
 
 /* Secondary toolbar */
-#gh-toolbar-container .gh-toolbar-secondary {
+.gh-toolbar-secondary {
     font-weight: 600;
     opacity: 1;
-    padding: 28px 20px 0;
+    padding: 0 20px 60px;
     position: relative;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
@@ -164,25 +170,25 @@
     z-index: 2;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms,
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-view {
+.gh-toolbar-secondary #gh-calendar-toolbar-period,
+.gh-toolbar-secondary #gh-calendar-toolbar-terms,
+.gh-toolbar-secondary #gh-calendar-toolbar-view {
     display: table;
     height: 32px;
     position: relative;
     z-index: 1;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+.gh-toolbar-secondary #gh-calendar-toolbar-terms {
     min-width: 200px;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary {
     height: auto;
     margin-bottom: 2px;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
     padding: 2px 0 3px;
 }
 
@@ -193,13 +199,13 @@
 }
 
 /* Today button */
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-today {
+.gh-toolbar-secondary #gh-calendar-toolbar-today {
     height: 32px;
     position: absolute;
     width: 100%;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-btn-calendar-today {
+.gh-toolbar-secondary #gh-btn-calendar-today {
     border: none;
 }
 
@@ -1006,4 +1012,198 @@ tbody tr:last-child > td.fc-widget-content {
 .dropdown ul.dropdown-menu li button {
     text-align: left;
     width: 100%;
+}
+
+
+/*****************/
+/* CALENDAR ICON */
+/*****************/
+
+.gh-event-calendar-icon {
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
+}
+
+.gh-event-calendar-icon {
+    border-style: solid;
+    border-width: 1px;
+    height: 25px;
+    margin-top: -4px;
+    width: 23px;
+}
+
+.gh-event-calendar-icon .day,
+.gh-event-calendar-icon .month {
+    display: block;
+    font-weight: 800;
+    text-align: center;
+}
+
+.gh-event-calendar-icon .month {
+    font-size: 8px;
+    line-height: 10px;
+    text-transform: uppercase;
+}
+
+.gh-event-calendar-icon .day {
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 16px;
+}
+
+.gh-event-calendar-icon.gh-event-calendar-icon-xl {
+    height: 54px;
+    margin-top: 0;
+    width: 50px;
+}
+
+.gh-event-calendar-icon.gh-event-calendar-icon-xl .month {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    padding: 3px 0 0;
+}
+
+.gh-event-calendar-icon.gh-event-calendar-icon-xl .day {
+    font-size: 27px;
+    line-height: 34px;
+}
+
+.gh-event-calendar-icon.gh-event-calendar-icon-xl + .dayname {
+    display: block;
+    font-size: 12px;
+    margin-top: 57px;
+    text-align: center;
+    width: 50px;
+}
+
+
+/***************/
+/* AGENDA VIEW */
+/***************/
+
+#gh-my-agenda-view-container .agenda-view-term {
+    margin: 0 30px;
+}
+
+#gh-my-agenda-view-container .agenda-view-term:first-child {
+    margin: 25px 30px 0;
+}
+
+#gh-my-agenda-view-container .agenda-view-term:last-child {
+    margin: 0 30px 25px;
+}
+
+.agenda-view-term .agenda-view-term-header {
+    border-bottom-style: solid;
+    border-bottom-width: 5px;
+    padding: 12px 12px 7px;
+}
+
+.agenda-view-term .agenda-view-term-header button,
+.agenda-view-term .agenda-view-term-header button i {
+    font-size: 19px;
+    font-weight: 600;
+    height: 38px;
+    padding: 5px;
+}
+
+.agenda-view-term .agenda-view-term-header button i {
+    width: 20px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week {
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    font-weight: 400;
+    margin-bottom: 15px;
+    padding: 0 12px 15px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week:last-child {
+    border-bottom: none !important;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-btn-load-next-week {
+    display: none;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week:last-child .gh-btn-load-next-week {
+    display: block;
+    margin-top: 20px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 {
+    font-size: 16px;
+    margin: 15px 0 12px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week  .gh-agenda-view-no-events {
+    padding: 20px;
+    text-align: center;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 12px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week div.gh-agenda-view-term-event:last-of-type,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information:last-child,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today:last-child,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today .gh-agenda-view-event-information:last-child {
+    border-bottom: none;
+    padding-bottom: 5px !important;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-calendar-icon-container {
+    float: left;
+    height: 66px;
+    margin-right: 15px;
+    width: 50px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information {
+    margin-left: 65px;
+    overflow: auto;
+    padding: 12px 12px 12px 0;
+    position: relative;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today .gh-agenda-view-event-information {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-calendar-icon-container + .gh-agenda-view-event-information {
+    padding: 0 12px 12px 0;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information .gh-event-type-container {
+    margin-top: 10px;
+    width: 100px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-time,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-location,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-organisers,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-belongs {
+    font-size: 14px;
+}
+
+span.gh-agenda-view-middot {
+    font-size: 30px;
+    line-height: 0;
+    margin: 0 3px;
+    vertical-align: sub;
 }

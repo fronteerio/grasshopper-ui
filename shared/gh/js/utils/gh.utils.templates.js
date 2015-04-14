@@ -60,6 +60,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!gh/partials/admin-header-template.html',
             'text!gh/partials/admin-module-item.html',
             'text!gh/partials/admin-modules.html',
+            'text!gh/partials/agenda-view.html',
             'text!gh/partials/borrow-series-modal.html',
             'text!gh/partials/calendar.html',
             'text!gh/partials/delete-module-modal.html',

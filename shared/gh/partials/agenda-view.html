@@ -1,0 +1,106 @@
+<%
+    var prevDate = null;
+
+    /**
+     * Compare two dates to each other and return true if the year, month and day match each other
+     *
+     * @param  {Date}    _prevDate    The first Date to match against
+     * @param  {Date}    currDate     The second Date to match against
+     * @return {Boolean}              Return `true` if the dates match
+     * @private
+     */
+    var isADifferentDay = function(_prevDate, currDate) {
+        return moment(_prevDate).format('YYYYMMDD') === moment(currDate).format('YYYYMMDD');
+    };
+
+    /**
+     * Get the current academic week number based on todays date
+     *
+     * @return {Number}    The current academic week number
+     * @private
+     */
+    var getCurrentAcademicWeekNumber = function() {
+        return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment(new Date()).format('YYYY-MM-DD'))), true);
+    };
+
+    /**
+     * Whether or not the provided date is today
+     *
+     * @param  {Date}       date    The date to check
+     * @return {Boolean}            Returns `true` if the provided date is today
+     * @private
+     */
+    var isToday = function(date) {
+        return moment(date).format('YYYYMMDD') === moment(new Date()).format('YYYYMMDD');
+    }
+%>
+
+<% _.each(data.terms, function(term) { %>
+    <% var termOpened = _.indexOf(data.openedTerms, term.name) !== -1; %>
+    <% var weeksInTerm = data.utils.getWeeksInTerm(term) %>
+    <div class="agenda-view-term">
+        <div class="agenda-view-term-header">
+            <button class="btn btn-link"><i class="fa <% if (termOpened) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>" data-term="<%- term.name %>"></i> <%- term.label %></button>
+        </div>
+        <div class="agenda-view-term-events" <% if (!termOpened) { %>style="display: none;"<% } %>>
+            <% _.each(term.events, function(week, weekIndex) { %>
+                <% prevDate = null %>
+                <div class="gh-agenda-view-term-week">
+                    <h3>Week <%- parseInt(weekIndex, 10) + 1 %><% if (parseInt(weekIndex, 10) + 1 === getCurrentAcademicWeekNumber()) { %> <span>- this week</span><% } %></h3>
+                    <% if (!week.length) { %>
+                        <div class="gh-agenda-view-no-events">You have no events scheduled in week <%- parseInt(weekIndex, 10) + 1 %> of <%- term.label %></div>
+                    <% } %>
+                    <% _.each(week, function(event, eventIndex) { %>
+                        <% var prevSameDate = isADifferentDay(prevDate, event.start) %>
+                        <% if (!prevSameDate) { %>
+                            <!-- If the dates don't match each other and the event index is not 0, close the last one -->
+                            <% if (eventIndex) { %>
+                                </div>
+                            <% } %>
+                            <div class="gh-agenda-view-term-event <% if (isToday(event.start)) { %> gh-agenda-view-today<% } %>">
+                                <div class="gh-calendar-icon-container">
+                                    <span class="gh-event-calendar-icon gh-event-calendar-icon-xl">
+                                        <span class="month"><%- data.utils.dateDisplay(event.start).monthName() %></span>
+                                        <span class="day"><%- data.utils.dateDisplay(event.start).dayNumber() %></span>
+                                    </span>
+                                    <span class="dayname"><%- data.utils.dateDisplay(event.start).dayName() %></span>
+                                </div>
+                        <% } %>
+                            <div class="gh-agenda-view-event-information">
+                                <% if (event.type) { %>
+                                    <div class="pull-right gh-event-type-container">
+                                        <span class="gh-event-type" data-type="<%- event.type %>" data-first="<% if (event.type) { %><%- event.type.substr(0,1) %><% } %>"><span><%- event.type %></span></span>
+                                        <span><%- event.type %></span>
+                                    </div>
+                                <% } %>
+                                <span class="gh-agenda-view-event-name"><%- event.displayName %></span>
+                                <% if (event.context) { %>
+                                    <span class="gh-agenda-view-event-module"> in <%- event.context.displayName %></span>
+                                <% } %>
+                                <br/>
+                                <span class="gh-agenda-view-event-time"><%- moment.utc(event.start).format('h:mma') %> - <%- moment.utc(event.end).format('h:mma') %></span>
+                                <span class="gh-agenda-view-middot">&middot;</span>
+                                <span class="gh-agenda-view-event-location"><% if (event.location) { %><%- event.location%><% } else { %>Location not known<% } %></span>
+                                <span class="gh-agenda-view-middot">&middot;</span>
+                                <% var organisers = _.map(event.organisers, function(organiser) { return organiser.displayName || organiser }); %>
+                                <span class="gh-agenda-view-event-organisers"><% if (organisers.length) { %><%- organisers.join(', ') %><% } else { %>Lecturer not known<% } %></span>
+                                <br/>
+                                <% if (event.context && event.context.Parent && event.context.Parent.Parent) { %>
+                                    <span class="gh-agenda-view-event-belongs"><%- event.context.Parent.Parent.displayName %> &gt; <%- event.context.Parent.displayName %></span>
+                                <% } %>
+                            </div>
+                            <% if (!term.events[weekIndex][eventIndex + 1]) { %>
+                                <!-- If there is no next event, make sure to close all div elements properly -->
+                                </div>
+                            <% } %>
+                        <% prevDate = event.start %>
+                    <% }); %>
+
+                    <% if ((parseInt(weekIndex, 10) + 1) < weeksInTerm) { %>
+                        <button class="btn btn-default gh-btn-load-next-week" data-week="<%- weekIndex %>" data-term="<%- term.name %>"><i class="fa fa-spinner fa-spin" style="display: none"></i> Load week <%- (parseInt(weekIndex, 10) + 2) %> in <%- term.label %></button>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+<% }); %>
