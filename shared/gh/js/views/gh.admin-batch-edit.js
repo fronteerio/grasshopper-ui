@@ -446,6 +446,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     /**
      * Calculate the width of the batch edit header header and return the result in pixels
      *
+     * @return {String}    Return the width of the batch edit header, in pixels
      * @private
      */
     var calculateBatchHeaderWidth = function() {
