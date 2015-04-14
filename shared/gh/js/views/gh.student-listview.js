@@ -62,6 +62,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
             gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    // Refresh the calendar view
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
@@ -69,6 +70,8 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
                         },
                         'events': events.results
                     }]);
+                    // Refresh the agenda view
+                    $(document).trigger('gh.agendaview.refresh');
                 });
             });
         });
@@ -114,6 +117,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
             gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    // Refresh the calendar view
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
@@ -121,6 +125,8 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
                         },
                         'events': events.results
                     }]);
+                    // Refresh the agenda view
+                    $(document).trigger('gh.agendaview.refresh');
                 });
             });
         });
@@ -181,6 +187,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
             gh.utils.getCalendarDateRange(function(range) {
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    // Refresh the calendar view
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
@@ -188,6 +195,8 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
                         },
                         'events': events.results
                     }]);
+                    // Refresh the agenda view
+                    $(document).trigger('gh.agendaview.refresh');
                 });
             });
         });
@@ -249,6 +258,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
 
                 // Only attempt to get the user's calendar when not anonymous
                 gh.api.userAPI.getUserCalendar(gh.data.me.id, range.start, range.end, function(err, events) {
+                    // Refresh the calendar view
                     $(document).trigger('gh.calendar.refresh', [{
                         'callback': function() {
                             // Show a success notification
@@ -256,6 +266,8 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
                         },
                         'events': events.results
                     }]);
+                    // Refresh the agenda view
+                    $(document).trigger('gh.agendaview.refresh');
                 });
             });
         });

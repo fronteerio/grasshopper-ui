@@ -130,6 +130,7 @@
 
 /* Default buttons */
 #gh-toolbar-container .btn-default,
+.gh-toolbar-secondary .btn-default,
 .nav-tabs > li > a {
     font-weight: 400;
     height: 100%;
@@ -140,7 +141,7 @@
     font-weight: 600;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default {
+.gh-toolbar-secondary .btn-default {
     padding: 8px 12px;
 }
 
@@ -158,10 +159,10 @@
 }
 
 /* Secondary toolbar */
-#gh-toolbar-container .gh-toolbar-secondary {
+.gh-toolbar-secondary {
     font-weight: 600;
     opacity: 1;
-    padding: 28px 20px 0;
+    padding: 0 20px 60px;
     position: relative;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
@@ -169,25 +170,25 @@
     z-index: 2;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-period,
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms,
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-view {
+.gh-toolbar-secondary #gh-calendar-toolbar-period,
+.gh-toolbar-secondary #gh-calendar-toolbar-terms,
+.gh-toolbar-secondary #gh-calendar-toolbar-view {
     display: table;
     height: 32px;
     position: relative;
     z-index: 1;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-terms {
+.gh-toolbar-secondary #gh-calendar-toolbar-terms {
     min-width: 200px;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary {
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary {
     height: auto;
     margin-bottom: 2px;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
     padding: 2px 0 3px;
 }
 
@@ -198,13 +199,13 @@
 }
 
 /* Today button */
-#gh-toolbar-container .gh-toolbar-secondary #gh-calendar-toolbar-today {
+.gh-toolbar-secondary #gh-calendar-toolbar-today {
     height: 32px;
     position: absolute;
     width: 100%;
 }
 
-#gh-toolbar-container .gh-toolbar-secondary #gh-btn-calendar-today {
+.gh-toolbar-secondary #gh-btn-calendar-today {
     border: none;
 }
 
@@ -1060,7 +1061,8 @@ tbody tr:last-child > td.fc-widget-content {
 .gh-event-calendar-icon.gh-event-calendar-icon-xl .month {
     font-size: 16px;
     font-weight: 600;
-    line-height: 22px;
+    line-height: 18px;
+    padding: 3px 0 0;
 }
 
 .gh-event-calendar-icon.gh-event-calendar-icon-xl .day {
@@ -1135,6 +1137,11 @@ tbody tr:last-child > td.fc-widget-content {
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 {
     font-size: 16px;
     margin: 15px 0 12px;
+}
+
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week  .gh-agenda-view-no-events {
+    padding: 20px;
+    text-align: center;
 }
 
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {

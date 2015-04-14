@@ -20,22 +20,10 @@ define(['gh.core'], function(gh) {
     // Get the correct terms associated to the current application
     var terms = config.terms[config.academicYear];
 
-    /**
-     * Add the parent info to all events in the terms
-     *
-     * @private
-     */
-    var addParentInfo = function() {
-        _.each(terms, function(term) {
-            _.each(term.events, function(week) {
-                _.each(week, function(event) {
-                    if (event.context) {
-                        gh.utils.addParentInfoToOrgUnit(event.context);
-                    }
-                });
-            });
-        });
-    };
+
+    ///////////////
+    // RENDERING //
+    ///////////////
 
     /**
      * Render the agenda view
@@ -57,23 +45,31 @@ define(['gh.core'], function(gh) {
         }, $('#gh-my-agenda-view-container'));
     };
 
+
+    ///////////////
+    // UTILITIES //
+    ///////////////
+
     /**
-     * Load the next week in a term
+     * Add the parent info to all events in the terms
      *
      * @private
      */
-    var loadNextWeek = function() {
-        // Show the loading indicator
-        $(this).find('i').show();
-        // Get the next week to load
-        var nextWeek = parseInt($(this).attr('data-week'), 10) + 1;
-        // Get the term to load the next week for
-        var termName = $(this).attr('data-term');
-        var term = _.find(terms, function(term) {
-            return term.name === termName;
+    var addParentInfo = function() {
+        // Loop over all terms
+        _.each(terms, function(term) {
+            // For each week in the term that was previously fetched, loop over the events
+            _.each(term.events, function(week) {
+                // Loop over all events in the week and add the parent's information to it
+                _.each(week, function(event) {
+                    // Add the parent's contextual information to the event if the initial
+                    // event context is available
+                    if (event.context) {
+                        gh.utils.addParentInfoToOrgUnit(event.context);
+                    }
+                });
+            });
         });
-        // Load and render the next week
-        getAgendaViewData(term, nextWeek);
     };
 
     /**
@@ -101,6 +97,42 @@ define(['gh.core'], function(gh) {
     };
 
     /**
+     * Load the next week in a term
+     *
+     * @private
+     */
+    var loadNextWeek = function() {
+        // Show the loading indicator
+        $(this).find('i').show();
+        // Get the next week to load
+        var nextWeek = parseInt($(this).attr('data-week'), 10) + 1;
+        // Get the term to load the next week for
+        var termName = $(this).attr('data-term');
+        var term = _.find(terms, function(term) {
+            return term.name === termName;
+        });
+        // Load and render the next week
+        getAgendaViewData(term, nextWeek);
+    };
+
+    /**
+     * Refresh the agenda view by refetching the weeks that were previously loaded
+     *
+     * @private
+     */
+    var refreshAgendaView = function() {
+        // Loop over all terms
+        _.each(terms, function(term) {
+            // For each week in the term that was previously fetched, get the
+            // updated set of events
+            _.each(term.events, function(week, weekIndex) {
+                // Get the events
+                getAgendaViewData(term, weekIndex);
+            });
+        });
+    };
+
+    /**
      * Show/hide the term when the header is clicked
      *
      * @private
@@ -118,6 +150,11 @@ define(['gh.core'], function(gh) {
         // Store the toggled terms in the local storage
         gh.utils.localDataStorage().store('myagenda', expandedTerms);
     };
+
+
+    ////////////////////
+    // INITIALISATION //
+    ////////////////////
 
     /**
      * Add handlers to various elements in the agenda view
@@ -140,6 +177,9 @@ define(['gh.core'], function(gh) {
 
         // Load next week in term
         $(document).on('click', '.gh-btn-load-next-week', loadNextWeek);
+
+        // Refresh the calendar
+        $(document).on('gh.agendaview.refresh', refreshAgendaView);
     };
 
     addBinding();

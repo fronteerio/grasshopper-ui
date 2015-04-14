@@ -46,6 +46,9 @@
                 <% prevDate = null %>
                 <div class="gh-agenda-view-term-week">
                     <h3>Week <%- parseInt(weekIndex, 10) + 1 %><% if (parseInt(weekIndex, 10) + 1 === getCurrentAcademicWeekNumber()) { %> <span>- this week</span><% } %></h3>
+                    <% if (!week.length) { %>
+                        <div class="gh-agenda-view-no-events">You have no events scheduled in week <%- parseInt(weekIndex, 10) + 1 %> of <%- term.label %></div>
+                    <% } %>
                     <% _.each(week, function(event, eventIndex) { %>
                         <% var prevSameDate = isADifferentDay(prevDate, event.start) %>
                         <% if (!prevSameDate) { %>
@@ -81,8 +84,8 @@
                                 <% var organisers = _.map(event.organisers, function(organiser) { return organiser.displayName || organiser }); %>
                                 <span class="gh-agenda-view-event-organisers"><% if (organisers.length) { %><%- organisers.join(', ') %><% } else { %>Lecturer not known<% } %></span>
                                 <br/>
-                                <% if (event.context && event.context.Parent) { %>
-                                    <span class="gh-agenda-view-event-belongs"><%- event.context.Parent.displayName %><% if (event.context.Parent.Parent) { %> &gt; <%- event.context.Parent.Parent.displayName %><% } %></span>
+                                <% if (event.context && event.context.Parent && event.context.Parent.Parent) { %>
+                                    <span class="gh-agenda-view-event-belongs"><%- event.context.Parent.Parent.displayName %> &gt; <%- event.context.Parent.displayName %></span>
                                 <% } %>
                             </div>
                             <% if (!term.events[weekIndex][eventIndex + 1]) { %>
