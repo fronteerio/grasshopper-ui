@@ -3,6 +3,10 @@
     var groupId = data.modules[0].GroupId;
 } %>
 <div id="gh-result-summary">
+    <button class="btn btn-default gh-btn-secondary gh-btn-reverse pull-right gh-collapse-modules" title="Toggle the modules list">
+        <i class="fa fa-angle-double-left"></i>
+        <i class="fa fa-angle-double-right"></i>
+    </button>
     <button type="button" class="btn btn-default gh-btn-secondary gh-btn-reverse gh-new-module" data-partid="<%= partId %>" data-groupid="<%= groupId %>"><i class="fa fa-plus-square"></i> New module</button>
 </div>
 <div id="gh-modules-list-container" data-partId="<%= partId %>">
