@@ -155,7 +155,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
-        // Fetch the ID's of the expanded list
+        // Fetch the IDs of the expanded list
         var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
                 'id': $(module).attr('data-id'),

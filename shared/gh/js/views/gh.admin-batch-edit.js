@@ -461,24 +461,23 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
      * @private
      */
     var handleStickyHeader = function() {
-        // Set the default top margin for the batch edit header. If the header is in fixed
-        // position because of a collapsed modules list, bump the default margin
-        var marginDefault = null;
+        // Set the offset of the header. When the modules navigation is collapsed, the header is fixed to the top
+        // and shouldn't be taken into account when calculating when to make the header sticky
+        var headerOffset = 0;
         if ($('html').hasClass('gh-collapsed')) {
-            marginDefault = 260;
+            headerOffset = $('#gh-header-container').outerHeight();
         }
 
         // Only attempt to handle scrolling when the batch edit is being used
         if ($('#gh-batch-edit-view').is(':visible')) {
             // Get the top of the window and the top of the header's position
             var windowTop = $(window).scrollTop();
-            var headerTop = $('#gh-sticky-header-anchor').offset().top;
+            var headerTop = $('#gh-sticky-header-anchor').offset().top - headerOffset;
             // If the window is scrolled further down than the header was originally
             // positioned, make the header sticky
-            if (marginDefault ? marginDefault : windowTop >= headerTop) {
-                console.log('do it');
+            if (windowTop >= headerTop) {
                 // Set the margin of the batch edit container to the height of the sticky header + original margin-top of the event container
-                $('#gh-batch-edit-term-container').css('margin-top', (marginDefault + $('#gh-batch-edit-container').outerHeight()) + 'px');
+                $('#gh-batch-edit-term-container').css('margin-top', $('#gh-batch-edit-container').outerHeight() + 'px');
                 // Set the width of the container
                 $('#gh-batch-edit-container').css('width', calculateBatchHeaderWidth());
                 // Add the sticky class to the header

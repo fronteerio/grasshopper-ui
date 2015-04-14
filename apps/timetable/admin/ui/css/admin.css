@@ -429,12 +429,22 @@ ul.gh-borrowed-list li p {
 #gh-batch-edit-container.gh-sticky-header {
     position: fixed;
     top: 0;
-    /*width: calc(100% - 320px);*/
     z-index: 1;
 }
 
 .gh-collapsed #gh-batch-edit-container.gh-sticky-header {
     top: 215px;
+}
+
+.gh-batch-edit-actions-container {
+    transition: width .3s;
+}
+
+.gh-collapsed .gh-batch-edit-actions-container {
+    width: -moz-calc(100% - 50px);
+    width: -o-calc(100% - 50px);
+    width: -webkit-calc(100% - 50px);
+    width: calc(100% - 50px);
 }
 
 #gh-batch-edit-container::after,
