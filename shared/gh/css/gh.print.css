@@ -13,9 +13,10 @@
  * permissions and limitations under the License.
  */
 
-/*************/
-/* COLLAPSED */
-/*************/
+
+/********************/
+/* COLLAPSE MODULES */
+/********************/
 
 .gh-collapsed main {
     margin-top: 0 !important;
@@ -24,6 +25,7 @@
 .gh-collapsed #gh-page-container #gh-right-container {
     padding-left: 0 !important;
 }
+
 
 /************/
 /* CALENDAR */
@@ -37,6 +39,7 @@
 
 #gh-page-container #gh-right-container {
     padding-left: 0;
+    transition: none;
 }
 
 #gh-page-container #gh-right-container #gh-main {
@@ -53,6 +56,7 @@
 /* Make sure month view prints a full page */
 .fc-day-grid-container {
     height: 800px !important;
+    width: 100% !important;
 }
 
 .fc-basic-view tbody .fc-row {

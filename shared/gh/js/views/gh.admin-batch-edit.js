@@ -443,6 +443,11 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         }
     };
 
+    /**
+     * Calculate the width of the batch edit header header and return the result in pixels
+     *
+     * @private
+     */
     var calculateBatchHeaderWidth = function() {
         var headerWidth = $('#gh-batch-edit-container').width() + 60;
         var contentWidth = $('#gh-batch-edit-term-container').width() + 60;
