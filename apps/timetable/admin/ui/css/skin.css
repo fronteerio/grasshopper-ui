@@ -254,9 +254,9 @@ ul.gh-borrowed-list li p:first-child {
 /*****************/
 
 #gh-batch-edit-container.gh-sticky-header {
-    -webkit-box-shadow: 0 0px 15px #666;
-       -moz-box-shadow: 0 0px 15px #666;
-            box-shadow: 0 0px 15px #666;
+    -webkit-box-shadow: 0 0 15px #666;
+       -moz-box-shadow: 0 0 15px #666;
+            box-shadow: 0 0 15px #666;
 }
 
 #gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
@@ -314,9 +314,9 @@ ul.gh-borrowed-list li p:first-child {
 .gh-batch-edit-actions-container {
     background: #FFF;
     border-top-color: #BEBEBE;
-    -webkit-box-shadow: 0 0px 15px #666;
-       -moz-box-shadow: 0 0px 15px #666;
-            box-shadow: 0 0px 15px #666;
+    -webkit-box-shadow: 0 0 15px #666;
+       -moz-box-shadow: 0 0 15px #666;
+            box-shadow: 0 0 15px #666;
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {

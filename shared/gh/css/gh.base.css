@@ -129,7 +129,10 @@ select[disabled],
     height: 100%;
     padding: 0;
     position: fixed;
-    transition: width .3s;
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
     width: 320px;
     z-index: 3;
 }
@@ -140,18 +143,24 @@ select[disabled],
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
-    -webkit-box-sizing: initial;
-       -moz-box-sizing: initial;
-            box-sizing: initial;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
     width: 196px;
     padding: 39px 46px 36px 40px;
-    transition: padding .3s;
+    -webkit-transition: padding .3s;
+       -moz-transition: padding .3s;
+         -o-transition: padding .3s;
+            transition: padding .3s;
 }
 
 #gh-page-container #gh-left-container #gh-content-description p {
     margin: 0;
     padding: 32px 39px 30px;
-    transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-meta-container {
@@ -174,13 +183,19 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
 #gh-page-container #gh-page-container #gh-left-container #gh-modules-list-container ul {
-    transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     margin: 0;
     padding: 13px 40px;
-    transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
     width: 300px;
 }
 
@@ -198,7 +213,10 @@ select[disabled],
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
     opacity: 1;
     overflow: hidden;
-    transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
@@ -258,7 +276,10 @@ select[disabled],
 #gh-page-container #gh-right-container {
     height: 100%;
     padding-left: 320px;
-    transition: padding-left .3s;
+    -webkit-transition: padding-left .3s;
+       -moz-transition: padding-left .3s;
+         -o-transition: padding-left .3s;
+            transition: padding-left .3s;
     width: 100%;
 }
 
@@ -454,6 +475,7 @@ select[disabled],
     text-align: left;
     -webkit-transition: left .3s, opacity .3s, bottom .3s;
        -moz-transition: left .3s, opacity .3s, bottom .3s;
+         -o-transition: left .3s, opacity .3s, bottom .3s;
             transition: left .3s, opacity .3s, bottom .3s;
     width: 100%;
     word-wrap: break-word;

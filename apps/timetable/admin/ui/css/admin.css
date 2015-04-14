@@ -437,7 +437,10 @@ ul.gh-borrowed-list li p {
 }
 
 .gh-batch-edit-actions-container {
-    transition: width .3s;
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
 }
 
 .gh-collapsed .gh-batch-edit-actions-container {
@@ -509,6 +512,7 @@ ul.gh-borrowed-list li p {
     position: absolute;
     -webkit-transition: opacity .3s;
        -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
             transition: opacity .3s;
     width: 100%;
     z-index: -1;
@@ -617,7 +621,7 @@ ul.gh-borrowed-list li p {
     padding-bottom: 20px;
     padding-top: 16px;
     position: relative;
-    right: 0px;
+    right: 0;
     z-index: 9999;
 }
 
@@ -629,6 +633,7 @@ ul.gh-borrowed-list li p {
     padding: 0 0 0 15px !important;
     -webkit-transition: max-height .3s, opacity .3s;
        -moz-transition: max-height .3s, opacity .3s;
+         -o-transition: max-height .3s, opacity .3s;
             transition: max-height .3s, opacity .3s;
 }
 
@@ -802,7 +807,7 @@ ul.gh-borrowed-list li p {
     cursor: pointer;
     max-width: 200px;
     overflow: hidden;
-    padding: 6px 0px 6px 15px;
+    padding: 6px 0 6px 15px;
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
@@ -812,6 +817,7 @@ ul.gh-borrowed-list li p {
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
     -webkit-transition: background-color 2s;
        -moz-transition: background-color 2s;
+         -o-transition: background-color 2s;
             transition: background-color 2s;
 }
 
@@ -823,7 +829,7 @@ ul.gh-borrowed-list li p {
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title] {
     overflow: hidden;
-    padding: 6px 0px 6px 15px;
+    padding: 6px 0 6px 15px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before,
@@ -972,6 +978,7 @@ tr.info .gh-event-delete button {
     opacity: 0;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
             transition: opacity .2s;
     visibility: hidden;
     width: 100%;
@@ -981,6 +988,7 @@ tr.info .gh-event-delete button {
     opacity: 1;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
             transition: opacity .2s;
     visibility: visible;
 }
@@ -1235,6 +1243,7 @@ tr.info .gh-event-delete button {
     text-align: center;
     -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
        -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+         -o-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
             transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
 }
 
@@ -1291,7 +1300,7 @@ ul.as-selections li.as-selection-item {
     font-weight: normal;
     line-height: 1;
     margin: 2px;
-    padding: 4px 5px 0px;
+    padding: 4px 5px 0;
 }
 
 .as-selections .as-original {
