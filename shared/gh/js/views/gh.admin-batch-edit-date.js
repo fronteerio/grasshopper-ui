@@ -183,6 +183,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     if (gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dateByWeekAndDay).utc().format()), true)) {
 
                         var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                        // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
                         var eventMonth = moment(dateByWeekAndDay).subtract({'months': 1}).utc().format('MM');
                         var eventDay = moment(dateByWeekAndDay).utc().format('DD');
 
@@ -290,6 +291,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
 
                             var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                            // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
                             var eventMonth = moment(dateByWeekAndDay).subtract({'months': 1}).utc().format('MM');
                             eventDay = moment(dateByWeekAndDay).utc().format('DD');
 
