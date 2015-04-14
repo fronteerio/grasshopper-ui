@@ -246,6 +246,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         $('body').on('click', '.gh-borrow-series-select', addSeriesToBorrow);
         // Unmark a series as 'to borrow'
         $('body').on('click', '.gh-borrow-series-deselect', removeSeriesToBorrow);
+        // Mark or unmark a series as 'to borrow' depending on the status
+        $('body').on('click', '.gh-list-description', function() {
+            $(this).next().find('button:visible').click();
+        });
         // Borrow all series marked as 'to borrow' into a module
         $('body').on('click', '#gh-borrow-series-submit', borrowSeries);
     };

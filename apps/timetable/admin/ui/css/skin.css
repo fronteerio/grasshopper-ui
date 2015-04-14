@@ -34,7 +34,8 @@
 }
 
 .btn-default.gh-btn-secondary.gh-btn-reverse:hover,
-.btn-default.gh-btn-secondary.gh-btn-reverse:focus {
+.btn-default.gh-btn-secondary.gh-btn-reverse:focus,
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description:hover + .gh-list-action button {
     background-color: #62326E;
     border-color: #62326E;
 }
