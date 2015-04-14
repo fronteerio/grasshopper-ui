@@ -166,9 +166,9 @@ define(['gh.core'], function(gh) {
         $(document).on('shown.bs.tab', '#gh-calendar-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
             if ($(ev.target).attr('aria-controls') === 'gh-my-agenda-view') {
                 // Load the first week of each term by default
-                getAgendaViewData(terms[0], 0);
-                getAgendaViewData(terms[1], 0);
-                getAgendaViewData(terms[2], 0);
+                _.each(terms, function(term) {
+                    getAgendaViewData(term, 0);
+                });
             }
         });
 

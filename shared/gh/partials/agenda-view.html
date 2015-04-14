@@ -17,6 +17,7 @@
      * Get the current academic week number based on todays date
      *
      * @return {Number}    The current academic week number
+     * @private
      */
     var getCurrentAcademicWeekNumber = function() {
         return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment(new Date()).format('YYYY-MM-DD'))), true);

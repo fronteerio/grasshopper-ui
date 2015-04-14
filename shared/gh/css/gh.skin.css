@@ -686,6 +686,10 @@ tbody .fc-sun {
     color: #999;
 }
 
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
+    border-bottom-color: #EEE;
+}
+
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event.gh-agenda-view-today {
     background-color: #EBF3F0;
 }

@@ -279,7 +279,9 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         var date = '2015-02-18T16:00:00.000Z';
 
         /* DAY */
+
         /* Day name */
+
         // Verify that a date needs to be provided
         assert.throws(function() {
             gh.utils.dateDisplay(null).dayName();

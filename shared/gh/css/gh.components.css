@@ -1145,7 +1145,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
-    border-bottom: 1px solid #EEE;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     padding: 12px;
 }
 
