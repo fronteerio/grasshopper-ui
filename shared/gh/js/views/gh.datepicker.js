@@ -149,6 +149,20 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     /////////////////
 
     /**
+     * Calculate the position of the popover window
+     *
+     * @param  {Object}    $trigger    A jQuery object representing the trigger
+     * @private
+     */
+    var calculatePopoverPosition = function(ev) {
+        var placement = 'bottom';
+        if ((ev.view.innerHeight - ev.clientY) < 320) {
+            placement = 'top';
+        }
+        return placement;
+    };
+
+    /**
      * Dismiss the popover window
      *
      * @param {Event}    [ev]    Standard jQuery object
@@ -181,15 +195,24 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     /**
      * Show the popover window
      *
-     * @param  {Event}     ev         Standard jQuery event
-     * @param  {Object}    trigger    jQuery object representing the trigger
+     * @param  {Event}     ev             The dispatched jQuery event
+     * @param  {Object}    msg            The custom message that was sent with the event
+     * @param  {Object}    msg.ev         The original invoked jQuery event
+     * @param  {Object}    msg.trigger    The trigger that invoked the jQuery event
      * @private
      */
-    var showPopover = function(ev, trigger) {
+    var showPopover = function(ev, msg) {
+        if (!msg) {
+            throw new Error('A custom message object should be provided');
+        } else if (!msg.ev) {
+            throw new Error('The original jQuery event should be provided');
+        } else if (!msg.trigger) {
+            throw new Error('The trigger should be provided');
+        }
 
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment($(trigger).attr('data-start')).utc().format('YYYY-MM-DD')), true);
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment($(msg.trigger).attr('data-start')).utc().format('YYYY-MM-DD')), true);
         if (_term) {
             numWeeks = gh.utils.getWeeksInTerm(_term);
         }
@@ -207,7 +230,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         });
 
         // Cache the trigger
-        $trigger = $(trigger);
+        $trigger = $(msg.trigger);
 
         // Show the popover window
         _.defer(function() {
@@ -217,7 +240,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                 'content': content,
                 'global_close': false,
                 'html': true,
-                'placement': 'bottom',
+                'placement': calculatePopoverPosition(msg.ev),
                 'onShown': function() {
                     // Track how long the user takes to adjust the date
                     timeFromStart = new Date();
@@ -226,7 +249,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                     gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
 
                     // Cache the trigger
-                    $trigger = $(trigger).closest('tr .gh-event-date');
+                    $trigger = $(msg.trigger).closest('tr .gh-event-date');
 
                     // Cache the delegating components
                     components = [
@@ -499,7 +522,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             gh.utils.trackEvent(['Data', 'DateTime edit', 'End minute changed']);
         });
 
-        // Setup
+        // Setup and show the datapicker popover
         $(document).on('gh.datepicker.show', showPopover);
     };
 
