@@ -262,6 +262,21 @@ module.exports = function(grunt) {
                             ],
                             'includeExts': ['html', 'js']
                         })
+                    },
+
+                    // 4. Hash the GH partial files
+                    {
+                        'files': _hashFiles({
+                            'directories': [
+                                '<%= target %>/optimized/shared/gh/partials',
+                            ]
+                        }),
+                        'references': _replacementReferences({
+                            'directories': [
+                                '<%= target %>/optimized/shared'
+                            ],
+                            'includeExts': ['html', 'js']
+                        })
                     }
                 ],
                 'version': '<%= target %>/optimized/hashes.json'
