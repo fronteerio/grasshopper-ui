@@ -763,6 +763,14 @@ ul.gh-borrowed-list li p {
     width: 50px;
 }
 
+/* Increase the width of the minute and hour pickers on ipads */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)  {
+    #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-hours-picker,
+    #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-minutes-picker {
+        width: 60px;
+    }
+}
+
 #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-date-start {
     margin: 0 0 7px 17px;
 }
