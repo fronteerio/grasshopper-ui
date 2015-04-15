@@ -226,8 +226,10 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
      * @private
      */
     var doLogin = function(ev) {
-        // Log in to the system if the form is valid
-        if (!ev.isDefaultPrevented() && gh.config.enableLocalAuth) {
+        // Log in to the system if the form is valid and local authentication is enabled.
+        // If Shibboleth is required the native form behaviour will be used and no extra
+        // handling is required
+        if (!ev.isDefaultPrevented() && gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
             // Collect and submit the form data
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
@@ -237,13 +239,9 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                 window.location.reload();
             });
 
-        // Do Shibboleth authentication
-        } else if (gh.config.enableShibbolethAuth) {
-            gh.api.authenticationAPI.shibbolethLogin();
+            // Avoid default form submit behaviour
+            return false;
         }
-
-        // Avoid default form submit behaviour
-        return false;
     };
 
     /**
@@ -411,8 +409,8 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
             // Render the header
             renderHeader();
 
-            // Only show the login form is local authentication is enabled
-            if (gh.config.enableLocalAuth) {
+            // Only show the login form is local authentication is enabled and shibboleth is disabled
+            if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
 
                 // Display the help link
                 renderHelp();
