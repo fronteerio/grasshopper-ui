@@ -964,8 +964,7 @@ tbody tr:last-child > td.fc-widget-content {
 .modal #gh-modules-container {
     margin-top: 25px;
     max-height: 400px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 /* Series borrowed info popover */
@@ -1198,6 +1197,18 @@ span.gh-agenda-view-middot {
     padding: 25px 25px 0 !important;
 }
 
+#gh-series-info-modal .modal-header i {
+    display: inline-block;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#gh-series-info-modal .modal-header .gh-series-info-hierarchy {
+    max-width: -moz-calc(100% - 50px);
+    max-width: -o-calc(100% - 50px);
+    max-width: -webkit-calc(100% - 50px);
+    max-width: calc(100% - 50px);
+}
 
 #gh-series-info-modal .modal-body {
     padding: 20px;
@@ -1205,8 +1216,9 @@ span.gh-agenda-view-middot {
 
 #gh-series-info-modal .gh-series-info-list {
     margin-top: 15px;
-    max-height: 250px;
-    overflow: scroll;
+    max-height: 325px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 /* Term */
@@ -1238,17 +1250,31 @@ span.gh-agenda-view-middot {
 /* Event */
 
 #gh-series-info-modal .gh-series-info-list .gh-series-info-list-event {
+    clear: both;
     height: 35px;
     position: relative;
 }
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-type,
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date {
-    display: inline-block;
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event > div {
+    float: left;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-title {
+    max-width: -moz-calc(100% - 230px);
+    max-width: -o-calc(100% - 230px);
+    max-width: -webkit-calc(100% - 230px);
+    max-width: calc(100% - 230px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-type {
-    min-width: 28px;
+    min-width: 30px;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date {
+    min-width: 200px;
 }
 
 #gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date .gh-event-display-date {

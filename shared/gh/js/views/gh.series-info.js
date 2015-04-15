@@ -17,15 +17,15 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
 
     // Cache the retrieved series
     var series = {};
+    // The series ID to retrieve the events for
+    var seriesId = null;
 
     /**
      * Retrieve the series information
      *
-     * @param  {Number}    seriesId     The ID of the series that needs to be retrieved
      * @private
      */
-    var retrieveSeries = function(seriesId) {
-
+    var retrieveSeries = function() {
         // Fetch the series if it hasn't been retrieved yet
         if (!series[seriesId]) {
             return gh.api.seriesAPI.getSeries(seriesId, false, function(err, data) {
@@ -38,7 +38,7 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
 
                 // Skip the data retrieval if the events have already been cached
                 if (series[seriesId]['Events']) {
-                    return retrieveSeries(seriesId);
+                    return retrieveSeries();
                 }
 
                 // Retrieve the events that belong to the series
@@ -68,7 +68,7 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
                         if (data.results.length === 25) {
                             return _getSeriesEvents(offset += 25);
                         }
-                        return retrieveSeries(seriesId);
+                        return retrieveSeries();
                     });
                 };
 
@@ -168,7 +168,8 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
         var $trigger = $(this);
 
         // Store the series ID
-        var seriesId = $trigger.data('id');
+        seriesId = $trigger.data('id');
+
         // Retrieve the series title
         var seriesTitle = $trigger.closest('.list-group-item').find('.gh-list-description-text').html();
 
@@ -188,7 +189,7 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
         });
 
         // Generate the hierarchy string
-        var hierarchy = gh.utils.renderHierarchyString(parent, ' > ');
+        var hierarchy = gh.utils.renderHierarchyString(parent, '<i class="fa fa-angle-double-right"></i>');
 
         // Render the popover window
         gh.utils.renderTemplate($('#gh-series-info-modal-template'), {
@@ -197,11 +198,6 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
                 'seriesTitle': seriesTitle
             }
         }, $('#gh-modal'));
-
-        // Retrieve the series when the modal is shown
-        $('#gh-series-info-modal').on('shown.bs.modal', function(e) {
-            retrieveSeries(seriesId);
-        });
 
         // Show the modal
         $('#gh-series-info-modal').modal();
@@ -218,6 +214,8 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
      * @private
      */
     var addBinding = function() {
+        // Retrieve the series when the modal is shown
+        $('body').on('shown.bs.modal', '#gh-series-info-modal', retrieveSeries);
         // Set up and show the series info modal
         $('body').on('click', '.fa-info-circle', setUpModal);
     };

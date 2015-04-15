@@ -1143,6 +1143,15 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         });
     });
 
+    // Test the 'triposData' functionality
+    QUnit.test('triposData', function(assert) {
+        expect(3);
+        var _triposData = gh.utils.triposData();
+        assert.ok(_triposData);
+        assert.ok(_triposData.subjects);
+        assert.ok(_triposData.parts);
+    });
+
 
     //////////////////
     //  BATCH EDIT  //

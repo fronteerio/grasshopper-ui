@@ -6,9 +6,9 @@
                     <span aria-hidden="true">×</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="modal-title"><%- data.seriesTitle %></h4>
+                <h4 class="modal-title" id="modal-title"><%= data.seriesTitle %></h4>
                 <% if (data.hierarchy) { %>
-                    <p><%- data.hierarchy %></p>
+                    <p class="gh-series-info-hierarchy"><%= data.hierarchy %></p>
                 <% } %>
             </div>
             <div class="modal-body">

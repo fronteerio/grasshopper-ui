@@ -22,13 +22,16 @@
                     <% _.each(term.events, function(event) { %>
                         <div class="gh-series-info-list-event">
 
-                            <!-- Event type -->
-                            <div class="gh-event-type gh-series-info-list-event-type" data-type="<%- event.type %>" data-first="<% if (event.type) { %><%- event.type.substr(0,1) %><% } %>" title="<%- event.type %>"><% if (event.type) { %><span style="visibility: hidden;"><%- event.type %></span><% } %></div>
-
                             <!-- Event date -->
                             <div class="gh-series-info-list-event-date">
                                 <%= _.partial('admin-edit-date-field', {'data': event, 'utils': data.utils}) %>
                             </div>
+
+                            <!-- Event type -->
+                            <div class="gh-event-type gh-series-info-list-event-type" data-type="<%- event.type %>" data-first="<% if (event.type) { %><%- event.type.substr(0,1) %><% } %>" title="<%- event.type %>"><% if (event.type) { %><span style="visibility: hidden;"><%- event.type %></span><% } %></div>
+
+                            <!-- Event title -->
+                            <div class="gh-series-info-list-event-title"><%= event.displayName %></div>
                         </div>
                     <%}); %>
                 </div>
@@ -39,12 +42,15 @@
     <% } %>
 </div>
 
-<!-- Organisers -->
-<% if (data.organisers && data.organisers.length) { %>
-    <div class="gh-series-info-organiser"><%- data.organisers.join(', ') %></div>
-<% } %>
 
-<!-- Locations -->
-<% if (data.locations && data.locations.length) { %>
-    <div class="gh-series-info-location"><%- data.locations.join(', ') %></div>
+<% if (numEvents) { %>
+    <!-- Locations -->
+    <div class="gh-series-info-location">
+        <% if (data.locations && data.locations.length) { %><%- data.locations.join(', ') %><% } else { %>Location not known<% } %>
+    </div>
+
+    <!-- Organisers -->
+    <div class="gh-series-info-organiser">
+        <% if (data.organisers && data.organisers.length) { %><%- data.organisers.join(', ') %><% } else { %>Lecturer not known<% } %>
+    </div>
 <% } %>

@@ -141,7 +141,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
     };
 
     /**
-     * Render the hierarchy string
+     * Render and return the hierarchy string
      *
      * @param  {Object}    orgUnit      The organisational unit to start building the hierarchy structure with
      * @param  {String}    separator    The string used to split the organisational units
@@ -158,13 +158,15 @@ define(['exports', 'gh.constants'], function(exports, constants) {
         var hierarchy = [];
 
         /**
-         * Retrieve the display name for each parent object in the tree structure
+         * Retrieve the display name for each parent object in the tree structure and return
+         * the hierarchy string when no more parents are available
          *
-         * @param  {Object}    The organisational unit to return the display name from
+         * @param  {Object}             The organisational unit to return the display name from
+         * @return {Function|String}    The recursive function or the generated hierarchy string
          * @private
          */
         var _renderHierarchyString = function(orgUnit) {
-            hierarchy.push(orgUnit.displayName);
+            hierarchy.push('<span>' + orgUnit.displayName + '</span>');
             if (orgUnit.Parent) {
                 return _renderHierarchyString(orgUnit.Parent);
             } else {

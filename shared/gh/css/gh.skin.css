@@ -736,14 +736,15 @@ span.gh-agenda-view-middot {
 
 /* Metadata */
 
-#gh-series-info-modal .gh-series-info-organiser {
+#gh-series-info-modal .gh-series-info-location {
     border-top-color: #AAA;
 }
 
-#gh-series-info-modal .gh-series-info-location {
+#gh-series-info-modal .gh-series-info-organiser {
     border-top-color: #DDD;
 }
 
+#gh-series-info-modal .gh-series-info-list-no-events,
 #gh-series-info-modal .gh-series-info-location,
 #gh-series-info-modal .gh-series-info-organiser {
     background-color: #EEE;
