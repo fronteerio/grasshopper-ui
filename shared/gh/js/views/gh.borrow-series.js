@@ -69,7 +69,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         // Render the results in the part picker
         gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
             'data': {
-                'parts': parts
+                'parts': parts,
+                'excludePart': History.getState().data.part
             }
         }, $('#gh-borrow-series-part'));
 
@@ -101,7 +102,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         var partId = $(this).closest('#gh-modules-list-container').data('partid');
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(function(err, _triposData) {
+        gh.utils.getTriposStructure(null, function(err, _triposData) {
             // Cache the triposdata for use in the other picker
             triposData = _triposData;
 
@@ -245,6 +246,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         $('body').on('click', '.gh-borrow-series-select', addSeriesToBorrow);
         // Unmark a series as 'to borrow'
         $('body').on('click', '.gh-borrow-series-deselect', removeSeriesToBorrow);
+        // Mark or unmark a series as 'to borrow' depending on the status
+        $('body').on('click', '.gh-list-description', function() {
+            $(this).next().find('button:visible').click();
+        });
         // Borrow all series marked as 'to borrow' into a module
         $('body').on('click', '#gh-borrow-series-submit', borrowSeries);
     };

@@ -37,6 +37,11 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Sort the data before displaying it
         modules.results.sort(utils.sortByDisplayName);
         $.each(modules.results, function(i, module) {
+
+            // Decorate the series with their parent info
+            utils.decorateBorrowedSeriesWithParentInfo(module.Series);
+
+            // Sort the series by their display name
             module.Series.sort(utils.sortByDisplayName);
         });
 
@@ -150,7 +155,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Toggle the caret class of the icon that was clicked
         $(this).find('i').toggleClass('fa-caret-right fa-caret-down');
 
-        // Fetch the ID's of the expanded list
+        // Fetch the IDs of the expanded list
         var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
                 'id': $(module).attr('data-id'),
@@ -168,6 +173,40 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         updateListExpandedStatus(expandedItems);
     };
 
+    /**
+     * Toggle the collapse class on the html which hides certain things from view
+     *
+     * @private
+     */
+    var toggleModulesCollapse = function() {
+        // Scroll to the top first for the best animation experience
+        window.scrollTo(0, 0);
+
+        // Toggle the gh-collapsed class which triggers all animations
+        $('html').toggleClass('gh-collapsed');
+
+        // If the modules are toggled, set the display of the module list to none
+        if ($('html').hasClass('gh-collapsed')) {
+            setTimeout(function() {
+                // Hide the modules list after the animations complete
+                $('#gh-modules-list').css('display', 'none');
+                // Toggle the animation finished class
+                $('html').toggleClass('gh-collapsed-finished');
+                // Trigger a window resize event to let all components adjust themselves
+                $(window).trigger('resize');
+            }, 300);
+        } else {
+            // Show the modules list before the animation starts
+            $('#gh-modules-list').css('display', 'block');
+            // Toggle the animation finished class
+            $('html').toggleClass('gh-collapsed-finished');
+            setTimeout(function() {
+                // Trigger a window resize event to let all components adjust themselves
+                $(window).trigger('resize');
+            }, 300);
+        }
+    };
+
 
     /////////////
     // BINDING //
@@ -181,12 +220,15 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
     var addBinding = function() {
         // Toggle a list item
         $('body').on('click', '.gh-toggle-list', toggleList);
+
         // Set up the modules list
         $(document).on('gh.part.selected', setUpModules);
         // Refresh the modules list
         $(document).on('gh.listview.refresh', setUpModules);
         // Select the first module and series in the list
         $(document).on('gh.listview.preselect', preselectSeries);
+        // Responsive collapse/expand
+        $(document).on('click', '.gh-collapse-modules', toggleModulesCollapse);
     };
 
     addBinding();

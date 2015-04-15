@@ -56,12 +56,16 @@ module.exports = function(grunt) {
                 'adjoining-classes': false,
                 'box-model': false,
                 'box-sizing': false,
+                'fallback-colors': false,
+                'font-sizes': false,
                 'ids': false,
                 'import': false,
                 'important': false,
                 'overqualified-elements': false,
                 'qualified-headings': false,
-                'unique-headings': false
+                'universal-selector': false,
+                'unique-headings': false,
+                'unqualified-attributes': false
             },
             'files': [
                 'apps/**/*.css',
@@ -258,6 +262,21 @@ module.exports = function(grunt) {
                         'references': _replacementReferences({
                             'directories': [
                                 '<%= target %>/optimized/apps',
+                                '<%= target %>/optimized/shared'
+                            ],
+                            'includeExts': ['html', 'js']
+                        })
+                    },
+
+                    // 4. Hash the GH partial files
+                    {
+                        'files': _hashFiles({
+                            'directories': [
+                                '<%= target %>/optimized/shared/gh/partials',
+                            ]
+                        }),
+                        'references': _replacementReferences({
+                            'directories': [
                                 '<%= target %>/optimized/shared'
                             ],
                             'includeExts': ['html', 'js']

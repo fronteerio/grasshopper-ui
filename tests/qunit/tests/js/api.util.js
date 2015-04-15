@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
+require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, testAPI) {
     module('Util API');
 
     // Mock a configuration object to test with
@@ -279,6 +279,28 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         var date = '2015-02-18T16:00:00.000Z';
 
         /* DAY */
+
+        /* Day name */
+
+        // Verify that a date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(null).dayName();
+        }, 'Verify that a date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay(9999).dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that a valid date needs to be provided
+        assert.throws(function() {
+            gh.utils.dateDisplay('invalid_date').dayName();
+        }, 'Verify that a valid date needs to be provided');
+
+        // Verify that the corret day name is returned
+        assert.strictEqual(gh.utils.dateDisplay(date).dayName(), 'Wed', 'Verify that the correct day name is returned');
+
+        /* Day number */
 
         // Verify that a date needs to be provided
         assert.throws(function() {
@@ -637,6 +659,29 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.ok((/[A-Z0-9]/g).test(gh.utils.generateRandomString()));
     });
 
+    // Test the 'validateExternalURL' functionality
+    QUnit.test('validateExternalURL', function(assert) {
+
+        // Verify that an error is thrown when no url was provided
+        assert.throws(function() {
+            gh.utils.validateExternalURL();
+        }, 'Verify that an error is thrown when no url was provided');
+
+        // Verify that an error is thrown when an invalid url was provided
+        assert.throws(function() {
+            gh.utils.validateExternalURL(999);
+        }, 'Verify that an error is thrown when an invalid url was provided');
+
+        // Verify that a valid url doesn't get prepended with another protocol
+        assert.strictEqual(gh.utils.validateExternalURL('http://google.be'), 'http://google.be');
+
+        // Verify that an invalid url is prepended with a protocol
+        assert.strictEqual(gh.utils.validateExternalURL('www.google.be'), 'http://www.google.be');
+
+        // Verify that an invalid url is prepended with a protocol
+        assert.strictEqual(gh.utils.validateExternalURL('google.be'), 'http://google.be');
+    });
+
     // Test the 'mockRequest' functionality
     QUnit.asyncTest('mockRequest', function(assert) {
         expect(9);
@@ -877,6 +922,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
     });
 
+    // Test the 'RenderTemplate - Partials' functionality
     QUnit.test('renderTemplate - Partials', function(assert) {
         // Verify that a partial can be used to render a template
         // Add a template to the page
@@ -899,20 +945,185 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
     //  TRIPOSES  //
     ////////////////
 
-    QUnit.asyncTest('getTriposStructure', function(assert) {
+    // Test the 'decorateBorrowedSeriesWithParentInfo' functionality
+    QUnit.asyncTest('decorateBorrowedSeriesWithParentInfo', function(assert) {
         expect(2);
+
+        // Retrieve the tripos structure for the test app
+        var testApp = testAPI.getTestApp();
+
+        // Retrieve and cache the tripos structure
+        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+            assert.ok(!err);
+
+            // Retrieve the parts for the test application
+            orgUnitAPI.getOrgUnits(testApp.id, true, false, null, ['part'], function(err, data) {
+                assert.ok(!err);
+
+                // Retrieve the organisational units that have series
+                var orgUnitsWithSeries = _.filter(data.results, function(orgUnit) { return orgUnit.Series.length; });
+                if (orgUnitsWithSeries && orgUnitsWithSeries.length >= 2) {
+
+                    var sourceOrgUnit = _.first(orgUnitsWithSeries);
+                    var targetOrgUnit = _.last(orgUnitsWithSeries);
+
+                    var originalSeries = _.sample(sourceOrgUnit.Series);
+
+                    // Borrow a series from the source organisational unit
+                    orgUnitAPI.addOrgUnitSeries(targetOrgUnit.id, originalSeries.id, function(err, data) {
+                        if (err) {
+                            assert.fail('Error while borrowing an event series from the source organisational unit');
+                        }
+
+                        // Retrieve the organisational units for the test app
+                        orgUnitAPI.getOrgUnits(testApp.id, true, false, null, ['module', 'part'], function(err, data) {
+                            if (err) {
+                                assert.fail('Error while fetching the organisational units for the test app');
+                            }
+
+                            // Retrieve the organisational unit where the series were borrowed in
+                            var _targetOrgUnit = _.find(data.results, function(orgUnit) { return orgUnit.id === targetOrgUnit.id; });
+
+                            // Decorate the borrowed series in the organisation unit with their parent information
+                            if (_targetOrgUnit.Series && _targetOrgUnit.Series.length) {
+                                gh.utils.decorateBorrowedSeriesWithParentInfo(_targetOrgUnit.Series);
+
+                                // Verify that all the borrowed series were decorated with their parent information, if any
+                                _.each(_targetOrgUnit.Series, function(serie) {
+                                    if (serie.borrowedFrom) {
+
+                                        // Verify that an organisational unit is not decorated with a parent object when it doesn't have a parent
+                                        if (!serie.borrowedFrom.ParentId && serie.borrowedFrom.Parent) {
+                                            assert.fail('A serie without a parent id shouldn\'t be decorated with a parent object');
+
+                                        // Verify that the organisational unit is decorated with its parent object
+                                        } else if (serie.borrowedFrom.ParentId && !serie.borrowedFrom.Parent) {
+                                            assert.fail('A serie with a parent id should be decorated with its parent object');
+                                        }
+
+                                        // Validate the decorated organisational unit's parent object
+                                        if (serie.borrowedFrom.Parent) {
+
+                                            /**
+                                             * Validate the parent of an organisational unit
+                                             *
+                                             * @param  {Object}    _orgUnit
+                                             * @private
+                                             */
+                                            var _validateParent = function(_orgUnit) {
+                                                if (_orgUnit.ParentId && _orgUnit.ParentId !== _orgUnit.Parent.id) {
+                                                    assert.fail('The organisational unit\'s parent object doesn\'t correspond with the parent ID');
+                                                }
+
+                                                if (_orgUnit.Parent) {
+                                                    _validateParent(_orgUnit.Parent);
+                                                }
+                                            };
+
+                                            // Start validating the tree
+                                            _validateParent(serie.borrowedFrom);
+                                        }
+                                    }
+                                });
+                            }
+
+                            QUnit.start();
+                        });
+                    });
+
+                } else {
+                    QUnit.start();
+                }
+            });
+        });
+    });
+
+    // Test the 'addParentInfoToOrgUnit' functionality
+    QUnit.asyncTest('addParentInfoToOrgUnit', function(assert) {
+        expect(1);
+
+        // Retrieve the tripos structure for the test app
+        var testApp = testAPI.getTestApp();
+        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+            assert.ok(!err);
+
+            // Verify that all the parts that have a parent are decorated with their parent
+            _.each(data.parts, function(part) {
+                if (part.ParentId && part.ParentId !== part.Parent.id) {
+                    assert.fail('Verify that the organisational unit is decorated with its correct parent');
+                }
+            });
+            QUnit.start();
+        });
+    });
+
+    // Test the 'getTriposStructure' functionality
+    QUnit.asyncTest('getTriposStructure', function(assert) {
+        expect(8);
+
+        // Verify that an error is thrown when an invalid value for app id was provided
+        assert.throws(function() {
+            gh.utils.getTriposStructure('invalid_app_id', function() {});
+        }, 'Verify that an error is thrown when an invalid value for app id was provided');
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
-            gh.utils.getTriposStructure();
+            gh.utils.getTriposStructure(null);
         }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.utils.getTriposStructure('invalid_callback');
+            gh.utils.getTriposStructure(null, 'invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-        QUnit.start();
+        // Retrieve the tripos structure for the test application
+        var testApp = testAPI.getTestApp();
+        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+            assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
+            assert.ok(data, 'Verify that the tripos structure is returned');
+
+            // Retrieve the tripos structure when the application ID was set in the `me` object
+            gh.data.me.AppId = testApp.id;
+            gh.utils.getTriposStructure(null, function(err, data) {
+                assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
+                assert.ok(data, 'Verify that the tripos structure is returned');
+
+                // Remove the application ID from the `me` object
+                if (gh.data.me.AppId) {
+                    delete gh.data.me.AppId;
+                }
+
+                // Retrieve the tripos structure when no application ID was set
+                gh.utils.getTriposStructure(null, function(err, data) {
+                    assert.ok(err, 'Verify that an error is thrown when no application ID is set');
+                    QUnit.start();
+                });
+            });
+        });
+    });
+
+
+    //////////////////
+    //  BATCH EDIT  //
+    //////////////////
+
+    // Test the 'getOrganiserObjects' functionality
+    QUnit.test('getOrganiserObjects', function(assert) {
+        // Append a test container with hidden fields to the body
+        var hiddenFields = '<td class="gh-event-organisers-fields hide"><input type="hidden" name="gh-event-organiser" value="Bert Pareyn" data-add="true" data-id="1"><input type="hidden" name="gh-event-organiser" value="Mathieu Decoene" data-add="true"></td>';
+        $('body').append(hiddenFields);
+        // Select the hidden fields container
+        var $hiddenFields = $('.gh-event-organisers-fields');
+        // Verify that an error is thrown when no $hiddenFields was provided
+        assert.throws(function() {
+            gh.utils.getOrganiserObjects();
+        }, 'Verify that an error is thrown when no $hiddenFields was provided');
+        // Verify that the $hiddenFields can be successfully returned as user objects
+        var organisers = gh.utils.getOrganiserObjects($hiddenFields);
+        assert.equal(organisers[0].displayName, 'Bert Pareyn', 'Verify that the first user has the correct displayName');
+        assert.equal(organisers[0].id, '1', 'Verify that the first user has the correct ID');
+        assert.equal(organisers[1].displayName, 'Mathieu Decoene', 'Verify that the second user has the correct displayName');
+        assert.equal(organisers[1].id, undefined, 'Verify that the second user has no ID');
     });
 
     testAPI.init();

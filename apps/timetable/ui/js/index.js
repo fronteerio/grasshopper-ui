@@ -88,7 +88,13 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
     var onPartSelected = function(evt, data) {
         if (!data.modules.results.length) {
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
-                gh.utils.renderTemplate($('#gh-empty-template'), {'data': data}, $('#gh-empty'));
+                // Render the 'empty-timetable' template
+                gh.utils.renderTemplate($('#gh-empty-template'), {
+                    'data': {
+                        'gh': gh,
+                        'record': data
+                    }
+                }, $('#gh-empty'));
                 $('#gh-left-container').addClass('gh-minimised');
                 $('#gh-main').hide();
                 $('#gh-empty').show();
@@ -184,7 +190,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var fetchTriposData = function(callback) {
         // Fetch the triposes
-        gh.utils.getTriposStructure(function(err, data) {
+        gh.utils.getTriposStructure(null, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
@@ -207,8 +213,8 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @private
      */
     var addBinding = function() {
+        // Sign out the user when the form is submitted
         $('body').on('submit', '#gh-signout-form', doLogout);
-
         // Track an event when the user clicks the Cambridge logo
         $('body').on('click', '#gh-header-logo', function() {
             gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {

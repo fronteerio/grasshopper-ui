@@ -23,7 +23,7 @@
                             <%= _.partial('series-borrowed-popover', {'data': d}) %>
                         <% } %>
                         <div class="gh-list-action">
-                            <span <% if(d.borrowedFrom) { %>class="gh-series-borrowed"<% } %>>
+                            <span <% if(d.borrowedFrom) { %>class="gh-borrowed-icon-container"<% } %>>
                             <% if(d.borrowedFrom) { %>
                                 <i class="fa fa-link" data-id="<%- d.id %>"></i>
                             <% } else { %>
@@ -33,6 +33,31 @@
                         </div>
                     <% } %>
                 </button>
+                <% if (!isChild) { %>
+                    <ul class="nav nav-pills pull-right" role="tablist">
+                        <li role="presentation" class="dropdown">
+                            <button id="gh-batch-edit-settings" class="btn btn-default gh-btn-secondary gh-btn-reverse" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Module settings</span>
+                                <i class="fa fa-cog"></i>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-new-series" role="menuitem" data-groupid="<%- groupId %>">New series</button>
+                                </li>
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-borrow-series" role="menuitem">Borrow series</button>
+                                </li>
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-rename-module" role="menuitem" data-id="<%= d.id %>" data-displayname="<%- d.displayName %>">Rename module</button>
+                                </li>
+                                <li role="presentation">
+                                    <button type="button" class="btn btn-default gh-btn-secondary gh-delete-module" role="menuitem" data-id="<%= d.id %>">Delete module</button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                <% } %>
         </div>
         <% if (d.Series) { %>
             <ul class="list-group hide">

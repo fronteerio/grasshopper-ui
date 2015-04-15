@@ -3,87 +3,100 @@
     <div id="gh-toolbar-container">
         <% if (!data.gh.data.me.anon && data.view !== 'admin') { %>
             <div class="gh-toolbar gh-toolbar-primary">
-                <div id="gh-calendar-toolbar-views" class="gh-toolbar-views pull-left">
-                    <button class="btn btn-default gh-btn-secondary gh-btn-reverse active">My calendar</button>
-                    <button class="btn btn-default gh-btn-secondary gh-btn-reverse default">My agenda</button>
-                </div>
                 <div id="gh-calendar-toolbar-actions" class="gh-toolbar-actions pull-right">
                     <button id="gh-btn-calendar-print" class="btn btn-default gh-btn-secondary gh-btn-reverse default"><i class="fa fa-print"></i><span> Print</span></button>
                     <button id="gh-btn-calendar-export" class="btn btn-default">
                         <div>
-                            <i class="fa fa-calendar"></i><span> Export to calendar</span>
+                            <i class="fa fa-calendar"></i><span> Subscribe to calendar</span>
                         </div>
                         <div style="display: none;">
                             <i class="fa fa-times-circle"></i><span> Close</span>
                         </div>
                     </button>
                 </div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#gh-my-calendar-view" aria-controls="gh-my-calendar-view" role="tab" data-toggle="tab">My calendar</a></li>
+                    <li role="presentation"><a href="#gh-my-agenda-view" aria-controls="gh-my-agenda-view" role="tab" data-toggle="tab">My agenda</a></li>
+                </ul>
             </div>
         <% } %>
-        <div class="gh-toolbar gh-toolbar-secondary">
-            <!-- Navigate through the terms -->
-            <ul id="gh-calendar-toolbar-terms" class="nav nav-pills pull-left" role="tablist">
-                <li role="presentation" class="dropdown">
-                    <button id="gh-switch-term-container" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Switch term</span>
-                        <span id="gh-switch-term-label">Switch terms</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="gh-switch-term-container">
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="michaelmas" role="menuitem">Michaelmas</button>
-                        </li>
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="lent" role="menuitem">Lent</button>
-                        </li>
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="easter" role="menuitem">Easter</button>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-
-            <!-- Navigate through the weeks/months/days -->
-            <div id="gh-calendar-toolbar-period" class="gh-toolbar-period pull-left">
-                <div class="gh-toolbar-inner">
-                    <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
-                    <span id="gh-toolbar-label-period" class="gh-toolbar-label"><!-- --></span>
-                    <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <!-- Navigate to the current day -->
-            <div id="gh-calendar-toolbar-today" class="text-center">
-                <button id="gh-btn-calendar-today" class="btn btn-default gh-btn-tertiary">Today</button>
-            </div>
-
-            <!-- Navigate through the terms -->
-            <ul id="gh-calendar-toolbar-view" class="nav nav-pills pull-right" role="tablist">
-                <li role="presentation" class="dropdown">
-                    <button id="gh-switch-view-container" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Week</span>
-                        <span id="gh-switch-view-label">Week</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-switch-view-container">
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="agendaWeek" role="menuitem">Week</button>
-                        </li>
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="month" role="menuitem">Month</button>
-                        </li>
-                        <li role="presentation">
-                            <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="agendaDay" role="menuitem">Day</button>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
     </div>
 
-    <!-- Calendar -->
-    <div id="gh-calendar-container"><!-- --></div>
+    <div class="tab-content">
+        <div id="gh-my-calendar-view" class="tab-pane active" role="tabpanel">
+            <div class="gh-toolbar gh-toolbar-secondary">
+                <!-- Navigate through the terms -->
+                <ul id="gh-calendar-toolbar-terms" class="nav nav-pills pull-left" role="tablist">
+                    <li role="presentation" class="dropdown">
+                        <button id="gh-switch-term-container" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Switch term</span>
+                            <span id="gh-switch-term-label">Switch terms</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="gh-switch-term-container">
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="michaelmas" role="menuitem">Michaelmas</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="lent" role="menuitem">Lent</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-term" data-term="easter" role="menuitem">Easter</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Navigate through the weeks/months/days -->
+                <div id="gh-calendar-toolbar-period" class="gh-toolbar-period pull-left">
+                    <div class="gh-toolbar-inner">
+                        <button class="btn btn-default gh-btn-tertiary" data-action="prev"><i class="fa fa-chevron-left"></i></button>
+                        <span id="gh-toolbar-label-period" class="gh-toolbar-label"><!-- --></span>
+                        <button class="btn btn-default gh-btn-tertiary" data-action="next"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Navigate to the current day -->
+                <div id="gh-calendar-toolbar-today" class="text-center">
+                    <button id="gh-btn-calendar-today" class="btn btn-default gh-btn-tertiary">Today</button>
+                </div>
+
+                <!-- Navigate through the terms -->
+                <ul id="gh-calendar-toolbar-view" class="nav nav-pills pull-right" role="tablist">
+                    <li role="presentation" class="dropdown">
+                        <button id="gh-switch-view-container" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Week view</span>
+                            <span id="gh-switch-view-label">Week view</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-switch-view-container">
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="agendaWeek" role="menuitem">Week view</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="month" role="menuitem">Month view</button>
+                            </li>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-switch-view" data-view="agendaDay" role="menuitem">Day view</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Calendar -->
+            <div id="gh-calendar-container"><!-- --></div>
+        </div>
+
+        <div id="gh-my-agenda-view" class="tab-pane" role="tabpanel">
+            <div id="gh-my-agenda-view-container"><!-- --></div>
+
+            <!-- Agenda view template -->
+            <script id="gh-my-agenda-view-template" type="text/template">
+                <%= _.partial('agenda-view', {'data': data}, false) %>
+            </script>
+        </div>
+    </div>
 
     <% if (!data.gh.data.me.anon) { %>
         <div id="gh-export-container">

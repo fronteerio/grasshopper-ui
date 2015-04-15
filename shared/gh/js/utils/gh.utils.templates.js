@@ -48,40 +48,45 @@ define(['exports', 'gh.constants'], function(exports, constants) {
 
         // The collection of templates
         var deps = [
-            'text!gh/partials/admin-batch-edit.html',
-            'text!gh/partials/admin-batch-edit-actions.html',
-            'text!gh/partials/admin-batch-edit-date.html',
-            'text!gh/partials/admin-batch-edit-event-row.html',
-            'text!gh/partials/admin-batch-edit-event-type.html',
-            'text!gh/partials/admin-batch-edit-time-picker.html',
-            'text!gh/partials/admin-borrow-series-module-item.html',
-            'text!gh/partials/admin-edit-date-field.html',
-            'text!gh/partials/admin-edit-dates.html',
-            'text!gh/partials/admin-header-template.html',
-            'text!gh/partials/admin-module-item.html',
-            'text!gh/partials/admin-modules.html',
-            'text!gh/partials/borrow-series-modal.html',
-            'text!gh/partials/calendar.html',
-            'text!gh/partials/delete-series-modal.html',
-            'text!gh/partials/editable-parts.html',
-            'text!gh/partials/empty-timetable.html',
-            'text!gh/partials/event.html',
-            'text!gh/partials/event-popover.html',
-            'text!gh/partials/login-form.html',
-            'text!gh/partials/login-modal.html',
-            'text!gh/partials/header-template.html',
-            'text!gh/partials/new-module-modal.html',
-            'text!gh/partials/new-series.html',
-            'text!gh/partials/series-borrowed-popover.html',
-            'text!gh/partials/series-info.html',
-            'text!gh/partials/series-info-popover.html',
-            'text!gh/partials/student-module-item.html',
-            'text!gh/partials/student-modules.html',
-            'text!gh/partials/subheader-part.html',
-            'text!gh/partials/subheader-picker.html',
-            'text!gh/partials/subheader-pickers.html',
-            'text!gh/partials/visibility-button.html',
-            'text!gh/partials/visibility-modal.html'
+            'text!/shared/gh/partials/admin-batch-edit.html',
+            'text!/shared/gh/partials/admin-batch-edit-actions.html',
+            'text!/shared/gh/partials/admin-batch-edit-date.html',
+            'text!/shared/gh/partials/admin-batch-edit-event-row.html',
+            'text!/shared/gh/partials/admin-batch-edit-event-type.html',
+            'text!/shared/gh/partials/admin-batch-edit-time-picker.html',
+            'text!/shared/gh/partials/admin-borrow-series-module-item.html',
+            'text!/shared/gh/partials/admin-edit-date-field.html',
+            'text!/shared/gh/partials/admin-edit-dates.html',
+            'text!/shared/gh/partials/admin-header-template.html',
+            'text!/shared/gh/partials/admin-module-item.html',
+            'text!/shared/gh/partials/admin-modules.html',
+            'text!/shared/gh/partials/agenda-view.html',
+            'text!/shared/gh/partials/borrow-series-modal.html',
+            'text!/shared/gh/partials/calendar.html',
+            'text!/shared/gh/partials/delete-module-modal.html',
+            'text!/shared/gh/partials/delete-module-overview.html',
+            'text!/shared/gh/partials/delete-series-modal.html',
+            'text!/shared/gh/partials/editable-parts.html',
+            'text!/shared/gh/partials/empty-timetable.html',
+            'text!/shared/gh/partials/event.html',
+            'text!/shared/gh/partials/event-popover.html',
+            'text!/shared/gh/partials/login-form.html',
+            'text!/shared/gh/partials/login-modal.html',
+            'text!/shared/gh/partials/header-template.html',
+            'text!/shared/gh/partials/new-module-modal.html',
+            'text!/shared/gh/partials/new-series.html',
+            'text!/shared/gh/partials/rename-module-modal.html',
+            'text!/shared/gh/partials/series-borrowed-popover.html',
+            'text!/shared/gh/partials/series-borrowed-published-popover.html',
+            'text!/shared/gh/partials/series-info.html',
+            'text!/shared/gh/partials/series-info-popover.html',
+            'text!/shared/gh/partials/student-module-item.html',
+            'text!/shared/gh/partials/student-modules.html',
+            'text!/shared/gh/partials/subheader-part.html',
+            'text!/shared/gh/partials/subheader-picker.html',
+            'text!/shared/gh/partials/subheader-pickers.html',
+            'text!/shared/gh/partials/visibility-button.html',
+            'text!/shared/gh/partials/visibility-modal.html'
         ];
 
         // Require all the partial HTML files
@@ -90,8 +95,9 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                 var partial = deps[index];
 
                 // Use the filename as the name of the partial
-                partial = partial.replace(/text\!gh\/partials\//, '');
+                partial = partial.replace(/text\!\/shared\/gh\/partials\//, '');
                 partial = partial.replace(/\.html/, '');
+                partial = partial.split('.')[0];
 
                 // Create a partial for each template
                 _.declarePartial(partial, arg);

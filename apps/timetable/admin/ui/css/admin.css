@@ -69,12 +69,11 @@
 /* POPOVER */
 /***********/
 
-/* Series */
-
-.gh-admin .popover.gh-series-popover {
-    margin-left: 20px;
-    padding: 3px;
-    width: 250px;
+.popover.gh-datepicker-popover {
+    margin-top: -5px;
+    min-width: 450px !important;
+    padding: 5px 5px 20px;
+    z-index: 10000;
 }
 
 
@@ -279,7 +278,12 @@
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
+    padding-right: 5px;
     width: 40px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-action i.fa-link {
+    padding: 5px;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description {
@@ -330,7 +334,8 @@
 }
 
 #gh-new-module-form .form-group input,
-#gh-new-series-form .form-group input {
+#gh-new-series-form .form-group input,
+#gh-rename-module-form .form-group input {
     font-size: 28px;
     font-weight: 400;
     height: 41px;
@@ -345,6 +350,16 @@
 }
 
 
+/******************/
+/* RENAME MODULES */
+/******************/
+
+#gh-rename-module-form .form-group input {
+    margin: 0;
+    width: 100%;
+}
+
+
 /*****************/
 /* DELETE SERIES */
 /*****************/
@@ -353,11 +368,30 @@
     font-weight: 600;
 }
 
-#gh-delete-series-modal #gh-delete-series-borrowed-list-description {
+#gh-delete-series-modal small {
+    font-size: 15px;
+}
+
+
+/*****************/
+/* DELETE MODULE */
+/*****************/
+
+#gh-delete-module-modal #delete-module-body-preload-container {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+
+/*****************/
+/* BORROWED LIST */
+/*****************/
+
+.gh-borrowed-list-description {
     margin: 20px 0 5px;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list {
+ul.gh-borrowed-list {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-top-style: solid;
@@ -368,23 +402,19 @@
     padding: 0;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li {
+ul.gh-borrowed-list li {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     list-style: none;
     padding: 12px;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li:last-child {
+ul.gh-borrowed-list li:last-child {
     border-bottom: none;
 }
 
-#gh-delete-series-modal ul#gh-delete-series-borrowed-list li p {
+ul.gh-borrowed-list li p {
     margin: 0;
-}
-
-#gh-delete-series-modal small {
-    font-size: 15px;
 }
 
 
@@ -393,15 +423,32 @@
 /*****************/
 
 #gh-batch-edit-container {
-    padding: 30px 30px 12px;
+    padding: 30px 30px 5px;
     width: 100%;
 }
 
 #gh-batch-edit-container.gh-sticky-header {
     position: fixed;
     top: 0;
-    width: calc(100% - 320px);
     z-index: 1;
+}
+
+.gh-collapsed #gh-batch-edit-container.gh-sticky-header {
+    top: 215px;
+}
+
+.gh-batch-edit-actions-container {
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
+}
+
+.gh-collapsed .gh-batch-edit-actions-container {
+    width: -moz-calc(100% - 50px);
+    width: -o-calc(100% - 50px);
+    width: -webkit-calc(100% - 50px);
+    width: calc(100% - 50px);
 }
 
 #gh-batch-edit-container::after,
@@ -426,7 +473,7 @@
     display: inline-block;
     font-size: 25px;
     font-weight: 400;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     max-width: 80%;
     min-height: 40px;
     padding-top: 7px;
@@ -456,6 +503,51 @@
     text-decoration: none;
 }
 
+#gh-batch-edit-header {
+    position: relative;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
+    width: 100%;
+    z-index: -1;
+}
+
+#gh-batch-edit-header.gh-disabled:hover #gh-batch-edit-header-disabled-overlay {
+    opacity: 1;
+    z-index: 1;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p {
+    font-weight: 400;
+    margin: 14px 0;
+}
+
+#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p strong {
+    font-weight: 600;
+}
+
+#gh-batch-edit-header button,
+#gh-batch-edit-header input[type="text"]:not(.as-input),
+#gh-batch-edit-header select,
+#gh-batch-edit-header ul.as-selections {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#gh-batch-edit-header ul.as-selections {
+    overflow: hidden !important;
+}
+
 #gh-batch-edit-header input[type="text"],
 #gh-batch-edit-header select {
     font-weight: 400;
@@ -473,9 +565,19 @@
     width: 25px;
 }
 
+#gh-batch-edit-header .table thead tr.borrowed th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr.borrowed > th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(1) {
+    width: 0 !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(2) {
+    padding-left: 10px !important;
+}
+
 #gh-batch-edit-header .table thead tr th:nth-child(3),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
-    width: 180px;
+    width: 220px;
 }
 
 #gh-batch-edit-header .table thead tr th:nth-child(4),
@@ -520,7 +622,7 @@
     padding-bottom: 20px;
     padding-top: 16px;
     position: relative;
-    right: 0px;
+    right: 0;
     z-index: 9999;
 }
 
@@ -532,6 +634,7 @@
     padding: 0 0 0 15px !important;
     -webkit-transition: max-height .3s, opacity .3s;
        -moz-transition: max-height .3s, opacity .3s;
+         -o-transition: max-height .3s, opacity .3s;
             transition: max-height .3s, opacity .3s;
 }
 
@@ -576,6 +679,14 @@
     border-spacing: 1px;
     display: table;
     margin-bottom: 20px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container .gh-batch-edit-date-processing {
+    margin: 0 0 14px 14px;
+}
+
+#gh-batch-edit-container #gh-batch-edit-date-container .gh-batch-edit-date-processing i.fa-spinner {
+    margin-right: 4px;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox {
@@ -697,7 +808,7 @@
     cursor: pointer;
     max-width: 200px;
     overflow: hidden;
-    padding: 6px 0px 6px 15px;
+    padding: 6px 0 6px 15px;
     text-overflow: ellipsis;
     vertical-align: middle;
     white-space: nowrap;
@@ -707,28 +818,28 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.success.gh-fade td {
     -webkit-transition: background-color 2s;
        -moz-transition: background-color 2s;
+         -o-transition: background-color 2s;
             transition: background-color 2s;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers {
     height: auto;
-    overflow: visible;
     padding-bottom: 4px;
     padding-top: 3px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title] {
     overflow: hidden;
-    padding: 6px 0px 6px 15px;
+    padding: 6px 0 6px 15px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before,
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-organisers[title]:not(.gh-disabled):empty:hover::before {
     content: 'Add lecturer';
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-location:not(.gh-disabled):empty:hover::before {
     content: 'Add location';
 }
 
@@ -753,13 +864,17 @@
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container:not(:first-child) .table > thead > tr > th {
-    height: 60px;
+    height: 65px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox {
     font-size: 16px;
     margin: 0;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox {
+    margin-bottom: 4px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox label {
@@ -778,6 +893,10 @@
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .checkbox input,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td .checkbox input {
     margin-top: 2px;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th .gh-new-event {
+    margin-bottom: -5px;
 }
 
 #gh-batch-edit-term-container .gh-batch-edit-events-container .gh-jeditable-form {
@@ -826,46 +945,12 @@
     height: 34px;
 }
 
-#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:empty:hover::before {
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type:not(.gh-disabled):empty:hover::before {
     content: 'Add type';
 }
 
 .gh-batch-edit-events-container .gh-event-type.gh-editing::before {
     display: none;
-}
-
-/* Calendar icon */
-.gh-event-calendar-icon {
-    display: inline-block;
-    overflow: hidden;
-    position: absolute;
-}
-
-.gh-event-calendar-icon {
-    border-style: solid;
-    border-width: 1px;
-    height: 25px;
-    margin-top: -4px;
-    width: 23px;
-}
-
-.gh-event-calendar-icon .month,
-.gh-event-calendar-icon .day {
-    display: block;
-    font-weight: 800;
-    text-align: center;
-}
-
-.gh-event-calendar-icon .month {
-    font-size: 8px;
-    line-height: 10px;
-    text-transform: uppercase;
-}
-
-.gh-event-calendar-icon .day {
-    font-size: 12.5px;
-    font-weight: 700;
-    line-height: 16px;
 }
 
 .gh-event-description {
@@ -874,17 +959,10 @@
     text-overflow: ellipsis;
 }
 
-.gh-event-date {
-    max-width: 250px !important;
-    min-width: 210px !important;
-}
-
 .gh-event-display-date {
     line-height: 20px;
     margin-left: 30px;
     margin-top: -10px;
-    max-width: 170px;
-    text-overflow: ellipsis;
 }
 
 .gh-event-delete,
@@ -901,6 +979,7 @@ tr.info .gh-event-delete button {
     opacity: 0;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
             transition: opacity .2s;
     visibility: hidden;
     width: 100%;
@@ -910,6 +989,7 @@ tr.info .gh-event-delete button {
     opacity: 1;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
             transition: opacity .2s;
     visibility: visible;
 }
@@ -1164,6 +1244,7 @@ tr.info .gh-event-delete button {
     text-align: center;
     -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
        -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+         -o-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
             transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
 }
 
@@ -1220,7 +1301,7 @@ ul.as-selections li.as-selection-item {
     font-weight: normal;
     line-height: 1;
     margin: 2px;
-    padding: 4px 5px 0px;
+    padding: 4px 5px 0;
 }
 
 .as-selections .as-original {

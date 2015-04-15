@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, state, templates, time) {
+define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.state', 'gh.utils.templates', 'gh.utils.time', 'bootstrap-notify'], function(exports, instrumentation, orgunits, state, templates, time) {
 
 
     ///////////////
@@ -63,6 +63,27 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
     };
 
     /**
+     * Validate an external URL
+     *
+     * @param  {String}    url    The url that needs to be validated
+     * @return {String}           The validated url
+     */
+    var validateExternalURL = exports.validateExternalURL = function(url) {
+        if (!_.isString(url)) {
+            throw new Error('An invalid value for url was provided');
+        }
+
+        // If no protocol was provided, prepend 'http://'
+        var regExp = new RegExp(/\:\/\//g);
+        if (!regExp.test(url)) {
+            url = 'http://' + url;
+        }
+
+        // Return the validated url
+        return url;
+    };
+
+    /**
      * Mock a XMLHttpRequest
      *
      * @param  {String}           type           The request type. (e.g. 'GET', 'POST'...)
@@ -102,36 +123,6 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             server.respond();
             server.restore();
         });
-    };
-
-    /**
-     * Sort given objects based on the displayName property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByDisplayName = exports.sortByDisplayName = function(a, b) {
-        if (a.displayName.toLowerCase() < b.displayName.toLowerCase()){
-            return -1;
-        } else if (a.displayName.toLowerCase() > b.displayName.toLowerCase()) {
-            return 1;
-        }
-        return 0;
-    };
-
-    /**
-     * Sort given objects based on the host property.
-     * The list will be ordered from A to Z.
-     *
-     * @see Array#sort
-     */
-    var sortByHost = exports.sortByHost = function(a, b) {
-        if (a.host.toLowerCase() < b.host.toLowerCase()){
-            return -1;
-        } else if (a.host.toLowerCase() > b.host.toLowerCase()) {
-            return 1;
-        }
-        return 0;
     };
 
 
@@ -253,7 +244,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         // Show the notification
         $notificationContainer.notify({
             'fadeOut': {
-                'enabled': sticky,
+                'enabled': !sticky,
                 'delay': 5000
             },
             'type': type ? type : 'success',
@@ -269,13 +260,16 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
             $notification.addClass('gh-notification-in');
         }, 10);
 
-        // Fade out and remove the container after 5 seconds if it's not marked as sticky
-        /* istanbul ignore next */
-        var fadeTimeout = setTimeout(function() {
-            if (!sticky) {
-                $notification.addClass('gh-notification-fade');
-            }
-        }, 5000);
+        /* istanbul ignore else */
+        if (!sticky) {
+            // Fade out and remove the container after 5 seconds if it's not marked as sticky
+            /* istanbul ignore next */
+            var fadeTimeout = setTimeout(function() {
+                if (!sticky) {
+                    $notification.addClass('gh-notification-fade');
+                }
+            }, 5000);
+        }
 
         // Close the notification when the 'X' is clicked
         /* istanbul ignore next */
@@ -338,56 +332,35 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
     };
 
 
-    ////////////////
-    //  TRIPOSES  //
-    ////////////////
+    //////////////////
+    //  BATCH EDIT  //
+    //////////////////
 
     /**
-     * Return the tripos structure
+     * Create and return user objects found in the provided $hiddenFields container
      *
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The tripos structure
+     * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
+     * @return {User[]}                     Array of user objects
      */
-    /* istanbul ignore next */
-    var getTriposStructure = exports.getTriposStructure = function(callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('An invalid value for callback was provided');
+    var getOrganiserObjects = exports.getOrganiserObjects = function($hiddenFields) {
+        if (!$hiddenFields) {
+            throw new Error('An invalid value for $hiddenFields was provided');
         }
+        // Get all hidden fields in the container
+        $hiddenFields = $($hiddenFields).find('input[data-add="true"]');
+        // Cache the Array of organisers to return
+        var organisers = [];
 
-        var core = require('gh.core');
-        var appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
-        require('gh.api.orgunit').getOrgUnits(null, false, true, null, ['course', 'subject', 'part'], function(err, data) {
-            if (err) {
-                return callback(err);
-            }
-
-            var triposData = {
-                'courses': [],
-                'subjects': [],
-                'parts': [],
-                'modules': []
-            };
-
-            triposData.courses = _.filter(data.results, function(course) {
-                return course.type === 'course';
+        // Create a user object for each hidden field in the container
+        _.each($hiddenFields, function(hiddenField) {
+            organisers.push({
+                'displayName': hiddenField.value,
+                'id': $(hiddenField).attr('data-id')
             });
-
-            triposData.subjects = _.filter(data.results, function(subject) {
-                return subject.type === 'subject';
-            });
-
-            triposData.parts = _.filter(data.results, function(part) {
-                return part.type === 'part';
-            });
-
-            // Sort the data before displaying it
-            triposData.courses.sort(sortByDisplayName);
-            triposData.subjects.sort(sortByDisplayName);
-            triposData.parts.sort(sortByDisplayName);
-
-            return callback(null, triposData);
         });
+
+        // Return the Array of user objects
+        return organisers;
     };
 
 
@@ -405,6 +378,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.state', 'gh.utils.templ
         // Gather all the specific funtionality classes
         var utilClasses = [
             instrumentation,
+            orgunits,
             state,
             templates,
             time

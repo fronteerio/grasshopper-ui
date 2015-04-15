@@ -70,6 +70,19 @@ select[disabled],
     border-width: 1px;
 }
 
+.gh-disabled {
+    cursor: default;
+}
+
+.gh-disabled-overlay {
+    cursor: not-allowed;
+    display: block;
+    height: 100%;
+    opacity: 0.25;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
 
 /**************/
 /* VALIDATION */
@@ -116,6 +129,10 @@ select[disabled],
     height: 100%;
     padding: 0;
     position: fixed;
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
     width: 320px;
     z-index: 3;
 }
@@ -126,16 +143,24 @@ select[disabled],
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
-    -webkit-box-sizing: initial;
-       -moz-box-sizing: initial;
-            box-sizing: initial;
+    -webkit-box-sizing: content-box;
+       -moz-box-sizing: content-box;
+            box-sizing: content-box;
     width: 196px;
     padding: 39px 46px 36px 40px;
+    -webkit-transition: padding .3s;
+       -moz-transition: padding .3s;
+         -o-transition: padding .3s;
+            transition: padding .3s;
 }
 
 #gh-page-container #gh-left-container #gh-content-description p {
     margin: 0;
     padding: 32px 39px 30px;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-meta-container {
@@ -145,7 +170,7 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    height: 100%;
+    height: calc(100% + 1px);
     padding-bottom: 45px;
     padding-top: 215px;
 }
@@ -153,16 +178,45 @@ select[disabled],
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    height: 45px;
+    height: 44px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+#gh-page-container #gh-page-container #gh-left-container #gh-modules-list-container ul {
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     margin: 0;
     padding: 13px 40px;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
+    width: 300px;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules {
+    position: relative;
+    width: 50px;
+    z-index: 1;
+}
+
+#gh-page-container #gh-left-container #gh-modules-container #gh-result-summary .gh-collapse-modules i {
+    font-size: 26px;
+    font-weight: 500;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    opacity: 1;
     overflow: hidden;
+    -webkit-transition: opacity .3s;
+       -moz-transition: opacity .3s;
+         -o-transition: opacity .3s;
+            transition: opacity .3s;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
@@ -180,7 +234,7 @@ select[disabled],
 }
 
 #gh-page-container #gh-right-container #gh-header-container {
-    left: 320px;
+    position: relative;
     right: 0;
     z-index: 3;
 }
@@ -212,6 +266,7 @@ select[disabled],
 
 #gh-page-container #gh-right-container #gh-subheader {
     position: relative;
+    z-index: 10;
 }
 
 #gh-page-container #gh-left-container #gh-content-description {
@@ -219,9 +274,80 @@ select[disabled],
 }
 
 #gh-page-container #gh-right-container {
-    padding-left: 320px;
-    width: 100%;
     height: 100%;
+    padding-left: 320px;
+    -webkit-transition: padding-left .3s;
+       -moz-transition: padding-left .3s;
+         -o-transition: padding-left .3s;
+            transition: padding-left .3s;
+    width: 100%;
+}
+
+
+/********************/
+/* COLLAPSE MODULES */
+/********************/
+
+.fa-angle-double-right,
+.gh-collapsed .fa-angle-double-left {
+    display: none;
+}
+
+.fa-angle-double-left,
+.gh-collapsed .fa-angle-double-right {
+    display: block;
+}
+
+/* Main containers */
+
+.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container {
+    left: 50px;
+    position: fixed;
+}
+
+.gh-collapsed-finished main {
+    margin-top: 215px;
+}
+
+.gh-collapsed-finished #gh-empty {
+    margin-left: 0;
+    margin-top: 250px;
+}
+
+/* Content containers */
+
+.gh-collapsed #gh-page-container #gh-left-container {
+    width: 50px !important;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container {
+    padding-left: 50px;
+    position: absolute;
+}
+
+.gh-collapsed #gh-page-container #gh-right-container #gh-toolbar-container {
+    width: 100%;
+}
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
+    height: 100%;
+    opacity: 0;
+}
+
+/* Content */
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-header-logo img {
+    padding: 39px 46px 36px 8px;
+}
+
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary {
+    border-bottom: none !important;
+}
+
+.gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p,
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
+.gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
+    opacity: 0;
 }
 
 
@@ -260,6 +386,12 @@ select[disabled],
 .modal-header {
     padding: 25px;
     position: relative;
+}
+
+.modal-header button[data-dismiss="modal"] {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 0 5px;
 }
 
 .modal-body {
@@ -343,6 +475,7 @@ select[disabled],
     text-align: left;
     -webkit-transition: left .3s, opacity .3s, bottom .3s;
        -moz-transition: left .3s, opacity .3s, bottom .3s;
+         -o-transition: left .3s, opacity .3s, bottom .3s;
             transition: left .3s, opacity .3s, bottom .3s;
     width: 100%;
     word-wrap: break-word;
