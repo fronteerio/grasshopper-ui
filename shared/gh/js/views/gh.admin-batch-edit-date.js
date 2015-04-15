@@ -175,6 +175,10 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
                     // Get the date by week and day
                     var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
+                    // Since Cambridge weeks start on Thursdays, we should prevent that
+                    // chosen days are put after the current selected day. Therefore
+                    // we need to subtract one week for all the days except Tuesdays and
+                    // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     if (!_.contains([2,3], dayOfTheWeek)) {
                         dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
                     }
@@ -287,9 +291,14 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             var eventDay = parseInt($('.gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
                             // Get the date by week and day
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
+                            // Since Cambridge weeks start on Thursdays, we should prevent that
+                            // chosen days are put after the current selected day. Therefore
+                            // we need to subtract one week for all the days except Tuesdays and
+                            // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                             if (!_.contains([2,3], eventDay)) {
                                 dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
                             }
+                            // Retrieve the year of the event
                             var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
                             // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
                             var eventMonth = moment(dateByWeekAndDay).subtract({'months': 1}).utc().format('MM');
@@ -512,16 +521,12 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         _.each($rows, function($row) {
             _.defer(function() {
                 $row = $($row);
-
                 // Get the date the event starts on
                 var eventStart = moment($row.find('.gh-event-date').attr('data-start'));
-
                 // Retrieve the day number
                 var eventStartDayNumber = parseInt(moment(eventStart).utc().format('E'));
-
                 // Only update the date when the event takes place on the day that was selected in the picker
                 var dayNumberToEdit = parseInt(prevEventDay, 10);
-
                 if (eventStartDayNumber === dayNumberToEdit) {
                     // Get the date the event finishes on
                     var eventEnd = moment($row.find('.gh-event-date').attr('data-end'));
@@ -531,6 +536,10 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
                     // Get the date the event would be on after the change
                     var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
+                    // Since Cambridge weeks start on Thursdays, we should prevent that
+                    // chosen days are put after the current selected day. Therefore
+                    // we need to subtract one week for all the days except Tuesdays and
+                    // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     if (!_.contains([2,3], eventDay)) {
                         newDate = moment(newDate).subtract({'weeks': 1});
                     }
