@@ -799,10 +799,16 @@ tbody tr:last-child > td.fc-widget-content {
     padding: 10px 20px 20px;
 }
 
+.panel .panel-title > a:hover,
+.panel .panel-title > a:focus {
+    text-decoration: none;
+}
+
 .panel,
 .panel-group .panel,
 .panel-heading {
     border-radius: 0;
+    font-size: 16px;
 }
 
 .panel-group,
