@@ -79,7 +79,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
             'text!/shared/gh/partials/series-borrowed-popover.html',
             'text!/shared/gh/partials/series-borrowed-published-popover.html',
             'text!/shared/gh/partials/series-info.html',
-            'text!/shared/gh/partials/series-info-popover.html',
+            'text!/shared/gh/partials/series-info-modal.html',
             'text!/shared/gh/partials/student-module-item.html',
             'text!/shared/gh/partials/student-modules.html',
             'text!/shared/gh/partials/subheader-part.html',
@@ -139,4 +139,40 @@ define(['exports', 'gh.constants'], function(exports, constants) {
         // Always return the rendered HTML string
         return compiled;
     };
+
+    /**
+     * Render the hierarchy string
+     *
+     * @param  {Object}    orgUnit      The organisational unit to start building the hierarchy structure with
+     * @param  {String}    separator    The string used to split the organisational units
+     * @return {String}                 The generated hierarchy string
+     */
+    var renderHierarchyString = exports.renderHierarchyString = function(orgUnit, separator) {
+        if (!_.isObject(orgUnit)) {
+            throw new Error('An invalid value for orgUnit has been provided');
+        } else if (!_.isString(separator)) {
+            throw new Error('An invalid value for separator has been provided');
+        }
+
+        // Store the organisational units' display names
+        var hierarchy = [];
+
+        /**
+         * Retrieve the display name for each parent object in the tree structure
+         *
+         * @param  {Object}    The organisational unit to return the display name from
+         * @private
+         */
+        var _renderHierarchyString = function(orgUnit) {
+            hierarchy.push(orgUnit.displayName);
+            if (orgUnit.Parent) {
+                return _renderHierarchyString(orgUnit.Parent);
+            } else {
+                return hierarchy.reverse().join(separator);
+            }
+        };
+
+        // Start rendering the hierarchy string
+        return _renderHierarchyString(orgUnit);
+     };
 });

@@ -984,29 +984,6 @@ tbody tr:last-child > td.fc-widget-content {
     margin-left: 5px;
 }
 
-/* Series info popover */
-
-.gh-student .popover.gh-series-popover.gh-series-info-popover {
-    margin-left: 275px;
-    min-width: 515px;
-}
-
-.gh-student .popover.gh-series-popover.gh-series-info-popover .term-name {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.gh-student .popover.gh-series-popover.gh-series-info-popover .col-sm-4 {
-    margin-bottom: 15px;
-}
-
-.gh-student .popover.gh-series-popover.gh-series-info-popover .gh-popover-location,
-.gh-student .popover.gh-series-popover.gh-series-info-popover .gh-popover-organiser {
-    border-top-style: solid;
-    border-top-width: 1px;
-    padding: 8px 0 5px;
-}
-
 
 /******************************************************/
 /* DROPDOWN                                           */
@@ -1210,4 +1187,79 @@ span.gh-agenda-view-middot {
     line-height: 0;
     margin: 0 3px;
     vertical-align: sub;
+}
+
+
+/*********************/
+/* SERIES INFO MODAL */
+/*********************/
+
+#gh-series-info-modal .modal-header {
+    padding: 25px 25px 0 !important;
+}
+
+
+#gh-series-info-modal .modal-body {
+    padding: 20px;
+}
+
+#gh-series-info-modal .gh-series-info-list {
+    margin-top: 15px;
+    max-height: 250px;
+    overflow: scroll;
+}
+
+/* Term */
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-term {
+    position: relative;
+}
+
+#gh-series-info-modal .gh-series-info-list > div {
+    padding-left: 10px;
+}
+
+#gh-series-info-modal .gh-series-info-list > div:not(:first-child) {
+    padding-top: 20px;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-no-events {
+    padding: 10px;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-term strong {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    display: block;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+/* Event */
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event {
+    height: 35px;
+    position: relative;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-type,
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date {
+    display: inline-block;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-type {
+    min-width: 28px;
+}
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date .gh-event-display-date {
+    padding-left: 30px;
+}
+
+/* Metadata */
+
+#gh-series-info-modal .gh-series-info-location,
+#gh-series-info-modal .gh-series-info-organiser {
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 10px 15px;
 }

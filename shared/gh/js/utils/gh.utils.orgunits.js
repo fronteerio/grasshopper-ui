@@ -56,6 +56,15 @@ define(['exports'], function(exports) {
     ////////////////
 
     /**
+     * Return the tripos structure
+     *
+     * @return {Object}    The tripos structure
+     */
+    var triposData = exports.triposData = function() {
+        return _triposData;
+    };
+
+    /**
      * Decorate an organisational unit with its parent info
      *
      * @param  {Object}    orgUnit    The organisational unit that needs to be decorated with his parent info

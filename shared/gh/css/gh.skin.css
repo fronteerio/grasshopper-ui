@@ -710,3 +710,41 @@ span.gh-agenda-view-middot {
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-belongs {
     color: #919191;
 }
+
+
+/*********************/
+/* SERIES INFO MODAL */
+/*********************/
+
+/* Header */
+
+#gh-series-info-modal .modal-header {
+    background-color: #07525D;
+}
+
+#gh-series-info-modal .modal-header h4,
+#gh-series-info-modal .modal-header button,
+#gh-series-info-modal .modal-header p {
+    color: #FFF;
+}
+
+/* Term */
+
+#gh-series-info-modal .gh-series-info-list .gh-series-info-list-term strong {
+    border-bottom-color: #DDD;
+}
+
+/* Metadata */
+
+#gh-series-info-modal .gh-series-info-organiser {
+    border-top-color: #AAA;
+}
+
+#gh-series-info-modal .gh-series-info-location {
+    border-top-color: #DDD;
+}
+
+#gh-series-info-modal .gh-series-info-location,
+#gh-series-info-modal .gh-series-info-organiser {
+    background-color: #EEE;
+}

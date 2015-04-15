@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
 
     // Cache the retrieved series
     var series = {};
@@ -21,11 +21,10 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
     /**
      * Retrieve the series information
      *
-     * @param  {Object}    clickover    Object representing the clickover component
      * @param  {Number}    seriesId     The ID of the series that needs to be retrieved
      * @private
      */
-    var retrieveSeries = function(clickover, seriesId) {
+    var retrieveSeries = function(seriesId) {
 
         // Fetch the series if it hasn't been retrieved yet
         if (!series[seriesId]) {
@@ -39,7 +38,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
 
                 // Skip the data retrieval if the events have already been cached
                 if (series[seriesId]['Events']) {
-                    return retrieveSeries(clickover, seriesId);
+                    return retrieveSeries(seriesId);
                 }
 
                 // Retrieve the events that belong to the series
@@ -69,7 +68,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
                         if (data.results.length === 25) {
                             return _getSeriesEvents(offset += 25);
                         }
-                        return retrieveSeries(clickover, seriesId);
+                        return retrieveSeries(seriesId);
                     });
                 };
 
@@ -90,10 +89,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
         // Render the template into the series info container
         gh.utils.renderTemplate($('#gh-series-info-template'), {
             'data': data
-        }, $('.popover.gh-series-popover').find('.series-info-container'));
-
-        // Reset the popover window's position
-        clickover.resetPosition();
+        }, $('#gh-series-info-modal').find('.modal-body'));
     };
 
     /**
@@ -159,58 +155,56 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
     };
 
 
-    ///////////////
-    //  POPOVER  //
-    ///////////////
+    /////////////
+    //  MODAL  //
+    /////////////
 
     /**
-     * Set up and show the series popover
+     * Set up and show the series info modal
      *
      * @private
      */
-    var setUpSeriesPopover = function() {
+    var setUpModal = function() {
         var $trigger = $(this);
 
         // Store the series ID
         var seriesId = $trigger.data('id');
+        // Retrieve the series title
+        var seriesTitle = $trigger.closest('.list-group-item').find('.gh-list-description-text').html();
+
+        // Retrieve the tripos data
+        var _triposData = gh.utils.triposData();
+
+        /* Retrieve the tree structure, populated with the organisational unit*/
+        var parent = null;
+        var partId = History.getState().data.part;
+        _.each(_triposData, function(orgUnitType) {
+            var _part = _.find(orgUnitType, function(orgUnit) {
+                return orgUnit.id === partId;
+            });
+            if (_part) {
+                parent = _part;
+            }
+        });
+
+        // Generate the hierarchy string
+        var hierarchy = gh.utils.renderHierarchyString(parent, ' > ');
 
         // Render the popover window
-        gh.utils.renderTemplate($('#gh-series-info-popover-template'), {
+        gh.utils.renderTemplate($('#gh-series-info-modal-template'), {
             'data': {
-                'id': seriesId
+                'hierarchy': hierarchy,
+                'seriesTitle': seriesTitle
             }
-        }, $('.gh-series-info-popover-container[data-id="' + seriesId + '"]'));
+        }, $('#gh-modal'));
 
-        // Show the popover window
-        var $content = $trigger.closest('.gh-list-group-item-container').find('.popover.info[data-id="' + seriesId + '"]');
+        // Retrieve the series when the modal is shown
+        $('#gh-series-info-modal').on('shown.bs.modal', function(e) {
+            retrieveSeries(seriesId);
+        });
 
-        var options = {
-            'class_name': 'gh-series-popover gh-series-info-popover',
-            'container': 'body',
-            'content': $content.html(),
-            'global_close': true,
-            'html': true,
-
-            // Retrieve the series information for display in the popover
-            'onShown': function() {
-                retrieveSeries(this, seriesId);
-            }
-        };
-
-        $trigger.clickover(options);
-        $trigger.trigger('click');
-    };
-
-    /**
-     * Dismiss the series popover
-     *
-     * @private
-     */
-    var dismissSeriesPopover = function() {
-        var $trigger = $(this);
-        if ($('.popover.in').length) {
-            $trigger.trigger('click');
-        }
+        // Show the modal
+        $('#gh-series-info-modal').modal();
     };
 
 
@@ -224,8 +218,8 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover'], function(gh, constant
      * @private
      */
     var addBinding = function() {
-        $('body').on('mouseout', '.fa-info-circle', dismissSeriesPopover);
-        $('body').on('mouseover', '.fa-info-circle', setUpSeriesPopover);
+        // Set up and show the series info modal
+        $('body').on('click', '.fa-info-circle', setUpModal);
     };
 
     addBinding();
