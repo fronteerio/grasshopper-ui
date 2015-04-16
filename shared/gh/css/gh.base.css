@@ -85,6 +85,17 @@ select[disabled],
     width: 100%;
 }
 
+/* When the page loads and it's laying itself out, animations shouldn't occur.
+   The class gets removed after the page has been set up */
+.gh-preload {
+    -webkit-transition: none !important;
+       -moz-transition: none !important;
+        -ms-transition: none !important;
+         -o-transition: none !important;
+            transition: none !important;
+}
+
+
 /**************/
 /* VALIDATION */
 /**************/
