@@ -13,12 +13,16 @@
  * permissions and limitations under the License.
  */
 
+body {
+    height: 0 !important;
+}
+
 
 /********************/
 /* COLLAPSE MODULES */
 /********************/
 
-.gh-collapsed main {
+.gh-collapsed #gh-main {
     margin-top: 0 !important;
 }
 
@@ -33,7 +37,8 @@
 
 #gh-page-container #gh-left-container,
 #gh-page-container #gh-right-container #gh-header-container,
-#gh-page-container #gh-right-container #gh-main #gh-toolbar-container {
+#gh-page-container #gh-right-container #gh-main #gh-toolbar-container,
+#gh-page-container #gh-right-container #gh-main .gh-toolbar.gh-toolbar-secondary {
     display: none;
 }
 
