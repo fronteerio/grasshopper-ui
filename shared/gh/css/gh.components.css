@@ -964,7 +964,8 @@ tbody tr:last-child > td.fc-widget-content {
 .modal #gh-modules-container {
     margin-top: 25px;
     max-height: 400px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Series borrowed info popover */
@@ -1217,8 +1218,7 @@ span.gh-agenda-view-middot {
 #gh-series-info-modal .gh-series-info-list {
     margin-top: 15px;
     max-height: 325px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 /* Term */
@@ -1265,6 +1265,7 @@ span.gh-agenda-view-middot {
     max-width: -webkit-calc(100% - 230px);
     max-width: calc(100% - 230px);
     overflow: hidden;
+    padding-right: 7px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
