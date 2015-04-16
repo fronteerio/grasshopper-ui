@@ -156,7 +156,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     var getTenantData = function(callback) {
         gh.api.tenantAPI.getTenants(function(err, tenants) {
             if (err) {
-                gh.utils.notification('Could not fetch system tenants', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not fetch system tenants', constants.messaging.default.error, 'error');
             }
 
             var todo = tenants.length;
@@ -165,7 +165,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
             var getApps = function(tenantId, _callback) {
                 gh.api.appAPI.getApps(tenantId, function(err, apps) {
                     if (err) {
-                        gh.utils.notification('Could not fetch system apps', constants.messaging.default.error, 'error');
+                        return gh.utils.notification('Could not fetch system apps', constants.messaging.default.error, 'error');
                     }
 
                     // Sort the apps by host
@@ -297,7 +297,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     var getAdminUserData = function(callback) {
         gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
             if (err) {
-                gh.utils.notification('Could not fetch admins', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not fetch admins', constants.messaging.default.error, 'error');
             }
 
             callback(administrators.rows);
