@@ -95,17 +95,6 @@ define(['exports', 'gh.utils'], function(exports, utils) {
     //////////////////////////
 
     /**
-     * Log in using Shibboleth authentication
-     */
-    /* istanbul ignore next */
-    var shibbolethLogin = exports.shibbolethLogin = function() {
-        $.ajax({
-            'url': '/api/auth/shibboleth',
-            'type': 'POST'
-        });
-    };
-
-    /**
      * Get the request information for an administrator to become a user
      *
      * @param  {Number}      userId          The ID of the user to become

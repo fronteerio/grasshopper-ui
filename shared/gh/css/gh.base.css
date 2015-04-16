@@ -27,6 +27,7 @@ body {
     font-family: 'Myriad Pro', helvetica, sans-serif;
     font-size: 15px;
     font-weight: 200;
+    min-height: 800px;
 }
 
 h1, h2, h3, h4, h5 {
@@ -179,6 +180,7 @@ select[disabled],
     border-bottom-style: solid;
     border-bottom-width: 1px;
     height: 44px;
+    overflow: hidden;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
@@ -225,6 +227,7 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list {
     height: 100%;
+    -webkit-overflow-scrolling: touch;
     width: 320px;
 }
 
@@ -275,6 +278,7 @@ select[disabled],
 
 #gh-page-container #gh-right-container {
     height: 100%;
+    min-width: 992px;
     padding-left: 320px;
     -webkit-transition: padding-left .3s;
        -moz-transition: padding-left .3s;

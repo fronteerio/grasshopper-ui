@@ -390,6 +390,17 @@ tbody tr:last-child > td.fc-widget-content {
     width: 0;
 }
 
+/* Position the export panel on mobile devices */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)  {
+    #gh-calendar-view {
+        position: relative;
+    }
+
+    #gh-calendar-view #gh-export-container {
+        top: 43px;
+    }
+}
+
 #gh-calendar-view #gh-export-container a,
 #gh-calendar-view #gh-export-container .btn-link {
     font-weight: 400 !important;
