@@ -87,7 +87,7 @@ select[disabled],
 
 /* When the page loads and it's laying itself out, animations shouldn't occur.
    The class gets removed after the page has been set up */
-.gh-preload {
+.gh-preload * {
     -webkit-transition: none !important;
        -moz-transition: none !important;
         -ms-transition: none !important;
@@ -152,6 +152,10 @@ select[disabled],
 #gh-page-container #gh-left-container.gh-minimised {
     height: 215px;
     overflow: hidden;
+}
+
+#gh-page-container #gh-left-container #gh-header-logo {
+    height: 115px;
 }
 
 #gh-page-container #gh-left-container #gh-header-logo img {
