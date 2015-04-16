@@ -353,6 +353,29 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         return false;
     };
 
+    /**
+     * Delete a global administrator
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var deleteAdmin = function() {
+        // Get the administrator's userId
+        var userId = parseInt($(this).data('userid'), 10);
+
+        // Delete the administrator
+        gh.api.adminAPI.deleteAdmin(userId, function(err) {
+            if (err) {
+                return gh.utils.notification('Administrator could not be deleted', constants.messaging.default.error, 'error');
+            }
+            setUpUsers();
+            gh.utils.notification('Administrator successfully deleted', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
 
     ///////////////////
     // CONFIGURATION //
@@ -506,6 +529,8 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         $('body').on('submit', '#gh-administrators-create-form', createAdmin);
         // Update global administrator
         $('body').on('submit', '.gh-administrators-update-form', updateAdmin);
+        // Delete global administrator
+        $('body').on('click', '.gh-administrators-delete', deleteAdmin);
 
         // Tenant creation
         $('body').on('submit', '#gh-tenants-create-tenant-form', createTenant);
