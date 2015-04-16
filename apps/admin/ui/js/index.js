@@ -33,8 +33,36 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         gh.utils.renderTemplate($('#gh-administrators-template'), {
             'gh': gh,
             'administrators': administrators
-        }, $('#gh-administrators-container'));
+        }, $('#gh-global-users-container'));
         $('#gh-administrators-container').show();
+    };
+
+    /**
+     * Render app user functionality and show the container
+     *
+     * @param  {Object[]}    tenants    The app tenants to render
+     * @private
+     */
+    var renderUserApps = function(tenants) {
+        gh.utils.renderTemplate($('#gh-app-users-template'), {
+            'gh': gh,
+            'tenants': tenants
+        }, $('#gh-app-users-container'));
+        $('#gh-administrators-container').show();
+    };
+
+    /**
+     * Render users for an app inside of the app container
+     *
+     * @param  {Number}    appId    The ID of the app to render users for
+     * @param  {User[]}    users    The users for the app to render
+     * @private
+     */
+    var renderAppUsersResults = function(appId, users) {
+        gh.utils.renderTemplate($('#gh-app-user-template'), {
+            'gh': gh,
+            'users': users.results
+        }, $('#gh-app-users-container [data-appid="' + appId + '"] .gh-users-container'));
     };
 
     /**
@@ -284,8 +312,14 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var setUpUsers = function() {
+        // Set up the global administrators
         getAdminUserData(function(administrators) {
             renderAdmins(administrators);
+        });
+
+        // Set up the app users
+        getTenantData(function(tenants) {
+            renderUserApps(tenants);
         });
     };
 
@@ -512,6 +546,117 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     };
 
 
+    ///////////////
+    // APP USERS //
+    ///////////////
+
+    /**
+     * Retrieve the users that belong to an app taking the search query into account
+     *
+     * @private
+     */
+    var getUsers = function() {
+        // Get the ID of the app to search for users in
+        var appId = parseInt($(this).closest('.panel-group').data('appid'), 10);
+        // Get the search query
+        var query = $($(this).closest('.panel-group').find('.gh-striped-container-search input')).val();
+
+        gh.api.userAPI.getUsers(appId, null, null, query, function(err, data) {
+            renderAppUsersResults(appId, data);
+        });
+    };
+
+    /**
+     * Create an application user
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var createUser = function() {
+        // Cache the form object
+        var $form = $(this);
+        // Get the ID of the app to create the user in
+        var appId = parseInt($form.data('appid'), 10);
+        // Get the user details
+        var displayName = $('.gh-new-user-displayname', $form).val();
+        var email = $('.gh-new-user-email', $form).val();
+        var password = $('.gh-new-user-password', $form).val();
+        var emailPreference = $('.gh-new-user-emailpreference', $form).val();
+        var isAdmin = $('.gh-new-user-isadmin', $form).is(':checked');
+
+        // Create the administrator
+        gh.api.userAPI.createUser(appId, displayName, email, password, emailPreference, isAdmin, null, null, function(err) {
+            if (err) {
+                return gh.utils.notification('Could not create user: ' + displayName, constants.messaging.default.error, 'error');
+            }
+            // Update the user list
+            getUsers.apply($form);
+            // Reset the form
+            $form[0].reset();
+            // Show a success message
+            gh.utils.notification('User ' + displayName + ' successfully created', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+    /**
+     * Update an application user
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var updateUser = function() {
+        // Cache the form object
+        var $form = $(this);
+        // Get the administrator's userId and display name
+        var userId = parseInt($form.data('userid'), 10);
+        var displayName = $('.gh-user-displayname', $form).val();
+        var email = $('.gh-user-email', $form).val();
+        var emailPreference = $('.gh-user-emailpreference', $form).val();
+        var password = $('.gh-user-password', $form).val();
+        var isAdmin = $('.gh-user-isadmin', $form).is(':checked');
+
+        // Update the user
+        gh.api.userAPI.updateUser(userId, displayName, email, emailPreference, function(updateErr) {
+            if (updateErr) {
+                return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+            }
+
+            // Promote/demote the user
+            gh.api.userAPI.updateAdminStatus(userId, isAdmin, function(adminStatusErr) {
+                if (adminStatusErr) {
+                    return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+                }
+
+                // TODO: enable password updates once it's implemented in the backend
+                // If the password field is not empty, submit a password update
+                // if (password) {
+                //     gh.api.userAPI.changePassword(userId, newPassword, oldPassword, function(passwordErr) {
+                //         if (passwordErr) {
+                //             return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+                //         }
+
+                //         // Update the user list
+                //         getUsers.apply($form);
+                //         // Notify the user of a successful update
+                //         gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+                //     });
+                // } else {
+                    // Update the user list
+                    getUsers.apply($form);
+                    // Show a success message
+                    gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+                // }
+            });
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
     ////////////////////
     // INITIALISATION //
     ////////////////////
@@ -541,6 +686,21 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
 
         // Update the value attribute of a checkbox when it changes
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
+
+        // Search users
+        $('body').on('submit', '.gh-striped-container-search', function() {
+            // Open the panel and let its event handle the search
+            $(this).closest('.panel-group').find('.collapse').collapse('show').trigger('show.bs.collapse');
+            // Avoid default form submit behaviour
+            return false;
+        });
+        // Update user
+        $('body').on('submit', '.gh-app-user-update-form', updateUser);
+        // Create user
+        $('body').on('submit', '.gh-app-user-create-form', createUser);
+
+        // Retrieve the users belonging to the app that was opened
+        $('body').on('show.bs.collapse', '.collapse', getUsers);
     };
 
     /**
