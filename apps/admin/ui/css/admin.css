@@ -13,6 +13,8 @@
  * permissions and limitations under the License.
  */
 
+/* Main elements*/
+
 main h1 {
     margin-bottom: 20px;
 }
@@ -25,46 +27,68 @@ main h2 {
     margin: 20px;
 }
 
-.gh-administration-container th {
-    font-weight: 600;
-}
-
-.gh-administration-container th,
-.gh-administration-container td {
-    border-top: none;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.gh-administration-container td:first-child {
-    padding-left: 15px;
-}
-
 .gh-administration-container input[type="text"],
 .gh-administration-container input[type="password"] {
-    font-weight: 200;
-    line-height: 1.7;
     padding: 4px 7px 0;
     width: 100%;
 }
 
-.panel.gh-administration-new-container {
-    border-bottom: none;
-}
-
-.panel.gh-administration-new-container .panel-heading input {
-    margin-right: 12px;
-    width: 250px;
-}
-
-.panel .panel-body {
-    padding: 0;
-}
-
-.panel .panel-body button {
-    min-width: 100px;
-}
-
-form, table {
+form,
+table {
     margin-bottom: 0 !important;
 }
+
+
+/* Panels */
+
+.gh-administration-container .panel-default,
+.gh-administration-container .panel-group:last-child .panel-default {
+    border-color: #DDD;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 25px;
+}
+
+.gh-administration-container .panel-group .panel-default {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.gh-administration-container .panel-default .panel-body {
+    padding-bottom: 0;
+}
+
+.gh-administration-container .panel-default .panel-body .panel-subheading {
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Striped rows */
+
+.gh-administration-container .gh-striped-row {
+    padding: 9px 0;
+}
+
+.gh-administration-container .gh-striped-row:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+/* Editable content elements */
+
+.gh-administration-container .gh-striped-row input[type="checkbox"] {
+    display: block;
+    height: 12px;
+    margin: 13px auto;
+    width: 12px;
+}
+
+.gh-administration-container .gh-striped-row input[type="text"],
+.gh-administration-container .gh-striped-row input[type="password"] {
+    height: 39px;
+}
+
+.gh-administration-container .gh-striped-row button,
+.gh-administration-container .gh-striped-row a {
+    width: 100%;
+}
+

@@ -93,129 +93,118 @@
 
         <script id="gh-tenants-template" type="text/template">
             <div class="gh-administration-container">
-                <form id="gh-tenants-apps-form">
-                    <h1>Tenants and Apps</h1>
-                    <h2>Create a new tenant</h2>
-                    <div id="gh-create-tenant-new-container" class="panel panel-default gh-administration-new-container">
-                        <div class="panel-heading">
-                            <input id="gh-app-tenant-new" type="text" placeholder="New tenant name"/>
-                            <button type="button" class="btn btn-primary gh-create-tenant">Create tenant</button>
+                <h1>Tenants and Apps</h1>
+
+                <h2>Create a new tenant</h2>
+                <form id="gh-tenants-create-tenant-form">
+                    <div class="form-group">
+                        <label for="gh-tenant-name" class="control-label">Tenant display name</label>
+                        <input type="text" id="gh-tenant-name" class="form-control" placeholder="New tenant name"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">Create tenant</button>
+                </form>
+
+                <h2>Tenants in the system</h2>
+                <% _.each(tenants, function(tenant) { %>
+                    <div class="panel-default gh-striped-container">
+                        <h3 class="panel-heading"><%- tenant.displayName %></h3>
+                        <div class="panel-body">
+                            <div class="panel-subheading row">
+                                <div class="gh-striped-heading col-sm-3">App name</div>
+                                <div class="gh-striped-heading col-sm-3">App host</div>
+                                <div class="gh-striped-heading col-sm-2">App enabled</div>
+                            </div>
+                            <% _.each(tenant.apps, function(app) { %>
+                                <div class="gh-striped-row row">
+                                    <form class="gh-tenants-app-update-form" data-appid="<%- app.id %>">
+                                        <div class="col-sm-3">
+                                            <input class="gh-app-displayname" type="text" placeholder="App name" value="<%- app.displayName %>"/>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input class="gh-app-host" type="text" placeholder="App host" value="<%- app.host %>"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input class="gh-app-enabled" type="checkbox"<% if (app.enabled) { %> checked<% } %>/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="//<%- app.host %>" target="_blank" class="btn btn-success pull-left"><i class="fa fa-external-link"></i> Open app</a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="submit" class="btn btn-primary pull-left">Update app</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            <% }); %>
+                            <div class="gh-striped-row row">
+                                <form class="gh-tenants-app-create-form" data-tenantid="<%- tenant.id %>">
+                                    <div class="col-sm-3">
+                                        <input class="gh-app-displayname" type="text" placeholder="App name"/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input class="gh-app-host" type="text" placeholder="App host"/>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input class="gh-app-enabled" type="checkbox" checked disabled/>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-primary pull-left">Create app</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <h2>Tenants in the system</h2>
-                    <% _.each(tenants, function(tenant) { %>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h2><%- tenant.displayName %></h2>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>App name</th>
-                                            <th>App Host</th>
-                                            <th>App Enabled</th>
-                                            <th colspan="2"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% _.each(tenant.apps, function(app) { %>
-                                            <tr>
-                                                <td>
-                                                    <input id="gh-app-displayname-<%- app.id %>" type="text" placeholder="App name" value="<%- app.displayName %>"/>
-                                                </td>
-                                                <td>
-                                                    <input id="gh-app-host-<%- app.id %>" type="text" placeholder="App host" value="<%- app.host %>"/>
-                                                </td>
-                                                <td>
-                                                    <input id="gh-app-enabled-<%- app.id %>" type="checkbox"<% if (app.enabled) { %> checked<% } %>/>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-success gh-launch-app pull-left" data-host="<%- app.host %>"><i class="fa fa-external-link"></i> Open app</button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary gh-update-app pull-left" data-appid="<%- app.id %>">Update app</button>
-                                                </td>
-                                            </tr>
-                                        <% }); %>
-                                        <tr>
-                                            <td>
-                                                <input class="gh-app-displayname-new-<%- tenant.id %>" type="text" placeholder="New app name"/>
-                                            </td>
-                                            <td>
-                                                <input class="gh-app-host-new-<%- tenant.id %>" type="text" placeholder="New app host"/>
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" checked disabled/>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary gh-create-app pull-left" data-tenantid="<%- tenant.id %>">Create app</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    <% }); %>
-                </form>
+                <% }); %>
             </div>
         </script>
 
         <script id="gh-administrators-template" type="text/template">
             <div class="gh-administration-container">
-                <form id="gh-administrators-form">
-                    <h1>Users</h1>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h2>Administrators in the system</h2>
+                <h1>Users</h1>
+                <div class="panel-default gh-striped-container">
+                    <h3 class="panel-heading">Administrators in the system</h3>
+                    <div class="panel-body">
+                        <div class="panel-subheading row">
+                            <div class="gh-striped-heading col-sm-3">Admin name</div>
+                            <div class="gh-striped-heading col-sm-3">Admin username</div>
+                            <div class="gh-striped-heading col-sm-3">Admin password</div>
                         </div>
-                        <div class="panel-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Administrator name</th>
-                                        <th>Administrator username</th>
-                                        <th>Administrator password</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% _.each(administrators, function(admin) { %>
-                                        <tr>
-                                            <td>
-                                                <input id="gh-admin-displayname-<%- admin.id %>" type="text" placeholder="Administrator name" value="<%- admin.displayName %>"/>
-                                            </td>
-                                            <td>
-                                                <input id="gh-admin-username-<%- admin.id %>" type="text" placeholder="Administrator username" value="<%- admin.username %>" disabled/>
-                                            </td>
-                                            <td>
-                                                <input id="gh-admin-password-<%- admin.id %>" type="password" placeholder="Administrator password" value="<%- admin.password %>"/>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary gh-update-admin" data-adminid="<%- admin.id %>">Update administrator</button>
-                                            </td>
-                                        </tr>
-                                    <% }); %>
-                                    <tr>
-                                        <td>
-                                            <input id="gh-admin-displayname-new" type="text" placeholder="New administrator name"/>
-                                        </td>
-                                        <td>
-                                            <input id="gh-admin-username-new" type="text" placeholder="New administrator username"/>
-                                        </td>
-                                        <td>
-                                            <input id="gh-admin-password-new" type="password" placeholder="New administrator password"/>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary gh-create-admin">Create administrator</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <% _.each(administrators, function(admin) { %>
+                            <div class="gh-striped-row row">
+                                <form class="gh-administrators-update-form" data-userid="<%- admin.id %>">
+                                    <div class="col-sm-3">
+                                        <input id="gh-admin-displayname" type="text" placeholder="Administrator name" value="<%- admin.displayName %>"/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input id="gh-admin-username" type="text" placeholder="Administrator username" value="<%- admin.username %>" disabled/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input id="gh-admin-password" type="password" placeholder="Administrator password" value="<%- admin.password %>"/>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-primary">Update administrator</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <% }); %>
+                        <div class="gh-striped-row row">
+                            <form id="gh-administrators-create-form">
+                                <div class="col-sm-3">
+                                    <input id="gh-admin-displayname" type="text" placeholder="Administrator name"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input id="gh-admin-username" type="text" placeholder="Administrator username"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input id="gh-admin-password" type="password" placeholder="Administrator password"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-primary">Create administrator</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </script>
 

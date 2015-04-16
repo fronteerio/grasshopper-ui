@@ -19,9 +19,9 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     var currentPage = window.location.pathname.split('/')[1];
 
 
-    /////////////////
-    //  RENDERING  //
-    /////////////////
+    ///////////////
+    // RENDERING //
+    ///////////////
 
     /**
      * Render admin user functionality and show the container
@@ -96,9 +96,18 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     };
 
 
-    /////////////////
-    //  UTILITIES  //
-    /////////////////
+    ///////////////
+    // UTILITIES //
+    ///////////////
+
+    /**
+     * Update the value attribute of a checkbox
+     *
+     * @private
+     */
+    var updateCheckboxValue = function() {
+        $(this).val($(this).is(':checked'));
+    };
 
     /**
      * Log in using the local authentication strategy
@@ -121,6 +130,245 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
 
         // Avoid default form submit behaviour
         return false;
+    };
+
+
+    //////////////////////
+    // TENANTS AND APPS //
+    //////////////////////
+
+    /**
+     * Set up the tenants page
+     *
+     * @private
+     */
+    var setUpTenants = function() {
+        getTenantData(function(tenants) {
+            renderTenants(tenants);
+        });
+    };
+
+    /**
+     * Get tenant data and app data for those tenants and render them
+     *
+     * @private
+     */
+    var getTenantData = function(callback) {
+        gh.api.tenantAPI.getTenants(function(err, tenants) {
+            if (err) {
+                return gh.utils.notification('Could not fetch system tenants', constants.messaging.default.error, 'error');
+            }
+
+            var todo = tenants.length;
+            var done = 0;
+
+            var getApps = function(tenantId, _callback) {
+                gh.api.appAPI.getApps(tenantId, function(err, apps) {
+                    if (err) {
+                        return gh.utils.notification('Could not fetch system apps', constants.messaging.default.error, 'error');
+                    }
+
+                    // Sort the apps by host
+                    apps.sort(gh.utils.sortByHost);
+                    // Cache the apps on the tenants object
+                    tenants[done].apps = apps;
+
+                    done++;
+                    if (done === todo) {
+                        _callback(tenants);
+                    } else {
+                        getApps(tenants[done].id, _callback);
+                    }
+                });
+            };
+
+            // If there are no tenants yet we can start rendering
+            if (todo === 0) {
+                callback([]);
+            // Otherwise we get the apps for each tenant
+            } else {
+                getApps(tenants[done].id, function(tenants) {
+                    tenants.sort(gh.utils.sortByDisplayName);
+                    callback(tenants);
+                });
+            }
+        });
+    };
+
+    /**
+     * Create a new app within a tenant
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var createApp = function() {
+        // Get the ID of the tenant to create the app in
+        var tenantId = parseInt($(this).data('tenantid'), 10);
+
+        // Get the apps name and host
+        var displayName = $('.gh-app-displayname', $(this)).val();
+        var host = $('.gh-app-host', $(this)).val();
+
+        // Create a new app
+        gh.api.appAPI.createApp(displayName, host, tenantId, 'timetable', function(err, data) {
+            if (err) {
+                return gh.utils.notification('Could not create system app', constants.messaging.default.error, 'error');
+            }
+            setUpTenants();
+            gh.utils.notification('System app ' + displayName + ' successfully created', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+    /**
+     * Create a new tenant with the provided display name
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var createTenant = function() {
+        // Get the new tenant's name
+        var displayName = $('#gh-tenant-name').val();
+
+        // Create the tenant
+        gh.api.tenantAPI.createTenant(displayName, function(err, data) {
+            if (err) {
+                return gh.utils.notification('Could not create system tenant', constants.messaging.default.error, 'error');
+            }
+            setUpTenants();
+            gh.utils.notification('System tenant ' + displayName + ' successfully created', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+    /**
+     * Update an existing application
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var updateApp = function() {
+        // Get the ID of the app that's being updated
+        var appId = parseInt($(this).data('appid'), 10);
+
+        // Get the updated values
+        var displayName = $('.gh-app-displayname', $(this)).val();
+        var enabled = $('.gh-app-enabled', $(this)).is(':checked');
+        var host = $('.gh-app-host', $(this)).val();
+
+        // Update the app
+        gh.api.appAPI.updateApp(appId, displayName, enabled, host, function(err, data) {
+            if (err) {
+                return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
+            }
+            setUpTenants();
+            gh.utils.notification('System app ' + displayName + ' successfully updated', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
+    ///////////
+    // USERS //
+    ///////////
+
+    /**
+     * Set up the users page
+     *
+     * @private
+     */
+    var setUpUsers = function() {
+        getAdminUserData(function(administrators) {
+            renderAdmins(administrators);
+        });
+    };
+
+    /**
+     * Get administrator users and render them
+     *
+     * @private
+     */
+    var getAdminUserData = function(callback) {
+        gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
+            if (err) {
+                return gh.utils.notification('Could not fetch admins', constants.messaging.default.error, 'error');
+            }
+
+            callback(administrators.rows);
+        });
+    };
+
+    /**
+     * Create a new global administrator
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var createAdmin = function() {
+        // Get the administrator name, username and password
+        var displayName = $('#gh-admin-displayname', $(this)).val();
+        var username = $('#gh-admin-username', $(this)).val();
+        var password = $('#gh-admin-password', $(this)).val();
+
+        // Create the administrator
+        gh.api.adminAPI.createAdmin(username, displayName, password, function(err) {
+            if (err) {
+                return gh.utils.notification('Could not create administrator: ' + displayName, constants.messaging.default.error, 'error');
+            }
+            setUpUsers();
+            gh.utils.notification('Administrator ' + displayName + ' successfully created', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+    /**
+     * Update a global administrator
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var updateAdmin = function() {
+        // Get the administrator's userId and display name
+        var userId = parseInt($(this).data('userid'), 10);
+        var displayName = $('#gh-admin-displayname', $(this)).val();
+
+        // Update the administrator
+        gh.api.adminAPI.updateAdmin(userId, displayName, function(err) {
+            if (err) {
+                return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+            }
+            setUpUsers();
+            gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
+    ///////////////////
+    // CONFIGURATION //
+    ///////////////////
+
+    /**
+     * Set up the configuration page
+     *
+     * @private
+     */
+    var setUpConfig = function() {
+        getTenantData(function(tenants) {
+            getConfigData(tenants, function(tenants) {
+                renderConfig(tenants);
+            });
+        });
     };
 
     /**
@@ -211,157 +459,6 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     };
 
     /**
-     * Get tenant data and app data for those tenants and render them
-     *
-     * @private
-     */
-    var getTenantData = function(callback) {
-        gh.api.tenantAPI.getTenants(function(err, tenants) {
-            if (err) {
-                gh.utils.notification('Could not fetch system tenants', constants.messaging.default.error, 'error');
-            }
-
-            var todo = tenants.length;
-            var done = 0;
-
-            var getApps = function(tenantId, _callback) {
-                gh.api.appAPI.getApps(tenantId, function(err, apps) {
-                    if (err) {
-                        gh.utils.notification('Could not fetch system apps', constants.messaging.default.error, 'error');
-                    }
-
-                    // Sort the apps by host
-                    apps.sort(gh.utils.sortByHost);
-                    // Cache the apps on the tenants object
-                    tenants[done].apps = apps;
-
-                    done++;
-                    if (done === todo) {
-                        _callback(tenants);
-                    } else {
-                        getApps(tenants[done].id, _callback);
-                    }
-                });
-            };
-
-            // If there are no tenants yet we can start rendering
-            if (todo === 0) {
-                callback([]);
-            // Otherwise we get the apps for each tenant
-            } else {
-                getApps(tenants[done].id, function(tenants) {
-                    tenants.sort(gh.utils.sortByDisplayName);
-                    callback(tenants);
-                });
-            }
-        });
-    };
-
-    /**
-     * Get administrator users and render them
-     *
-     * @private
-     */
-    var getAdminUserData = function(callback) {
-        gh.api.adminAPI.getAdmins(null, null, function(err, administrators) {
-            if (err) {
-                gh.utils.notification('Could not fetch admins', constants.messaging.default.error, 'error');
-            }
-
-            callback(administrators.rows);
-        });
-    };
-
-    /**
-     * Submit the tenant form to create tenants, create apps or update apps
-     *
-     * @private
-     */
-    var submitTenantForm = function() {
-        var $submitButton = $(this);
-        var $form = $(this).closest('form');
-
-        var createApp = $submitButton.hasClass('gh-create-app');
-        var updateApp = $submitButton.hasClass('gh-update-app');
-        var createTenant = $submitButton.hasClass('gh-create-tenant');
-
-        var tenantId = parseInt($submitButton.data('tenantid'), 10);
-
-        if (createApp) {
-            var newAppDisplayName = $('.gh-app-displayname-new-' + tenantId).val();
-            var newAppHost = $('.gh-app-host-new-' + tenantId).val();
-            // Create a new app
-            gh.api.appAPI.createApp(newAppDisplayName, newAppHost, tenantId, 'timetable', function(err, data) {
-                if (err) {
-                    return gh.utils.notification('Could not create system app', constants.messaging.default.error, 'error');
-                }
-                setUpTenants();
-                gh.utils.notification('System app ' + newAppDisplayName + ' successfully created', null, 'success');
-            });
-        } else if (updateApp) {
-            var appId = parseInt($submitButton.data('appid'), 10);
-            var updatedAppDisplayName = $('#gh-app-displayname-' + appId).val();
-            var updatedAppEnabled = $('#gh-app-enabled-' + appId).is(':checked');
-            var updatedAppHost = $('#gh-app-host-' + appId).val();
-            // Update the app
-            gh.api.appAPI.updateApp(appId, updatedAppDisplayName, updatedAppEnabled, updatedAppHost, function(err, data) {
-                if (err) {
-                    return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
-                }
-                setUpTenants();
-                gh.utils.notification('System app ' + updatedAppDisplayName + ' successfully updated', null, 'success');
-            });
-        } else if (createTenant) {
-            var newTenantDisplayName = $('#gh-app-tenant-new').val();
-            gh.api.tenantAPI.createTenant(newTenantDisplayName, function(err, data) {
-                if (err) {
-                    return gh.utils.notification('Could not create system tenant', constants.messaging.default.error, 'error');
-                }
-                setUpTenants();
-                gh.utils.notification('System tenant ' + newTenantDisplayName + ' successfully created', null, 'success');
-            });
-        }
-    };
-
-    /**
-     * Submit the administrator form to create or update administrator users
-     *
-     * @private
-     */
-    var submitAdministratorForm = function() {
-        var $submitButton = $(this);
-        var $form = $(this).closest('form');
-
-        var createAdmin = $submitButton.hasClass('gh-create-admin');
-        var updateAdmin = $submitButton.hasClass('gh-update-admin');
-
-        if (createAdmin) {
-            var newAdminDisplayName = $('#gh-admin-displayname-new').val();
-            var newAdminUserName = $('#gh-admin-username-new').val();
-            var newAdminPassword = $('#gh-admin-password-new').val();
-
-            gh.api.adminAPI.createAdmin(newAdminUserName, newAdminDisplayName, newAdminPassword, function(err, administrator) {
-                if (err) {
-                    return gh.utils.notification('Could not create administrator: ' + newAdminDisplayName, constants.messaging.default.error, 'error');
-                }
-                setUpUsers();
-                gh.utils.notification('Administrator ' + newAdminDisplayName + ' successfully created', null, 'success');
-            });
-        } else if (updateAdmin) {
-            var adminId = parseInt($submitButton.data('adminid'), 10);
-            var updateAdminDisplayName = $('#gh-admin-displayname-' + adminId).val();
-
-            gh.api.adminAPI.updateAdmin(adminId, updateAdminDisplayName, function(err, administrator) {
-                if (err) {
-                    return gh.utils.notification('Administrator ' + updateAdminDisplayName + ' could not be updated', constants.messaging.default.error, 'error');
-                }
-                setUpUsers();
-                gh.utils.notification('Administrator ' + updateAdminDisplayName + ' successfully updated', null, 'success');
-            });
-        }
-    };
-
-    /**
      * Submit the configuration form and save the values
      *
      * @return {Boolean}    Avoid default form submit behaviour
@@ -387,81 +484,38 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
             return gh.utils.notification('System configuration updated', null, 'success');
         });
 
+        // Avoid default form submit behaviour
         return false;
     };
 
-    /**
-     * Set up the configuration page
-     *
-     * @private
-     */
-    var setUpConfig = function() {
-        getTenantData(function(tenants) {
-            getConfigData(tenants, function(tenants) {
-                renderConfig(tenants);
-            });
-        });
-    };
+
+    ////////////////////
+    // INITIALISATION //
+    ////////////////////
 
     /**
-     * Set up the tenants page
-     *
-     * @private
-     */
-    var setUpTenants = function() {
-        getTenantData(function(tenants) {
-            renderTenants(tenants);
-        });
-    };
-
-    /**
-     * Set up the users page
-     *
-     * @private
-     */
-    var setUpUsers = function() {
-        getAdminUserData(function(administrators) {
-            renderAdmins(administrators);
-        });
-    };
-
-    /**
-     * Update the value attribute of a checkbox
-     *
-     * @private
-     */
-    var updateCheckboxValue = function() {
-        $(this).val($(this).is(':checked'));
-    };
-
-    /**
-     * Launch the selected application
-     *
-     * @private
-     */
-    var launchApp = function() {
-        var host = $(this).data('host');
-        window.open('//' + host, '_blank');
-    };
-
-
-    //////////////////////
-    //  INITIALISATION  //
-    //////////////////////
-
-    /**
-     * Add bindings to various elements on the page
+     * Add event handlers to various elements on the page
      *
      * @private
      */
     var addBinding = function() {
-        $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
-        $('body').on('click', '#gh-tenants-apps-form .gh-update-app', submitTenantForm);
-        $('body').on('click', '#gh-tenants-apps-form .gh-create-app', submitTenantForm);
-        $('body').on('click', '#gh-tenants-apps-form .gh-create-tenant', submitTenantForm);
-        $('body').on('click', '#gh-tenants-apps-form .gh-launch-app', launchApp);
-        $('body').on('click', '#gh-administrators-form button', submitAdministratorForm);
+        // Submit configuration values
         $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
+
+        // Create global administrator
+        $('body').on('submit', '#gh-administrators-create-form', createAdmin);
+        // Update global administrator
+        $('body').on('submit', '.gh-administrators-update-form', updateAdmin);
+
+        // Tenant creation
+        $('body').on('submit', '#gh-tenants-create-tenant-form', createTenant);
+        // Tenant updates
+        $('body').on('submit', '.gh-tenants-app-update-form', updateApp);
+        // App creation
+        $('body').on('submit', '.gh-tenants-app-create-form', createApp);
+
+        // Update the value attribute of a checkbox when it changes
+        $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
     };
 
     /**
