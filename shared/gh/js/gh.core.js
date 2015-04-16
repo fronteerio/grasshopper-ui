@@ -55,6 +55,11 @@ define([
 
     function(gh) {
 
+        // The UI uses a `gh-preload` class on the body to avoid structural elements animating during page setup.
+        // By the time the logic reaches this code the structural elements have been rendered and the class
+        // can be removed, allowing for animations in the page.
+        $('body').removeClass('gh-preload');
+
         // Globally catch ajax errors and track the error when it's an API call
         $(document).ajaxError(function(ev, jqXHR, ajaxSettings) {
             // Only track the error if it's an API call
