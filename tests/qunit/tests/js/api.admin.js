@@ -41,8 +41,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     };
 
-    // Test the getGlobalAdmins functionality
-    QUnit.asyncTest('getGlobalAdmins', function(assert) {
+    // Test the getAdmins functionality
+    QUnit.asyncTest('getAdmins', function(assert) {
         expect(9);
 
         // Create a new user
@@ -88,8 +88,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the createGlobalAdmin functionality
-    QUnit.asyncTest('createGlobalAdmin', function(assert) {
+    // Test the createAdmin functionality
+    QUnit.asyncTest('createAdmin', function(assert) {
         expect(10);
 
         var user = {
@@ -138,8 +138,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the updateGlobalAdmin functionality
-    QUnit.asyncTest('updateGlobalAdmin', function(assert) {
+    // Test the updateAdmin functionality
+    QUnit.asyncTest('updateAdmin', function(assert) {
         expect(11);
 
         // Create a new user
@@ -176,6 +176,52 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             gh.api.adminAPI.updateAdmin(user.id, newDisplayName, function(err, data) {
                                 assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully updated');
                                 assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully updated');
+                            });
+
+                            QUnit.start();
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    // Test the deleteAdmin functionality
+    QUnit.asyncTest('deleteAdmin', function(assert) {
+        expect(8);
+
+        // Create a new user to test with
+        _generateRandomAdmin(function(err, user) {
+            assert.ok(!err, 'Create a global admin to test with');
+
+            // Verify that an error is thrown when no callback was provided
+            assert.throws(function() {
+                gh.api.adminAPI.deleteAdmin(user.id);
+            }, 'Verify that an error is thrown when no callback was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.adminAPI.deleteAdmin(user.id, 'invalid_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
+
+            // Verify that an error is thrown when no value for 'id' was provided
+            gh.api.adminAPI.deleteAdmin(null, function(err) {
+                assert.ok(err, 'Verify that an error is thrown when no value for \'id\' was provided');
+
+                // Verify that an error is thrown when an invalid value for 'id' was provided
+                gh.api.adminAPI.deleteAdmin('invalid_id', function(err) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid value for \'id\' was provided');
+
+                    // Verify that a global administrator can be successfully deleted
+                    gh.api.adminAPI.deleteAdmin(user.id, function(err) {
+                        assert.ok(!err, 'Verify that a global administrator can be successfully deleted');
+
+                        // Mock an error from the back-end
+                        var body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.utils.mockRequest('DELETE', '/api/admins/' + user.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.adminAPI.deleteAdmin(user.id, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the global admin can\'t be successfully deleted');
+                                assert.ok(!data, 'Verify that no data returns when the global admin can\'t be successfully deleted');
                             });
 
                             QUnit.start();
