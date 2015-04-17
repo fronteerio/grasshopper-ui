@@ -29,7 +29,7 @@ sudo ifconfig lo0 alias 127.0.0.2 up
 
 ```
 # Create the appropriate hosts mappings in /etc/hosts
-127.0.0.1    admin.grasshopper.com
+127.0.0.1    admin.grasshopper.local
 127.0.0.2    2013.timetable.cam.ac.uk
 127.0.0.2    2014.timetable.cam.ac.uk
 ```
