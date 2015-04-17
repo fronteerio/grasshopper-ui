@@ -111,6 +111,11 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
                     }
                 },
                 'retrieveComplete': function(data) {
+                    // Append the shibbolethId to the displayName to make it easier to distinguish between users
+                    _.each(data.results, function(user) {
+                        var suffix = user.shibbolethId ? ' (' + user.shibbolethId + ')' : '';
+                        user.displayName = user.displayName + suffix;
+                    });
                     return data.results;
                 },
                 'selectionAdded': function(elem, id) {
