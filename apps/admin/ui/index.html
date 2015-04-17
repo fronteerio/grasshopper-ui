@@ -229,10 +229,11 @@
                             <input class="gh-user-isadmin" type="checkbox"<% if (user.isAdmin) { %> checked<% } %>/>
                         </div>
                         <div class="col-sm-2">
-                            <select class="gh-user-emailpreference">
-                                <option value="immediate" <% if (user.emailPreference === 'immediate') { %> selected="true" <% } %>>Immediate email</option>
-                                <option value="no" <% if (user.emailPreference === 'no') { %> selected="true" <% } %>>No email</option>
-                            </select>
+                            <% if (user.shibbolethId) { %>
+                                <input class="gh-user-shibbolethid" type="text" placeholder="Shibboleth ID" disabled value="<%- user.shibbolethId %>">
+                            <% } else { %>
+                                <p class="text-center">Local account</p>
+                            <% } %>
                         </div>
                         <div class="col-sm-2">
                             <button type="submit" class="btn btn-primary">Update user</button>
@@ -270,7 +271,7 @@
                                         <div class="gh-striped-heading col-sm-2">User username</div>
                                         <div class="gh-striped-heading col-sm-2">User password</div>
                                         <div class="gh-striped-heading col-sm-1">Admin</div>
-                                        <div class="gh-striped-heading col-sm-2">Email</div>
+                                        <div class="gh-striped-heading col-sm-2">Info</div>
                                         <div class="gh-striped-heading col-sm-2">Actions</div>
                                     </div>
                                     <div class="gh-users-container"><!-- --></div>
@@ -289,10 +290,7 @@
                                                 <input class="gh-new-user-isadmin" type="checkbox"/>
                                             </div>
                                             <div class="col-sm-2">
-                                                <select class="gh-new-user-emailpreference">
-                                                    <option value="immediate">Immediate email</option>
-                                                    <option value="no">No email</option>
-                                                </select>
+
                                             </div>
                                             <div class="col-sm-2">
                                                 <button type="submit" class="btn btn-success">Create user</button>

@@ -581,7 +581,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         var displayName = $('.gh-new-user-displayname', $form).val();
         var email = $('.gh-new-user-email', $form).val();
         var password = $('.gh-new-user-password', $form).val();
-        var emailPreference = $('.gh-new-user-emailpreference', $form).val();
+        var emailPreference = 'no';
         var isAdmin = $('.gh-new-user-isadmin', $form).is(':checked');
 
         // Create the administrator
@@ -614,7 +614,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         var userId = parseInt($form.data('userid'), 10);
         var displayName = $('.gh-user-displayname', $form).val();
         var email = $('.gh-user-email', $form).val();
-        var emailPreference = $('.gh-user-emailpreference', $form).val();
+        var emailPreference = 'no';
         var password = $('.gh-user-password', $form).val();
         var isAdmin = $('.gh-user-isadmin', $form).is(':checked');
 
