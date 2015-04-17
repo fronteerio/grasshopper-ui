@@ -18,6 +18,8 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
 
+    // Cached app objects for easy manipulation
+    var cachedApps = null;
 
     ///////////////
     // RENDERING //
@@ -60,6 +62,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      */
     var renderAppUsersResults = function(appId, users) {
         gh.utils.renderTemplate($('#gh-app-user-template'), {
+            'app': _.find(cachedApps, function(app) {return app.id === appId;}),
             'gh': gh,
             'users': users.results
         }, $('#gh-app-users-container [data-appid="' + appId + '"] .gh-users-container'));
@@ -198,8 +201,10 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
 
                     // Sort the apps by host
                     apps.sort(gh.utils.sortByHost);
-                    // Cache the apps on the tenants object
+                    // Cache the apps on the tenants object for easy access in the templates
                     tenants[done].apps = apps;
+                    // Cache the apps on a separate object for easy access
+                    cachedApps = _.union(cachedApps, apps);
 
                     done++;
                     if (done === todo) {
@@ -319,7 +324,9 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
 
         // Set up the app users
         getTenantData(function(tenants) {
-            renderUserApps(tenants);
+            getConfigData(tenants, function(config) {
+                renderUserApps(tenants);
+            });
         });
     };
 
@@ -562,6 +569,11 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         var query = $($(this).closest('.panel-group').find('.gh-striped-container-search input')).val();
 
         gh.api.userAPI.getUsers(appId, null, null, query, function(err, data) {
+            if (err) {
+                return gh.utils.notification('Could not retrieve the users for this app', constants.messaging.default.error, 'error');
+            }
+
+            // Render the users in the app container
             renderAppUsersResults(appId, data);
         });
     };
@@ -700,7 +712,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         $('body').on('submit', '.gh-app-user-create-form', createUser);
 
         // Retrieve the users belonging to the app that was opened
-        $('body').on('show.bs.collapse', '.collapse', getUsers);
+        $('body').on('show.bs.collapse', '#gh-administrators-container .collapse', getUsers);
     };
 
     /**
