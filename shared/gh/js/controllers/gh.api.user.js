@@ -474,7 +474,19 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/admin',
+            'type': 'POST',
+            'data': {
+                'admin': isAdmin
+            },
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

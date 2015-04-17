@@ -716,7 +716,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the updateAdminStatus functionality
     QUnit.asyncTest('updateAdminStatus', function(assert) {
-        expect(4);
+        expect(8);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -737,15 +737,18 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                     // Verify that the admin status can be updated without errors
                     gh.api.userAPI.updateAdminStatus(user.id, true, function(err, data) {
-
-                        /**
-                         * TODO: wait for back-end implementation
-                         *
                         assert.ok(!err, 'Verify that the admin status can be updated without errors');
-                        assert.ok(data, 'Verify that the updated user is returned');
-                         */
+                        assert.strictEqual(data.isAdmin, true, 'Verify that the admin status can be updated without errors');
 
-                        QUnit.start();
+                        // Mock an error from the back-end
+                        var body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.utils.mockRequest('POST', '/api/users/' + user.id + '/admin', 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.userAPI.updateAdminStatus(user.id, true, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the admin status can\'t be successfully updated');
+                                assert.ok(!data, 'Verify that no data returns when the admin status can\'t be successfully updated');
+                                QUnit.start();
+                            });
+                        });
                     });
                 });
             });
