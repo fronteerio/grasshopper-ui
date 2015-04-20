@@ -203,25 +203,29 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                         // Create the end date of the event
                         var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
 
-                        $(document).trigger('gh.batchedit.addevent', {
-                            'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
-                            'eventObj': {
-                                'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
-                                'isNew': true, // Used in the template to know this one needs special handling
-                                'selected': true,
-                                'displayName': $('.gh-jeditable-series-title').text(),
-                                'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
-                                'location': defaultLocation,
-                                'type': gh.config.events.default,
-                                'organisers': defaultOrganisers,
-                                'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
-                            },
-                            'startDate': startDate
-                        });
+                        // Send off an event that will be picked up by the batch edit and add the rows to the terms
+                        var alreadyAdded = $('.gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format()) + '"]').length;
+                        if (!alreadyAdded) {
+                            $(document).trigger('gh.batchedit.addevent', {
+                                'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
+                                'eventObj': {
+                                    'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
+                                    'isNew': true, // Used in the template to know this one needs special handling
+                                    'selected': true,
+                                    'displayName': $('.gh-jeditable-series-title').text(),
+                                    'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                    'location': defaultLocation,
+                                    'type': gh.config.events.default,
+                                    'organisers': defaultOrganisers,
+                                    'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
+                                },
+                                'startDate': startDate
+                            });
 
-                        // Update processing progress indication
-                        currentEvent = currentEvent + 1;
-                        updateEventManipulationProgress(currentEvent, totalEvents);
+                            // Update processing progress indication
+                            currentEvent = currentEvent + 1;
+                            updateEventManipulationProgress(currentEvent, totalEvents);
+                        }
                     }
                 });
             });
