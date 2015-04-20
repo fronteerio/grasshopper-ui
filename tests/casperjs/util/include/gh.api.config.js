@@ -47,7 +47,7 @@ var configAPI = (function() {
     };
 
     return {
-        'adminUI': 'http://admin.grasshopper.com',
+        'adminUI': 'http://admin.grasshopper.local',
         'tenantUI': 'http://2013.timetable.cam.ac.uk',
         'updateConfig': updateConfig,
         'waitTimeout': 30000

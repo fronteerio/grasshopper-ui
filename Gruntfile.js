@@ -142,31 +142,31 @@ module.exports = function(grunt) {
         'qunit': {
             'gh': {
                 'urls': [
-                    'http://admin.grasshopper.com/qunit/api.admin',
-                    'http://admin.grasshopper.com/qunit/api.app',
-                    'http://admin.grasshopper.com/qunit/api.authentication',
-                    'http://admin.grasshopper.com/qunit/api.config',
-                    'http://admin.grasshopper.com/qunit/api.event',
-                    'http://admin.grasshopper.com/qunit/api.groups',
-                    'http://admin.grasshopper.com/qunit/api.orgunit',
-                    'http://admin.grasshopper.com/qunit/api.series',
-                    'http://admin.grasshopper.com/qunit/api.tenant',
-                    'http://admin.grasshopper.com/qunit/api.user',
-                    'http://admin.grasshopper.com/qunit/api.util'
+                    'http://admin.grasshopper.local/qunit/api.admin',
+                    'http://admin.grasshopper.local/qunit/api.app',
+                    'http://admin.grasshopper.local/qunit/api.authentication',
+                    'http://admin.grasshopper.local/qunit/api.config',
+                    'http://admin.grasshopper.local/qunit/api.event',
+                    'http://admin.grasshopper.local/qunit/api.groups',
+                    'http://admin.grasshopper.local/qunit/api.orgunit',
+                    'http://admin.grasshopper.local/qunit/api.series',
+                    'http://admin.grasshopper.local/qunit/api.tenant',
+                    'http://admin.grasshopper.local/qunit/api.user',
+                    'http://admin.grasshopper.local/qunit/api.util'
                 ],
                 'options': {
                     'urls': [
-                        'http://admin.grasshopper.com/qunit/api.admin',
-                        'http://admin.grasshopper.com/qunit/api.app',
-                        'http://admin.grasshopper.com/qunit/api.authentication',
-                        'http://admin.grasshopper.com/qunit/api.config',
-                        'http://admin.grasshopper.com/qunit/api.event',
-                        'http://admin.grasshopper.com/qunit/api.groups',
-                        'http://admin.grasshopper.com/qunit/api.orgunit',
-                        'http://admin.grasshopper.com/qunit/api.series',
-                        'http://admin.grasshopper.com/qunit/api.tenant',
-                        'http://admin.grasshopper.com/qunit/api.user',
-                        'http://admin.grasshopper.com/qunit/api.util'
+                        'http://admin.grasshopper.local/qunit/api.admin',
+                        'http://admin.grasshopper.local/qunit/api.app',
+                        'http://admin.grasshopper.local/qunit/api.authentication',
+                        'http://admin.grasshopper.local/qunit/api.config',
+                        'http://admin.grasshopper.local/qunit/api.event',
+                        'http://admin.grasshopper.local/qunit/api.groups',
+                        'http://admin.grasshopper.local/qunit/api.orgunit',
+                        'http://admin.grasshopper.local/qunit/api.series',
+                        'http://admin.grasshopper.local/qunit/api.tenant',
+                        'http://admin.grasshopper.local/qunit/api.user',
+                        'http://admin.grasshopper.local/qunit/api.util'
                     ],
                     'coverage': {
                         'disposeCollector': true,
@@ -264,7 +264,7 @@ module.exports = function(grunt) {
                                 '<%= target %>/optimized/apps',
                                 '<%= target %>/optimized/shared'
                             ],
-                            'includeExts': ['html', 'js']
+                            'includeExts': ['html', 'js', 'css']
                         })
                     },
 

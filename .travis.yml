@@ -19,7 +19,7 @@ before_install:
   # Create virtual hosts
   - sudo sed -i "2i127.0.0.2  2013.timetable.cam.ac.uk" /etc/hosts
   - sudo sed -i "2i127.0.0.2  2014.timetable.cam.ac.uk" /etc/hosts
-  - sudo sed -i "2i127.0.0.1  admin.grasshopper.com" /etc/hosts
+  - sudo sed -i "2i127.0.0.1  admin.grasshopper.local" /etc/hosts
   - cat /etc/hosts
 
   # Install test dependencies

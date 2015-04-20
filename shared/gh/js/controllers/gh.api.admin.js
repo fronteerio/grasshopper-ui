@@ -93,7 +93,6 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the updated global administrator
-
      */
     var updateAdmin = exports.updateAdmin = function(userId, displayName, callback) {
         if (!_.isFunction(callback)) {
@@ -114,6 +113,33 @@ define(['exports'], function(exports) {
             'data': data,
             'success': function(data) {
                 return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
+
+    /**
+     * Delete a global administrator
+     *
+     * @param  {Number}      userId               The ID of the global administrator to delete
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    Object representing the updated global administrator
+     */
+    var deleteAdmin = exports.deleteAdmin = function(userId, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        $.ajax({
+            'url': '/api/admins/' + userId,
+            'type': 'DELETE',
+            'success': function() {
+                return callback(null);
             },
             'error': function(jqXHR, textStatus) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});

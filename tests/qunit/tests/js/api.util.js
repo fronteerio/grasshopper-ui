@@ -940,6 +940,47 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         assert.ok($('#qunit-template-partial-target').html(), 'Verify the template partial HTML is rendered in the target container');
     });
 
+    // Test the 'renderHierarchyString' functionality
+    QUnit.asyncTest('renderHierarchyString', function(assert) {
+        expect(6);
+
+        // Retrieve the tripos structure for the test app
+        var testApp = testAPI.getTestApp();
+        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+            assert.ok(!err);
+
+            // Find an organisational unit that has parents
+            var orgUnitWithParents = _.find(data.parts, function(orgUnit) {
+                return orgUnit.ParentId !== null;
+            });
+
+            // Verify that an error is thrown when no orgUnit was provided
+            assert.throws(function() {
+                gh.utils.renderHierarchyString(null, '>');
+            }, 'Verify that an error is thrown when no orgUnit was provided');
+
+            // Verify that an error is thrown when an invalid orgUnit was provided
+            assert.throws(function() {
+                gh.utils.renderHierarchyString('invalid_object', '>');
+            }, 'Verify that an error is thrown when an invalid orgUnit was provided');
+
+            // Verify that an error is thrown when no separater was provided
+            assert.throws(function() {
+                gh.utils.renderHierarchyString(orgUnitWithParents, null);
+            }, 'Verify that an error is thrown when no separator was provided');
+
+            // Verify that an error is thrown when an invalid separator was provided
+            assert.throws(function() {
+                gh.utils.renderHierarchyString(orgUnitWithParents, 9999);
+            }, 'Verify that an error is thrown when an invalid separator was provided');
+
+            // Verify that the hierarchy string is returned when all the parameters have been provided
+            assert.ok(gh.utils.renderHierarchyString(orgUnitWithParents, ' > '));
+
+            QUnit.start();
+        });
+    });
+
 
     ////////////////
     //  TRIPOSES  //
@@ -1100,6 +1141,15 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
                 });
             });
         });
+    });
+
+    // Test the 'triposData' functionality
+    QUnit.test('triposData', function(assert) {
+        expect(3);
+        var _triposData = gh.utils.triposData();
+        assert.ok(_triposData);
+        assert.ok(_triposData.subjects);
+        assert.ok(_triposData.parts);
     });
 
 
