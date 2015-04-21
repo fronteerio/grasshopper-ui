@@ -129,7 +129,7 @@ define(['exports'], function(exports) {
      * *     ]
      * * }
      */
-    var getTriposStructure = exports.getTriposStructure = function(appId, callback) {
+    var getTriposStructure = exports.getTriposStructure = function(appId, userId, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('An invalid value for callback was provided');
         } else if (appId && !_.isNumber(appId)) {
@@ -141,7 +141,7 @@ define(['exports'], function(exports) {
             appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
         }
 
-        require('gh.api.orgunit').getOrgUnits(appId, false, true, null, ['course', 'subject', 'part'], function(err, data) {
+        require('gh.api.orgunit').getOrgUnits(appId, false, userId || true, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
                 return callback(err);
             }
