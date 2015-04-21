@@ -59,7 +59,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         if (!date || !moment(date, 'x').isValid()) {
             throw new Error('An invalid value for date has been provided');
         }
-        return new Date(date).toISOString();
+        return moment(date).utc().format();
     };
 
     /**

@@ -20,8 +20,10 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
     var hasChanges = false;
 
     var _term = null;
+
     // Keep track of when the user started
     var timeFromStart = null;
+
 
     /////////////////
     //  UTILITIES  //
