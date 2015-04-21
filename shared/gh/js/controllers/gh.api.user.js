@@ -54,11 +54,6 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
-        return callback();
-
-        /**
-         * TODO: wait for back-end implementation
-         *
         $.ajax({
             'url': '/api/users/' + userId,
             'type': 'GET',
@@ -69,7 +64,7 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
-        */
+        
     };
 
     /**

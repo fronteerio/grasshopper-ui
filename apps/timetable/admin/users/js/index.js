@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(gh, constants) {
 
 
     /////////////////
@@ -57,10 +57,11 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
      * @param  {Object}    triposData    The app's tripos structure
      * @private
      */
-    var renderTriposStructure = function(triposData) {
+    var renderTriposStructure = function(triposData, user) {
         gh.utils.renderTemplate($('#gh-user-management-tripos-structure-template'), {
             'gh': gh,
-            'triposData': triposData
+            'triposData': triposData,
+            'user': user
         }, $('#gh-user-management-tripos-structure-container'));
     };
 
@@ -128,7 +129,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
             if (err) {
                 return gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
             }
-            window.location = '/admin';
+            window.location = '/admin/users';
         });
     };
 
@@ -162,6 +163,13 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
         var todo = changeSet.length;
         var done = 0;
 
+        /**
+         * Update the members of a group
+         *
+         * @param  {Object}      change      Object containing the change in group membership for a user
+         * @param  {Function}    callback    Standard callback function
+         * @private
+         */
         var updateGroupMember = function(change, callback) {
             // Get the user object
             var user = getUserSelection();
@@ -184,6 +192,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
             });
         };
 
+        // Only submit changes when there are any
         if (changeSet.length) {
             updateGroupMember(changeSet[0], function() {
                 gh.utils.notification('User access updated', 'The user\'s access to parts has been updated successfully', 'success');
@@ -204,7 +213,9 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
         var appId = parseInt(require('gh.core').data.me.AppId, 10);
 
         gh.utils.getTriposStructure(appId, getUserSelection().id, function(err, triposData) {
-            renderTriposStructure(triposData);
+            gh.api.userAPI.getUser(getUserSelection().id, function(err, user) {
+                renderTriposStructure(triposData, user);
+            });
         });
     };
 
@@ -215,6 +226,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
      */
     var setUpAutoSuggest = function() {
         $('#gh-user-management-search').autoSuggest('/api/users', {
+            'limitText': 'Only one user can be edited at a time',
             'minChars': 2,
             'neverSubmit': true,
             'retrieveLimit': 10,
@@ -239,6 +251,12 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
                 } else {
                     getTriposStructure();
                 }
+            },
+            'selectionRemoved': function(elem) {
+                // Remove the previously selected user from the AutoSuggest
+                elem.remove();
+                // Empty the user management container
+                $('#gh-user-management-tripos-structure-container').empty();
             }
         });
     };
@@ -259,6 +277,21 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
             });
         });
 
+        // Select/deselect all parts and subjects when a course is checked/unchecked
+        $('body').on('change', '.gh-user-management-course-checkbox', function() {
+            var checked = $(this).is(':checked');
+            var $checkboxes = $(this).closest('li').find('.gh-user-management-subject-checkbox, .gh-user-management-part-checkbox');
+            $checkboxes.prop('checked', checked);
+        });
+
+        // Select/deselect all parts when a subject is checked/unchecked
+        $('body').on('change', '.gh-user-management-subject-checkbox', function() {
+            var checked = $(this).is(':checked');
+            var $checkboxes = $(this).closest('li').find('.gh-user-management-part-checkbox');
+            $checkboxes.prop('checked', checked);
+        });
+
+        // Submit the group permissions form
         $('body').on('submit', '#gh-user-management-part-access-form', submitPartForm);
     };
 
@@ -269,7 +302,12 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
      */
     var initIndex = function() {
         // Display the login form if the user is not authenticated
-        if (gh.data.me && gh.data.me.anon) {
+        if (gh.data.me && !gh.data.me.anon && !gh.data.me.isAdmin) {
+            gh.utils.redirect().accessdenied();
+        } else if (gh.data.me && gh.data.me.anon) {
+            // Show the body as we're allowed access
+            $('body').show();
+
             // Add event handlers
             addBinding();
 
@@ -282,14 +320,18 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest'], function(gh, constants
                 // Render the login form
                 renderLoginForm();
             }
-        } else if (gh.data.me && !gh.data.me.isAdmin) {
-            gh.utils.redirect().accessdenied();
         } else {
+            // Show the body as we're allowed access
+            $('body').show();
+
             // Add event handlers
             addBinding();
 
             // Render the header
             renderHeader();
+
+            // Show the page content
+            $('#gh-main').show();
 
             // Set up user management
             setUpAutoSuggest();

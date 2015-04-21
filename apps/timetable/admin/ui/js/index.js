@@ -31,13 +31,22 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
     var getTriposData = function() {
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(null, function(err, data) {
+        gh.utils.getTriposStructure(null, true, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
 
             // Cache the tripos data
             triposData = data;
+
+            // If the user has no parts that can be edited, redirect to the access denied page
+            var canEditParts = _.filter(triposData.parts, function(part) {
+                return part.canManage;
+            });
+
+            if (!canEditParts.length) {
+                return gh.utils.redirect().accessdenied();
+            }
 
             // Set up the tripos picker after all data has been retrieved
             // Initialise the subheader component after all data has been retrieved
@@ -118,7 +127,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                 _.each(subjects, function(subject) {
                     // Get the parts that are children of the subject
                     var parts = _.filter(triposData.parts, function(part) {
-                        return subject.id === part.ParentId;
+                        return part.canManage && subject.id === part.ParentId;
                     });
 
                     // For all parts that are children of the subject, create an object and push
@@ -127,7 +136,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                         editableParts.push({
                             'displayName': course.displayName + ' - ' + subject.displayName,
                             'hash': '?tripos=' + subject.id + '&part=' + part.id,
-                            'canManage': course.canManage,
+                            'canManage': part.canManage,
                             'part': part,
                             'isEditing': part.Group.LockedBy || false,
                             'isDraft': part.published
@@ -138,7 +147,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                 // There are no subjects and children parts are attached to the course parent
                 // Get all the parts that are children of the course
                 var parts = _.filter(triposData.parts, function(part) {
-                    return course.id === part.ParentId;
+                    return part.canManage && course.id === part.ParentId;
                 });
 
                 // For all parts that are children of the course, create an object and push
@@ -147,7 +156,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                     editableParts.push({
                         'displayName': course.displayName,
                         'hash': '?tripos=' + course.id + '&part=' + part.id,
-                        'canManage': course.canManage,
+                        'canManage': part.canManage,
                         'part': part,
                         'isEditing': part.Group.LockedBy || false,
                         'isDraft': part.published
@@ -418,9 +427,10 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
                 // Render the login form
                 renderLoginForm();
             }
-        } else if (gh.data.me && !gh.data.me.isAdmin) {
-            gh.utils.redirect().accessdenied();
         } else {
+            // Fetch all the triposes
+            getTriposData();
+
             // Add event handlers
             addBinding();
 
@@ -429,9 +439,6 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
 
             // Render the picker container
             renderPickers();
-
-            // Fetch all the triposes
-            getTriposData();
 
             // Show the tripos help info
             showTriposHelp();

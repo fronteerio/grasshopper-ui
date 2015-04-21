@@ -38,10 +38,11 @@
         <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
         <link rel="stylesheet" href="/apps/admin/ui/css/admin.css">
         <link rel="stylesheet" href="/apps/timetable/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/apps/timetable/admin/users/css/users.css">
         <link rel="stylesheet" href="/apps/timetable/admin/ui/css/skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body class="gh-admin gh-preload">
+    <body class="gh-admin gh-preload" style="display: none;">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -59,8 +60,8 @@
                     <div id="gh-header"><!-- --></div>
                     <div id="gh-subheader"><!-- --></div>
                 </div>
-                <main id="gh-main">
-                    <h1>User management</h1>
+                <main id="gh-main" style="display: none;">
+                    <h2>User management</h2>
                     <p>Search for a user to manage permissions for</p>
                     <input type="text" id="gh-user-management-search" placeholder="Search user">
                     <div id="gh-user-management-tripos-structure-container"><!-- --></div>
@@ -96,6 +97,12 @@
         </script>
 
         <script id="gh-user-management-tripos-structure-template" type="text/template">
+            <% if (user.isAdmin) { %>
+                <div class="alert alert-warning" role="alert">
+                    <p><strong><%- user.displayName %></strong> is an <strong>application administrator</strong> and has <strong>edit rights to all parts by default</strong>. Changing the settings here will not affect this.</p>
+                    <p>If you wish to limit the access <%- user.displayName %> has to edit parts, take away admin access.</p>
+                </div>
+            <% } %>
             <form id="gh-user-management-part-access-form">
                 <ul>
                     <!-- // Loop over all courses and render the parent level course -->
@@ -103,7 +110,7 @@
                         <li>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox"> <%- course.displayName %>
+                                    <input type="checkbox" class="gh-user-management-course-checkbox"> <%- course.displayName %>
                                 </label>
                             </div>
                             <!-- // Get all subjects belonging to this course -->
@@ -116,7 +123,7 @@
                                         <li>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox"> <%- subject.displayName %>
+                                                    <input type="checkbox" class="gh-user-management-subject-checkbox"> <%- subject.displayName %>
                                                 </label>
                                             </div>
                                             <% var subjectParts = _.filter(triposData.parts, function(part) {return part.ParentId === subject.id;}); %>
@@ -125,7 +132,7 @@
                                                     <li>
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input type="checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                                <input class="gh-user-management-part-checkbox" type="checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
                                                             </label>
                                                         </div>
                                                     </li>
@@ -142,7 +149,7 @@
                                         <li>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                    <input type="checkbox" class="gh-user-management-part-checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
                                                 </label>
                                             </div>
                                         </li>
@@ -152,7 +159,7 @@
                         </li>
                     <% }); %>
                 </ul>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default">Save user access</button>
             </form>
         </script>
 

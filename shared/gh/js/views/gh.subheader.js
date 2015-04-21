@@ -110,7 +110,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
             // Only add the parts that are published for the normal users
-            if (part.published || (!part.published && gh.data.me && gh.data.me.isAdmin)) {
+            if (part.published || (!part.published && part.canManage)) {
                 return parseInt(data.selected, 10) === part.ParentId;
             }
         });

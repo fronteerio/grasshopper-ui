@@ -946,7 +946,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
         // Retrieve the tripos structure for the test app
         var testApp = testAPI.getTestApp();
-        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+        gh.utils.getTriposStructure(testApp.id, true, function(err, data) {
             assert.ok(!err);
 
             // Find an organisational unit that has parents
@@ -994,7 +994,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         var testApp = testAPI.getTestApp();
 
         // Retrieve and cache the tripos structure
-        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+        gh.utils.getTriposStructure(testApp.id, true, function(err, data) {
             assert.ok(!err);
 
             // Retrieve the parts for the test application
@@ -1085,7 +1085,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
         // Retrieve the tripos structure for the test app
         var testApp = testAPI.getTestApp();
-        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+        gh.utils.getTriposStructure(testApp.id, true, function(err, data) {
             assert.ok(!err);
 
             // Verify that all the parts that have a parent are decorated with their parent
@@ -1104,28 +1104,28 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
         // Verify that an error is thrown when an invalid value for app id was provided
         assert.throws(function() {
-            gh.utils.getTriposStructure('invalid_app_id', function() {});
+            gh.utils.getTriposStructure('invalid_app_id', true, function() {});
         }, 'Verify that an error is thrown when an invalid value for app id was provided');
 
         // Verify that an error is thrown when no callback was provided
         assert.throws(function() {
-            gh.utils.getTriposStructure(null);
+            gh.utils.getTriposStructure(null, true);
         }, 'Verify that an error is thrown when no callback was provided');
 
         // Verify that an error is thrown when an invalid callback was provided
         assert.throws(function() {
-            gh.utils.getTriposStructure(null, 'invalid_callback');
+            gh.utils.getTriposStructure(null, true, 'invalid_callback');
         }, 'Verify that an error is thrown when an invalid callback was provided');
 
         // Retrieve the tripos structure for the test application
         var testApp = testAPI.getTestApp();
-        gh.utils.getTriposStructure(testApp.id, function(err, data) {
+        gh.utils.getTriposStructure(testApp.id, true, function(err, data) {
             assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
             assert.ok(data, 'Verify that the tripos structure is returned');
 
             // Retrieve the tripos structure when the application ID was set in the `me` object
             gh.data.me.AppId = testApp.id;
-            gh.utils.getTriposStructure(null, function(err, data) {
+            gh.utils.getTriposStructure(null, true, function(err, data) {
                 assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
                 assert.ok(data, 'Verify that the tripos structure is returned');
 
@@ -1135,7 +1135,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
                 }
 
                 // Retrieve the tripos structure when no application ID was set
-                gh.utils.getTriposStructure(null, function(err, data) {
+                gh.utils.getTriposStructure(null, true, function(err, data) {
                     assert.ok(err, 'Verify that an error is thrown when no application ID is set');
                     QUnit.start();
                 });
