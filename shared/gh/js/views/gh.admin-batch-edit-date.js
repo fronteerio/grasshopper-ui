@@ -274,7 +274,6 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
         // Keep track of progress
         var totalEvents = $('#gh-batch-edit-date-picker-container').data('terms').split(',').length * $weeks.length * $days.length;
-
         var currentEvent = 0;
 
         // For each term selected, add events
@@ -322,7 +321,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
 
                             // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                            var alreadyAdded = $('.gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format()) + '"]').length;
+                            var alreadyAdded = $('.gh-event-date[data-start="' + moment(startDate).utc().format() + '"]').length;
                             if (!alreadyAdded || forceAdd) {
                                 $(document).trigger('gh.batchedit.addevent', {
                                     'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
@@ -592,8 +591,8 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
 
                     // Retrieve and calculate the event dates
                     var newDateYear = moment(newDate).utc().format('YYYY');
-                    var newDateMonth = moment(newDate).subtract({'months': 1}).utc().format('MM');
-                    var newDateDay = moment(newDate).utc().format('DD');
+                    var newDateMonth = parseInt(moment(newDate).utc().format('MM'), 10) - 1;
+                    var newDateDay = moment(newDate).add({'hours': 1}).utc().format('DD');
 
                     // Create the new date for the row
                     eventStart = moment([newDateYear, newDateMonth, newDateDay, eventStartHour, eventStartMinute, 0, 0]).utc().format();
