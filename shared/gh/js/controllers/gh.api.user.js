@@ -136,7 +136,7 @@ define(['exports'], function(exports) {
         }
 
         $.ajax({
-            'url': '/api/users/' + userId + '/calendar?start=' + start + '&end=' + end,
+            'url': '/api/users/' + userId + '/calendar?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end),
             'type': 'GET',
             'success': function(data) {
                 return callback(null, data);
