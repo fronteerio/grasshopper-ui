@@ -15,10 +15,25 @@
 
 define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(gh, constants) {
 
+    // Get the current page, strip out slashes etc
+    var currentPage = window.location.pathname.split('/')[2];
+
 
     /////////////////
     //  RENDERING  //
     /////////////////
+
+    /**
+     * Render the admin navigation
+     *
+     * @private
+     */
+    var renderNavigation = function() {
+        gh.utils.renderTemplate($('#gh-navigation-template'), {
+            'gh': gh,
+            'currentPage': currentPage
+        }, $('#gh-navigation-container'));
+    };
 
     /**
      * Render the header
@@ -52,17 +67,49 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     };
 
     /**
+     * Render the app user search
+     *
+     * @private
+     */
+    var renderAppUserSearch = function() {
+        gh.utils.renderTemplate($('#gh-app-user-search-template'), null, $('#gh-main'));
+    };
+
+    /**
      * Render the tripos structure indicating which groups the selected user is part of
      *
      * @param  {Object}    triposData    The app's tripos structure
      * @private
      */
-    var renderTriposStructure = function(triposData, user) {
-        gh.utils.renderTemplate($('#gh-user-management-tripos-structure-template'), {
+    var renderUser = function(triposData, user) {
+        gh.utils.renderTemplate($('#gh-app-user-template'), {
             'gh': gh,
             'triposData': triposData,
             'user': user
-        }, $('#gh-user-management-tripos-structure-container'));
+        }, $('#gh-app-user-container'));
+    };
+
+    /**
+     * Render the app management form
+     *
+     * @private
+     */
+    var renderApp = function() {
+        gh.utils.renderTemplate($('#gh-app-template'), {
+            'app': gh.data.me.app
+        }, $('#gh-main'));
+    };
+
+    /**
+     * Render the configuration form
+     *
+     * @private
+     */
+    var renderConfig = function(config) {
+        gh.utils.renderTemplate($('#gh-config-template'), {
+            'app': gh.data.me.app,
+            'config': config
+        }, $('#gh-main'));
     };
 
 
@@ -71,23 +118,12 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /////////////////
 
     /**
-     * Get the user object from the user AutoSuggest field
+     * Update the value attribute of a checkbox
      *
-     * @return {User[]}    User object chosen in the user AutoSuggest field
      * @private
      */
-    var getUserSelection = function() {
-        // Used to store the user information
-        var batchSelection = [];
-
-        // Get the user object
-        $user = $('.as-selection-item');
-
-        // Return the Array of user objects
-        return {
-            'id': parseInt($user.data('value').toString(), 10),
-            'displayName': $user.text().slice(1)
-        };
+    var updateCheckboxValue = function() {
+        $(this).val($(this).is(':checked'));
     };
 
     /**
@@ -134,9 +170,97 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     };
 
 
-    //////////////////////
-    //  INITIALISATION  //
-    //////////////////////
+    ///////////////////
+    // CONFIGURATION //
+    ///////////////////
+
+    /**
+     * Submit the configuration form and save the values
+     *
+     * @return {Boolean}    Avoid default form submit behaviour
+     * @private
+     */
+    var updateConfiguration = function() {
+        var $form = $(this);
+
+        // Serialise the form values into an object that can be sent to the server
+        var configValues = _.object(_.map($form.serializeArray(), _.values));
+
+        // Standards say that unchecked checkboxes shouldn't be sent over to the server. Too bad, we need to add them
+        // in explicitely as config values might have changed.
+        _.each($('[type="checkbox"]:not(:checked)', $form), function(chk) {
+            configValues[$(chk).attr('name')] = $(chk).is(':checked');
+        });
+
+        // Update the configuration
+        gh.api.configAPI.updateConfig($form.data('appid'), configValues, function(err) {
+            if (err) {
+                return gh.utils.notification('App configuration not updated', constants.messaging.default.error, 'error');
+            }
+            return gh.utils.notification('App configuration updated', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
+    /////////
+    // APP //
+    /////////
+
+    /**
+     * Update an existing application
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var updateApp = function() {
+        // Get the ID of the app that's being updated
+        var appId = parseInt($(this).data('appid'), 10);
+
+        // Get the updated values
+        var displayName = $('.gh-app-displayname', $(this)).val();
+        var enabled = $('.gh-app-enabled', $(this)).is(':checked');
+        var host = $('.gh-app-host', $(this)).val();
+
+        // Update the app
+        gh.api.appAPI.updateApp(appId, displayName, enabled, host, function(err, data) {
+            if (err) {
+                return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
+            }
+
+            gh.utils.notification('System app ' + displayName + ' successfully updated', null, 'success');
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
+    ///////////
+    // USERS //
+    ///////////
+
+    /**
+     * Get the user object from the user AutoSuggest field
+     *
+     * @return {User[]}    User object chosen in the user AutoSuggest field
+     * @private
+     */
+    var getUserSelection = function() {
+        // Used to store the user information
+        var batchSelection = [];
+
+        // Get the user object
+        $user = $('.as-selection-item');
+
+        // Return the Array of user objects
+        return {
+            'id': parseInt($user.data('value').toString(), 10),
+            'displayName': $user.text().slice(1)
+        };
+    };
 
     /**
      * Submit the form with parts the user has access to
@@ -214,9 +338,97 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
 
         gh.utils.getTriposStructure(appId, getUserSelection().id, function(err, triposData) {
             gh.api.userAPI.getUser(getUserSelection().id, function(err, user) {
-                renderTriposStructure(triposData, user);
+                renderUser(triposData, user);
             });
         });
+    };
+
+    /**
+     * Update an application user
+     *
+     * @return {Boolean}    Return false to avoid default form submit behaviour
+     * @private
+     */
+    var updateUser = function() {
+        // Cache the form object
+        var $form = $(this);
+        // Get the administrator's userId and display name
+        var userId = parseInt($form.data('userid'), 10);
+        var displayName = $('.gh-user-displayname', $form).val();
+        var email = $('.gh-user-email', $form).val();
+        var emailPreference = 'no';
+        var password = $('.gh-user-password', $form).val();
+        var isAdmin = $('.gh-user-isadmin', $form).is(':checked');
+
+        // Update the user
+        gh.api.userAPI.updateUser(userId, displayName, email, emailPreference, function(updateErr) {
+            if (updateErr) {
+                return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+            }
+
+            // Promote/demote the user
+            gh.api.userAPI.updateAdminStatus(userId, isAdmin, function(adminStatusErr) {
+                if (adminStatusErr) {
+                    return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+                }
+
+                // TODO: enable password updates once it's implemented in the backend
+                // If the password field is not empty, submit a password update
+                // if (password) {
+                //     gh.api.userAPI.changePassword(userId, newPassword, oldPassword, function(passwordErr) {
+                //         if (passwordErr) {
+                //             return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
+                //         }
+
+                //         // Update the user list
+                //         getUsers.apply($form);
+                //         // Notify the user of a successful update
+                //         gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+                //     });
+                // } else {
+                    // Update the user display
+                    getTriposStructure();
+                    // Show a success message
+                    gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+                // }
+            });
+        });
+
+        // Avoid default form submit behaviour
+        return false;
+    };
+
+
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
+
+    var setUpConfig = function() {
+        gh.api.configAPI.getConfig(gh.data.me.app.id, function(err, config) {
+            // Remove unwanted properties from the configuration object
+            delete config.createdAt;
+            delete config.updatedAt;
+
+            // Render the configuration
+            renderConfig(config);
+        });
+    };
+
+    /**
+     * Set up the app page
+     */
+    var setUpApp = function() {
+        renderApp();
+    };
+
+    /**
+     * Set up the users page
+     */
+    var setUpUsers = function() {
+        // Render the app user search
+        renderAppUserSearch();
+        // Set up user management
+        setUpAutoSuggest();
     };
 
     /**
@@ -225,7 +437,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var setUpAutoSuggest = function() {
-        $('#gh-user-management-search').autoSuggest('/api/users', {
+        $('#gh-app-user-search').autoSuggest('/api/users', {
             'limitText': 'Only one user can be edited at a time',
             'minChars': 2,
             'neverSubmit': true,
@@ -256,13 +468,13 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 // Remove the previously selected user from the AutoSuggest
                 elem.remove();
                 // Empty the user management container
-                $('#gh-user-management-tripos-structure-container').empty();
+                $('#gh-app-user-container').empty();
             }
         });
     };
 
     /**
-     * Add bindings to various elements on the page
+     * Add event handlers to various elements on the page
      *
      * @private
      */
@@ -277,22 +489,34 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             });
         });
 
+        // Update the value attribute of a checkbox when it changes
+        $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
+
         // Select/deselect all parts and subjects when a course is checked/unchecked
-        $('body').on('change', '.gh-user-management-course-checkbox', function() {
+        $('body').on('change', '.gh-user-tripos-course-checkbox', function() {
             var checked = $(this).is(':checked');
-            var $checkboxes = $(this).closest('li').find('.gh-user-management-subject-checkbox, .gh-user-management-part-checkbox');
+            var $checkboxes = $(this).closest('li').find('.gh-user-tripos-subject-checkbox, .gh-user-tripos-part-checkbox');
             $checkboxes.prop('checked', checked);
         });
 
         // Select/deselect all parts when a subject is checked/unchecked
-        $('body').on('change', '.gh-user-management-subject-checkbox', function() {
+        $('body').on('change', '.gh-user-tripos-subject-checkbox', function() {
             var checked = $(this).is(':checked');
-            var $checkboxes = $(this).closest('li').find('.gh-user-management-part-checkbox');
+            var $checkboxes = $(this).closest('li').find('.gh-user-tripos-part-checkbox');
             $checkboxes.prop('checked', checked);
         });
 
         // Submit the group permissions form
-        $('body').on('submit', '#gh-user-management-part-access-form', submitPartForm);
+        $('body').on('submit', '#gh-user-permissions-form', submitPartForm);
+
+        // Update user
+        $('body').on('submit', '.gh-app-user-update-form', updateUser);
+
+        // Update app
+        $('body').on('submit', '.gh-app-update-form', updateApp);
+
+        // Update configuration
+        $('body').on('submit', '.gh-configuration-form', updateConfiguration);
     };
 
     /**
@@ -321,20 +545,32 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 renderLoginForm();
             }
         } else {
-            // Show the body as we're allowed access
-            $('body').show();
-
             // Add event handlers
             addBinding();
 
             // Render the header
             renderHeader();
 
+            // Show the body as we're allowed access
+            $('body').show();
+
             // Show the page content
             $('#gh-main').show();
 
-            // Set up user management
-            setUpAutoSuggest();
+            // Show the right content, depending on the page the user's on
+            if (currentPage === 'configuration') {
+                setUpConfig();
+            } else if (currentPage === 'app') {
+                setUpApp();
+            } else if (currentPage === 'users') {
+                setUpUsers();
+            } else {
+                currentPage = 'users';
+                setUpUsers();
+            }
+
+            // Render the navigation
+            renderNavigation();
         }
     };
 

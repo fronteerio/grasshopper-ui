@@ -22,19 +22,19 @@ main {
     width: 300px;
 }
 
-#gh-user-management-tripos-structure-container .alert,
-#gh-user-management-tripos-structure-container #gh-user-management-part-access-form {
+#gh-app-user-container #gh-user-permissions-form,
+#gh-app-user-container {
     margin: 25px 0 !important;
 }
 
-#gh-user-management-part-access-form ul,
-#gh-user-management-part-access-form ul li {
+#gh-user-permissions-form ul,
+#gh-user-permissions-form ul li {
     list-style: none;
     margin: 0;
     padding: 0 0 0 10px;
 }
 
-#gh-user-management-part-access-form > ul,
-#gh-user-management-part-access-form > ul > li {
+#gh-user-permissions-form > ul,
+#gh-user-permissions-form > ul > li {
     padding: 0;
 }

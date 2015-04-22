@@ -1,0 +1,301 @@
+<html>
+    <head>
+        <title>Timetable Administration</title>
+
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#FFC40D">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="theme-color" content="#FFFFFF">
+
+        <!-- .cam.ac.uk domain Typekit inclusion -->
+        <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+        <link rel="stylesheet" href="/shared/vendor/css/font-awesome.css">
+        <link rel="stylesheet" href="/shared/vendor/css/bootstrap.css">
+        <link rel="stylesheet" href="/shared/vendor/css/chosen.css">
+        <link rel="stylesheet" href="/shared/vendor/css/jquery.autosuggest.css">
+        <link rel="stylesheet" href="/shared/vendor/css/fullcalendar.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.base.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.components.css">
+        <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
+        <link rel="stylesheet" href="/apps/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/apps/timetable/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/apps/timetable/admin/app/css/users.css">
+        <link rel="stylesheet" href="/apps/timetable/admin/ui/css/skin.css">
+        <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
+    </head>
+    <body class="gh-admin gh-preload" style="display: none;">
+        <div id="gh-page-container">
+            <div id="gh-left-container">
+                <div id="gh-meta-container">
+                    <a href="javascript:;" id="gh-header-logo" title="Visit the administration area">
+                        <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+                    </a>
+                    <div id="gh-content-description">
+                        <p class="gh-academic-year-select">Manage users in the app</p>
+                    </div>
+                </div>
+                <div id="gh-navigation-container"><!-- --></div>
+            </div>
+            <div id="gh-right-container">
+                <div id="gh-header-container">
+                    <div id="gh-header"><!-- --></div>
+                    <div id="gh-subheader"><!-- --></div>
+                </div>
+                <main id="gh-main" style="display: none;"><!-- --></main>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <!-- Header template -->
+        <script id="gh-header-template" type="text/template">
+            <%= _.partial('admin-header-template', {'data': data}) %>
+        </script>
+
+        <!-- Login template -->
+        <script id="gh-login-template" type="text/template">
+            <div id="gh-login-form" class="col-xs-6 pull-left">
+                <form class="gh-signin-form" role="form" data-toggle="validator">
+                    <h2>Sign in</h2>
+                    <div class="form-group">
+                        <label for="gh-signin-email">Email address</label>
+                        <input type="username" name="username" class="form-control" id="gh-signin-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gh-signin-password">Password</label>
+                        <input type="password" name="password" class="form-control" id="gh-signin-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" id="gh-signin" class="btn btn-default gh-btn-primary">
+                        <i class="fa fa-sign-in"></i>Sign in
+                    </button>
+                </form>
+            </div>
+        </script>
+
+        <!-- Navigation template -->
+        <script id="gh-navigation-template" type="text/template">
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" <% if (currentPage === 'configuration') { %>class="active"<% } %> >
+                    <a href="/admin/configuration">Configuration</a>
+                </li>
+                <li role="presentation" <% if (currentPage === 'app') { %>class="active"<% } %> >
+                    <a href="/admin/app">App</a>
+                </li>
+                <li role="presentation" <% if (currentPage === 'users') { %>class="active"<% } %> >
+                    <a href="/admin/users">Users</a>
+                </li>
+            </ul>
+        </script>
+
+        <!-- Application template -->
+        <script id="gh-app-template" type="text/template">
+            <h1>Application management</h1>
+
+            <div class="panel-default gh-striped-container">
+                <h3 class="panel-heading"><%- app.Tenant.displayName %></h3>
+                <div class="panel-body">
+                    <div class="panel-subheading row">
+                        <div class="gh-striped-heading col-sm-3">App name</div>
+                        <div class="gh-striped-heading col-sm-3">App host</div>
+                        <div class="gh-striped-heading col-sm-2">App enabled</div>
+                        <div class="gh-striped-heading col-sm-4">Actions</div>
+                    </div>
+
+                    <div class="gh-striped-row row">
+                        <form class="gh-app-update-form" data-appid="<%- app.id %>">
+                            <div class="col-sm-3">
+                                <input class="gh-app-displayname" type="text" placeholder="App name" value="<%- app.displayName %>"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="gh-app-host" type="text" placeholder="App host" value="<%- app.host %>"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <input class="gh-app-enabled" type="checkbox"<% if (app.enabled) { %> checked<% } %>/>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary pull-left">Update app</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="//<%- app.host %>" target="_blank" class="btn btn-info pull-left"><i class="fa fa-external-link"></i> Open app</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="gh-config-template" type="text/template">
+            <h1>Configuration</h1>
+
+            <div class="panel-default">
+                <h3 class="panel-heading"><%- app.Tenant.displayName %> - <%- app.displayName %> - <%- app.host %></h3>
+                <div class="panel-body">
+                <form role="form" class="gh-configuration-form" data-appid="<%= app.id %>">
+                        <% _.each(config, function(value, option) { %>
+                            <% if (option === 'AppId' || option === 'terms' || option === 'events') { return; }%>
+                            <% if (typeof value === 'boolean') { %>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="<%= option %>" value="<%= value %>" <% if (value === true) { %> checked<% } %>> <%= option %>
+                                    </label>
+                                </div>
+                            <% } else { %>
+                                <div class="form-group">
+                                    <label for="<%= option %>"><%= option %></label>
+                                    <input type="text" class="form-control" id="<%= option %>" value="<%= value %>" name="<%= option %>">
+                                </div>
+                            <% } %>
+                        <% }); %>
+                        <button type="submit" class="btn btn-primary">Update configuration</button>
+                    </form>
+                </div>
+            </div>
+        </script>
+
+        <!-- App user header and search template -->
+        <script id="gh-app-user-search-template" type="text/template">
+            <h1>User management</h1>
+
+            <p>Search for the application user you wish to manage</p>
+            <input type="text" id="gh-app-user-search" placeholder="Search user">
+            <div id="gh-app-user-container"><!-- --></div>
+        </script>
+
+        <!-- App user settings and permissions template -->
+        <script id="gh-app-user-template" type="text/template">
+            <h2>Edit user properties</h2>
+
+            <div class="panel-default gh-striped-container">
+                <h3 class="panel-heading">
+                    <span>Manage user</span>
+                </h3>
+                <div class="panel-body">
+                    <div class="panel-subheading row">
+                        <div class="gh-striped-heading col-sm-3">User name</div>
+                        <div class="gh-striped-heading col-sm-2">User username</div>
+                        <div class="gh-striped-heading col-sm-2">User password</div>
+                        <div class="gh-striped-heading col-sm-1">Admin</div>
+                        <div class="gh-striped-heading col-sm-2">Info</div>
+                        <div class="gh-striped-heading col-sm-2">Actions</div>
+                    </div>
+
+                    <div class="gh-striped-row row">
+                        <form class="gh-app-user-update-form" data-userid="<%- user.id %>">
+                            <div class="col-sm-3">
+                                <input class="gh-user-displayname" type="text" placeholder="User name" value="<%- user.displayName %>">
+                            </div>
+                            <div class="col-sm-2">
+                                <input class="gh-user-email" type="text" placeholder="User email" value="<%- user.email %>">
+                            </div>
+                            <div class="col-sm-2">
+                                <input class="gh-user-password" type="password" placeholder="User password" disabled>
+                            </div>
+                            <div class="col-sm-1">
+                                <input class="gh-user-isadmin" type="checkbox"<% if (user.isAdmin) { %> checked<% } %>/>
+                            </div>
+                            <div class="col-sm-2">
+                                <% if (user.shibbolethId) { %>
+                                    <input class="gh-user-shibbolethid" type="text" placeholder="Shibboleth ID" disabled value="<%- user.shibbolethId %>">
+                                <% } else { %>
+                                    <p class="text-center">Local account</p>
+                                <% } %>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary">Update user</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2>Edit user permissions</h2>
+
+            <% if (user.isAdmin) { %>
+                <div class="alert alert-warning" role="alert">
+                    <p><strong><%- user.displayName %></strong> is an <strong>application administrator</strong> and has <strong>edit access to all parts by default</strong>. Changing the settings here will not affect this.</p>
+                    <p>If you wish to limit the access <%- user.displayName %> has to edit parts, take away admin access.</p>
+                </div>
+            <% } %>
+
+            <form id="gh-user-permissions-form">
+                <ul>
+                    <!-- // Loop over all courses and render the parent level course -->
+                    <% _.each(triposData.courses, function(course) { %>
+                        <li>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="gh-user-tripos-course-checkbox"> <%- course.displayName %>
+                                </label>
+                            </div>
+                            <!-- // Get all subjects belonging to this course -->
+                            <% var courseSubjects = _.filter(triposData.subjects, function(subject) {return subject.ParentId === course.id;}); %>
+
+                            <!-- // If there are subjects, render the parts as children of subject -->
+                            <% if (courseSubjects.length) { %>
+                                <ul>
+                                    <% _.each(courseSubjects, function(subject) { %>
+                                        <li>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" class="gh-user-tripos-subject-checkbox"> <%- subject.displayName %>
+                                                </label>
+                                            </div>
+                                            <% var subjectParts = _.filter(triposData.parts, function(part) {return part.ParentId === subject.id;}); %>
+                                            <ul>
+                                                <% _.each(subjectParts, function(part) { %>
+                                                    <li>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input class="gh-user-tripos-part-checkbox" type="checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                <% });%>
+                                            </ul>
+                                        </li>
+                                    <% }); %>
+                                </ul>
+                            <!-- // If there are NO subjects, render the parts as children of the course -->
+                            <% } else { %>
+                                <% var courseParts = _.filter(triposData.parts, function(part) {return part.ParentId === course.id;}); %>
+                                <ul>
+                                    <% _.each(courseParts, function(part) { %>
+                                        <li>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" class="gh-user-tripos-part-checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    <% });%>
+                                </ul>
+                            <% } %>
+                        </li>
+                    <% }); %>
+                </ul>
+                <button type="submit" class="btn btn-primary">Update user permissions</button>
+            </form>
+        </script>
+
+        <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/app/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
+    </body>
+</html>

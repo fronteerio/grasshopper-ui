@@ -806,8 +806,14 @@ tbody tr:last-child > td.fc-widget-content {
 /* PANEL */
 /*********/
 
+.panel-default .panel-body .panel-subheading {
+    font-weight: 600;
+    padding-top: 10px;
+    text-align: center;
+}
+
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
-    padding: 10px 20px 20px;
+    padding: 0 15px;
 }
 
 .panel .panel-title > a:hover,
@@ -834,6 +840,87 @@ tbody tr:last-child > td.fc-widget-content {
 .panel-group:last-child .panel {
     border-bottom: 1px solid #DDD;
 }
+
+.panel-default,
+.panel-group:last-child .panel-default {
+    border-color: #DDD;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 25px;
+}
+
+.panel-group .panel-default {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.panel-default .panel-heading h4.panel-title::after,
+.panel-default .panel-heading span::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.panel-default.gh-striped-container .panel-body {
+    padding-bottom: 0;
+}
+
+/* Striped rows */
+
+.panel-default .panel-body .gh-striped-row {
+    padding: 9px 0;
+}
+
+.panel-default .panel-body .gh-striped-row:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+/* Editable content elements */
+
+.panel-default .panel-body .gh-striped-row input[type="checkbox"] {
+    display: block;
+    height: 12px;
+    margin: 13px auto;
+    width: 12px;
+}
+
+.panel-default .panel-body .gh-striped-row p {
+    margin: 10px auto;
+    width: 100%;
+}
+
+.panel-default .panel-body .gh-striped-row input[type="text"],
+.panel-default .panel-body .gh-striped-row input[type="password"],
+.panel-default .panel-heading .gh-striped-container-search input {
+    padding: 4px 7px 0;
+    width: 100%;
+}
+
+.panel-default .panel-body .gh-striped-row input[type="text"],
+.panel-default .panel-body .gh-striped-row input[type="password"] {
+    height: 39px;
+}
+
+.panel-default .panel-body .gh-striped-row button,
+.panel-default .panel-body .gh-striped-row a {
+    width: 100%;
+}
+
+/* Search */
+
+.panel-default .panel-heading .gh-striped-container-search + h4 {
+    line-height: 2.1;
+}
+
+.panel-default .panel-heading .gh-striped-container-search {
+    width: 400px;
+}
+
+.panel-default .panel-heading .gh-striped-container-search button {
+    height: 34px;
+    padding: 6px 12px;
+}
+
 
 /**********/
 /* CHOSEN */

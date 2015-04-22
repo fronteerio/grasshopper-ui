@@ -23,103 +23,15 @@ main h2 {
     margin: 30px 0 12px;
 }
 
-.gh-administration-container {
-    margin: 20px;
-}
-
-.gh-administration-container input[type="text"],
-.gh-administration-container input[type="password"] {
-    padding: 4px 7px 0;
-    width: 100%;
-}
-
 form,
 table {
     margin-bottom: 0 !important;
 }
 
-
-/* Panels */
-
-.gh-administration-container .panel-default,
-.gh-administration-container .panel-group:last-child .panel-default {
-    border-color: #DDD;
-    border-style: solid;
-    border-width: 1px;
-    margin-bottom: 25px;
+.gh-administration-container {
+    margin: 20px;
 }
 
-.gh-administration-container .panel-group .panel-default {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.gh-administration-container .panel-default .panel-heading h4.panel-title::after,
-.gh-administration-container .panel-default .panel-heading span::after {
-    clear: both;
-    content: '';
-    display: block;
-}
-
-.gh-administration-container .panel-default .panel-body {
-    padding-bottom: 0;
-}
-
-.gh-administration-container .panel-default .panel-body .panel-subheading {
-    font-weight: 600;
-    padding-top: 10px;
-    text-align: center;
-}
-
-#gh-administrators-container .panel-default > .panel-heading + .panel-collapse > .panel-body {
-    padding: 0 15px;
-}
-
-/* Striped rows */
-
-.gh-administration-container .gh-striped-row {
-    padding: 9px 0;
-}
-
-.gh-administration-container .gh-striped-row:nth-child(odd) {
-    background-color: #F9F9F9;
-}
-
-/* Editable content elements */
-
-.gh-administration-container .gh-striped-row input[type="checkbox"] {
-    display: block;
-    height: 12px;
-    margin: 13px auto;
-    width: 12px;
-}
-
-.gh-administration-container .gh-striped-row p {
-    margin: 10px auto;
-    width: 100%;
-}
-
-.gh-administration-container .gh-striped-row input[type="text"],
-.gh-administration-container .gh-striped-row input[type="password"] {
-    height: 39px;
-}
-
-.gh-administration-container .gh-striped-row button,
-.gh-administration-container .gh-striped-row a {
-    width: 100%;
-}
-
-/* Search */
-
-.gh-administration-container .panel-default .panel-heading .gh-striped-container-search + h4 {
-    line-height: 2.1;
-}
-
-.gh-administration-container .panel-default .panel-heading .gh-striped-container-search {
-    width: 400px;
-}
-
-.gh-administration-container .panel-default .panel-heading .gh-striped-container-search button {
-    height: 34px;
-    padding: 6px 12px;
+.gh-administration-container .gh-configuration-form {
+    margin-bottom: 15px !important;
 }
