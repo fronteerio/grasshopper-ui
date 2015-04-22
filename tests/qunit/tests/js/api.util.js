@@ -107,7 +107,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         var convertedDate = gh.utils.convertUnixDatetoISODate(date);
 
         // Verify that the date is converted correctly
-        assert.strictEqual(convertedDate, '2014-11-28T10:50:49.000Z', 'Verify that the date is converted correctly');
+        assert.strictEqual(convertedDate, '2014-11-28T10:50:49+00:00', 'Verify that the date is converted correctly');
     });
 
     // Test the 'generateDisplayDate' functionality
