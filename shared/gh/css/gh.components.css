@@ -838,12 +838,12 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .panel-group:last-child .panel {
-    border-bottom: 1px solid #DDD;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 .panel-default,
 .panel-group:last-child .panel-default {
-    border-color: #DDD;
     border-style: solid;
     border-width: 1px;
     margin-bottom: 25px;
@@ -869,10 +869,6 @@ tbody tr:last-child > td.fc-widget-content {
 
 .panel-default .panel-body .gh-striped-row {
     padding: 9px 0;
-}
-
-.panel-default .panel-body .gh-striped-row:nth-child(odd) {
-    background-color: #F9F9F9;
 }
 
 /* Editable content elements */

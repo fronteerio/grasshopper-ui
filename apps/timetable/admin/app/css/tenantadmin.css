@@ -13,9 +13,13 @@
  * permissions and limitations under the License.
  */
 
+/* General */
+
 main {
     margin: 20px;
 }
+
+/* Users */
 
 #gh-user-management-search,
 .as-selections {

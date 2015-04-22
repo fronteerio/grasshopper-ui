@@ -336,7 +336,9 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     var getTriposStructure = function() {
         var appId = parseInt(require('gh.core').data.me.AppId, 10);
 
+        // Get the tripos structure
         gh.utils.getTriposStructure(appId, getUserSelection().id, function(err, triposData) {
+            // Get the profile of the selected user
             gh.api.userAPI.getUser(getUserSelection().id, function(err, user) {
                 renderUser(triposData, user);
             });
@@ -403,6 +405,11 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     //  INITIALISATION  //
     //////////////////////
 
+    /**
+     * Set up the configuration page
+     *
+     * @private
+     */
     var setUpConfig = function() {
         gh.api.configAPI.getConfig(gh.data.me.app.id, function(err, config) {
             // Remove unwanted properties from the configuration object
@@ -416,6 +423,8 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
 
     /**
      * Set up the app page
+     *
+     * @private
      */
     var setUpApp = function() {
         renderApp();
@@ -423,6 +432,8 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
 
     /**
      * Set up the users page
+     *
+     * @private
      */
     var setUpUsers = function() {
         // Render the app user search
@@ -479,7 +490,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var addBinding = function() {
-        // logout
+        // Log out
         $('body').on('submit', '#gh-signout-form', doLogout);
 
         // Track an event when the user clicks the Cambridge logo

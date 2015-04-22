@@ -355,6 +355,25 @@ ul.nav-tabs li.active {
 
 
 /**********/
+/* PANELS */
+/**********/
+
+.panel-group:last-child .panel {
+    border-bottom-color: #DDD;
+}
+
+.panel-default,
+.panel-group:last-child .panel-default {
+    border-color: #DDD;
+}
+
+/* Striped rows */
+
+.panel-default .panel-body .gh-striped-row:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+/**********/
 /* CHOSEN */
 /**********/
 
