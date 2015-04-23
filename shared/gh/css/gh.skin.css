@@ -135,6 +135,7 @@ a,
 /***********/
 
 /* Default buttons */
+
 .btn-default {
     color: #FFF;
     background-color: #171717;
@@ -160,6 +161,7 @@ a,
 }
 
 /* Primary buttons */
+
 .btn-default.gh-btn-secondary {
     background-color: transparent;
     border-color: transparent;
@@ -180,6 +182,7 @@ a,
 }
 
 /* Primary buttons reverse */
+
 .btn-default.gh-btn-secondary.gh-btn-reverse {
     background-color: transparent;
     border-color: transparent;
@@ -209,6 +212,7 @@ ul.nav-tabs li.active {
 }
 
 /* Secondary buttons */
+
 .btn-default.gh-btn-tertiary {
     background-color: #FFF;
     border-color: #FFF;
@@ -238,12 +242,12 @@ ul.nav-tabs li.active {
 /* NAVIGATION TABS */
 /*******************/
 
-.nav-tabs > li > a:hover {
-    background-color: transparent;
-}
-
 .nav-tabs > li > a {
     color: #FFF;
+}
+
+.nav-tabs > li > a:hover {
+    background-color: transparent;
 }
 
 
@@ -419,6 +423,7 @@ ul.nav-tabs li.active {
 }
 
 /* Primary toolbar */
+
 .gh-toolbar-primary {
     background-color: #127077;
 }

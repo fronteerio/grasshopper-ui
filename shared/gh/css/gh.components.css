@@ -130,6 +130,7 @@
 }
 
 /* Default buttons */
+
 #gh-toolbar-container .btn-default,
 .gh-toolbar-secondary .btn-default,
 .nav-tabs > li > a {
@@ -160,6 +161,7 @@
 }
 
 /* Secondary toolbar */
+
 .gh-toolbar-secondary {
     font-weight: 600;
     opacity: 1;
@@ -201,6 +203,7 @@
 }
 
 /* Today button */
+
 .gh-toolbar-secondary #gh-calendar-toolbar-today {
     height: 32px;
     position: absolute;
@@ -341,8 +344,6 @@
 td.fc-widget-content {
     border-style: none;
     border-top-style: solid;
-    border-left-style: none;
-    border-right-style: none;
 }
 
 .fc-month-view tbody > tr > td.fc-day.fc-widget-content {
