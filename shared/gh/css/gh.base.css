@@ -131,11 +131,13 @@ select[disabled],
 }
 
 /* Main page container */
+
 #gh-page-container {
     min-width: 1280px;
 }
 
 /* Main page left hand side (navigation) container */
+
 #gh-page-container #gh-left-container {
     float: left;
     height: 100%;

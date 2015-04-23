@@ -51,6 +51,7 @@
 
 
 /* Toolbar */
+
 #gh-toolbar-container {
     height: auto;
 }
@@ -1270,6 +1271,7 @@ tr.info .gh-event-delete button {
 #gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning strong {
     font-weight: 600;
 }
+
 
 /***************/
 /* AUTOSUGGEST */
