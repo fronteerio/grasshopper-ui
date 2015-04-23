@@ -313,7 +313,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
-            var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate());
+            var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate(), false);
 
             // Set the label
             label = 'Outside term week';
