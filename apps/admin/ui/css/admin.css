@@ -54,13 +54,25 @@ table {
     margin-bottom: 0;
 }
 
+.gh-administration-container .panel-default .panel-heading h4.panel-title::after,
+.gh-administration-container .panel-default .panel-heading span::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
 .gh-administration-container .panel-default .panel-body {
     padding-bottom: 0;
 }
 
 .gh-administration-container .panel-default .panel-body .panel-subheading {
     font-weight: 600;
+    padding-top: 10px;
     text-align: center;
+}
+
+#gh-administrators-container .panel-default > .panel-heading + .panel-collapse > .panel-body {
+    padding: 0 15px;
 }
 
 /* Striped rows */
@@ -82,6 +94,11 @@ table {
     width: 12px;
 }
 
+.gh-administration-container .gh-striped-row p {
+    margin: 10px auto;
+    width: 100%;
+}
+
 .gh-administration-container .gh-striped-row input[type="text"],
 .gh-administration-container .gh-striped-row input[type="password"] {
     height: 39px;
@@ -92,3 +109,17 @@ table {
     width: 100%;
 }
 
+/* Search */
+
+.gh-administration-container .panel-default .panel-heading .gh-striped-container-search + h4 {
+    line-height: 2.1;
+}
+
+.gh-administration-container .panel-default .panel-heading .gh-striped-container-search {
+    width: 400px;
+}
+
+.gh-administration-container .panel-default .panel-heading .gh-striped-container-search button {
+    height: 34px;
+    padding: 6px 12px;
+}

@@ -136,7 +136,7 @@ define(['exports'], function(exports) {
         }
 
         $.ajax({
-            'url': '/api/users/' + userId + '/calendar?start=' + start + '&end=' + end,
+            'url': '/api/users/' + userId + '/calendar?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end),
             'type': 'GET',
             'success': function(data) {
                 return callback(null, data);
@@ -474,7 +474,19 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for isAdmin should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/admin',
+            'type': 'POST',
+            'data': {
+                'admin': isAdmin
+            },
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

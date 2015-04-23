@@ -1358,6 +1358,7 @@ ul.as-selections li.as-original input {
     font-size: 15px;
     padding: 10px 5px;
     text-shadow: none;
+    word-wrap: break-word;
 }
 
 .as-results .as-list {
