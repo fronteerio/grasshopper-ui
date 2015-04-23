@@ -835,6 +835,7 @@ tbody tr:last-child > td.fc-widget-content {
     border-bottom: 1px solid #DDD;
 }
 
+
 /**********/
 /* CHOSEN */
 /**********/
@@ -1145,6 +1146,7 @@ tbody tr:last-child > td.fc-widget-content {
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    overflow: hidden;
     padding: 12px;
 }
 
