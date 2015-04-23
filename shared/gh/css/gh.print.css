@@ -54,6 +54,7 @@
 }
 
 /* Make sure month view prints a full page */
+
 .fc-day-grid-container {
     height: 800px !important;
     width: 100% !important;

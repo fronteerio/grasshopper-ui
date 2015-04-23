@@ -130,6 +130,7 @@
 }
 
 /* Default buttons */
+
 #gh-toolbar-container .btn-default,
 .gh-toolbar-secondary .btn-default,
 .nav-tabs > li > a {
@@ -160,6 +161,7 @@
 }
 
 /* Secondary toolbar */
+
 .gh-toolbar-secondary {
     font-weight: 600;
     opacity: 1;
@@ -201,6 +203,7 @@
 }
 
 /* Today button */
+
 .gh-toolbar-secondary #gh-calendar-toolbar-today {
     height: 32px;
     position: absolute;
@@ -341,8 +344,6 @@
 td.fc-widget-content {
     border-style: none;
     border-top-style: solid;
-    border-left-style: none;
-    border-right-style: none;
 }
 
 .fc-month-view tbody > tr > td.fc-day.fc-widget-content {
@@ -861,62 +862,6 @@ tbody tr:last-child > td.fc-widget-content {
     display: block;
 }
 
-.panel-default.gh-striped-container .panel-body {
-    padding-bottom: 0;
-}
-
-/* Striped rows */
-
-.panel-default .panel-body .gh-striped-row {
-    padding: 9px 0;
-}
-
-/* Editable content elements */
-
-.panel-default .panel-body .gh-striped-row input[type="checkbox"] {
-    display: block;
-    height: 12px;
-    margin: 13px auto;
-    width: 12px;
-}
-
-.panel-default .panel-body .gh-striped-row p {
-    margin: 10px auto;
-    width: 100%;
-}
-
-.panel-default .panel-body .gh-striped-row input[type="text"],
-.panel-default .panel-body .gh-striped-row input[type="password"],
-.panel-default .panel-heading .gh-striped-container-search input {
-    padding: 4px 7px 0;
-    width: 100%;
-}
-
-.panel-default .panel-body .gh-striped-row input[type="text"],
-.panel-default .panel-body .gh-striped-row input[type="password"] {
-    height: 39px;
-}
-
-.panel-default .panel-body .gh-striped-row button,
-.panel-default .panel-body .gh-striped-row a {
-    width: 100%;
-}
-
-/* Search */
-
-.panel-default .panel-heading .gh-striped-container-search + h4 {
-    line-height: 2.1;
-}
-
-.panel-default .panel-heading .gh-striped-container-search {
-    width: 400px;
-}
-
-.panel-default .panel-heading .gh-striped-container-search button {
-    height: 34px;
-    padding: 6px 12px;
-}
-
 
 /**********/
 /* CHOSEN */
@@ -1228,6 +1173,7 @@ tbody tr:last-child > td.fc-widget-content {
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event {
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    overflow: hidden;
     padding: 12px;
 }
 

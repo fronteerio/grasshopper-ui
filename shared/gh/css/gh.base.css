@@ -131,16 +131,18 @@ select[disabled],
 }
 
 /* Main page container */
+
 #gh-page-container {
     min-width: 1280px;
 }
 
 /* Main page left hand side (navigation) container */
+
 #gh-page-container #gh-left-container {
     float: left;
     height: 100%;
     padding: 0;
-    position: fixed;
+    position: relative;
     -webkit-transition: width .3s;
        -moz-transition: width .3s;
          -o-transition: width .3s;
@@ -241,8 +243,6 @@ select[disabled],
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list {
-    height: 100%;
-    -webkit-overflow-scrolling: touch;
     width: 320px;
 }
 
