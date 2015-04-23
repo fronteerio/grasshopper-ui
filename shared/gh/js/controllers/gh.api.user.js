@@ -68,6 +68,33 @@ define(['exports'], function(exports) {
     };
 
     /**
+     * Get the groups a user is a member of
+     *
+     * @param  {[type]}      userId               The ID of the user to get the group memberships for
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The groups the user is a member of
+     */
+    var getUserMemberships = exports.getUserMemberships = function(userId, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        }
+
+        $.ajax({
+            'url': '/api/users/' + userId + '/memberships',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
+
+    /**
      * Get all users for an app
      *
      * @param  {Number}      appId                The ID of the app to retrieve the users for

@@ -237,16 +237,79 @@
 
             <form id="gh-user-permissions-form">
                 <ul>
+                    <!-- // Map membership to the parts -->
+                    <%
+                        _.each(memberships, function(membership) {
+                            var part = _.find(triposData.parts, function(part) {
+                                return part.GroupId === membership.id;
+                            });
+
+                            if (part) {
+                                part.isGroupMember = true;
+                            }
+                        });
+                    %>
                     <!-- // Loop over all courses and render the parent level course -->
                     <% _.each(triposData.courses, function(course) { %>
                         <li>
+                            <%
+                                <!-- // Get all subjects belonging to this course -->
+                                var courseSubjects = _.filter(triposData.subjects, function(subject) {return subject.ParentId === course.id;});
+                                <!-- // Get all parts belonging to this course -->
+                                var courseParts = _.filter(triposData.parts, function(part) {return part.ParentId === course.id;});
+                                <!-- // Check whether all parts in the course and subject should be selected -->
+                                if (courseSubjects.length) {
+                                    _.each(courseSubjects, function(courseSubject) {
+                                        <!-- // Get all parts associated to this course subject-->
+                                        var partsForCourseSubject = _.filter(triposData.parts, function(part) {
+                                            return part.ParentId === courseSubject.id;
+                                        });
+
+                                        <!-- // If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked 
+                                             // and the corresponsing course neither -->
+                                        var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
+                                            return !part.isGroupMember;
+                                        });
+
+                                        <!-- // If there are parts that the user is not a member of mark the subject and course as unchecked -->
+                                        if (partsForCourseSubjectMembership) {
+                                            courseSubject.checked = false;
+                                            course.checked = false;
+                                        } else {
+                                            courseSubject.checked = true;
+                                            // Only set the course checking to true if it wasn't previously set to false
+                                            if  (course.checked !== false) {
+                                                course.checked = true;
+                                            }
+                                        }
+                                    });
+                                <!-- // Check whether all parts in the course should be selected -->
+                                } else {
+                                    <!-- // Get all parts associated to this course subject-->
+                                    var partsForCourseSubject = _.filter(courseParts, function(part) {
+                                        return part.ParentId === course.id;
+                                    });
+
+                                    <!-- // If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked 
+                                         // and the corresponsing course neither -->
+                                    var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
+                                        return !part.isGroupMember;
+                                    });
+
+                                    <!-- // If there are parts that the user is not a member of mark the subject and course as unchecked -->
+                                    if (partsForCourseSubjectMembership) {
+                                        course.checked = false;
+                                    } else {
+                                        course.checked = true;
+                                    }
+                                }
+                            %>
+
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" class="gh-user-tripos-course-checkbox"> <%- course.displayName %>
+                                    <input type="checkbox" class="gh-user-tripos-course-checkbox" <% if (course.checked) { %>checked<% } %>> <%- course.displayName %>
                                 </label>
                             </div>
-                            <!-- // Get all subjects belonging to this course -->
-                            <% var courseSubjects = _.filter(triposData.subjects, function(subject) {return subject.ParentId === course.id;}); %>
 
                             <!-- // If there are subjects, render the parts as children of subject -->
                             <% if (courseSubjects.length) { %>
@@ -255,16 +318,17 @@
                                         <li>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" class="gh-user-tripos-subject-checkbox"> <%- subject.displayName %>
+                                                    <input type="checkbox" class="gh-user-tripos-subject-checkbox" <% if (subject.checked) { %>checked<% } %>> <%- subject.displayName %>
                                                 </label>
                                             </div>
+                                            <!-- // Get all parts belonging to this subject -->
                                             <% var subjectParts = _.filter(triposData.parts, function(part) {return part.ParentId === subject.id;}); %>
                                             <ul>
                                                 <% _.each(subjectParts, function(part) { %>
                                                     <li>
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input class="gh-user-tripos-part-checkbox" type="checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                                <input class="gh-user-tripos-part-checkbox" type="checkbox" <% if (part.isGroupMember) { %>checked<% } %> data-original="<%- part.isGroupMember || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
                                                             </label>
                                                         </div>
                                                     </li>
@@ -275,13 +339,12 @@
                                 </ul>
                             <!-- // If there are NO subjects, render the parts as children of the course -->
                             <% } else { %>
-                                <% var courseParts = _.filter(triposData.parts, function(part) {return part.ParentId === course.id;}); %>
                                 <ul>
                                     <% _.each(courseParts, function(part) { %>
                                         <li>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" class="gh-user-tripos-part-checkbox" <% if (part.canManage) { %>checked<% } %> data-original="<%- part.canManage || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                    <input type="checkbox" class="gh-user-tripos-part-checkbox" <% if (part.isGroupMember) { %>checked<% } %> data-original="<%- part.isGroupMember || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
                                                 </label>
                                             </div>
                                         </li>

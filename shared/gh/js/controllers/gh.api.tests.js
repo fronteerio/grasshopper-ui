@@ -63,10 +63,20 @@ define(['exports', 'gh.utils', 'gh.api.app', 'gh.api.authentication', 'gh.api.or
     /**
      * Return a random organisational unit
      *
-     * @return {Object}    Object representing an organisational unit
+     * @param  {String}    [type]    Optional organisation unit type to return. One of 'course', 'subject', 'part' or 'module'
+     * @return {Object}              Object representing an organisational unit
      */
-    var getRandomOrgUnit = exports.getRandomOrgUnit = function() {
-        return _.sample(_orgunits);
+    var getRandomOrgUnit = exports.getRandomOrgUnit = function(type) {
+        // If a specific type of orgunit was requested we first filter down to a subset
+        var filteredSet = _orgunits;
+        if (type) {
+            filteredSet = _.filter(_orgunits, function(orgunit) {
+                return orgunit.type === type;
+            });
+        }
+
+        // Return a sample of the orgunits
+        return _.sample(filteredSet);
     };
 
     /**

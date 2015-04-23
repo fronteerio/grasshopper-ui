@@ -513,7 +513,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
     var setUpPreviewCalendar = function(callback) {
         // Fetch the triposes
         if (!triposData) {
-            gh.utils.getTriposStructure(null, true, function(err, data) {
+            gh.utils.getTriposStructure(null, function(err, data) {
                 if (err) {
                     return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
                 }

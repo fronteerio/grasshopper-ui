@@ -81,9 +81,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @param  {Object}    triposData    The app's tripos structure
      * @private
      */
-    var renderUser = function(triposData, user) {
+    var renderUser = function(triposData, user, memberships) {
         gh.utils.renderTemplate($('#gh-app-user-template'), {
             'gh': gh,
+            'memberships': memberships.results,
             'triposData': triposData,
             'user': user
         }, $('#gh-app-user-container'));
@@ -118,12 +119,33 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /////////////////
 
     /**
-     * Update the value attribute of a checkbox
+     * Update the value attribute of a checkbox and make sure all parent checkboxes are
+     * in line with the checks that have been made
      *
      * @private
      */
     var updateCheckboxValue = function() {
-        $(this).val($(this).is(':checked'));
+        // Cache the checked value
+        var checked = $(this).is(':checked');
+
+        // Update the checkbox that changed
+        $(this).val(checked);
+
+        // Make sure any parents get updated as well. If the checkbox got
+        // unchecked the parent will be unchecked as well
+        if (!checked) {
+            $($(this).parents('li')).slice(1).children('.checkbox').find('input').prop('checked', false);
+        } else {
+            var uncheckedSiblings = $($(this).parents('li')[0]).siblings().find('input:not(:checked)');
+            // If any of the siblings are unchecked, uncheck the parents
+            if (uncheckedSiblings && uncheckedSiblings.length) {
+                $($(this).parents('li')).slice(1).children('.checkbox').find('input').prop('checked', false);
+            // If no siblings are unchecked, check their parent and fire the change event on them so that the checks
+            // proppagate to the top
+            } else {
+                $($(this).parents('li')).slice(1, 2).children('.checkbox').find('input').prop('checked', true).change();
+            }
+        }
     };
 
     /**
@@ -337,10 +359,26 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
         var appId = parseInt(require('gh.core').data.me.AppId, 10);
 
         // Get the tripos structure
-        gh.utils.getTriposStructure(appId, getUserSelection().id, function(err, triposData) {
+        gh.utils.getTriposStructure(appId, function(triposErr, triposData) {
+            if (triposErr) {
+                return gh.utils.notification('Could not get the application\'s tripos structure', constants.messaging.default.error, 'error');
+            }
+
             // Get the profile of the selected user
-            gh.api.userAPI.getUser(getUserSelection().id, function(err, user) {
-                renderUser(triposData, user);
+            gh.api.userAPI.getUser(getUserSelection().id, function(userErr, user) {
+                if (userErr) {
+                    return gh.utils.notification('Could not get the selected user\'s profile', constants.messaging.default.error, 'error');
+                }
+
+                // Get the groups the user is a member of
+                gh.api.userAPI.getUserMemberships(user.id, function(membershipErr, memberships) {
+                    if (membershipErr) {
+                        return gh.utils.notification('Could not get the user\'s memberships', constants.messaging.default.error, 'error');
+                    }
+
+                    // Render the user profile and part permissions
+                    renderUser(triposData, user, memberships);
+                });
             });
         });
     };
@@ -503,18 +541,14 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
         // Update the value attribute of a checkbox when it changes
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
 
-        // Select/deselect all parts and subjects when a course is checked/unchecked
-        $('body').on('change', '.gh-user-tripos-course-checkbox', function() {
-            var checked = $(this).is(':checked');
-            var $checkboxes = $(this).closest('li').find('.gh-user-tripos-subject-checkbox, .gh-user-tripos-part-checkbox');
-            $checkboxes.prop('checked', checked);
-        });
-
         // Select/deselect all parts when a subject is checked/unchecked
-        $('body').on('change', '.gh-user-tripos-subject-checkbox', function() {
+        $('body').on('change', '.gh-user-tripos-course-checkbox, .gh-user-tripos-subject-checkbox', function() {
             var checked = $(this).is(':checked');
-            var $checkboxes = $(this).closest('li').find('.gh-user-tripos-part-checkbox');
-            $checkboxes.prop('checked', checked);
+            var selector = '.gh-user-tripos-part-checkbox:not(:checked)';
+            if (!checked) {
+                selector = '.gh-user-tripos-part-checkbox:checked';
+            }
+            $(this).closest('li').find(selector).click();
         });
 
         // Submit the group permissions form
