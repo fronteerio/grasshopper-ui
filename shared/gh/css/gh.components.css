@@ -867,6 +867,62 @@ tbody tr:last-child > td.fc-widget-content {
     display: block;
 }
 
+.panel-default.gh-striped-container .panel-body {
+    padding-bottom: 0;
+}
+
+/* Striped rows */
+
+.panel-default .panel-body .gh-striped-row {
+    padding: 9px 0;
+}
+
+/* Editable content elements */
+
+.panel-default .panel-body .gh-striped-row input[type="checkbox"] {
+    display: block;
+    height: 12px;
+    margin: 13px auto;
+    width: 12px;
+}
+
+.panel-default .panel-body .gh-striped-row p {
+    margin: 10px auto;
+    width: 100%;
+}
+
+.panel-default .panel-body .gh-striped-row input[type="text"],
+.panel-default .panel-body .gh-striped-row input[type="password"],
+.panel-default .panel-heading .gh-striped-container-search input {
+    padding: 4px 7px 0;
+    width: 100%;
+}
+
+.panel-default .panel-body .gh-striped-row input[type="text"],
+.panel-default .panel-body .gh-striped-row input[type="password"] {
+    height: 39px;
+}
+
+.panel-default .panel-body .gh-striped-row button,
+.panel-default .panel-body .gh-striped-row a {
+    width: 100%;
+}
+
+/* Search */
+
+.panel-default .panel-heading .gh-striped-container-search + h4 {
+    line-height: 2.1;
+}
+
+.panel-default .panel-heading .gh-striped-container-search {
+    width: 400px;
+}
+
+.panel-default .panel-heading .gh-striped-container-search button {
+    height: 34px;
+    padding: 6px 12px;
+}
+
 
 /**********/
 /* CHOSEN */
