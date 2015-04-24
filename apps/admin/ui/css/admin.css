@@ -54,6 +54,11 @@ table {
     margin-bottom: 0;
 }
 
+.gh-administration-container .panel-default .panel-heading,
+.gh-administration-container .panel-default .panel-body {
+    overflow: hidden;
+}
+
 .gh-administration-container .panel-default .panel-heading h4.panel-title::after,
 .gh-administration-container .panel-default .panel-heading span::after {
     clear: both;
