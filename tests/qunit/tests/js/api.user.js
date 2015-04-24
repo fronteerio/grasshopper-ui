@@ -204,7 +204,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                 });
             });
         });
-
     });
 
     // Test the getMe functionality

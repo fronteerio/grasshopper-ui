@@ -219,7 +219,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             if (err) {
                 return gh.utils.notification('App configuration not updated', constants.messaging.default.error, 'error');
             }
-            return gh.utils.notification('App configuration updated', null, 'success');
+            gh.utils.notification('App configuration updated', null, 'success');
         });
 
         // Avoid default form submit behaviour
@@ -251,7 +251,6 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             if (err) {
                 return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
             }
-
             gh.utils.notification('System app ' + displayName + ' successfully updated', null, 'success');
         });
 
@@ -331,10 +330,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
 
                 done++;
                 if (done === todo) {
-                    callback();
-                } else {
-                    updateGroupMember(changeSet[done], callback);
+                    return callback();
                 }
+
+                updateGroupMember(changeSet[done], callback);
             });
         };
 

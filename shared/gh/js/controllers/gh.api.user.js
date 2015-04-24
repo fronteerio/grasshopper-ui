@@ -64,7 +64,6 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
-        
     };
 
     /**
