@@ -850,6 +850,11 @@ tbody tr:last-child > td.fc-widget-content {
     margin-bottom: 25px;
 }
 
+.gh-administration-container .panel-default .panel-heading,
+.gh-administration-container .panel-default .panel-body {
+    overflow: hidden;
+}
+
 .panel-group .panel-default {
     border-bottom: none;
     margin-bottom: 0;

@@ -173,17 +173,14 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             return 0;
         }
 
-        // Get the start date of the corresponding term (and add one hour to catch the summer time difference)
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).add({'hours': 1}).utc().format('YYYY-MM-DD'));
+        // Get the start date of the corresponding term
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
         var dayNumber = parseInt(moment(startDate).format('E'), 10);
 
         // Since the terms start on a Tuesday we have an offset of 2 days.
-        // The 0.01 we subtract is just a hack that allows us to ceil
-        // the result of the last calculation before returning the week number,
-        // since this will always result in a integer value
-        var dayOffset = ((1 / 7) * dayNumber) - 0.01;
+        var dayOffset = ((1 / 7) * dayNumber);
 
         // Calculate and return the current academic week number
         // If the term in which the date is can be retrieved, we need to calculate the exact
