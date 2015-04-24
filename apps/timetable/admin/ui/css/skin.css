@@ -77,11 +77,6 @@
     color: #BEBEBE;
 }
 
-#gh-page-container #gh-right-container #gh-subheader,
-#gh-page-container #gh-left-container #gh-content-description {
-    background-color: #412F5B;
-}
-
 #gh-main-tripos .gh-video {
     background-image: url('/shared/gh/img/video.png');
 }
