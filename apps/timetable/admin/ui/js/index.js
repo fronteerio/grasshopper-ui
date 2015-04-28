@@ -177,6 +177,8 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
             'gh': gh,
             'data': data
         }, $('#gh-main'));
+        // Focus the input field
+        $('#gh-series-name').focus();
     };
 
     /**
