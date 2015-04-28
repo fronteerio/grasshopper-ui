@@ -79,7 +79,7 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
             $('#gh-delete-series-modal').modal('hide');
 
             // Remove the series from the navigation
-            $('.list-group-item[data-id="' + seriesId + '"').remove();
+            $('.list-group-item[data-id="' + seriesId + '"]').remove();
 
             // Remove the series from the state
             removeSeriesFromState();
