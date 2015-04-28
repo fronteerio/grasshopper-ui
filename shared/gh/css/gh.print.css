@@ -1,4 +1,4 @@
-/*!
+today/*!
  * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
@@ -13,12 +13,16 @@
  * permissions and limitations under the License.
  */
 
+body {
+    height: 0 !important;
+}
+
 
 /********************/
 /* COLLAPSE MODULES */
 /********************/
 
-.gh-collapsed main {
+.gh-collapsed #gh-main {
     margin-top: 0 !important;
 }
 
@@ -33,7 +37,8 @@
 
 #gh-page-container #gh-left-container,
 #gh-page-container #gh-right-container #gh-header-container,
-#gh-page-container #gh-right-container #gh-main #gh-toolbar-container {
+#gh-page-container #gh-right-container #gh-main #gh-toolbar-container,
+#gh-page-container #gh-right-container #gh-main .gh-toolbar.gh-toolbar-secondary {
     display: none;
 }
 
@@ -47,10 +52,19 @@
     padding-top: 0;
 }
 
+#gh-my-calendar-view,
+#gh-calendar-view-container {
+    margin: 0;
+}
+
 .fc-event-container .fc-event {
     background-color: #FFF !important;
     border: 1px solid #127077;
     border-left-width: 5px;
+}
+
+.fc-scroller {
+    overflow: hidden;
 }
 
 /* Make sure month view prints a full page */
@@ -62,4 +76,18 @@
 
 .fc-basic-view tbody .fc-row {
     height: 9em !important;
+}
+
+.fc-agendaWeek-view td.fc-today,
+.fc-month-view td.fc-today {
+    background-color: none !important;
+}
+
+
+/*************/
+/* MY AGENDA */
+/*************/
+
+#gh-my-agenda-view .gh-btn-load-next-week {
+    display: none;
 }

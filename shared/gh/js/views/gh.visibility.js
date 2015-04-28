@@ -180,6 +180,10 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
         $(document).on('gh.part.changed', setUpVisibilityButton);
         // Change the visibility mode
         $('body').on('change', '#gh-visibility-form input[type="radio"]', selectVisibilityType);
+        // Change the visibility selection to published
+        $('body').on('click', '#gh-visibility-form #gh-visibility-divider', function() {
+            $('#gh-visibility-published').click();
+        });
         // Update the visibility status
         $('body').on('click', '#gh-visibility-save', updateVisibilityStatus);
         // Toggle the modal

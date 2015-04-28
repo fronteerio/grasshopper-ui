@@ -761,7 +761,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             'disable': false,
             'height': '38px',
             'maxlength': 255,
-            'onblur': 'cancel',
+            'onblur': 'submit',
             'placeholder': 'Click to add a title for this series',
             'select': true,
             'type': 'series-title',
@@ -776,7 +776,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('.gh-jeditable-events').editable(editableEventSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'height': '38px',
-            'onblur': 'cancel',
+            'onblur': 'submit',
             'placeholder': '',
             'select' : true,
             'callback': function(value, settings) {
@@ -792,7 +792,6 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
             'cssclass': 'gh-jeditable-form',
             'disable': false,
-            'onblur': 'cancel',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to edit the event type',
@@ -809,7 +808,6 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // Apply jEditable to the organisers
         $('.gh-edit-event-organisers').editable(editableOrganiserSubmitted, {
             'cssclass': 'gh-jeditable-form',
-            'onblur': 'cancel',
             'placeholder': '',
             'select': true,
             'tooltip': 'Click to add a lecturer for this event',

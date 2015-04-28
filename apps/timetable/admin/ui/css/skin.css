@@ -463,7 +463,11 @@ tr.info .gh-event-delete button i {
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container .visibility-type,
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye-slash,
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye,
-#gh-visibility-modal #gh-visibility-form label.checked small {
+#gh-visibility-modal #gh-visibility-form label.checked small,
+#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container .visibility-type,
+#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container i.fa-eye-slash,
+#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container i.fa-eye,
+#gh-visibility-modal #gh-visibility-form label:hover small {
     color: #333;
 }
 
@@ -471,11 +475,13 @@ tr.info .gh-event-delete button i {
     border-top-color: #BBB;
 }
 
-#gh-visibility-modal #gh-visibility-form label.checked small p {
+#gh-visibility-modal #gh-visibility-form label.checked small p,
+#gh-visibility-modal #gh-visibility-form label:hover small p {
     border-top-color: #333;
 }
 
-#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container {
+#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container,
+#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container {
     background-color: #FFF;
     border-color: #62326E;
 }
