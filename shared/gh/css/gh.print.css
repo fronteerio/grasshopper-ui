@@ -52,10 +52,19 @@ body {
     padding-top: 0;
 }
 
+#gh-my-calendar-view,
+#gh-calendar-view-container {
+    margin: 0;
+}
+
 .fc-event-container .fc-event {
     background-color: #FFF !important;
     border: 1px solid #127077;
     border-left-width: 5px;
+}
+
+.fc-scroller {
+    overflow: hidden;
 }
 
 /* Make sure month view prints a full page */
@@ -72,4 +81,13 @@ body {
 .fc-agendaWeek-view td.fc-today,
 .fc-month-view td.fc-today {
     background-color: none !important;
+}
+
+
+/*************/
+/* MY AGENDA */
+/*************/
+
+#gh-my-agenda-view .gh-btn-load-next-week {
+    display: none;
 }
