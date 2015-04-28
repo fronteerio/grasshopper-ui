@@ -35,6 +35,8 @@
     }
 %>
 
+<% var currentTerm = data.utils.getTerm(Date.now()) %>
+
 <% _.each(data.terms, function(term) { %>
     <% var termOpened = _.indexOf(data.openedTerms, term.name) !== -1; %>
     <% var weeksInTerm = data.utils.getWeeksInTerm(term) %>
@@ -46,7 +48,7 @@
             <% _.each(term.events, function(week, weekIndex) { %>
                 <% prevDate = null %>
                 <div class="gh-agenda-view-term-week">
-                    <h3>Week <%- parseInt(weekIndex, 10) + 1 %><% if (parseInt(weekIndex, 10) + 1 === getCurrentAcademicWeekNumber()) { %> <span>- this week</span><% } %></h3>
+                    <h3>Week <%- parseInt(weekIndex, 10) + 1 %><% if (parseInt(weekIndex, 10) + 1 === getCurrentAcademicWeekNumber() && currentTerm.name === term.name) { %> <span>- this week</span><% } %></h3>
                     <% if (!week.length) { %>
                         <div class="gh-agenda-view-no-events">You have no events scheduled in week <%- parseInt(weekIndex, 10) + 1 %> of <%- term.label %></div>
                     <% } %>
