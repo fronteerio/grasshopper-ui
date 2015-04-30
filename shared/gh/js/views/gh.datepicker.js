@@ -108,8 +108,8 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         // Return the full dates
         return {
-            'start': startDate,
-            'end': endDate
+            'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format()),
+            'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format())
         };
     };
 
