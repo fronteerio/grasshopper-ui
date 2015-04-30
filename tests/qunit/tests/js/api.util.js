@@ -918,11 +918,11 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
             // Verify that the template renders in the target container
             gh.utils.renderTemplate('qunit-basic-test', templateData, $('#qunit-template-target'));
-            assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu.', 'Verify the template HTML is rendered in the target container when specified');
+            assert.equal($('#qunit-template-target').text().trim(), 'Hi, Mathieu.', 'Verify the template HTML is rendered in the target container when specified');
 
             // Verify that the rendered HTML is returned when no target is specified
             var returnedHTML = gh.utils.renderTemplate('qunit-basic-test', templateData);
-            assert.equal(returnedHTML, 'Hi, Mathieu.', 'Verify the rendered HTML returns when no target container is specified');
+            assert.equal(returnedHTML.trim(), 'Hi, Mathieu.', 'Verify the rendered HTML returns when no target container is specified');
 
             QUnit.start();
         });

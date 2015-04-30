@@ -65,13 +65,13 @@
                     <!-- Borrowed status -->
                     <% if (isChild && orgunit.borrowedFrom) { %>
 
-                        <!-- Borrowed popover-->
+                        <!-- Borrowed popover -->
                         <% var randomId = data.utils.generateRandomString(); %>
                         <div id="<%- randomId %>">
                             <% _.partial('series-borrowed-popover', {'data': orgunit}, null, '#' + randomId) %>
                         </div>
 
-                        <!-- Borrowed popover-->
+                        <!-- Published popover-->
                         <% randomId = data.utils.generateRandomString(); %>
                         <div id="<%- randomId %>">
                             <% _.partial('series-borrowed-published-popover', {'data': orgunit}, null, '#' + randomId) %>
@@ -121,7 +121,6 @@
                     </ul>
                 <% } %>
             </li>
-
         <% } %>
 
         <%

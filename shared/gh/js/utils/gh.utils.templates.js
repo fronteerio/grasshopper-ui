@@ -138,7 +138,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
      * @throws {Error}                                        Error thrown when no template has been provided
      */
     var renderTemplate = exports.renderTemplate = function(partial, data, $target, callback) {
-        if (!partial || !_.isString(partial)) {
+        if (!_.isString(partial)) {
             throw new Error('No valid partial name has been provided');
         }
 
