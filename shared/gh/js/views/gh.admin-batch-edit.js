@@ -159,10 +159,10 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         } else {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': gh.utils.convertUnixDatetoISODate(moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format()),
+                'end': gh.utils.convertUnixDatetoISODate(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0]).utc().format()),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': gh.utils.convertUnixDatetoISODate(moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()),
+                'start': gh.utils.convertUnixDatetoISODate(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0]).utc().format()),
                 'type': gh.config.events.default
             };
         }
