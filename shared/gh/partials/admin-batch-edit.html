@@ -12,28 +12,28 @@
         <div id="gh-batch-list-view" class="tab-pane active" role="tabpanel">
             <div id="gh-batch-edit-container">
 
-                <% if (!data.records.borrowedFrom) { %>
-                    <ul class="nav nav-pills pull-right" role="tablist">
-                        <li role="presentation" class="dropdown">
-                            <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="sr-only">Series settings</span>
-                                <i class="fa fa-cog"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                <ul class="nav nav-pills pull-right" role="tablist">
+                    <li role="presentation" class="dropdown">
+                        <button id="gh-batch-edit-settings" class="btn btn-default pull-right gh-btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Series settings</span>
+                            <i class="fa fa-cog"></i>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="gh-batch-edit-settings">
+                            <% if (!data.records.borrowedFrom) { %>
                                 <li role="presentation">
                                     <button type="button" class="btn btn-default gh-btn-secondary gh-select-all-terms" role="menuitem">Edit all events</button>
                                 </li>
                                 <li role="presentation">
                                     <button type="button" class="btn btn-default gh-btn-secondary gh-rename-series" role="menuitem">Rename series</button>
                                 </li>
-                                <li role="presentation">
-                                    <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem">Delete series</button>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                <% } %>
+                            <% } %>
+                            <li role="presentation">
+                                <button type="button" class="btn btn-default gh-btn-secondary gh-delete-series" role="menuitem"><% if (data.records.borrowedFrom) { %>Remove series<% } else { %>Delete series<% } %></button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
                 <!-- Series title -->
                 <% if (data.records.borrowedFrom) { %><i class="fa fa-link pull-left"></i> <% } %><h1 class="<% if (!data.records.borrowedFrom) { %> gh-jeditable-series-title<% } else { %>gh-disabled<% } %>"<% if (!data.records.borrowedFrom) { %> title="Click to edit the title of this series"<% } %>><%- data.records.series.displayName %></h1>
