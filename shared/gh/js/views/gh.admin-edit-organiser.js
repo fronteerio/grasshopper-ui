@@ -55,13 +55,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          * @private
          */
         'element' : function(settings, original) {
-            // Render the organiser template
-            var content = gh.utils.renderTemplate($('#gh-organiser-template'), {
-                'data': {
-                    'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000))
-                }
-            });
-            $(this).append(content);
+            $(this).append('<input class="gh-organiser-autosuggest" type="text" placeholder="Lecturers">');
             return this;
         },
 

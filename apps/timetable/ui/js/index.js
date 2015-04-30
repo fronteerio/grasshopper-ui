@@ -31,26 +31,28 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var setUpHeader = function() {
         // Render the header template
-        gh.utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate('header', {
             'data': {
                 'gh': gh
             }
-        }, $('#gh-header'));
-
-        // Bind the validator to the login form
-        $('.gh-signin-form').validator({
-            'disable': false
-        }).on('submit', doLogin);
+        }, $('#gh-header'), function() {
+            // Bind the validator to the login form when it becomes available
+            $('.gh-signin-form').onAvailable(function() {
+                    $('.gh-signin-form').validator({
+                    'disable': false
+                }).on('submit', doLogin);
+            });
+        });
 
         // Render the tripos pickers
-        gh.utils.renderTemplate($('#gh-subheader-pickers-template'), {
+        gh.utils.renderTemplate('subheader-pickers', {
             'gh': gh
-        }, $('#gh-subheader'));
-
-        // Set up the tripos picker after all data has been retrieved
-        // Initialise the subheader component after all data has been retrieved
-        $(document).trigger('gh.subheader.init', {
-            'triposData': triposData
+        }, $('#gh-subheader'), function() {
+            // Set up the tripos picker after all data has been retrieved
+            // Initialise the subheader component after all data has been retrieved
+            $(document).trigger('gh.subheader.init', {
+                'triposData': triposData
+            });
         });
     };
 
@@ -61,21 +63,21 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      */
     var setUpCalendar = function() {
         // Render the calendar template
-        gh.utils.renderTemplate($('#gh-calendar-template'), {
+        gh.utils.renderTemplate('calendar', {
             'data': {
                 'gh': gh
             }
-        }, $('#gh-main'));
+        }, $('#gh-main'), function() {
+            // Initialise the calendar
+            $(document).trigger('gh.calendar.init', {'triposData': triposData});
 
-        // Initialise the calendar
-        $(document).trigger('gh.calendar.init', {'triposData': triposData});
+            // Fetch the user's events
+            if (!gh.data.me.anon) {
 
-        // Fetch the user's events
-        if (!gh.data.me.anon) {
-
-            // Put the calendar on today's view
-            $(document).trigger('gh.calendar.navigateToToday');
-        }
+                // Put the calendar on today's view
+                $(document).trigger('gh.calendar.navigateToToday');
+            }
+        });
     };
 
     /**
@@ -89,7 +91,7 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         if (!data.modules.results.length) {
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
                 // Render the 'empty-timetable' template
-                gh.utils.renderTemplate($('#gh-empty-template'), {
+                gh.utils.renderTemplate('empty-timetable', {
                     'data': {
                         'gh': gh,
                         'record': data
@@ -114,17 +116,17 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
      * @private
      */
     var renderLoginModal = function() {
-        gh.utils.renderTemplate($('#gh-modal-template'), {
+        gh.utils.renderTemplate('login-modal', {
             'data': {
                 'gh': gh,
                 'isGlobalAdminUI': false
             }
-        }, $('#gh-modal'));
-
-        // Bind the validator to the login form
-        $('.gh-signin-form').validator({
-            'disable': false
-        }).on('submit', doLogin);
+        }, $('#gh-modal'), function() {
+            // Bind the validator to the login form
+            $('.gh-signin-form').validator({
+                'disable': false
+            }).on('submit', doLogin);
+        });
 
         // Track an event when the login modal is shown
         $('#gh-modal-login').on('shown.bs.modal', function () {

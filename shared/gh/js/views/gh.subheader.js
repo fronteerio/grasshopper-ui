@@ -116,26 +116,26 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         });
 
         // Render the results in the part picker
-        gh.utils.renderTemplate($('#gh-subheader-part-template'), {
+        gh.utils.renderTemplate('subheader-part', {
             'data': {
                 'gh': gh,
                 'parts': parts
             }
-        }, $('#gh-subheader-part'));
+        }, $('#gh-subheader-part'), function() {
+            // Show the subheader part picker
+            $('#gh-subheader-part').show();
 
-        // Show the subheader part picker
-        $('#gh-subheader-part').show();
+            // Destroy the field if it's been initialised previously
+            $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
 
-        // Destroy the field if it's been initialised previously
-        $('#gh-subheader-part').chosen('destroy').off('change', setUpModules);
+            // Initialise the Chosen plugin on the part picker
+            $('#gh-subheader-part').chosen({
+                'disable_search': true
+            }).on('change', setUpModules);
 
-        // Initialise the Chosen plugin on the part picker
-        $('#gh-subheader-part').chosen({
-            'disable_search': true
-        }).on('change', setUpModules);
-
-        // Chosen has a bug where search sometimes isn't disabled properly
-        $('#gh_subheader_part_chosen .chosen-search').hide();
+            // Chosen has a bug where search sometimes isn't disabled properly
+            $('#gh_subheader_part_chosen .chosen-search').hide();
+        });
     };
 
     /**
@@ -156,25 +156,25 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Massage the data so that courses are linked to their child subjects
         // Render the results in the tripos picker
-        gh.utils.renderTemplate($('#gh-subheader-picker-template'), {
+        gh.utils.renderTemplate('subheader-picker', {
             'data': {
                 'triposPickerData': triposPickerData
             }
-        }, $('#gh-subheader-tripos'));
+        }, $('#gh-subheader-tripos'), function() {
+            // Show the subheader tripos picker
+            $('#gh-subheader-tripos').show();
 
-        // Show the subheader tripos picker
-        $('#gh-subheader-tripos').show();
+            // Destroy the field if it's been initialised previously
+            $('#gh-subheader-tripos').chosen('destroy').off('change', setUpPartPicker);
 
-        // Destroy the field if it's been initialised previously
-        $('#gh-subheader-tripos').chosen('destroy').off('change', setUpPartPicker);
+            // Initialise the Chosen plugin on the tripos picker
+            $('#gh-subheader-tripos').chosen({
+                'no_results_text': 'No matches for'
+            }).change(setUpPartPicker);
 
-        // Initialise the Chosen plugin on the tripos picker
-        $('#gh-subheader-tripos').chosen({
-            'no_results_text': 'No matches for'
-        }).change(setUpPartPicker);
-
-        // Set the default placeholder text
-        $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search triposes');
+            // Set the default placeholder text
+            $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search triposes');
+        });
     };
 
     /**
@@ -195,9 +195,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // If the URL shows a preselected tripos, select that tripos automatically
         if (state.tripos) {
-            $('#gh-subheader-tripos').val(state.tripos);
-            $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
-            $('#gh-subheader-tripos').trigger('chosen:updated');
+            $('#gh_subheader_tripos_chosen').onAvailable(function() {
+                $('#gh-subheader-tripos').val(state.tripos);
+                $('#gh-subheader-tripos').trigger('change', {'selected': state.tripos});
+                $('#gh-subheader-tripos').trigger('chosen:updated');
+            });
         } else {
             // If there is no selected tripos, the tripos, part, module and series should be removed from the hash
             gh.utils.removeFromState(['part', 'module', 'series']);
@@ -217,39 +219,46 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
         }
 
         // If the URL shows a preselected part, select that part automatically
-        if (state.part && $('#gh-subheader-part [value="' + state.part + '"]').length) {
-            $('#gh-subheader-part').val(state.part);
-            $('#gh-subheader-part').trigger('change', {'selected': state.part});
-            $('#gh-subheader-part').trigger('chosen:updated');
-            // Hide the contextual help
-            if (!$('body').hasClass('gh-admin')) {
-                $('#gh-content-description p').hide();
-            }
+        if (state.part) {
+            $('#gh_subheader_part_chosen').onAvailable(function() {
+                if ($('#gh-subheader-part [value="' + state.part + '"]').length) {
+                    $('#gh-subheader-part').val(state.part);
+                    $('#gh-subheader-part').trigger('change', {'selected': state.part});
+                    $('#gh-subheader-part').trigger('chosen:updated');
 
-            // Only select the part if it is available in the part picker, if it's not
-            // it indicates that either the tripos has changed since the last iteration
-            // or the part is no longer available. Either way, the part, module and series
-            // should be removed from the url in that case
-            if (!$('#gh-subheader-part option[value="' + state.part + '"]').length) {
-                // If there is no part to select, part, module and series should be removed from the hash
-                gh.utils.removeFromState(['part', 'module', 'series']);
-            }
+                    // Hide the contextual help
+                    if (!$('body').hasClass('gh-admin')) {
+                        $('#gh-content-description p').hide();
+                    }
 
-            // Dispatch an event to update the visibility button
-            $(document).trigger('gh.part.changed', {'part': state.part});
+                    // Only select the part if it is available in the part picker, if it's not
+                    // it indicates that either the tripos has changed since the last iteration
+                    // or the part is no longer available. Either way, the part, module and series
+                    // should be removed from the url in that case
+                    if (!$('#gh-subheader-part option[value="' + state.part + '"]').length) {
+                        // If there is no part to select, part, module and series should be removed from the hash
+                        gh.utils.removeFromState(['part', 'module', 'series']);
+                    }
+
+                    // Dispatch an event to update the visibility button
+                    $(document).trigger('gh.part.changed', {'part': state.part});
+                }
+            });
         } else {
             // If there is no preselected part, the part, module and series should be removed from the hash
             gh.utils.removeFromState(['part', 'module', 'series']);
+            // Remove the results summary
             $('#gh-result-summary').remove();
             // Show the informational message to the user, if there is one
-            gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-list-container'));
-            // Show the contextual help
-            if (!$('body').hasClass('gh-admin')) {
-                $('#gh-content-description p').show();
-            }
+            gh.utils.renderTemplate('admin-tripos-help', null, $('#gh-modules-list-container'), function() {
+                // Show the contextual help
+                if (!$('body').hasClass('gh-admin')) {
+                    $('#gh-content-description p').show();
+                }
 
-            // Dispatch an event to update the visibility button
-            $(document).trigger('gh.part.changed');
+                // Dispatch an event to update the visibility button
+                $(document).trigger('gh.part.changed');
+            });
         }
 
         // ADMIN ONLY LOGIC

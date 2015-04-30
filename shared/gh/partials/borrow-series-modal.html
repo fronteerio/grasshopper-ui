@@ -8,14 +8,24 @@
             <div class="modal-body">
                 <form class="form-horizontal gh-chosen-inverted">
                     <select id="gh-borrow-series-tripos" class="chosen-select" data-placeholder="Choose a Tripos" style="display: none; width: 300px;" tabindex="-1">
-                        <%= _.partial('subheader-picker', {'data': data}) %>
+                        <% var randomId = data.gh.utils.generateRandomString() %>
+                        <option id="<%- randomId %>">
+                            <% _.partial('subheader-picker', {'data': data}, null, '#' + randomId) %>
+                        </option>
                     </select>
                     <select id="gh-borrow-series-part" class="chosen-select" data-placeholder="Choose a part/paper" style="display: none; width: 160px;" tabindex="-1">
-                        <%= _.partial('subheader-part', {'data': data}) %>
+                        <% randomId = data.gh.utils.generateRandomString() %>
+                        <div id="<%- randomId %>">
+                            <% _.partial('subheader-part', {'data': data}, null, '#' + randomId) %>
+                        </div>
                     </select>
                 </form>
 
-                <div id="gh-modules-container"><!-- --></div>
+                <div id="gh-modules-container">
+                    <div id="gh-modules-list-container">
+                        <ul id="gh-modules-list" class="list-group"><!-- --></ul>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Cancel</button>
@@ -24,10 +34,6 @@
         </div>
     </div>
 </div>
-
-<script id="gh-borrow-series-part-template" type="text/template">
-    <%= _.partial('subheader-part', {'data': data}, false) %>
-</script>
 
 <script id="gh-borrow-series-modules-template" type="text/template">
     <div id="gh-modules-list-container">

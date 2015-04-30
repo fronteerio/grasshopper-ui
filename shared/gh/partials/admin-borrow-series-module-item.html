@@ -29,10 +29,14 @@
         </div>
         <% if (d.Series) { %>
             <ul class="list-group hide">
-                <%= _.partial('admin-borrow-series-module-item', {
-                    'data': d.Series,
-                    'isChild': true
-                }) %>
+                <% var randomId = utils.generateRandomString(); %>
+                <li id="<%- randomId %>">
+                    <% _.partial('admin-borrow-series-module-item', {
+                        'data': d.Series,
+                        'isChild': true,
+                        'utils': data.utils
+                    }, null, '#' + randomId) %>
+                </li>
             </ul>
         <% } %>
     </li>

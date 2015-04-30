@@ -895,7 +895,9 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
     /////////////////
 
     // Test the 'renderTemplate' functionality
-    QUnit.test('renderTemplate', function(assert) {
+    QUnit.asyncTest('renderTemplate', function(assert) {
+        expect(4);
+
         // Add a template to the page
         $('body').append('<script id="qunit-template" type="text/template">Hi, <%- name %></script>');
         // Create the data to use in the template
@@ -911,33 +913,39 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         }, 'Verify that a template needs to be provided');
 
         // Verify that template data is optional
-        assert.ok(gh.utils.renderTemplate($('#qunit-template'), null, $('#qunit-template-target')), 'Verify that template data is optional');
+        gh.utils.renderTemplate('qunit-basic-test', null, $('#qunit-template-target'), function(template) {
+            assert.ok(template, 'Verify that template data is optional');
 
-        // Verify that the template renders in the target container
-        gh.utils.renderTemplate($('#qunit-template'), templateData, $('#qunit-template-target'));
-        assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu', 'Verify the template HTML is rendered in the target container when specified');
+            // Verify that the template renders in the target container
+            gh.utils.renderTemplate('qunit-basic-test', templateData, $('#qunit-template-target'));
+            assert.equal($('#qunit-template-target').text(), 'Hi, Mathieu.', 'Verify the template HTML is rendered in the target container when specified');
 
-        // Verify that the rendered HTML is returned when no target is specified
-        var returnedHTML = gh.utils.renderTemplate($('#qunit-template'), templateData);
-        assert.equal(returnedHTML, 'Hi, Mathieu', 'Verify the rendered HTML returns when no target container is specified');
+            // Verify that the rendered HTML is returned when no target is specified
+            var returnedHTML = gh.utils.renderTemplate('qunit-basic-test', templateData);
+            assert.equal(returnedHTML, 'Hi, Mathieu.', 'Verify the rendered HTML returns when no target container is specified');
+
+            QUnit.start();
+        });
     });
 
     // Test the 'RenderTemplate - Partials' functionality
-    QUnit.test('renderTemplate - Partials', function(assert) {
-        // Verify that a partial can be used to render a template
-        // Add a template to the page
-        $('body').append('<script id="qunit-template-partial" type="text/template"><%= _.partial(\'calendar\', {\'data\': data}) %></script>');
+    QUnit.asyncTest('renderTemplate - Partials', function(assert) {
+        expect(1);
+        // Append a container to the body to render the template in
+        $('body').append('<div id="qunit-partial-test-container" style="display: none;"></div>');
         // Create the data to use in the template
         var data = {
             'data': {
                 'gh': gh
             }
         };
-        // Add a target container to the page
-        $('body').append('<div id="qunit-template-partial-target" style="display: none;"></div>');
         // Verify that the template renders in the target container
-        gh.utils.renderTemplate($('#qunit-template-partial'), data, $('#qunit-template-partial-target'));
-        assert.ok($('#qunit-template-partial-target').html(), 'Verify the template partial HTML is rendered in the target container');
+        gh.utils.renderTemplate('qunit-partial-test', data, $('#qunit-partial-test-container'), function(template) {
+            setTimeout(function() {
+                assert.equal($('#qunit-partial-test-container').text().trim(), 'Hi, Mathieu.', 'Verify the template partial HTML is rendered in the target container');
+                QUnit.start();
+            }, 1000);
+        });
     });
 
     // Test the 'renderHierarchyString' functionality
