@@ -149,20 +149,20 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         if ($lastEventInTerm.length) {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').toISOString(),
+                'end': gh.utils.convertUnixDatetoISODate(moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').utc().format()),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').toISOString(),
+                'start': gh.utils.convertUnixDatetoISODate(moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').utc().format()),
                 'type': gh.config.events.default
             };
         // If no events were previously added to the term, create a default event object
         } else {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).toISOString(),
+                'end': gh.utils.convertUnixDatetoISODate(moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0])).utc().format()),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).toISOString(),
+                'start': gh.utils.convertUnixDatetoISODate(moment(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0])).utc().format()),
                 'type': gh.config.events.default
             };
         }
