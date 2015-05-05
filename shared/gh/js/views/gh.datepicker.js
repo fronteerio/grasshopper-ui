@@ -201,6 +201,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
      * @param  {Object}    msg            The custom message that was sent with the event
      * @param  {Object}    msg.ev         The original invoked jQuery event
      * @param  {Object}    msg.trigger    The trigger that invoked the jQuery event
+     * @throws {Error}                    A parameter validation error
      * @private
      */
     var showPopover = function(ev, msg) {

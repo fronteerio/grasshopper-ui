@@ -92,6 +92,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The tripos structure
+     * @throws {Error}                            A parameter validation error
      *
      * * The returned tripos structure will be something in the lines of:
      * *

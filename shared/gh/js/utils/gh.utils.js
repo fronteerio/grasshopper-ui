@@ -26,6 +26,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      *     - 'Timetable Administration' when the administrator UI is loaded
      *
      * @param {String}    [title]    The title to set to the document
+     * @throws {Error}               A parameter validation error
      */
     var setDocumentTitle = exports.setDocumentTitle = function(title) {
         if (title && !_.isString(title)) {
@@ -48,6 +49,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      *
      * @param  {Boolean}    toLowerCase    Whether or not the string should be returned lowercase
      * @return {String}                    Random 10 character sequence of upper and lowercase letters
+     * @throws {Error}                     A parameter validation error
      */
     var generateRandomString = exports.generateRandomString = function(toLowerCase) {
         if (toLowerCase && !_.isBoolean(toLowerCase)) {
@@ -67,6 +69,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      *
      * @param  {String}    url    The url that needs to be validated
      * @return {String}           The validated url
+     * @throws {Error}            A parameter validation error
      */
     var validateExternalURL = exports.validateExternalURL = function(url) {
         if (!_.isString(url)) {
@@ -92,6 +95,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      * @param  {Object}           headers        The response headers
      * @param  {Object|String}    body           The response body
      * @param  {Function}         requestFunc    The mock function
+     * @throws {Error}                           A parameter validation error
      */
     var mockRequest = exports.mockRequest = function(type, url, statusCode, headers, body, requestFunc) {
         if (!_.isString(type)) {
@@ -142,6 +146,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
          *
          * @param  {String}                 key    The key of the value that needs to be retrieved from the local storage
          * @return {Object|Array|String}           The requested value
+         * @throws {Error}                         A parameter validation error
          */
         var get = function(key) {
             if (!_.isString(key)) {
@@ -155,8 +160,9 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
         /**
          * Remove a local value
          *
-         * @param  {String}     key      The key of the entry that needs to be stored
+         * @param  {String}       key    The key of the entry that needs to be stored
          * @return {undefined}
+         * @throws {Error}               A parameter validation error
          */
         var remove = function(key) {
             if (!_.isString(key)) {
@@ -173,6 +179,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
          * @param  {String}                 key      The key of the entry that needs to be stored
          * @param  {Object|Array|String}    value    The value of the key that needs to be stored
          * @return {undefined}
+         * @throws {Error}                           A parameter validation error
          */
         var store = function(key, value) {
             if (!_.isString(key)) {
@@ -211,8 +218,8 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      * @param  {String}     [type]      The notification type. The supported types are `success`, `error` and `info`, as defined in http://getbootstrap.com/components/#alerts. By default, the `success` type will be used
      * @param  {String}     [id]        Unique identifier for the notification, in case a notification can be triggered twice due to some reason. If a second notification with the same id is triggered it will be ignored
      * @param  {Boolean}    [sticky]    Whether or not the notification should be sticky. Defaults to `false`
-     * @throws {Error}                  Error thrown when no message has been provided
      * @return {Boolean}                Returns true when the notification has been shown
+     * @throws {Error}                  Error thrown when no message has been provided
      */
     var notification = exports.notification = function(title, message, type, id, sticky) {
         if (!title) {
@@ -341,6 +348,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
      *
      * @param  {jQuery}    $hiddenFields    The container where the hidden fields to create the user objects with can be found in
      * @return {User[]}                     Array of user objects
+     * @throws {Error}                      A parameter validation error
      */
     var getOrganiserObjects = exports.getOrganiserObjects = function($hiddenFields) {
         if (!$hiddenFields) {

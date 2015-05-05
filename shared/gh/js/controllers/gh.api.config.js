@@ -24,6 +24,7 @@ define(['exports', 'lodash'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The configuration for the current app
+     * @throws {Error}                            A parameter validation error
      */
     var getConfig = exports.getConfig = function(appId, callback) {
         if (!_.isFunction(callback)) {
@@ -73,6 +74,7 @@ define(['exports', 'lodash'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The static configuration for all apps
+     * @throws {Error}                            A parameter validation error
      */
     var getStaticConfig = exports.getStaticConfig = function(callback) {
         if (!_.isFunction(callback)) {
@@ -100,6 +102,7 @@ define(['exports', 'lodash'], function(exports) {
      * @param  {Object}      configValues      The configuration value(s) to update. e.g., {'key1': value1, 'key2': value2}
      * @param  {Function}    [callback]        Standard callback function
      * @param  {Object}      [callback.err]    Error object containing the error code and error message
+     * @throws {Error}                         A parameter validation error
      */
     var updateConfig = exports.updateConfig = function(appId, configValues, callback) {
         if (callback && !_.isFunction(callback)) {

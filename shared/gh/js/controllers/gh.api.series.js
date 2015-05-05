@@ -23,6 +23,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the added event
+     * @throws {Error}                            A parameter validation error
      */
     var addSeriesEvents = exports.addSeriesEvents = function(serieId, eventId, callback) {
         if (!_.isFunction(callback)) {
@@ -58,6 +59,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the created event series
+     * @throws {Error}                              A parameter validation error
      */
     var createSeries = exports.createSeries = function(appId, displayName, description, groupId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -112,6 +114,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the cropped picture
+     * @throws {Error}                            A parameter validation error
      */
     var cropSeriesPicture = exports.cropSeriesPicture = function(serieId, width, x, y, callback) {
         if (!_.isFunction(callback)) {
@@ -150,6 +153,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the deleted event series
+     * @throws {Error}                              A parameter validation error
      */
     var deleteSeries = exports.deleteSeries = function(serieId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -181,6 +185,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the deleted event
+     * @throws {Error}                              A parameter validation error
      */
     var deleteSeriesEvents = exports.deleteSeriesEvents = function(serieId, eventId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -217,6 +222,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the event series
+     * @throws {Error}                            A parameter validation error
      */
     var getSeries = exports.getSeries = function(serieId, includeOrgUnits, callback) {
         if (!_.isFunction(callback)) {
@@ -255,6 +261,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the calendar
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesCalendar = exports.getSeriesCalendar = function(serieId, start, end, callback) {
         if (!_.isFunction(callback)) {
@@ -293,6 +300,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the events in an event series
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesEvents = exports.getSeriesEvents = function(serieId, limit, offset, upcoming, callback) {
         if (!_.isFunction(callback)) {
@@ -333,6 +341,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the iCal calendar
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesICal = exports.getSeriesICal = function(serieId, start, end, callback) {
         if (!_.isFunction(callback)) {
@@ -370,6 +379,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the RSS feed
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesRSS = exports.getSeriesRSS = function(serieId, start, end, callback) {
         if (!_.isFunction(callback)) {
@@ -407,6 +417,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the upcoming events in an event series
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesUpcoming = exports.getSeriesUpcoming = function(serieId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -444,6 +455,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the users that have subscribed to an event series
+     * @throws {Error}                            A parameter validation error
      */
     var getSeriesSubscribers = exports.getSeriesSubscribers = function(serieId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -480,6 +492,7 @@ define(['exports'], function(exports) {
      * @param  {Function}   callback             Standard callback function
      * @param  {Object}     callback.err         Error object containing the error code and error message
      * @param  {Object}     callback.response    Object representing the picture for an event series
+     * @throws {Error}                           A parameter validation error
      */
     var setSeriesPicture = exports.setSeriesPicture = function(serieId, file, callback) {
         if (!_.isFunction(callback)) {
@@ -511,6 +524,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the subscribed to event series
+     * @throws {Error}                              A parameter validation error
      */
     var subscribeSeries = exports.subscribeSeries = function(serieId, userId, orgUnit, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -557,6 +571,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the unsubscribed from event series
+     * @throws {Error}                              A parameter validation error
      */
     var unsubscribeSeries = exports.unsubscribeSeries = function(serieId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -590,6 +605,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the updated event series
+     * @throws {Error}                              A parameter validation error
      */
     var updateSeries = exports.updateSeries = function(serieId, displayName, description, groupId, callback) {
         if (callback && !_.isFunction(callback)) {

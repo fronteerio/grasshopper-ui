@@ -23,8 +23,9 @@ define(['exports', 'gh.utils'], function(exports, utils) {
     /**
      * Log out the current user
      *
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Object}      callback.err    Error object containing the error code and error message
+     * @throws {Error}                       A parameter validation error
      */
     var logout = exports.logout = function(callback) {
         if (!_.isFunction(callback)) {
@@ -54,10 +55,11 @@ define(['exports', 'gh.utils'], function(exports, utils) {
     /**
      * Log in using local authentication
      *
-     * @param  {String}      username             The username to log in with
-     * @param  {String}      password             The password to log in with
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {String}      username        The username to log in with
+     * @param  {String}      password        The password to log in with
+     * @param  {Function}    callback        Standard callback function
+     * @param  {Object}      callback.err    Error object containing the error code and error message
+     * @throws {Error}                       A parameter validation error
      */
     var login = exports.login = function(username, password, callback) {
         if (!_.isFunction(callback)) {
@@ -100,6 +102,7 @@ define(['exports', 'gh.utils'], function(exports, utils) {
      * @param  {Number}      userId          The ID of the user to become
      * @param  {Function}    callback        Standard callback function
      * @param  {Object}      callback.err    Error object containing the error code and error message
+     * @throws {Error}                       A parameter validation error
      */
     var becomeUser = exports.becomeUser = function(userId, callback) {
         if (!_.isFunction(callback)) {
