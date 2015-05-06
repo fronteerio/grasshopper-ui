@@ -84,6 +84,7 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
          * Get the app configuration, except if the global admin page is loaded up
          *
          * @param  {Function}    callback    Standard callback function
+         * @throws {Error}                   Standard error
          * @private
          */
         var getConfig = function(callback) {

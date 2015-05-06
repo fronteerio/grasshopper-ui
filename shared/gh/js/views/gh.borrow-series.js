@@ -103,7 +103,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         var partId = $(this).closest('#gh-modules-list-container').data('partid');
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(null, function(err, _triposData) {
+        gh.utils.getTriposStructure(null, true, function(err, _triposData) {
             // Cache the triposdata for use in the other picker
             triposData = _triposData;
 
