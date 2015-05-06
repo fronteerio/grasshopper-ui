@@ -88,10 +88,10 @@ define(['exports'], function(exports) {
     /**
      * Return the tripos structure
      *
-     * @param  {Number}      [appId]              The application to retrieve the tripos structure for
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The tripos structure
+     * @param  {Number}     [appId]               The application to retrieve the tripos structure for
+     * @param  {Boolean}    includePermissions    Whether the permissions should be included or not
+     * @param  {Object}     callback.err          Error object containing the error code and error message
+     * @param  {Object}     callback.response     The tripos structure
      *
      * * The returned tripos structure will be something in the lines of:
      * *
@@ -129,9 +129,11 @@ define(['exports'], function(exports) {
      * *     ]
      * * }
      */
-    var getTriposStructure = exports.getTriposStructure = function(appId, callback) {
+    var getTriposStructure = exports.getTriposStructure = function(appId, includePermissions, callback) {
         if (!_.isFunction(callback)) {
             throw new Error('An invalid value for callback was provided');
+        } else if (!_.isBoolean(includePermissions)) {
+            throw new Error('An invalid value for includePermissions was provided');
         } else if (appId && !_.isNumber(appId)) {
             throw new Error('An invalid value for appId was provided');
         }
@@ -141,7 +143,7 @@ define(['exports'], function(exports) {
             appId = core.data.me && core.data.me.AppId ? core.data.me.AppId : null;
         }
 
-        require('gh.api.orgunit').getOrgUnits(appId, false, true, null, ['course', 'subject', 'part'], function(err, data) {
+        require('gh.api.orgunit').getOrgUnits(appId, false, includePermissions, null, ['course', 'subject', 'part'], function(err, data) {
             if (err) {
                 return callback(err);
             }

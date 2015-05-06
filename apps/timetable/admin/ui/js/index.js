@@ -31,7 +31,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
     var getTriposData = function() {
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(null, function(err, data) {
+        gh.utils.getTriposStructure(null, true, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
