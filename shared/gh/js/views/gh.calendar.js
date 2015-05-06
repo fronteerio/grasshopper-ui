@@ -311,6 +311,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
      */
     var setPeriodLabel = function() {
         var label = calendar.fullCalendar('getView').title;
+
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
@@ -475,7 +476,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
         // Get the start date from the current calendar view
         var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).utc().format('YYYY-MM-DD'));
+        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).add({'hours': 1}).utc().format('YYYY-MM-DD'));
     };
 
     /**
