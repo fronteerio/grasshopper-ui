@@ -930,7 +930,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
     // Test the 'RenderTemplate - Partials' functionality
     QUnit.asyncTest('renderTemplate - Partials', function(assert) {
-        expect(1);
+        expect(2);
         // Append a container to the body to render the template in
         $('body').append('<div id="qunit-partial-test-container" style="display: none;"></div>');
         // Create the data to use in the template
@@ -943,6 +943,12 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         gh.utils.renderTemplate('qunit-partial-test', data, $('#qunit-partial-test-container'), function(template) {
             setTimeout(function() {
                 assert.equal($('#qunit-partial-test-container').text().trim(), 'Hi, Mathieu.', 'Verify the template partial HTML is rendered in the target container');
+
+                // Verify that rendering a non-existing template throws an error
+                assert.throws(function() {
+                    _.partial('non-existing-partial');
+                }, 'Verify that an error is thrown when a non-existing partial is rendered');
+
                 QUnit.start();
             }, 1000);
         });
