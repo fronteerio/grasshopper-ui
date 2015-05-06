@@ -112,6 +112,13 @@ a,
     color: #FFF;
 }
 
+.gh-global-admin #gh-page-container #gh-right-container #gh-subheader,
+.gh-global-admin #gh-page-container #gh-left-container #gh-content-description,
+.gh-admin #gh-page-container #gh-right-container #gh-subheader,
+.gh-admin #gh-page-container #gh-left-container #gh-content-description {
+    background-color: #412F5B;
+}
+
 #gh-page-container #gh-left-container #gh-content-description {
     color: rgba(255, 255, 255, 0.6);
 }
@@ -355,6 +362,35 @@ ul.nav-tabs li.active {
 .nav-pills.nav-stacked > li.active > a:hover,
 .nav-pills.nav-stacked > li.active > a:focus {
     background-color: #127077;
+}
+
+.gh-global-admin .nav-pills.nav-stacked > li.active > a,
+.gh-global-admin .nav-pills.nav-stacked > li.active > a:hover,
+.gh-global-admin .nav-pills.nav-stacked > li.active > a:focus,
+.gh-admin .nav-pills.nav-stacked > li.active > a,
+.gh-admin .nav-pills.nav-stacked > li.active > a:hover,
+.gh-admin .nav-pills.nav-stacked > li.active > a:focus {
+    background-color: #62326E;
+}
+
+
+/**********/
+/* PANELS */
+/**********/
+
+.panel-group:last-child .panel {
+    border-bottom-color: #DDD;
+}
+
+.panel-default,
+.panel-group:last-child .panel-default {
+    border-color: #DDD;
+}
+
+/* Striped rows */
+
+.panel-default .panel-body .gh-striped-row:nth-child(odd) {
+    background-color: #F9F9F9;
 }
 
 

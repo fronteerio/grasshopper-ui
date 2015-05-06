@@ -20,6 +20,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {Number}    digit    The digit that needs to be extended with an extra zero, if necessary
      * @return {Number}             The extended digit
+     * @throws {Error}              A parameter validation error
      */
     var addLeadingZero = exports.addLeadingZero = function(digit) {
         if (!_.isNumber(digit)) {
@@ -41,6 +42,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {String}    date    The ISO8601 date that needs to be converted to a UNIX date format
      * @return {Number}            The UNIX date
+     * @throws {Error}             A parameter validation error
      */
     var convertISODatetoUnixDate = exports.convertISODatetoUnixDate = function(date) {
         if (!date || !_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
@@ -54,6 +56,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {String}    date    The UNIX date that needs to be converted to an ISO8601 date format
      * @return {Number}            The ISO8601 date
+     * @throws {Error}             A parameter validation error
      */
     var convertUnixDatetoISODate = exports.convertUnixDatetoISODate = function(date) {
         if (!date || !moment(date, 'x').isValid()) {
@@ -66,6 +69,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {String}    startDate    The start date of the event in UTC format (e.g. 2014-10-07T08:00:00.000Z)
      * @param  {String}    endDate      The end date of the event in UTC format (e.g. 2014-10-07T11:00:00.000Z)
      * @return {String}                 The converted date in display format (e.g. 'W7 • Fri 2–3pm')
+     * @throws {Error}                  A parameter validation error
      */
     var generateDisplayDate = exports.generateDisplayDate = function(startDate, endDate) {
         if (!_.isString(startDate) || !moment(startDate, 'YYYY-MM-DD').isValid()) {
@@ -208,6 +212,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {Number}     date          The date in a UNIX time format
      * @param  {Boolean}    usePrecise    Whether of not an offset should be used. (Default: false)
      * @return {Object}                   The term that has the specified date in its range
+     * @throws {Error}                    A parameter validation error
      */
     var getTerm = exports.getTerm = function(date, usePrecise) {
         if (!_.isNumber(date)) {
@@ -254,6 +259,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {String}    termName    The name of the term to get the date of the first day for
      * @return {Date}                  The date of the first day of the term
+     * @throws {Error}                 A parameter validation error
      */
     var getFirstDayOfTerm = exports.getFirstDayOfTerm = function(termName) {
         if (!_.isString(termName)) {
@@ -282,6 +288,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {Object}    term    The term to get the number of weeks for
      * @return {Number}            The number of weeks in the term
+     * @throws {Error}             A parameter validation error
      */
     var getWeeksInTerm = exports.getWeeksInTerm = function(term) {
         if (!_.isObject(term)) {
@@ -304,6 +311,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {Number}    weekNumber    The week of the term to look for the date
      * @param  {Number}    dayNumber     The day of the week to look for the dae
      * @return {Date}                    Date object of the day in the term
+     * @throws {Error}                   A parameter validation error
      */
     var getDateByWeekAndDay = exports.getDateByWeekAndDay = function(termName, weekNumber, dayNumber) {
         if (!_.isString(termName)) {
@@ -367,6 +375,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
          * Returns the first 3 letters of the day's name from a UTC string
          *
          * @return {Number}
+         * @throws {Error}     A parameter validation error
          */
         var dayName = function() {
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
@@ -379,6 +388,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
          * Returns the day from a UTC string
          *
          * @return {Number}
+         * @throws {Error}     A parameter validation error
          */
         var dayNumber = function() {
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
@@ -391,6 +401,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
          * Returns the month from a UTC tring
          *
          * @return {String}
+         * @throws {Error}     A parameter validation error
          */
         var monthName = function() {
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
@@ -422,6 +433,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * Convert start and end times of an event to GMT+0 for display in the calendar
      *
      * @param  {Object[]}    events    An Array of events to fix start and end date to GTM+0 for
+     * @throws {Error}                 A parameter validation error
      */
     var fixDatesToGMT = exports.fixDatesToGMT = function(events) {
         if (!_.isArray(events)) {
@@ -486,6 +498,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {Number}    startDate    The start of the date range in UNIX format
      * @param  {Number}    endDate      The end of the date range in UNIX format
      * @return {Boolean}                Whether or not the date is in the range
+     * @throws {Error}                  A parameter validation error
      */
     var isDateInRange = exports.isDateInRange = function(date, startDate, endDate) {
         if (!date || !moment(date, 'x').isValid()) {
@@ -507,6 +520,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {Number}    startDate    The start of the date range in UNIX format
      * @param  {Number}    endDate      The end of the date range in UNIX format
      * @return {Number}                 The number of weeks within the date range
+     * @throws {Error}                  A parameter validation error
      */
     var weeksInDateRange = exports.weeksInDateRange = function(startDate, endDate) {
         if (!startDate || !moment(startDate, 'x').isValid()) {
@@ -572,6 +586,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {terms}     terms    The terms that should be reordered
      * @return {Object}             Object containing the reordered terms and events
+     * @throws {Error}              A parameter validation error
      */
     var orderEventsByTerm = exports.orderEventsByTerm = function(terms) {
         if (!_.isObject(terms)) {
@@ -639,6 +654,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      *
      * @param  {Event[]}    events    The Array of events to split up into terms
      * @return {Object}               Object representing the split up terms and events
+     * @throws {Error}                A parameter validation error
      */
     var splitEventsByTerm = exports.splitEventsByTerm = function(events) {
         if (!_.isObject(events)) {
