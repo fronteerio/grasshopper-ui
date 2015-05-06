@@ -145,6 +145,10 @@ define(['exports', 'gh.constants'], function(exports, constants) {
     var renderTemplate = exports.renderTemplate = function(partial, data, $target, callback) {
         if (!_.isString(partial)) {
             throw new Error('No valid partial name has been provided');
+        } else if (data && !_.isObject(data)) {
+            throw new Error('No valid data object has been provided');
+        } else if ($target && (!_.isObject($target) && !_.isString($target))) {
+            throw new Error('No valid target object or string has been provided');
         }
 
         // Make sure we're dealing with jQuery objects for the target container

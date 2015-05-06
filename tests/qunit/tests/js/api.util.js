@@ -896,7 +896,7 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
     // Test the 'renderTemplate' functionality
     QUnit.asyncTest('renderTemplate', function(assert) {
-        expect(4);
+        expect(6);
 
         // Add a template to the page
         $('body').append('<script id="qunit-template" type="text/template">Hi, <%- name %></script>');
@@ -911,6 +911,16 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         assert.throws(function() {
             gh.utils.renderTemplate(null, templateData, $('#qunit-template-target'));
         }, 'Verify that a template needs to be provided');
+
+        // Verify that a data needs to be provided in the form of an object
+        assert.throws(function() {
+            gh.utils.renderTemplate('qunit-basic-test', 'incorrect template data', $('#qunit-template-target'));
+        }, 'Verify that data needs to be provided in the form of an object');
+
+        // Verify that a $target needs to be provided in the form of an object
+        assert.throws(function() {
+            gh.utils.renderTemplate('qunit-basic-test', null, 1);
+        }, 'Verify that a $target needs to be provided in the form of an object or string');
 
         // Verify that template data is optional
         gh.utils.renderTemplate('qunit-basic-test', null, $('#qunit-template-target'), function(template) {
