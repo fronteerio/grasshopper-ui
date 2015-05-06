@@ -62,7 +62,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      * @private
      */
     var renderHeader = function() {
-        gh.utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate('header', {
             'data': {
                 'gh': gh,
                 'isGlobalAdminUI': false
@@ -76,7 +76,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      * @private
      */
     var renderHelp = function() {
-        gh.utils.renderTemplate($('#gh-help-template'), null, $('#gh-main'));
+        gh.utils.renderTemplate('admin-help', null, $('#gh-main'));
     };
 
     /**
@@ -86,14 +86,14 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      */
     var renderLoginForm = function() {
         $('#gh-subheader, #gh-content-description').height(350);
-        gh.utils.renderTemplate($('#gh-login-template'), {
+        gh.utils.renderTemplate('admin-login-form', {
             'gh': gh
-        }, $('#gh-subheader'));
-
-        // Bind the validator to the login form
-        $('.gh-signin-form').validator({
-            'disable': false
-        }).on('submit', doLogin);
+        }, $('#gh-subheader'), function() {
+            // Bind the validator to the login form
+            $('.gh-signin-form').validator({
+                'disable': false
+            }).on('submit', doLogin);
+        });
     };
 
     /**
@@ -102,7 +102,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      * @private
      */
     var renderPickers = function() {
-        gh.utils.renderTemplate($('#gh-subheader-pickers-template'), {
+        gh.utils.renderTemplate('admin-subheader-pickers', {
             'gh': gh
         }, $('#gh-subheader'));
     };
@@ -166,7 +166,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
         });
 
         // Render the editable parts template
-        gh.utils.renderTemplate($('#gh-editable-parts-template'), {
+        gh.utils.renderTemplate('editable-parts', {
             'data': {
                 'editableParts': editableParts,
                 'gh': gh,
@@ -182,12 +182,13 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      * @private
      */
     var renderNewSeriesForm = function(data) {
-        gh.utils.renderTemplate($('#gh-new-series-template'), {
+        gh.utils.renderTemplate('new-series', {
             'gh': gh,
             'data': data
-        }, $('#gh-main'));
-        // Focus the input field
-        $('#gh-series-name').focus();
+        }, $('#gh-main'), function() {
+            // Focus the input field
+            $('#gh-series-name').focus();
+        });
     };
 
     /**
@@ -211,15 +212,15 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
             });
         });
         // Render the batch edit template
-        gh.utils.renderTemplate($('#gh-batch-edit-template'), {
+        gh.utils.renderTemplate('admin-batch-edit', {
             'data': {
                 'gh': gh,
                 'records': data
             }
-        }, $('#gh-main'));
-
-        // Let the batch-edit plugin know that the HTML has been rendered
-        $(document).trigger('gh.batchedit.rendered');
+        }, $('#gh-main'), function() {
+            // Let the batch-edit plugin know that the HTML has been rendered
+            $(document).trigger('gh.batchedit.rendered');
+        });
     };
 
     /**
@@ -228,8 +229,9 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
      * @private
      */
     var showTriposHelp = function() {
-        gh.utils.renderTemplate($('#gh-tripos-help-template'), null, $('#gh-modules-container'));
-        $('.gh-tripos-help').show();
+        gh.utils.renderTemplate('admin-tripos-help', null, $('#gh-modules-container'), function() {
+            $('.gh-tripos-help').show();
+        });
     };
 
 

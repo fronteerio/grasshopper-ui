@@ -5,8 +5,128 @@
     </button>
     <p><%- data.modules.length %> module<% if (data.modules.length === 0 || data.modules.length > 1) { %>s<% } %> in this part</p>
 </div>
+
 <div id="gh-modules-list-container">
     <ul id="gh-modules-list" class="list-group">
-        <%= _.partial('student-module-item', {'data': data.modules}) %>
+
+        <% var renderStudentModuleItem = function(orgunit) { %>
+            <% var isChild = orgunit.isChild || false %>
+
+            <% var subscribedAll = false; %>
+            <% var subscribedSome = false; %>
+            <% if (!isChild && orgunit.Series) { %>
+                <% var numSubscribed = _.size(_.filter(orgunit.Series, {'subscribed': true})); %>
+                <% subscribedAll = (numSubscribed === orgunit.Series.length) %>
+                <% subscribedSome = (numSubscribed && numSubscribed < orgunit.Series.length) %>
+            <% } %>
+            <li class="list-group-item <% if (orgunit.expanded) { %>gh-list-group-item-open<% } %> <% if (orgunit.subscribed || (!isChild && subscribedAll)) { %> gh-list-group-item-added <% } %>" data-id="<%- orgunit.id %>">
+                <div class="gh-list-group-item-container">
+                    <% if (!isChild) { %>
+                        <button class="btn btn-link gh-toggle-list">
+                            <div class="gh-list-icon">
+                                <i class="fa <% if (orgunit.expanded) { %>fa-caret-down<% } else { %>fa-caret-right<% } %>"></i>
+                            </div>
+                    <% } %>
+                            <% if (isChild) { %>
+                                <!-- Additional series info popover trigger -->
+                                <div class="gh-list-info">
+                                    <i class="fa fa-info-circle" data-id="<%- orgunit.id %>"></i>
+                                </div>
+                            <% } %>
+                            <div class="gh-list-description">
+                                <p class="gh-list-description-text"><%- orgunit.displayName %></p>
+                                <% if (isChild) { %>
+                                    <% if (orgunit.metadata) { %>
+                                        <% if (orgunit.metadata.locations) { %>
+                                            <% if (orgunit.metadata.locations.length > 1) { %>
+                                                <p class="gh-list-metadata">Multiple locations</p>
+                                            <% } else if (orgunit.metadata.locations.length === 1) { %>
+                                                <p class="gh-list-metadata"><%- orgunit.metadata.locations[0] %></p>
+                                            <% } else { %>
+                                                <p class="gh-list-metadata no-information">Location not known</p>
+                                            <% } %>
+                                        <% } %>
+                                        <% if (orgunit.metadata.organisers) { %>
+                                            <% if (orgunit.metadata.organisers.length > 1) { %>
+                                                <p class="gh-list-metadata">Multiple organisers</p>
+                                            <% } else if (orgunit.metadata.organisers.length === 1) { %>
+                                                <p class="gh-list-metadata"><%- orgunit.metadata.organisers[0] %></p>
+                                            <% } else { %>
+                                                <p class="gh-list-metadata no-information">Lecturer not known</p>
+                                            <% } %>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                    <% if (!isChild) { %>
+                        </button>
+                    <% } %>
+
+                    <!-- Borrowed status -->
+                    <% if (isChild && orgunit.borrowedFrom) { %>
+
+                        <!-- Borrowed popover -->
+                        <% var randomId = data.utils.generateRandomString(); %>
+                        <div id="<%- randomId %>">
+                            <% _.partial('series-borrowed-popover', {'data': orgunit}, null, '#' + randomId) %>
+                        </div>
+
+                        <!-- Published popover-->
+                        <% randomId = data.utils.generateRandomString(); %>
+                        <div id="<%- randomId %>">
+                            <% _.partial('series-borrowed-published-popover', {'data': orgunit}, null, '#' + randomId) %>
+                        </div>
+
+                        <!-- Borrowed icon -->
+                        <div class="gh-series-borrowed">
+                            <% if (orgunit.borrowedFrom) { %>
+                                <span class="gh-borrowed-icon-container">
+                                    <i class="fa fa-link" data-id="<%- orgunit.id %>"></i>
+                                </span>
+                            <% } %>
+                        </div>
+                    <% } %>
+
+                    <!-- Series actions -->
+                    <div class="gh-list-action">
+
+                        <!-- Disabled button overlay -->
+                        <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>
+                            <div class="gh-disabled-overlay" data-id="<%- orgunit.id %>"></div>
+                        <% } %>
+
+                        <% if (orgunit.subscribed || (!isChild && subscribedAll)) { %>
+                            <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>disabled<% } %>>
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        <% } else { %>
+                            <button class="btn btn-link <% if (isChild) { %>gh-add-to-calendar<% } else { %>gh-add-all-to-calendar<% } %>" <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>disabled<% } %>>
+                                <% if (!isChild && subscribedSome) { %>
+                                    <i class="fa fa-minus"></i>
+                                <% } else { %>
+                                    <i class="fa fa-plus"></i>
+                                <% } %>
+                            </button>
+                        <% } %>
+                    </div>
+                </div>
+                <% if (orgunit.Series) { %>
+                    <ul class="list-group hide">
+                        <%
+                            _.each(orgunit.Series, function(series) {
+                                series.isChild = true;
+                                renderStudentModuleItem(series);
+                            });
+                        %>
+                    </ul>
+                <% } %>
+            </li>
+        <% } %>
+
+        <%
+            _.each(data.modules, function(module) {
+                renderStudentModuleItem(module);
+            });
+        %>
     </ul>
 </div>

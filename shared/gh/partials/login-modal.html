@@ -10,7 +10,10 @@
             </div>
             <div class="modal-body">
                 <p>Sign-in to see your timetable and make changes</p>
-                <%= _.partial('login-form', {'data': data}) %>
+                <% var randomId = data.gh.utils.generateRandomString(); %>
+                <div id="<%- randomId %>">
+                    <% _.partial('login-form', {'data': data}, null, '#' + randomId) %>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

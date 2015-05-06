@@ -22,26 +22,29 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          * Create a form element and attach it to the generated form.
          * The form is available inside the function as variable this.
          *
-         * @param  {Object}    settings    the jEditable field settings
-         * @param  {String}    original    the containing HTML element
+         * @param  {Object}    settings    The jEditable field settings
+         * @param  {String}    original    The containing HTML element
+         * @return {Object}                The hidden form field with the selected value
          * @private
          */
         'element' : function(settings, original) {
             // Add a class to the table cell
             $(original).addClass('gh-editing');
             // Render the event type select box template
-            var content = gh.utils.renderTemplate($('#gh-event-type-template'), {
+            var content = gh.utils.renderTemplate('admin-batch-edit-event-type', {
                 'data': {
                     'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000)),
                     'types': gh.config.events.types,
                     'disable': settings.disable
                 }
             });
+
             $(this).append(content);
             // Add a hidden input field that stores the selected value
             var hidden = $('<input type="hidden">');
             $(this).append(hidden);
-            return(hidden);
+
+            return hidden;
         },
 
         /**

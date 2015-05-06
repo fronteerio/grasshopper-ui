@@ -1,0 +1,174 @@
+<h2>Edit user properties</h2>
+
+<div class="panel-default gh-striped-container">
+    <h3 class="panel-heading">
+        <span>Manage user</span>
+    </h3>
+    <div class="panel-body">
+        <div class="panel-subheading row">
+            <div class="gh-striped-heading col-sm-3">User name</div>
+            <div class="gh-striped-heading col-sm-2">User username</div>
+            <div class="gh-striped-heading col-sm-2">User password</div>
+            <div class="gh-striped-heading col-sm-1">Admin</div>
+            <div class="gh-striped-heading col-sm-2">Info</div>
+            <div class="gh-striped-heading col-sm-2">Actions</div>
+        </div>
+
+        <div class="gh-striped-row row">
+            <form class="gh-app-user-update-form" data-userid="<%- user.id %>">
+                <div class="col-sm-3">
+                    <input class="gh-user-displayname" type="text" placeholder="User name" value="<%- user.displayName %>">
+                </div>
+                <div class="col-sm-2">
+                    <input class="gh-user-email" type="text" placeholder="User email" value="<%- user.email %>">
+                </div>
+                <div class="col-sm-2">
+                    <input class="gh-user-password" type="password" placeholder="User password" disabled>
+                </div>
+                <div class="col-sm-1">
+                    <input class="gh-user-isadmin" type="checkbox"<% if (user.isAdmin) { %> checked<% } %>/>
+                </div>
+                <div class="col-sm-2">
+                    <% if (user.shibbolethId) { %>
+                        <input class="gh-user-shibbolethid" type="text" placeholder="Shibboleth ID" disabled value="<%- user.shibbolethId %>">
+                    <% } else { %>
+                        <p class="text-center">Local account</p>
+                    <% } %>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary">Update user</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<h2>Edit user permissions</h2>
+
+<% if (user.isAdmin) { %>
+    <div class="alert alert-warning" role="alert">
+        <p><strong><%- user.displayName %></strong> is an <strong>application administrator</strong> and has <strong>edit access to all parts by default</strong>. Changing the settings here will not affect this.</p>
+        <p>If you wish to limit the access <%- user.displayName %> has to edit parts, take away admin access.</p>
+    </div>
+<% } %>
+
+<form id="gh-user-permissions-form">
+    <ul>
+        <!-- Map membership to the parts -->
+        <%
+            _.each(memberships, function(membership) {
+                var part = _.find(triposData.parts, function(part) {
+                    return part.GroupId === membership.id;
+                });
+
+                if (part) {
+                    part.isGroupMember = true;
+                }
+            });
+        %>
+        <!-- Loop over all courses and render the parent level course -->
+        <% _.each(triposData.courses, function(course) { %>
+            <li>
+                <%
+                    <!-- Get all subjects belonging to this course -->
+                    var courseSubjects = _.filter(triposData.subjects, function(subject) {return subject.ParentId === course.id;});
+                    <!-- Get all parts belonging to this course -->
+                    var courseParts = _.filter(triposData.parts, function(part) {return part.ParentId === course.id;});
+                    <!-- Check whether all parts in the course and subject should be selected -->
+                    if (courseSubjects.length) {
+                        _.each(courseSubjects, function(courseSubject) {
+                            <!-- Get all parts associated to this course subject-->
+                            var partsForCourseSubject = _.filter(triposData.parts, function(part) {
+                                return part.ParentId === courseSubject.id;
+                            });
+
+                            <!-- If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked and the corresponsing course neither -->
+                            var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
+                                return !part.isGroupMember;
+                            });
+
+                            <!-- If there are parts that the user is not a member of mark the subject and course as unchecked -->
+                            if (partsForCourseSubjectMembership) {
+                                courseSubject.checked = false;
+                                course.checked = false;
+                            } else {
+                                courseSubject.checked = true;
+                                <!-- Only set the course checking to true if it was not previously set to false -->
+                                if  (course.checked !== false) {
+                                    course.checked = true;
+                                }
+                            }
+                        });
+                    <!-- Check whether all parts in the course should be selected -->
+                    } else {
+                        <!-- Get all parts associated to this course subject-->
+                        var partsForCourseSubject = _.filter(courseParts, function(part) {
+                            return part.ParentId === course.id;
+                        });
+
+                        <!-- If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked 
+                             // and the corresponsing course neither -->
+                        var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
+                            return !part.isGroupMember;
+                        });
+
+                        <!-- If there are parts that the user is not a member of mark the subject and course as unchecked -->
+                        if (partsForCourseSubjectMembership) {
+                            course.checked = false;
+                        } else {
+                            course.checked = true;
+                        }
+                    }
+                %>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="gh-user-tripos-course-checkbox" <% if (course.checked) { %>checked<% } %>> <%- course.displayName %>
+                    </label>
+                </div>
+
+                <!-- If there are subjects, render the parts as children of subject -->
+                <% if (courseSubjects.length) { %>
+                    <ul>
+                        <% _.each(courseSubjects, function(subject) { %>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="gh-user-tripos-subject-checkbox" <% if (subject.checked) { %>checked<% } %>> <%- subject.displayName %>
+                                    </label>
+                                </div>
+                                <!-- Get all parts belonging to this subject -->
+                                <% var subjectParts = _.filter(triposData.parts, function(part) {return part.ParentId === subject.id;}); %>
+                                <ul>
+                                    <% _.each(subjectParts, function(part) { %>
+                                        <li>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input class="gh-user-tripos-part-checkbox" type="checkbox" <% if (part.isGroupMember) { %>checked<% } %> data-original="<%- part.isGroupMember || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    <% });%>
+                                </ul>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <!-- If there are NO subjects, render the parts as children of the course -->
+                <% } else { %>
+                    <ul>
+                        <% _.each(courseParts, function(part) { %>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="gh-user-tripos-part-checkbox" <% if (part.isGroupMember) { %>checked<% } %> data-original="<%- part.isGroupMember || false %>" data-groupid="<%- part.Group.id %>"> <%- part.displayName %>
+                                    </label>
+                                </div>
+                            </li>
+                        <% });%>
+                    </ul>
+                <% } %>
+            </li>
+        <% }); %>
+    </ul>
+    <button type="submit" class="btn btn-primary">Update user permissions</button>
+</form>

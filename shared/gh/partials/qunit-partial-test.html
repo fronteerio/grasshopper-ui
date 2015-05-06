@@ -1,0 +1,4 @@
+<% var randomId = data.gh.utils.generateRandomString(); %>
+<div id="<%- randomId %>">
+    <% _.partial('qunit-basic-test', null, true, '#' + randomId) %>
+</div>

@@ -39,12 +39,13 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
                 gh.utils.notification('Could not fetch modules', constants.messaging.default.error, 'error');
             }
 
-            $(document).trigger('gh.part.selected', {
-                'partId': partId,
-                'modules': modules,
-                'container': $('#gh-borrow-series-modal'),
-                'template': $('#gh-borrow-series-modules-template')
-            });
+            gh.utils.renderTemplate('admin-borrow-series-module-item', {
+                'data': {
+                    'modules': modules.results,
+                    'state': History.getState().data
+                },
+                'utils': gh.utils
+            }, $('#gh-borrow-series-modal #gh-modules-list'));
         });
     };
 
@@ -67,27 +68,27 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         });
 
         // Render the results in the part picker
-        gh.utils.renderTemplate($('#gh-borrow-series-part-template'), {
+        gh.utils.renderTemplate('subheader-part', {
             'data': {
                 'parts': parts,
                 'excludePart': History.getState().data.part
             }
-        }, $('#gh-borrow-series-part'));
+        }, $('#gh-borrow-series-part'), function() {
+            // Show the subheader part picker
+            $('#gh-borrow-series-part').show();
 
-        // Show the subheader part picker
-        $('#gh-borrow-series-part').show();
+            // Destroy the field if it's been initialised previously
+            $('#gh-borrow-series-part').chosen('destroy').off('change', setUpModules);
 
-        // Destroy the field if it's been initialised previously
-        $('#gh-borrow-series-part').chosen('destroy').off('change', setUpModules);
+            // Initialise the Chosen plugin on the part picker
+            $('#gh-borrow-series-part').chosen({
+                'no_results_text': 'No matches for',
+                'disable_search_threshold': 10
+            }).on('change', setUpModules);
 
-        // Initialise the Chosen plugin on the part picker
-        $('#gh-borrow-series-part').chosen({
-            'no_results_text': 'No matches for',
-            'disable_search_threshold': 10
-        }).on('change', setUpModules);
-
-        // Chosen has a bug where search sometimes isn't disabled properly
-        $('#gh_borrow_series_part_chosen .chosen-search').hide();
+            // Chosen has a bug where search sometimes isn't disabled properly
+            $('#gh_borrow_series_part_chosen .chosen-search').hide();
+        });
     };
 
     /**
@@ -119,16 +120,17 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             });
 
             // Render the modal and pickers
-            gh.utils.renderTemplate($('#gh-borrow-series-modal-template'), {
+            gh.utils.renderTemplate('borrow-series-modal', {
                 'data': {
                     'triposPickerData': triposPickerData,
                     'moduleId': moduleId,
-                    'partId': partId
+                    'partId': partId,
+                    'gh': gh
                 }
-            }, $('#gh-modal'));
-
-            // Show the modal
-            $('#gh-borrow-series-modal').modal();
+            }, $('#gh-modal'), function() {
+                // Show the modal
+                $('#gh-borrow-series-modal').modal();
+            });
         });
     };
 

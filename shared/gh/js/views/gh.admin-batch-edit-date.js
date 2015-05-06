@@ -30,7 +30,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      * @private
      */
     var renderBatchDate = function(maxNumberOfWeeks, weeksInUse, termsInUse, daysInUse) {
-        gh.utils.renderTemplate($('#gh-batch-edit-date-template'), {
+        gh.utils.renderTemplate('admin-batch-edit-date', {
             'data': {
                 'gh': require('gh.core'),
                 'numberOfWeeks': maxNumberOfWeeks,
@@ -243,7 +243,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
      */
     var addAnotherDay = function() {
         // Render a day picker with default values
-        var renderedDayPicker = gh.utils.renderTemplate($('#gh-admin-batch-edit-time-picker'), {
+        gh.utils.renderTemplate('admin-batch-edit-time-picker', {
             'data': {
                 'gh': gh,
                 'dayInUse': {
@@ -254,10 +254,10 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                 },
                 'dayIndex': 7
             }
+        }, null, function(template) {
+            // Append the HTML as the last day in the list
+            $('#gh-batch-edit-day-picker-container .gh-batch-edit-time-picker').last().after(template);
         });
-
-        // Append the HTML as the last day in the list
-        $('#gh-batch-edit-day-picker-container .gh-batch-edit-time-picker').last().after(renderedDayPicker);
     };
 
     /**
@@ -562,7 +562,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                 // Get the date the event starts on
                 var eventStart = moment($row.find('.gh-event-date').attr('data-start'));
                 // Retrieve the day number
-                var eventStartDayNumber = parseInt(moment(eventStart).utc().format('E'));
+                var eventStartDayNumber = parseInt(moment(eventStart).utc().format('E'), 10);
                 // Only update the date when the event takes place on the day that was selected in the picker
                 var dayNumberToEdit = parseInt(prevEventDay, 10);
                 if (eventStartDayNumber === dayNumberToEdit) {
@@ -599,19 +599,19 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     eventEnd = moment([newDateYear, newDateMonth, newDateDay, eventEndHour, eventEndMinute, 0, 0]).utc().format();
 
                     // Re-render the date fields
-                    var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
+                    gh.utils.renderTemplate('admin-edit-date-field', {
                         'data': {
                             'start': eventStart,
                             'end': eventEnd
                         },
                         'utils': gh.utils
+                    }, null, function(template) {
+                        // Update the trigger
+                        $row.find('.gh-event-date').attr('data-start', eventStart).attr('data-end', eventEnd).html(template);
+
+                        // Trigger a change of the datepicker
+                        $(document).trigger('gh.datepicker.change', $row.find('.gh-event-date'));
                     });
-
-                    // Update the trigger
-                    $row.find('.gh-event-date').attr('data-start', eventStart).attr('data-end', eventEnd).html(content);
-
-                    // Trigger a change of the datepicker
-                    $(document).trigger('gh.datepicker.change', $row.find('.gh-event-date'));
                 }
 
                 // Update processing progress indication
@@ -843,6 +843,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             preBatchEditAdjustTime.apply(this);
         });
 
+        // Delete a day
         $('body').on('click', '.gh-batch-edit-date-delete', deleteDay);
 
         // Adding a new day

@@ -32,10 +32,12 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderAdmins = function(administrators) {
-        gh.utils.renderTemplate($('#gh-administrators-template'), {
+        // Render the administrators template
+        gh.utils.renderTemplate('global-admin-administrators', {
             'gh': gh,
             'administrators': administrators
         }, $('#gh-global-users-container'));
+        // Show the administrators container
         $('#gh-administrators-container').show();
     };
 
@@ -46,10 +48,12 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderUserApps = function(tenants) {
-        gh.utils.renderTemplate($('#gh-app-users-template'), {
+        // Render the app users template
+        gh.utils.renderTemplate('global-admin-users', {
             'gh': gh,
             'tenants': tenants
         }, $('#gh-app-users-container'));
+        // Show the administrators container
         $('#gh-administrators-container').show();
     };
 
@@ -61,7 +65,8 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderAppUsersResults = function(appId, users) {
-        gh.utils.renderTemplate($('#gh-app-user-template'), {
+        // Render the app users template
+        gh.utils.renderTemplate('global-admin-app-user', {
             'app': _.find(cachedApps, function(app) {return app.id === appId;}),
             'gh': gh,
             'users': users.results
@@ -74,10 +79,12 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderConfig = function(tenants) {
-        gh.utils.renderTemplate($('#gh-configuration-template'), {
+        // Render the configuration template
+        gh.utils.renderTemplate('global-admin-configuration', {
             'gh': gh,
             'tenants': tenants
         }, $('#gh-configuration-container'));
+        // Show the configuration container
         $('#gh-configuration-container').show();
     };
 
@@ -87,17 +94,19 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderHeader = function() {
-        gh.utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate('header', {
             'data': {
                 'gh': gh,
                 'isGlobalAdminUI': true
             }
-        }, $('#gh-header'));
-
-        // Bind the validator to the login form
-        $('.gh-signin-form').validator({
-            'disable': false
-        }).on('submit', doLogin);
+        }, $('#gh-header'), function() {
+            // Bind the validator to the login form when it becomes available
+            $('.gh-signin-form').onAvailable(function() {
+                $('.gh-signin-form').validator({
+                    'disable': false
+                }).on('submit', doLogin);
+            });
+        });
     };
 
     /**
@@ -106,7 +115,8 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderNavigation = function() {
-        gh.utils.renderTemplate($('#gh-navigation-template'), {
+        // Render the navigation template
+        gh.utils.renderTemplate('global-admin-navigation', {
             'gh': gh,
             'currentPage': currentPage
         }, $('#gh-navigation-container'));
@@ -119,10 +129,12 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @private
      */
     var renderTenants = function(tenants) {
-        gh.utils.renderTemplate($('#gh-tenants-template'), {
+        // Render the tenants template
+        gh.utils.renderTemplate('global-admin-tenants', {
             'gh': gh,
             'tenants': tenants
         }, $('#gh-tenants-container'));
+        // Show the tenants container
         $('#gh-tenants-container').show();
     };
 

@@ -57,15 +57,15 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var renderDeleteModule = function() {
         // Render the module overview
-        gh.utils.renderTemplate($('#delete-module-overview-template'), {
+        gh.utils.renderTemplate('delete-module-overview', {
             'data': templateData
-        }, $('#delete-module-overview-container'));
+        }, $('#delete-module-overview-container'), function() {
+            // Hide the loading indicator
+            $('#delete-module-body-preload-container').hide();
 
-        // Hide the loading indicator
-        $('#delete-module-body-preload-container').hide();
-
-        // Show the confirmation footer
-        $('#delete-module-confirm-container').show();
+            // Show the confirmation footer
+            $('#delete-module-confirm-container').show();
+        });
     };
 
     /**
@@ -173,10 +173,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         moduleId = parseInt($(this).attr('data-id'), 10);
 
         // Render the modal
-        gh.utils.renderTemplate($('#gh-delete-module-modal-template'), {'data': null}, $('#gh-delete-module-modal-container'));
-
-        // Show the modal
-        $('#gh-delete-module-modal').modal();
+        gh.utils.renderTemplate('delete-module-modal', null, $('#gh-modal'), function() {
+            // Show the modal
+            $('#gh-delete-module-modal').modal();
+        });
     };
 
     /**

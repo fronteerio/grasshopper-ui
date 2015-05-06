@@ -24,7 +24,10 @@
 
                             <!-- Event date -->
                             <div class="gh-series-info-list-event-date">
-                                <%= _.partial('admin-edit-date-field', {'data': event, 'utils': data.utils}) %>
+                                <% var randomId = data.utils.generateRandomString(); %>
+                                <div id="<%- randomId %>">
+                                    <% _.partial('admin-edit-date-field', {'data': event, 'utils': data.utils}, true, '#' + randomId) %>
+                                </div>
                             </div>
 
                             <!-- Event type -->
@@ -41,7 +44,6 @@
         <div class="gh-series-info-list-no-events">No events</div>
     <% } %>
 </div>
-
 
 <% if (numEvents) { %>
     <!-- Locations -->

@@ -110,129 +110,131 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
      * @private
      */
     var setUpAutoSuggest = function() {
-        $('#gh-batch-edit-organisers').autoSuggest('/api/users', {
-            'minChars': 2,
-            'neverSubmit': true,
-            'retrieveLimit': 10,
-            'url': '/api/users',
-            'searchObjProps': 'id, displayName',
-            'selectedItemProp': 'displayName',
-            'selectedValuesProp': 'id',
-            'startText': 'Lecturers (0)',
-            'usePlaceholder': true,
-            'resultsComplete': function() {
-                // Track the user if no results come up
-                if (!$('#gh-batch-edit-organisers').find('.as-results li.as-result-item').length) {
-                    gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Autocomplete no results shown']);
-                }
-            },
-            'retrieveComplete': function(data) {
-                // Append the shibbolethId to the displayName to make it easier to distinguish between users
-                _.each(data.results, function(user) {
-                    var suffix = user.shibbolethId ? ' (' + user.shibbolethId + ')' : '';
-                    user.displayName = user.displayName + suffix;
-                });
-                return data.results;
-            },
-            'selectionAdded': function(elem, id) {
-                trackSelectionEvent(elem);
-                // Get the batch added users
-                var batchOrganisers = getBatchSelection();
-                // Update each selected row's organisers
-                var $rows = $('.gh-batch-edit-events-container tr.info');
+        $('#gh-batch-edit-organisers').onAvailable(function() {
+            $('#gh-batch-edit-organisers').autoSuggest('/api/users', {
+                'minChars': 2,
+                'neverSubmit': true,
+                'retrieveLimit': 10,
+                'url': '/api/users',
+                'searchObjProps': 'id, displayName',
+                'selectedItemProp': 'displayName',
+                'selectedValuesProp': 'id',
+                'startText': 'Lecturers (0)',
+                'usePlaceholder': true,
+                'resultsComplete': function() {
+                    // Track the user if no results come up
+                    if (!$('#gh-batch-edit-organisers').find('.as-results li.as-result-item').length) {
+                        gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Autocomplete no results shown']);
+                    }
+                },
+                'retrieveComplete': function(data) {
+                    // Append the shibbolethId to the displayName to make it easier to distinguish between users
+                    _.each(data.results, function(user) {
+                        var suffix = user.shibbolethId ? ' (' + user.shibbolethId + ')' : '';
+                        user.displayName = user.displayName + suffix;
+                    });
+                    return data.results;
+                },
+                'selectionAdded': function(elem, id) {
+                    trackSelectionEvent(elem);
+                    // Get the batch added users
+                    var batchOrganisers = getBatchSelection();
+                    // Update each selected row's organisers
+                    var $rows = $('.gh-batch-edit-events-container tr.info');
 
-                // Only add these users, the rest should be marked as data-add="false"
-                // First, Mark all present hidden fields as 'data-add="false"'
-                _.each($rows, function($row) {
-                    $row = $($row);
+                    // Only add these users, the rest should be marked as data-add="false"
+                    // First, Mark all present hidden fields as 'data-add="false"'
+                    _.each($rows, function($row) {
+                        $row = $($row);
 
-                    // Get all hidden fields in the row
-                    var $hiddenFields = $row.find('.gh-event-organisers-fields');
+                        // Get all hidden fields in the row
+                        var $hiddenFields = $row.find('.gh-event-organisers-fields');
 
-                    // Mark all hidden fields as data-add="false"
-                    $hiddenFields.find('input').attr('data-add', false);
+                        // Mark all hidden fields as data-add="false"
+                        $hiddenFields.find('input').attr('data-add', false);
 
-                    // Now loop over all added organisers and add them to the hidden fields or set the
-                    // data-add back to true if the organiser was already added before
-                    _.each(batchOrganisers, function(user) {
-                        if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
-                            // The hidden field exists already, make sure it's marked as 'to add'
-                            $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', true);
-                        // Create the hidden field if it doesn't exist yet
-                        } else {
-                            // Create the hidden field element
-                            $field = $('<input type="hidden" name="gh-event-organiser" value="' + user.displayName + '" data-add="true">');
+                        // Now loop over all added organisers and add them to the hidden fields or set the
+                        // data-add back to true if the organiser was already added before
+                        _.each(batchOrganisers, function(user) {
+                            if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
+                                // The hidden field exists already, make sure it's marked as 'to add'
+                                $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', true);
+                            // Create the hidden field if it doesn't exist yet
+                            } else {
+                                // Create the hidden field element
+                                $field = $('<input type="hidden" name="gh-event-organiser" value="' + user.displayName + '" data-add="true">');
 
-                            // Try to parse the ID, if it fails that means we have a new user, not in the system
-                            var hasId = false;
-                            try {
-                                hasId = parseInt(user.id, 10);
-                            } catch (err) {
-                                hasId = false;
+                                // Try to parse the ID, if it fails that means we have a new user, not in the system
+                                var hasId = false;
+                                try {
+                                    hasId = parseInt(user.id, 10);
+                                } catch (err) {
+                                    hasId = false;
+                                }
+
+                                // If the user exists in the system, add the ID to the hidden field
+                                if (hasId) {
+                                    $field.attr('data-id', user.id);
+                                }
+
+                                // Add the hidden field
+                                $row.find('.gh-event-organisers-fields').append($field);
                             }
+                        });
 
-                            // If the user exists in the system, add the ID to the hidden field
-                            if (hasId) {
-                                $field.attr('data-id', user.id);
-                            }
-
-                            // Add the hidden field
-                            $row.find('.gh-event-organisers-fields').append($field);
-                        }
+                        // Update the organiser field
+                        updateOrganiserField($row.find('.gh-event-organisers'));
                     });
 
-                    // Update the organiser field
-                    updateOrganiserField($row.find('.gh-event-organisers'));
-                });
+                    // Update the lecture count in the placeholder
+                    updateAutoSuggestPlaceholder();
 
-                // Update the lecture count in the placeholder
-                updateAutoSuggestPlaceholder();
+                    // Let the batch edit know that updates happened
+                    $(document).trigger('gh.batchedit.togglesubmit');
+                },
+                'selectionRemoved': function(elem, id) {
+                    // Construct the user object that was removed
+                    var user = {
+                        'id': $(elem).data('value').toString(),
+                        'displayName': elem.text().slice(1)
+                    };
 
-                // Let the batch edit know that updates happened
-                $(document).trigger('gh.batchedit.togglesubmit');
-            },
-            'selectionRemoved': function(elem, id) {
-                // Construct the user object that was removed
-                var user = {
-                    'id': $(elem).data('value').toString(),
-                    'displayName': elem.text().slice(1)
-                };
+                    // Update each selected row's organisers
+                    var $rows = $('.gh-batch-edit-events-container tr.info');
 
-                // Update each selected row's organisers
-                var $rows = $('.gh-batch-edit-events-container tr.info');
+                    _.each($rows, function($row) {
+                        $row = $($row);
 
-                _.each($rows, function($row) {
-                    $row = $($row);
+                        // Update the hidden fields
+                        var $hiddenFields = $row.find('.gh-event-organisers-fields');
 
-                    // Update the hidden fields
-                    var $hiddenFields = $row.find('.gh-event-organisers-fields');
+                        // Update the hidden field if it exists already
+                        if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
+                            // The hidden field exists already, make sure it's NOT marked as 'to add'
+                            $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', false);
+                        }
 
-                    // Update the hidden field if it exists already
-                    if ($hiddenFields.find('input[value="' + user.displayName + '"]').length) {
-                        // The hidden field exists already, make sure it's NOT marked as 'to add'
-                        $hiddenFields.find('input[value="' + user.displayName + '"]').attr('data-add', false);
-                    }
+                        // Update the organiser field
+                        updateOrganiserField($row.find('.gh-event-organisers'));
+                    });
 
-                    // Update the organiser field
-                    updateOrganiserField($row.find('.gh-event-organisers'));
-                });
+                    // Remove the element from the AutoSuggest field
+                    elem.remove();
 
-                // Remove the element from the AutoSuggest field
-                elem.remove();
+                    // Track the user removing an AutoSuggest field
+                    gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Item removed']);
 
-                // Track the user removing an AutoSuggest field
-                gh.utils.trackEvent(['Data', 'Batch edit', 'Lecturer edit', 'Item removed']);
+                    // Update the lecture count in the placeholder
+                    updateAutoSuggestPlaceholder();
 
-                // Update the lecture count in the placeholder
-                updateAutoSuggestPlaceholder();
+                    // Let the batch edit know that updates happened
+                    $(document).trigger('gh.batchedit.togglesubmit');
+                }
+            });
 
-                // Let the batch edit know that updates happened
-                $(document).trigger('gh.batchedit.togglesubmit');
-            }
+            // Style the Autosuggest as disabled by default
+            $('.gh-batch-event-organisers .as-selections').addClass('gh-disabled');
         });
-
-        // Style the Autosuggest as disabled by default
-        $('.gh-batch-event-organisers .as-selections').addClass('gh-disabled');
     };
 
     /**

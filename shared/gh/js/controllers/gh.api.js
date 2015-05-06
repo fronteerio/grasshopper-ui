@@ -62,7 +62,7 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
 
                 // Get the app configuration
                 getConfig(function() {
-                    // Cache the partials
+                    // pre-cache partials that can't be conveniently lazy-loaded
                     utils.cachePartials(function() {
                         // Set up instrumentation
                         /* istanbul ignore if */

@@ -174,17 +174,19 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         eventObj.data['utils'] = gh.utils;
 
         // Append a new event row
-        $eventContainer.append(gh.utils.renderTemplate($('#gh-batch-edit-event-row-template'), eventObj));
-        // Enable JEditable on the row
-        setUpJEditable();
-        // Show the save button
-        toggleSubmit();
-        // Enable batch editing of dates
-        toggleBatchEditEnabled();
-        // Trigger a change event on the newly added row to update the batch edit
-        $eventContainer.find('.gh-select-single').trigger('change');
-        // Sort the table
-        sortEventTable($eventContainer);
+        gh.utils.renderTemplate('admin-batch-edit-event-row', eventObj, null, function(template) {
+            $eventContainer.append(template);
+            // Enable JEditable on the row
+            setUpJEditable();
+            // Show the save button
+            toggleSubmit();
+            // Enable batch editing of dates
+            toggleBatchEditEnabled();
+            // Trigger a change event on the newly added row to update the batch edit
+            $eventContainer.find('.gh-select-single').trigger('change');
+            // Sort the table
+            sortEventTable($eventContainer);
+        });
     };
 
     /**
@@ -319,15 +321,16 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         // Only toggle and update the footer if events where updated, created or deleted
         if (eventsUpdated || eventsCreated || eventsDeleted) {
             // Update the count
-            gh.utils.renderTemplate($('#gh-batch-edit-actions-template'), {
+            gh.utils.renderTemplate('admin-batch-edit-actions', {
                 'data': {
                     'updated': eventsUpdated,
                     'created': eventsCreated,
                     'deleted': eventsDeleted
                 }
-            }, $('.gh-batch-edit-actions-container'));
-            // Show the save button if events have changed but not submitted
-            $('.gh-batch-edit-actions-container').fadeIn(200);
+            }, $('.gh-batch-edit-actions-container'), function() {
+                // Show the save button if events have changed but not submitted
+                $('.gh-batch-edit-actions-container').fadeIn(200);
+            });
         } else {
             // Hide the save button if all events have been submitted
             $('.gh-batch-edit-actions-container').fadeOut(200);
@@ -537,21 +540,21 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
      */
     var renderPreviewCalendar = function() {
         // Render the calendar template
-        gh.utils.renderTemplate($('#gh-calendar-template'), {
+        gh.utils.renderTemplate('calendar', {
             'data': {
                 'gh': gh,
                 'view': 'admin'
             }
-        }, $('#gh-calendar-view-container'));
+        }, $('#gh-calendar-view-container'), function() {
+            // Initialise the calendar
+            $(document).trigger('gh.calendar.init', {
+                'triposData': triposData,
+                'orgUnitId': History.getState().data.module
+            });
 
-        // Initialise the calendar
-        $(document).trigger('gh.calendar.init', {
-            'triposData': triposData,
-            'orgUnitId': History.getState().data.module
+            // Put the calendar on today's view
+            $(document).trigger('gh.calendar.navigateToToday');
         });
-
-        // Put the calendar on today's view
-        $(document).trigger('gh.calendar.navigateToToday');
     };
 
 
@@ -773,52 +776,58 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         });
 
         // Apply jEditable for inline editing of event rows
-        $('.gh-jeditable-events').editable(editableEventSubmitted, {
-            'cssclass': 'gh-jeditable-form',
-            'height': '38px',
-            'onblur': 'submit',
-            'placeholder': '',
-            'select' : true,
-            'callback': function(value, settings) {
-                // Focus the edited field td element after submitting the value
-                // for improved keyboard accessibility
-                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
-                    $(this).focus();
+        $('.gh-jeditable-events').onAvailable(function() {
+            $('.gh-jeditable-events').editable(editableEventSubmitted, {
+                'cssclass': 'gh-jeditable-form',
+                'height': '38px',
+                'onblur': 'submit',
+                'placeholder': '',
+                'select' : true,
+                'callback': function(value, settings) {
+                    // Focus the edited field td element after submitting the value
+                    // for improved keyboard accessibility
+                    if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                        $(this).focus();
+                    }
                 }
-            }
+            });
         });
 
         // Apply jEditable to the event type. (custom plugin)
-        $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
-            'cssclass': 'gh-jeditable-form',
-            'disable': false,
-            'placeholder': '',
-            'select': true,
-            'tooltip': 'Click to edit the event type',
-            'type': 'event-type-select',
-            'callback': function(value, settings) {
-                // Focus the edited field td element after submitting the value
-                // for improved keyboard accessibility
-                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
-                    $(this).focus();
+        $('.gh-jeditable-events-select').onAvailable(function() {
+            $('.gh-jeditable-events-select').editable(editableEventTypeSubmitted, {
+                'cssclass': 'gh-jeditable-form',
+                'disable': false,
+                'placeholder': '',
+                'select': true,
+                'tooltip': 'Click to edit the event type',
+                'type': 'event-type-select',
+                'callback': function(value, settings) {
+                    // Focus the edited field td element after submitting the value
+                    // for improved keyboard accessibility
+                    if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                        $(this).focus();
+                    }
                 }
-            }
+            });
         });
 
         // Apply jEditable to the organisers
-        $('.gh-edit-event-organisers').editable(editableOrganiserSubmitted, {
-            'cssclass': 'gh-jeditable-form',
-            'placeholder': '',
-            'select': true,
-            'tooltip': 'Click to add a lecturer for this event',
-            'type': 'organiser-autosuggest',
-            'callback': function(value, settings) {
-                // Focus the edited field td element after submitting the value
-                // for improved keyboard accessibility
-                if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
-                    $(this).focus();
+        $('.gh-edit-event-organisers').onAvailable(function() {
+            $('.gh-edit-event-organisers').editable(editableOrganiserSubmitted, {
+                'cssclass': 'gh-jeditable-form',
+                'placeholder': '',
+                'select': true,
+                'tooltip': 'Click to add a lecturer for this event',
+                'type': 'organiser-autosuggest',
+                'callback': function(value, settings) {
+                    // Focus the edited field td element after submitting the value
+                    // for improved keyboard accessibility
+                    if (!$(':focus', $('.gh-batch-edit-events-container')).length) {
+                        $(this).focus();
+                    }
                 }
-            }
+            });
         });
     };
 

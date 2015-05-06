@@ -29,7 +29,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderNavigation = function() {
-        gh.utils.renderTemplate($('#gh-navigation-template'), {
+        gh.utils.renderTemplate('tenant-admin-navigation', {
             'gh': gh,
             'currentPage': currentPage
         }, $('#gh-navigation-container'));
@@ -41,7 +41,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderHeader = function() {
-        gh.utils.renderTemplate($('#gh-header-template'), {
+        gh.utils.renderTemplate('header', {
             'data': {
                 'gh': gh,
                 'isGlobalAdminUI': false
@@ -56,7 +56,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      */
     var renderLoginForm = function() {
         $('#gh-subheader, #gh-content-description').height(350);
-        gh.utils.renderTemplate($('#gh-login-template'), {
+        gh.utils.renderTemplate('admin-login-form', {
             'gh': gh
         }, $('#gh-subheader'));
 
@@ -72,7 +72,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderAppUserSearch = function() {
-        gh.utils.renderTemplate($('#gh-app-user-search-template'), null, $('#gh-main'));
+        gh.utils.renderTemplate('tenant-admin-app-user-search', null, $('#gh-main'), function() {
+            // Set up user management
+            setUpAutoSuggest();
+        });
     };
 
     /**
@@ -84,7 +87,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderUser = function(triposData, user, memberships) {
-        gh.utils.renderTemplate($('#gh-app-user-template'), {
+        gh.utils.renderTemplate('tenant-admin-app-user', {
             'gh': gh,
             'memberships': memberships.results,
             'triposData': triposData,
@@ -98,7 +101,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderApp = function() {
-        gh.utils.renderTemplate($('#gh-app-template'), {
+        gh.utils.renderTemplate('tenant-admin-app', {
             'app': gh.data.me.app
         }, $('#gh-main'));
     };
@@ -110,7 +113,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderConfig = function(config) {
-        gh.utils.renderTemplate($('#gh-config-template'), {
+        gh.utils.renderTemplate('tenant-admin-config', {
             'app': gh.data.me.app,
             'config': config
         }, $('#gh-main'));
@@ -478,8 +481,6 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     var setUpUsers = function() {
         // Render the app user search
         renderAppUserSearch();
-        // Set up user management
-        setUpAutoSuggest();
     };
 
     /**

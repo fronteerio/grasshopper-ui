@@ -72,6 +72,40 @@ define([
             }
         });
 
+        // Extend jQuery with a `onAvailable` function that checks whether an element is available in the DOM
+        // and executes a callback when it is
+        $.fn.onAvailable = function(callback) {
+            // Cache the selector we're waiting for
+            var selector = this.selector;
+            // Initiate a timer
+            var timer = null;
+            // If the element has become available execute the callback
+            /* istanbul ignore next */
+            if (this.length > 0) {
+                callback.call(this);
+                clearInterval(timer);
+            }
+
+            // If the element isn't available yet, set a timer that checks for it periodically
+            // and executes the callback when it becomes available
+            else {
+                // Clear the interval after 20 seconds, no matter what the result
+                /* istanbul ignore next */
+                setTimeout(function() {
+                    clearInterval(timer);
+                }, 20000);
+
+                // Set a timer that checks for the element
+                timer = setInterval(function() {
+                    // If the element is available, execute the callback and clear the interval
+                    if ($(selector).length > 0) {
+                        clearInterval(timer);
+                        callback.call($(selector));
+                    }
+                }, 5);
+            }
+        };
+
         return gh;
     }
 );

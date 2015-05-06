@@ -1,4 +1,7 @@
-<%= _.partial('event-popover', {'data': data}) %>
+<% var randomId = utils.generateRandomString(); %>
+<div class="event-popover-container-<%- randomId %>">
+    <% _.partial('event-popover', {'data': data}, null, '.event-popover-container-' + randomId) %>
+</div>
 <a class="fc-time-grid-event fc-event fc-start fc-end" data-id="<%- data.id %>">
     <div class="fc-content">
         <div class="fc-title"><%- data.displayName %></div>

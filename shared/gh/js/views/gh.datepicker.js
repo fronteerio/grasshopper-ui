@@ -40,25 +40,25 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var dates = getFullDates();
 
         // Render the content
-        var content = gh.utils.renderTemplate($('#gh-edit-date-field-template'), {
+        gh.utils.renderTemplate('admin-edit-date-field', {
             'data': {
                 'start': dates.start,
                 'end': dates.end
             },
             'utils': gh.utils
-        });
+        }, null, function(template) {
+            // Update the trigger
+            $trigger.attr('data-start', dates.start).attr('data-end', dates.end).html(template);
 
-        // Update the trigger
-        $trigger.attr('data-start', dates.start).attr('data-end', dates.end).html(content);
+            // Close the popover window
+            dismissPopover();
 
-        // Close the popover window
-        dismissPopover();
-
-        // Calculate how long it takes the user to change the date
-        timeFromStart = (new Date() - timeFromStart) / 1000;
-        // Track the user editing the date
-        gh.utils.trackEvent(['Data', 'DateTime edit', 'Completed'], {
-            'time_from_start': timeFromStart
+            // Calculate how long it takes the user to change the date
+            timeFromStart = (new Date() - timeFromStart) / 1000;
+            // Track the user editing the date
+            gh.utils.trackEvent(['Data', 'DateTime edit', 'Completed'], {
+                'time_from_start': timeFromStart
+            });
         });
     };
 
@@ -220,8 +220,11 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             numWeeks = gh.utils.getWeeksInTerm(_term);
         }
 
+        // Cache the trigger
+        $trigger = $(msg.trigger);
+
         // Render the popover template
-        var content = gh.utils.renderTemplate($('#gh-datepicker-popover-template'), {
+        gh.utils.renderTemplate('admin-edit-dates', {
             'data': {
                 'gh': gh,
                 'numWeeks': numWeeks,
@@ -230,45 +233,42 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                     'minutes': 15
                 }
             }
-        });
+        }, null, function(template) {
+            // Show the popover window
+            _.defer(function() {
+                $trigger.clickover({
+                    'class_name': 'gh-datepicker-popover',
+                    'container': 'body',
+                    'content': template,
+                    'global_close': false,
+                    'html': true,
+                    'placement': calculatePopoverPosition(msg.ev),
+                    'onShown': function() {
+                        // Track how long the user takes to adjust the date
+                        timeFromStart = new Date();
 
-        // Cache the trigger
-        $trigger = $(msg.trigger);
+                        // Track the user starting to edit dates
+                        gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
 
-        // Show the popover window
-        _.defer(function() {
-            $trigger.clickover({
-                'class_name': 'gh-datepicker-popover',
-                'container': 'body',
-                'content': content,
-                'global_close': false,
-                'html': true,
-                'placement': calculatePopoverPosition(msg.ev),
-                'onShown': function() {
-                    // Track how long the user takes to adjust the date
-                    timeFromStart = new Date();
+                        // Cache the trigger
+                        $trigger = $(msg.trigger).closest('tr .gh-event-date');
 
-                    // Track the user starting to edit dates
-                    gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
+                        // Cache the delegating components
+                        components = [
+                            $('#gh-datepicker'),
+                            $('#gh-module-week'),
+                            $('#gh-module-day')
+                        ];
 
-                    // Cache the trigger
-                    $trigger = $(msg.trigger).closest('tr .gh-event-date');
+                        initialiseDatePicker();
+                        setComponents();
 
-                    // Cache the delegating components
-                    components = [
-                        $('#gh-datepicker'),
-                        $('#gh-module-week'),
-                        $('#gh-module-day')
-                    ];
-
-                    initialiseDatePicker();
-                    setComponents();
-
-                    // Set the focus on current day of the calendar
-                    $('.popover .ui-state-active').focus();
-                }
+                        // Set the focus on current day of the calendar
+                        $('.popover .ui-state-active').focus();
+                    }
+                });
+                $trigger.trigger('click');
             });
-            $trigger.trigger('click');
         });
     };
 

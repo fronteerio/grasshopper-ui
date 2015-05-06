@@ -52,22 +52,18 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          *
          * @param  {Object}    settings    The jEditable field settings
          * @param  {String}    original    The containing HTML element
+         * @return {Object}                The AutoSuggest element
          * @private
          */
         'element' : function(settings, original) {
-            // Render the organiser template
-            var content = gh.utils.renderTemplate($('#gh-organiser-template'), {
-                'data': {
-                    'id': 'gh-event-select-' + String(Math.ceil(Math.random() * 10000))
-                }
-            });
-            $(this).append(content);
+            $(this).append('<input class="gh-organiser-autosuggest" type="text" placeholder="Lecturers">');
             return this;
         },
 
         /**
          * Set the default jEditable field content
          *
+         * @return {String}    The default jEditable field content String
          * @private
          */
         'content': function() {
