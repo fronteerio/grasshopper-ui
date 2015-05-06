@@ -30,8 +30,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Assign a default container if it's not defined in the data
         data.container = data.container || $('#gh-left-container');
         // Assign a default template based on the UI the user is in
-        
-        data.template = data.template || ($('body').hasClass('gh-admin')  ? 'admin-modules' : 'student-modules');
+        data.template = data.template || ($('body').hasClass('gh-admin') ? 'admin-modules' : 'student-modules');
 
         // Cache the modules
         var modules = data.modules;
