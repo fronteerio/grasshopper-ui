@@ -38,10 +38,11 @@
         <link rel="stylesheet" href="/shared/gh/css/gh.skin.css">
         <link rel="stylesheet" href="/apps/admin/ui/css/admin.css">
         <link rel="stylesheet" href="/apps/timetable/admin/ui/css/admin.css">
+        <link rel="stylesheet" href="/apps/timetable/admin/app/css/tenantadmin.css">
         <link rel="stylesheet" href="/apps/timetable/admin/ui/css/skin.css">
         <link rel='stylesheet' href="/shared/gh/css/gh.print.css" media="print">
     </head>
-    <body class="gh-admin gh-preload">
+    <body class="gh-admin gh-preload" style="display: none;">
         <div id="gh-page-container">
             <div id="gh-left-container">
                 <div id="gh-meta-container">
@@ -49,22 +50,21 @@
                         <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
                     </a>
                     <div id="gh-content-description">
-                        <p class="gh-academic-year-select">Manage the academic year</p>
+                        <p class="gh-academic-year-select">Manage the application</p>
                     </div>
                 </div>
-                <div id="gh-modules-container"><!-- --></div>
+                <div id="gh-navigation-container"><!-- --></div>
             </div>
             <div id="gh-right-container">
                 <div id="gh-header-container">
                     <div id="gh-header"><!-- --></div>
                     <div id="gh-subheader"><!-- --></div>
                 </div>
-                <main id="gh-main"><!-- --></main>
+                <main id="gh-main" style="display: none;"><!-- --></main>
             </div>
             <div class="clearfix"></div>
         </div>
-        <div id="gh-modal"><!-- --></div>
 
-        <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/ui/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
+        <script data-main="/shared/gh/js/gh.bootstrap.js" data-loadmodule="/apps/timetable/admin/app/js/index.js" src="/shared/vendor/js/require-jquery.js"></script>
     </body>
 </html>

@@ -1,0 +1,33 @@
+<h1>Application management</h1>
+
+<div class="panel-default gh-striped-container">
+    <h3 class="panel-heading"><%- app.Tenant.displayName %></h3>
+    <div class="panel-body">
+        <div class="panel-subheading row">
+            <div class="gh-striped-heading col-sm-3">App name</div>
+            <div class="gh-striped-heading col-sm-3">App host</div>
+            <div class="gh-striped-heading col-sm-2">App enabled</div>
+            <div class="gh-striped-heading col-sm-4">Actions</div>
+        </div>
+
+        <div class="gh-striped-row row">
+            <form class="gh-app-update-form" data-appid="<%- app.id %>">
+                <div class="col-sm-3">
+                    <input class="gh-app-displayname" type="text" placeholder="App name" value="<%- app.displayName %>"/>
+                </div>
+                <div class="col-sm-3">
+                    <input class="gh-app-host" type="text" placeholder="App host" value="<%- app.host %>"/>
+                </div>
+                <div class="col-sm-2">
+                    <input class="gh-app-enabled" type="checkbox"<% if (app.enabled) { %> checked<% } %>/>
+                </div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary pull-left">Update app</button>
+                </div>
+                <div class="col-sm-2">
+                    <a href="//<%- app.host %>" target="_blank" class="btn btn-info pull-left"><i class="fa fa-external-link"></i> Open app</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -131,6 +131,16 @@ select[disabled],
     overflow: hidden;
 }
 
+.gh-academic-year-select {
+    display: table-cell;
+    font-size: 18px;
+    font-weight: 100;
+    height: 100px;
+    line-height: 40px;
+    padding-left: 45px !important;
+    vertical-align: middle;
+}
+
 /* Main page container */
 
 #gh-page-container {

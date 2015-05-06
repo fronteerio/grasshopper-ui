@@ -366,15 +366,15 @@ define(['exports'], function(exports) {
     /**
      * Get the organisational units in an app
      *
-     * @param  {Number}      [appId]                 The ID of the app to get the organisational units for
-     * @param  {Boolean}     [includeSeries]         Whether to include the event series associated to the oranisational units
-     * @param  {Boolean}     [includePermissions]    Whether to include if the current user can manage the organisational units/series and whether an organisational unit is locked. Defaults to `false`
-     * @param  {Number}      [parentId]              The ID of the parent to retrieve the organisational units for
-     * @param  {String[]}    [type]                  The organisational unit type(s) to filter the organisational unit by
-     * @param  {Function}    callback                Standard callback function
-     * @param  {Object}      callback.err            Error object containing the error code and error message
-     * @param  {Object}      callback.response       Object representing the organisational units in an app
-     * @throws {Error}                               A parameter validation error
+     * @param  {Number}            [appId]                 The ID of the app to get the organisational units for
+     * @param  {Boolean}           [includeSeries]         Whether to include the event series associated to the oranisational units
+     * @param  {Boolean|Number}    [includePermissions]    Whether to include if the current user can manage the organisational units/series and whether an organisational unit is locked. If a Number instead of a Boolean is provided the permissions for the specified user will be returned. Defaults to `false`
+     * @param  {Number}            [parentId]              The ID of the parent to retrieve the organisational units for
+     * @param  {String[]}          [type]                  The organisational unit type(s) to filter the organisational unit by
+     * @param  {Function}          callback                Standard callback function
+     * @param  {Object}            callback.err            Error object containing the error code and error message
+     * @param  {Object}            callback.response       Object representing the organisational units in an app
+     * @throws {Error}                                     A parameter validation error
      */
     var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, includePermissions, parentId, type, callback) {
         if (!_.isFunction(callback)) {
@@ -398,9 +398,9 @@ define(['exports'], function(exports) {
         if (includeSeries) {
             data['includeSeries'] = includeSeries;
         }
-        if (includePermissions) {
-            data['includePermissions'] = includePermissions;
-        }
+
+        data['includePermissions'] = includePermissions || false;
+
         if (parentId) {
             data['parent'] = parentId;
         }
