@@ -52,6 +52,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          *
          * @param  {Object}    settings    The jEditable field settings
          * @param  {String}    original    The containing HTML element
+         * @return {Object}                The AutoSuggest element
          * @private
          */
         'element' : function(settings, original) {
@@ -62,6 +63,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
         /**
          * Set the default jEditable field content
          *
+         * @return {String}    The default jEditable field content String
          * @private
          */
         'content': function() {

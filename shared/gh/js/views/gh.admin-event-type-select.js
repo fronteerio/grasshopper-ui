@@ -22,8 +22,9 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
          * Create a form element and attach it to the generated form.
          * The form is available inside the function as variable this.
          *
-         * @param  {Object}    settings    the jEditable field settings
-         * @param  {String}    original    the containing HTML element
+         * @param  {Object}    settings    The jEditable field settings
+         * @param  {String}    original    The containing HTML element
+         * @return {Object}                The hidden form field with the selected value
          * @private
          */
         'element' : function(settings, original) {

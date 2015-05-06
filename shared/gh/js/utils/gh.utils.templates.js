@@ -109,11 +109,11 @@ define(['exports', 'gh.constants'], function(exports, constants) {
 
         // Collection of partials that can't be conveniently lazy-loaded
         var preLoadPartials = [
-            'text!/shared/gh/partials/event.html' // The `event` partial cannot be lazy-loaded as the calendar requires it immediately in the return of its logic
+            'text!' + constants.templates['event'] // The `event` partial cannot be lazy-loaded as the calendar requires it immediately in the return of its logic
         ];
 
         // Preload the partials and declare them
-        require(preLoadPartials, function() {
+        require(preLoadPartials, function(evPartial) {
             _.each(arguments, function(template, index) {
                 var partial = preLoadPartials[index];
 

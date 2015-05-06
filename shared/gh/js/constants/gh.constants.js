@@ -43,6 +43,7 @@ define(['exports'], function(exports) {
         }
     };
 
+    // Object of template names and paths needed to make the production build work
     var templates = exports.templates = {
         'admin-batch-edit-actions': '/shared/gh/partials/admin-batch-edit-actions.html',
         'admin-batch-edit-date': '/shared/gh/partials/admin-batch-edit-date.html',
