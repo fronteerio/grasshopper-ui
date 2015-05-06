@@ -185,9 +185,10 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
         gh.utils.renderTemplate('new-series', {
             'gh': gh,
             'data': data
-        }, $('#gh-main'));
-        // Focus the input field
-        $('#gh-series-name').focus();
+        }, $('#gh-main'), function() {
+            // Focus the input field
+            $('#gh-series-name').focus();
+        });
     };
 
     /**

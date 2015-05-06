@@ -97,6 +97,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             gh.utils.trackEvent(['Manage', 'Rename module', 'Started']);
             // Track how long the user takes to rename the module
             timeFromStart = new Date();
+            // Focus the input field after the modal is shown
+            $('#gh-module-title').focus();
         });
         $('body').on('click', '#gh-rename-module-modal [data-dismiss="modal"]', function() {
             // Track the user cancelling renaming of a module
