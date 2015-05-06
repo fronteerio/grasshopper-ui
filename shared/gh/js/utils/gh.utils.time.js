@@ -153,6 +153,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
      * @param  {Number}     date          The date where the academic week number needs to be returned for
      * @param  {Boolean}    usePrecise    Whether of not an offset should be used. (Default: false)
      * @return {Number}                   The academic week number
+     * @throws {Error}                    A parameter validation error
      */
     var getAcademicWeekNumber = exports.getAcademicWeekNumber = function(date, usePrecise) {
         if (!_.isNumber(date)) {
@@ -174,22 +175,27 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         }
 
         // Get the start date of the corresponding term
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).utc().format('YYYY-MM-DD'));
+        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).add({'hours': 1}).utc().format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
         var dayNumber = parseInt(moment(startDate).format('E'), 10);
 
         // Since the terms start on a Tuesday we have an offset of 2 days.
-        var dayOffset = ((1 / 7) * dayNumber);
+        var dayOffset = ((1 / 7) * dayNumber) - 0.01;
 
         // Calculate and return the current academic week number
         // If the term in which the date is can be retrieved, we need to calculate the exact
         // week in that term. If it can't be retrieved the date is out of term and 0 should
         // be returned
         var weekNumber = 0;
+
+        // Fix the summer time issue
+        date = moment(date).add({'hours': 1});
+
+        // Calculate the week number if it's within an academic term
         /* istanbul ignore else */
         if (currentTerm) {
-            weekNumber = Math.ceil(((date - startDate) / constants.time.PERIODS['week']) - (dayOffset)) + 1;
+            weekNumber = Math.ceil(((date - startDate) / constants.time.PERIODS['week']) - dayOffset) + 1;
         }
 
         // Return the week number
