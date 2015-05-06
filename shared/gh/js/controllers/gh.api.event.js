@@ -61,7 +61,6 @@ define(['exports'], function(exports) {
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
      * @throws {Error}                           A parameter validation error
-     *
      */
     var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, type, callback) {
         if (!_.isFunction(callback)) {
