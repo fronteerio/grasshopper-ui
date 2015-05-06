@@ -21,6 +21,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the current user
+     * @throws {Error}                            A parameter validation error
      */
     var getMe = exports.getMe = function(callback) {
         if (!_.isFunction(callback)) {
@@ -46,6 +47,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested user
+     * @throws {Error}                            A parameter validation error
      */
     var getUser = exports.getUser = function(userId, callback) {
         if (!_.isFunction(callback)) {
@@ -103,6 +105,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The users for the requested tenant or app
+     * @throws {Error}                            A parameter validation error
      */
     var getUsers = exports.getUsers = function(appId, limit, offset, q, callback) {
         if (!_.isFunction(callback)) {
@@ -144,6 +147,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested user calendar
+     * @throws {Error}                            A parameter validation error
      */
     var getUserCalendar = exports.getUserCalendar = function(userId, start, end, callback) {
         if (!_.isFunction(callback)) {
@@ -176,6 +180,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested user calendar in iCal format
+     * @throws {Error}                            A parameter validation error
      */
     var getUserCalendarIcal = exports.getUserCalendarIcal = function(userId, token, callback) {
         if (!_.isFunction(callback)) {
@@ -206,6 +211,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested event series calendar in RSS format
+     * @throws {Error}                            A parameter validation error
      */
     var getUserCalendarRss = exports.getUserCalendarRss = function(userId, token, callback) {
         if (!_.isFunction(callback)) {
@@ -235,6 +241,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user object
+     * @throws {Error}                            A parameter validation error
      */
     var resetToken = exports.resetToken = function(userId, callback) {
         if (!_.isFunction(callback)) {
@@ -270,6 +277,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The upcoming events for the user
+     * @throws {Error}                            A parameter validation error
      */
     var getUserUpcoming = exports.getUserUpcoming = function(userId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -291,6 +299,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The Terms and Conditions for the current app
+     * @throws {Error}                            A parameter validation error
      */
     var getTermsAndConditions = exports.getTermsAndConditions = function(callback) {
         if (!_.isFunction(callback)) {
@@ -307,6 +316,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated status of the Terms and Conditions for the user on the current app
+     * @throws {Error}                            A parameter validation error
      */
     var acceptTermsAndConditions = exports.acceptTermsAndConditions = function(userId, callback) {
         if (!_.isFunction(callback)) {
@@ -332,6 +342,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback                Standard callback function
      * @param  {Object}      callback.err            Error object containing the error code and error message
      * @param  {Object}      callback.response       The created user
+     * @throws {Error}                               A parameter validation error
      */
     var createUser = exports.createUser = function(app, displayName, email, password, emailPreference, isAdmin, recaptchaChallenge, recaptchaResponse, callback) {
         if (!_.isFunction(callback)) {
@@ -401,6 +412,7 @@ define(['exports'], function(exports) {
      * @param  {Boolean}     [forceProfileUpdate]      Whether the user information should be updated, even when other user information is already present
      * @param  {Function}    callback                  Standard callback function
      * @param  {Object}      callback.err              Error object containing the error code and error message
+     * @throws {Error}                                 A parameter validation error
      */
     var importUsers = exports.importUsers = function(authenticationStrategy, file, tenantId, appIds, forceProfileUpdate, callback) {
         if (!_.isFunction(callback)) {
@@ -430,6 +442,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user
+     * @throws {Error}                            A parameter validation error
      */
     var updateUser = exports.updateUser = function(userId, displayName, email, emailPreference, callback) {
         if (!_.isFunction(callback)) {
@@ -485,6 +498,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user
+     * @throws {Error}                            A parameter validation error
      */
     var updateAdminStatus = exports.updateAdminStatus = function(userId, isAdmin, callback) {
         if (!_.isFunction(callback)) {
@@ -519,6 +533,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    The updated user
+     * @throws {Error}                              A parameter validation error
      */
     var changePassword = exports.changePassword = function(userId, newPassword, oldPassword, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -560,6 +575,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user
+     * @throws {Error}                            A parameter validation error
      */
     var setUserPicture = exports.setUserPicture = function(userId, file, callback) {
         if (!_.isFunction(callback)) {
@@ -583,6 +599,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated user
+     * @throws {Error}                            A parameter validation error
      */
     var cropPicture = exports.cropPicture = function(userId, width, x, y, callback) {
         if (!_.isFunction(callback)) {

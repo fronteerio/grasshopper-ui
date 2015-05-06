@@ -260,6 +260,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
      * @param  {Object}      data             The dispatched event
      * @param  {Event[]}     data.events      The user's subscribed events
      * @param  {Function}    data.callback    Standard callback function
+     * @throws {Error}                        A parameter validation error
      * @private
      */
     var refreshCalendar = function(ev, data) {

@@ -22,6 +22,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The tenant's applications
+     * @throws {Error}                            A parameter validation error
      */
     var getApps = exports.getApps = function(tenantId, callback) {
         if (!_.isFunction(callback)) {
@@ -48,6 +49,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested application
+     * @throws {Error}                            A parameter validation error
      */
     var getApp = exports.getApp = function(appId, callback) {
         if (!_.isFunction(callback)) {
@@ -76,6 +78,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The application's administrators
+     * @throws {Error}                            A parameter validation error
      */
     var getAppAdmins = exports.getAppAdmins = function(appId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -109,6 +112,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The created app
+     * @throws {Error}                            A parameter validation error
      */
     var createApp = exports.createApp = function(displayName, host, tenantId, type, callback) {
         if (!_.isFunction(callback)) {
@@ -153,6 +157,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated app
+     * @throws {Error}                            A parameter validation error
      */
     var updateApp = exports.updateApp = function(appId, displayName, enabled, host, callback) {
         if (!_.isFunction(callback)) {
@@ -196,10 +201,11 @@ define(['exports'], function(exports) {
     /**
      * Update the administrators of an app
      *
-     * @param  {Number}      appId                The ID of the app for which to update the administrators
-     * @param  {Object}      adminUpdates         Object that describes the app administrator changes to apply. e.g., {'johndoe': true}
-     * @param  {Function}    [callback]           Standard callback function
-     * @param  {Object}      [callback.err]       Error object containing the error code and error message
+     * @param  {Number}      appId             The ID of the app for which to update the administrators
+     * @param  {Object}      adminUpdates      Object that describes the app administrator changes to apply. e.g., {'johndoe': true}
+     * @param  {Function}    [callback]        Standard callback function
+     * @param  {Object}      [callback.err]    Error object containing the error code and error message
+     * @throws {Error}                         A parameter validation error
      */
     var updateAppAdmins = exports.updateAppAdmins = function(appId, adminUpdates, callback) {
         if (callback && !_.isFunction(callback)) {

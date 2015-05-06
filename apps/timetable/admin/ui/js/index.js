@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.calendar', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment) {
 
     // Cache the tripos data
     var triposData = {};
@@ -31,7 +31,7 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
     var getTriposData = function() {
 
         // Fetch the triposes
-        gh.utils.getTriposStructure(null, function(err, data) {
+        gh.utils.getTriposStructure(null, true, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not fetch triposes', constants.messaging.default.error, 'error');
             }
@@ -203,6 +203,13 @@ define(['gh.core', 'gh.constants', 'gh.listview', 'gh.admin-listview', 'gh.admin
         delete data.events;
         // Order the events and split up the out of term events
         data.eventsByTerm = gh.utils.orderEventsByTerm(data.eventsByTerm);
+        // Refactor each start and end date to the same format the UI expects
+        _.each(data.eventsByTerm, function(term) {
+            _.each(term.events, function(ev) {
+                ev.start = gh.utils.convertUnixDatetoISODate(moment(ev.end).utc().format());
+                ev.end = gh.utils.convertUnixDatetoISODate(moment(ev.end).utc().format());
+            });
+        });
         // Render the batch edit template
         gh.utils.renderTemplate($('#gh-batch-edit-template'), {
             'data': {

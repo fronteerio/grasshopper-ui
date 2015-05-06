@@ -24,6 +24,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback               Standard callback function
      * @param  {Object}      callback.err           Error object containing the error code and error message
      * @param  {Object}      callback.response      The created global administrator
+     * @throws {Error}                              A parameter validation error
      */
     var createAdmin = exports.createAdmin = function(username, displayName, password, callback) {
         if (!_.isFunction(callback)) {
@@ -63,6 +64,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object containing all the global administrators
+     * @throws {Error}                            A parameter validation error
      */
     var getAdmins = exports.getAdmins = function(limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -93,6 +95,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the updated global administrator
+     * @throws {Error}                            A parameter validation error
      */
     var updateAdmin = exports.updateAdmin = function(userId, displayName, callback) {
         if (!_.isFunction(callback)) {
@@ -127,6 +130,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the updated global administrator
+     * @throws {Error}                            A parameter validation error
      */
     var deleteAdmin = exports.deleteAdmin = function(userId, callback) {
         if (!_.isFunction(callback)) {
