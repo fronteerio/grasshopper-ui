@@ -56,11 +56,6 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
-        return callback();
-
-        /**
-         * TODO: wait for back-end implementation
-         *
         $.ajax({
             'url': '/api/users/' + userId,
             'type': 'GET',
@@ -71,7 +66,50 @@ define(['exports'], function(exports) {
                 return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
             }
         });
-        */
+    };
+
+    /**
+     * Get the groups a user is a member of
+     *
+     * @param  {[type]}      userId               The ID of the user to get the group memberships for
+     * @param  {Number}      [limit]              The maximum number of results to retrieve
+     * @param  {Number}      [offset]             The paging number of the results to retrieve
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The groups the user is a member of
+     */
+    var getUserMemberships = exports.getUserMemberships = function(userId, limit, offset, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(userId)) {
+            return callback({'code': 400, 'msg': 'A valid user id should be provided'});
+        } else if (limit && !_.isNumber(limit)) {
+            return callback({'code': 400, 'msg': 'A valid value for limit should be provided'});
+        } else if (offset && (!_.isNumber(offset))) {
+            return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
+        }
+
+        var data = {};
+
+        if (_.isNumber(limit)) {
+            data['limit'] = limit;
+        }
+
+        if (_.isNumber(offset)) {
+            data['offset'] = offset;
+        }
+
+        $.ajax({
+            'url': '/api/users/' + userId + '/memberships',
+            'type': 'GET',
+            'data': data,
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

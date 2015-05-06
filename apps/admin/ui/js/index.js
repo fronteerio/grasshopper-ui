@@ -528,7 +528,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      * @return {Boolean}    Avoid default form submit behaviour
      * @private
      */
-    var submitConfigurationForm = function() {
+    var updateConfiguration = function() {
         var $form = $(this);
 
         // Serialise the form values into an object that can be sent to the server
@@ -680,7 +680,7 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      */
     var addBinding = function() {
         // Submit configuration values
-        $('body').on('submit', '.gh-configuration-form', submitConfigurationForm);
+        $('body').on('submit', '.gh-configuration-form', updateConfiguration);
 
         // Create global administrator
         $('body').on('submit', '#gh-administrators-create-form', createAdmin);

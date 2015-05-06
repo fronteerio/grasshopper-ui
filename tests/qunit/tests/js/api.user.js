@@ -113,7 +113,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUser functionality
     QUnit.asyncTest('getUser', function(assert) {
-        expect(4);
+        expect(5);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -135,14 +135,81 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     // Verifty that a user can be retrieved without errors
                     gh.api.userAPI.getUser(user.id, function(err, data) {
 
-                        /*
-                         * TODO: wait for back-end implementation
-                         *
-                        assert.ok(!err, 'Verify that a user can be retrieved without errors');
-                        assert.ok(data, 'Verify that the requested user is returned');
-                         */
+                        // Verify that the error is handled when the users can't be retrieved
+                        body = {'code': 400, 'msg': 'Bad Request'};
+                        gh.utils.mockRequest('GET', '/api/users/' + user.id, 400, {'Content-Type': 'application/json'}, body, function() {
+                            gh.api.userAPI.getUser(user.id, function(err, data) {
+                                assert.ok(err, 'Verify that the error is handled when the user can\'t be successfully retrieved');
 
-                        QUnit.start();
+                                QUnit.start();
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    // Test the getUserMemberships functionality
+    QUnit.asyncTest('getUserMemberships', function(assert) {
+        expect(12);
+
+        // Create a new user
+        _generateRandomUser(function(err, user) {
+            assert.ok(!err, 'Verify that users can be created without retrieving an error');
+
+            // Verify that an error is thrown when no callback was provided
+            assert.throws(function() {
+                gh.api.userAPI.getUserMemberships(user.id);
+            }, 'Verify that an error is thrown when no callback was provided');
+
+            // Verify that an error is thrown when an invalid callback was provided
+            assert.throws(function() {
+                gh.api.userAPI.getUserMemberships(user.id, null, null, 'invalid_callback');
+            }, 'Verify that an error is thrown when an invalid callback was provided');
+
+            // Verify that an error is thrown when an invalid limit was provided
+            gh.api.userAPI.getUserMemberships(user.id, 'invalid_limit', null, function(err) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid limit was provided');
+
+                // Verify that an error is thrown when an invalid offset was provided
+                gh.api.userAPI.getUserMemberships(user.id, null, 'invalid_offset', function(err) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid offset was provided');
+
+                    // Verify that an error is thrown when no user ID was provided
+                    gh.api.userAPI.getUserMemberships(null, null, null, function(err) {
+                        assert.ok(err, 'Verify that an error is thrown when no user ID was provided');
+
+                        // Verify that an error is thrown when an invalid user ID was provided
+                        gh.api.userAPI.getUserMemberships('invalid_userid', null, null, function(err) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid user ID was provided');
+
+                            var testOrgUnit = testAPI.getRandomOrgUnit('part');
+
+                            // Add the user to at least one group to test membership of
+                            var update = {};
+                            update[user.id] = true;
+                            gh.api.groupsAPI.updateGroupMembers(testOrgUnit.id, update, function(err) {
+                                assert.ok(!err, 'Verify that a user can be added to a group without getting an error');
+
+                                // Verify that group membership can be successfully retrieved
+                                gh.api.userAPI.getUserMemberships(user.id, 25, 0, function(err, memberships) {
+                                    assert.ok(!err, 'Verify that group membership can be retrieved without getting an error');
+                                    assert.equal(memberships.results.length, 1, 'Verify that the user is a member of exactly 1 group');
+                                    assert.equal(memberships.results[0].id, testOrgUnit.id, 'Verify that the user is a member of the group we added the user to');
+
+                                    // Verify that the error is handled when the group membership can't be retrieved
+                                    body = {'code': 400, 'msg': 'Bad Request'};
+                                    gh.utils.mockRequest('GET', '/api/users/' + user.id + '/memberships', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.userAPI.getUserMemberships(user.id, null, null, function(err) {
+                                            assert.ok(err, 'Verify that the error is handled when the group membership can\'t be successfully retrieved');
+
+                                            QUnit.start();
+                                        });
+                                    });
+                                });
+                            });
+                        });
                     });
                 });
             });

@@ -13,25 +13,32 @@
  * permissions and limitations under the License.
  */
 
-/* Main elements*/
+/* General */
 
-main h1 {
-    margin-bottom: 20px;
-}
-
-main h2 {
-    margin: 30px 0 12px;
-}
-
-form,
-table {
-    margin-bottom: 0 !important;
-}
-
-.gh-administration-container {
+main {
     margin: 20px;
 }
 
-.gh-administration-container .gh-configuration-form {
-    margin-bottom: 15px !important;
+/* Users */
+
+#gh-user-management-search,
+.as-selections {
+    width: 300px;
+}
+
+#gh-app-user-container #gh-user-permissions-form,
+#gh-app-user-container {
+    margin: 25px 0 !important;
+}
+
+#gh-user-permissions-form ul,
+#gh-user-permissions-form ul li {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+
+#gh-user-permissions-form > ul,
+#gh-user-permissions-form > ul > li {
+    padding: 0;
 }
