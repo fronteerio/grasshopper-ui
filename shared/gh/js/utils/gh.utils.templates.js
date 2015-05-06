@@ -83,8 +83,13 @@ define(['exports', 'gh.constants'], function(exports, constants) {
                     return resolvePartial();
                 }
 
+                // If the template wasn't defined in the constants we throw an error
+                if (!constants.templates[name]) {
+                    throw new Error('An unspecified template has been requested. Template \'' + name + '\' cannot be found.');
+                }
+
                 // If the requested partial wasn't cached yet, require the file and render or return the template
-                require(['text!/shared/gh/partials/' + name + '.html'], function(template) {
+                require(['text!' + constants.templates[name]], function(template) {
                     /* istanbul ignore if */
                     if (renderAtStart === false) {
                         return '<%= _.partial("' + name + '", {data: data}, null) %>';
@@ -104,7 +109,7 @@ define(['exports', 'gh.constants'], function(exports, constants) {
 
         // Collection of partials that can't be conveniently lazy-loaded
         var preLoadPartials = [
-            'text!/shared/gh/partials/event.html' // Event cannot be lazy-loaded as the calendar requires it immediately in the return of its logic
+            'text!/shared/gh/partials/event.html' // The `event` partial cannot be lazy-loaded as the calendar requires it immediately in the return of its logic
         ];
 
         // Preload the partials and declare them
