@@ -23,6 +23,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the events in an organisational unit
+     * @throws {Error}                            A parameter validation error
      */
     var addOrgUnitEvent = exports.addOrgUnitEvent = function(orgUnitId, eventId, callback) {
         if (!_.isFunction(callback)) {
@@ -56,6 +57,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the added event series
+     * @throws {Error}                            A parameter validation error
      */
     var addOrgUnitSeries = exports.addOrgUnitSeries = function(orgUnitId, serieId, callback) {
         if (!_.isFunction(callback)) {
@@ -95,6 +97,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the new organisational unit in an app
+     * @throws {Error}                              A parameter validation error
      */
     var createOrgUnit = exports.createOrgUnit = function(appId, displayName, type, parentId, groupId, description, metadata, published, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -164,6 +167,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the deleted organisational unit
+     * @throws {Error}                              A parameter validation error
      */
     var deleteOrgUnit = exports.deleteOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -197,6 +201,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the event series in an organisational unit
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnitSeries = exports.getOrgUnitSeries = function(orgUnitId, limit, offset, upcoming, callback) {
         if (!_.isFunction(callback)) {
@@ -232,11 +237,12 @@ define(['exports'], function(exports) {
      * Get the calendar for an organisational unit
      *
      * @param  {Number}      orgUnitId            The ID of the organisational unit to get the calendar for
-     * @param  {String}      start                 The timestamp (ISO 8601) from which to get the calendar for the organisational unit
-     * @param  {String}      end                   The timestamp (ISO 8601) until which to get the calendar for the organisational unit
+     * @param  {String}      start                The timestamp (ISO 8601) from which to get the calendar for the organisational unit
+     * @param  {String}      end                  The timestamp (ISO 8601) until which to get the calendar for the organisational unit
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the calendar for an organisational unit
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnitCalendar = exports.getOrgUnitCalendar = function(orgUnitId, start, end, callback) {
         if (!_.isFunction(callback)) {
@@ -272,6 +278,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the calendar for an organisational unit in iCal
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnitCalendarICal = exports.getOrgUnitCalendarICal = function(orgUnitId, callback) {
         if (!_.isFunction(callback)) {
@@ -299,6 +306,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the calendar for an organisational unit in RSS
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnitCalendarRSS = exports.getOrgUnitCalendarRSS = function(orgUnitId, callback) {
         if (!_.isFunction(callback)) {
@@ -327,6 +335,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the organisational unit
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnit = exports.getOrgUnit = function(orgUnitId, includeSeries, callback) {
         if (!_.isFunction(callback)) {
@@ -365,6 +374,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback                Standard callback function
      * @param  {Object}      callback.err            Error object containing the error code and error message
      * @param  {Object}      callback.response       Object representing the organisational units in an app
+     * @throws {Error}                               A parameter validation error
      */
     var getOrgUnits = exports.getOrgUnits = function(appId, includeSeries, includePermissions, parentId, type, callback) {
         if (!_.isFunction(callback)) {
@@ -420,6 +430,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the upcoming events in an organisational unit
+     * @throws {Error}                            A parameter validation error
      */
     var getOrgUnitUpcoming = exports.getOrgUnitUpcoming = function(orgUnitId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -456,6 +467,7 @@ define(['exports'], function(exports) {
      * @param  {Function}           [callback]             Standard callback function
      * @param  {Object}             [callback.err]         Error object containing the error code and error message
      * @param  {Object}             [callback.response]    Object representing the removed event
+     * @throws {Error}                                     A parameter validation error
      */
     var deleteOrgUnitEvent = exports.deleteOrgUnitEvent = function(orgUnitId, eventId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -492,6 +504,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the removed event series
+     * @throws {Error}                              A parameter validation error
      */
     var deleteOrgUnitSeries = exports.deleteOrgUnitSeries = function(orgUnitId, serieId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -527,6 +540,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the subscribed to organisational unit
+     * @throws {Error}                              A parameter validation error
      */
     var subscribeOrgUnit = exports.subscribeOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -557,6 +571,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the unsubscribed from organisational unit
+     * @throws {Error}                              A parameter validation error
      */
     var unsubscribeOrgUnit = exports.unsubscribeOrgUnit = function(orgUnitId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -594,6 +609,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    [callback]             Standard callback function
      * @param  {Object}      [callback.err]         Error object containing the error code and error message
      * @param  {Object}      [callback.response]    Object representing the updated organisational unit
+     * @throws {Error}                              A parameter validation error
      */
     var updateOrgUnit = exports.updateOrgUnit = function(orgUnitId, description, displayName, groupId, parentId, type, metadata, published, callback) {
         if (callback && !_.isFunction(callback)) {

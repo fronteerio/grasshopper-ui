@@ -22,6 +22,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The requested event
+     * @throws {Error}                           A parameter validation error
      */
     var getEvent = exports.getEvent = function(eventId, callback) {
         if (!_.isFunction(callback)) {
@@ -59,7 +60,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
-     *
+     * @throws {Error}                           A parameter validation error
      */
     var createEvent = exports.createEvent = function(displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, type, callback) {
         if (!_.isFunction(callback)) {
@@ -152,6 +153,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The created event
+     * @throws {Error}                           A parameter validation error
      */
     var createEventByApp = exports.createEventByApp = function(appId, displayName, start, end, description, groupId, location, notes, organiserOther, organiserUsers, seriesId, type, callback) {
         if (!_.isFunction(callback)) {
@@ -244,6 +246,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The updated event
+     * @throws {Error}                           A parameter validation error
      */
     var updateEvent = exports.updateEvent = function(eventId, displayName, description, groupId, start, end, location, notes, type, callback) {
         if (!_.isFunction(callback)) {
@@ -318,6 +321,7 @@ define(['exports'], function(exports) {
      * @param  {Function}                callback            Standard callback function
      * @param  {Error}                   callback.err        Error object containing the error code and error message
      * @param  {Event}                   callback.reponse    The updated event
+     * @throws {Error}                                       A parameter validation error
      */
     var updateEventOrganisers = exports.updateEventOrganisers = function(eventId, body, callback) {
         if (!_.isFunction(callback)) {
@@ -349,6 +353,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The updated event
+     * @throws {Error}                           A parameter validation error
      */
     var setEventPicture = exports.setEventPicture = function(eventId, file, callback) {
         if (!_.isFunction(callback)) {
@@ -384,6 +389,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback function
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {Event}       callback.reponse    The updated event
+     * @throws {Error}                           A parameter validation error
      */
     var cropPicture = exports.cropPicture = function(eventId, width, x, y, callback) {
         if (!_.isFunction(callback)) {
@@ -421,6 +427,7 @@ define(['exports'], function(exports) {
      * @param  {Number}      eventId           The ID of the event to delete
      * @param  {Function}    [callback]        Standard callback function
      * @param  {Function}    [callback.err]    Error object containing the error code and error message
+     * @throws {Error}                         A parameter validation error
      */
     var deleteEvent = exports.deleteEvent = function(eventId, callback) {
         if (callback && !_.isFunction(callback)) {
@@ -455,6 +462,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback            Standard callback functions
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {User[]}      callback.reponse    The users that have subscribed to the event
+     * @throws {Error}                           A parameter validation error
      */
     var getEventSubscribers = exports.getEventSubscribers = function(eventId, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -489,6 +497,7 @@ define(['exports'], function(exports) {
      * @param  {Number}      eventId           The id of the event to subscribe to
      * @param  {Function}    [callback]        Standard callback functions
      * @param  {Error}       [callback.err]    Error object containing the error code and error message
+     * @throws {Error}                         A parameter validation error
      */
     var subscribeEvent = exports.subscribeEvent = function(eventId, callback) {
         if (callback && !_.isFunction(callback)) {

@@ -21,6 +21,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    All available tenants
+     * @throws {Error}                            A parameter validation error
      */
     var getTenants = exports.getTenants = function(callback) {
         if (!_.isFunction(callback)) {
@@ -46,6 +47,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The requested tenant
+     * @throws {Error}                            A parameter validation error
      */
     var getTenant = exports.getTenant = function(tenantId, callback) {
         if (!_.isFunction(callback)) {
@@ -73,6 +75,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The created tenant
+     * @throws {Error}                            A parameter validation error
      */
     var createTenant = exports.createTenant = function(displayName, callback) {
         if (!_.isFunction(callback)) {
@@ -106,6 +109,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The updated tenant
+     * @throws {Error}                            A parameter validation error
      */
     var updateTenant = exports.updateTenant = function(tenantId, displayName, callback) {
         if (!_.isFunction(callback)) {

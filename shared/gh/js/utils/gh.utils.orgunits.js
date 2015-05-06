@@ -88,10 +88,12 @@ define(['exports'], function(exports) {
     /**
      * Return the tripos structure
      *
-     * @param  {Number}     [appId]               The application to retrieve the tripos structure for
-     * @param  {Boolean}    includePermissions    Whether the permissions should be included or not
-     * @param  {Object}     callback.err          Error object containing the error code and error message
-     * @param  {Object}     callback.response     The tripos structure
+     * @param  {Number}      [appId]               The application to retrieve the tripos structure for
+     * @param  {Boolean}     includePermissions    Whether the permissions should be included or not
+     * @param  {Function}    callback              Standard callback function
+     * @param  {Object}      callback.err          Error object containing the error code and error message
+     * @param  {Object}      callback.response     The tripos structure
+     * @throws {Error}                             A parameter validation error
      *
      * * The returned tripos structure will be something in the lines of:
      * *

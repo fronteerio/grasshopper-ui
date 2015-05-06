@@ -24,6 +24,7 @@ define(['exports'], function(exports) {
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    The members of the group
+     * @throws {Error}                            A parameter validation error
      */
     var getGroupMembers = exports.getGroupMembers = function(id, limit, offset, callback) {
         if (!_.isFunction(callback)) {
@@ -59,6 +60,7 @@ define(['exports'], function(exports) {
      * @param  {GroupMembersUpdate}    body            Object that describes the group member changes to apply
      * @param  {Function}              callback        Standard callback function
      * @param  {Object}                callback.err    Error object containing the error code and error message
+     * @throws {Error}                                 A parameter validation error
      */
     var updateGroupMembers = exports.updateGroupMembers = function(id, body, callback) {
         if (!_.isFunction(callback)) {
@@ -86,6 +88,7 @@ define(['exports'], function(exports) {
      * Lock a group
      *
      * @param  {Number}    groupId    The id of the group to lock
+     * @throws {Error}                A parameter validation error
      */
     var lock = exports.lock = function(groupId) {
         /* istanbul ignore else */
@@ -107,6 +110,7 @@ define(['exports'], function(exports) {
      * Release the lock on a group
      *
      * @param  {Number}    groupId    The id of the group to release the lock from
+     * @throws {Error}                A parameter validation error
      */
     var unlock = exports.unlock = function(groupId) {
         /* istanbul ignore else */
