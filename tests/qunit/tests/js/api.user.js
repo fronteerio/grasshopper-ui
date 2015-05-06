@@ -152,7 +152,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
     // Test the getUserMemberships functionality
     QUnit.asyncTest('getUserMemberships', function(assert) {
-        expect(10);
+        expect(12);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -165,38 +165,48 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
             // Verify that an error is thrown when an invalid callback was provided
             assert.throws(function() {
-                gh.api.userAPI.getUserMemberships(user.id, 'invalid_callback');
+                gh.api.userAPI.getUserMemberships(user.id, null, null, 'invalid_callback');
             }, 'Verify that an error is thrown when an invalid callback was provided');
 
-            // Verify that an error is thrown when no user ID was provided
-            gh.api.userAPI.getUserMemberships(null, function(err) {
-                assert.ok(err, 'Verify that an error is thrown when no user ID was provided');
+            // Verify that an error is thrown when an invalid limit was provided
+            gh.api.userAPI.getUserMemberships(user.id, 'invalid_limit', null, function(err) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid limit was provided');
 
-                // Verify that an error is thrown when an invalid user ID was provided
-                gh.api.userAPI.getUserMemberships('invalid_userid', function(err) {
-                    assert.ok(err, 'Verify that an error is thrown when an invalid user ID was provided');
+                // Verify that an error is thrown when an invalid offset was provided
+                gh.api.userAPI.getUserMemberships(user.id, null, 'invalid_offset', function(err) {
+                    assert.ok(err, 'Verify that an error is thrown when an invalid offset was provided');
 
-                    var testOrgUnit = testAPI.getRandomOrgUnit('part');
+                    // Verify that an error is thrown when no user ID was provided
+                    gh.api.userAPI.getUserMemberships(null, null, null, function(err) {
+                        assert.ok(err, 'Verify that an error is thrown when no user ID was provided');
 
-                    // Add the user to at least one group to test membership of
-                    var update = {};
-                    update[user.id] = true;
-                    gh.api.groupsAPI.updateGroupMembers(testOrgUnit.id, update, function(err) {
-                        assert.ok(!err, 'Verify that a user can be added to a group without getting an error');
+                        // Verify that an error is thrown when an invalid user ID was provided
+                        gh.api.userAPI.getUserMemberships('invalid_userid', null, null, function(err) {
+                            assert.ok(err, 'Verify that an error is thrown when an invalid user ID was provided');
 
-                        // Verify that group membership can be successfully retrieved
-                        gh.api.userAPI.getUserMemberships(user.id, function(err, memberships) {
-                            assert.ok(!err, 'Verify that group membership can be retrieved without getting an error');
-                            assert.equal(memberships.results.length, 1, 'Verify that the user is a member of exactly 1 group');
-                            assert.equal(memberships.results[0].id, testOrgUnit.id, 'Verify that the user is a member of the group we added the user to');
+                            var testOrgUnit = testAPI.getRandomOrgUnit('part');
 
-                            // Verify that the error is handled when the group membership can't be retrieved
-                            body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.utils.mockRequest('GET', '/api/users/' + user.id + '/memberships', 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.userAPI.getUserMemberships(user.id, function(err) {
-                                    assert.ok(err, 'Verify that the error is handled when the group membership can\'t be successfully retrieved');
+                            // Add the user to at least one group to test membership of
+                            var update = {};
+                            update[user.id] = true;
+                            gh.api.groupsAPI.updateGroupMembers(testOrgUnit.id, update, function(err) {
+                                assert.ok(!err, 'Verify that a user can be added to a group without getting an error');
 
-                                    QUnit.start();
+                                // Verify that group membership can be successfully retrieved
+                                gh.api.userAPI.getUserMemberships(user.id, 25, 0, function(err, memberships) {
+                                    assert.ok(!err, 'Verify that group membership can be retrieved without getting an error');
+                                    assert.equal(memberships.results.length, 1, 'Verify that the user is a member of exactly 1 group');
+                                    assert.equal(memberships.results[0].id, testOrgUnit.id, 'Verify that the user is a member of the group we added the user to');
+
+                                    // Verify that the error is handled when the group membership can't be retrieved
+                                    body = {'code': 400, 'msg': 'Bad Request'};
+                                    gh.utils.mockRequest('GET', '/api/users/' + user.id + '/memberships', 400, {'Content-Type': 'application/json'}, body, function() {
+                                        gh.api.userAPI.getUserMemberships(user.id, null, null, function(err) {
+                                            assert.ok(err, 'Verify that the error is handled when the group membership can\'t be successfully retrieved');
+
+                                            QUnit.start();
+                                        });
+                                    });
                                 });
                             });
                         });

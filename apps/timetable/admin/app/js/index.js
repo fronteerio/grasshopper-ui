@@ -78,7 +78,9 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /**
      * Render the tripos structure indicating which groups the selected user is part of
      *
-     * @param  {Object}    triposData    The app's tripos structure
+     * @param  {Object}    triposData     The app's tripos structure
+     * @param  {User}      user           The user Object to render
+     * @param  {Object}    memberships    The memberships of the user
      * @private
      */
     var renderUser = function(triposData, user, memberships) {
@@ -104,6 +106,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /**
      * Render the configuration form
      *
+     * @param  {Object}    config    The app configuration object
      * @private
      */
     var renderConfig = function(config) {
@@ -266,7 +269,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /**
      * Get the user object from the user AutoSuggest field
      *
-     * @return {User[]}    User object chosen in the user AutoSuggest field
+     * @return {User}    User object chosen in the user AutoSuggest field
      * @private
      */
     var getUserSelection = function() {
@@ -286,8 +289,8 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     /**
      * Submit the form with parts the user has access to
      *
-     * @private
      * @return {Boolean}    Return false to avoid the default form submit behaviour
+     * @private
      */
     var submitPartForm = function() {
         var groups = $(this).find('[data-groupid]');
@@ -358,7 +361,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
         var appId = parseInt(require('gh.core').data.me.AppId, 10);
 
         // Get the tripos structure
-        gh.utils.getTriposStructure(appId, function(triposErr, triposData) {
+        gh.utils.getTriposStructure(appId, true, function(triposErr, triposData) {
             if (triposErr) {
                 return gh.utils.notification('Could not get the application\'s tripos structure', constants.messaging.default.error, 'error');
             }
@@ -370,7 +373,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 }
 
                 // Get the groups the user is a member of
-                gh.api.userAPI.getUserMemberships(user.id, function(membershipErr, memberships) {
+                gh.api.userAPI.getUserMemberships(user.id, triposData.parts.length, null, function(membershipErr, memberships) {
                     if (membershipErr) {
                         return gh.utils.notification('Could not get the user\'s memberships', constants.messaging.default.error, 'error');
                     }
