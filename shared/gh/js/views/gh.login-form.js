@@ -23,7 +23,8 @@ define(['gh.core'], function(gh) {
     /**
      * Log in using the local authentication strategy
      *
-     * @param  {Event}    ev    The jQuery event
+     * @param  {Event}      ev    The jQuery event
+     * @return {Boolean}          Return false to avoid the default form behaviour
      * @private
      */
     var doLogin = function(ev) {
@@ -39,10 +40,10 @@ define(['gh.core'], function(gh) {
                 }
                 window.location.reload();
             });
-
-            // Avoid default form submit behaviour
-            return false;
         }
+
+        // Avoid default form submit behaviour
+        return false;
     };
 
     /**

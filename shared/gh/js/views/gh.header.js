@@ -16,8 +16,7 @@
 define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
 
     /**
-     * Set up the header component by rendering the header and login templates, fetching the tripos
-     * structure and initialising the subheader component
+     * Set up the header component by rendering the header and initialising the subheader component
      *
      * @param  {Object}    triposData
      * @private
@@ -33,8 +32,7 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
             gh.utils.renderTemplate('subheader-pickers', {
                 'gh': gh
             }, $('#gh-subheader'), function() {
-                // Set up the tripos picker after all data has been retrieved
-                // Initialise the subheader component after all data has been retrieved
+                // Initialise the subheader component
                 $(document).trigger('gh.subheader.init', {
                     'triposData': triposData
                 });
