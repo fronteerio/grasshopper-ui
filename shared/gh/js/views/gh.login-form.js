@@ -15,9 +15,6 @@
 
 define(['gh.core'], function(gh) {
 
-    // The trigger that invoked the modal window
-    var $trigger = null;
-
 
     //////////////////////
     //  AUTHENTICATION  //
@@ -48,76 +45,39 @@ define(['gh.core'], function(gh) {
         }
     };
 
-
-    /////////////
-    //  MODAL  //
-    /////////////
-
     /**
-     * Setup and show the login modal
+     * Log the current user out
      *
-     * @param  {Object}    evt    The dispatched jQuery event
-     * @param  {Object}    msg    The event message
+     * @param  {Event}    ev    The jQuery event
      * @private
      */
-    var setupAndShowModal = function(evt, msg) {
-
-        // Render the login modal template
-        gh.utils.renderTemplate('login-modal', {
-            'data': {
-                'gh': gh,
-                'isGlobalAdminUI': false
+    var doLogout = function(ev) {
+        // Prevent the form from being submitted
+        ev.preventDefault();
+        // Sign out the user
+        gh.api.authenticationAPI.logout(function(err) {
+            if (err) {
+                return gh.utils.notification('Logout failed', 'Logging out of the application failed', 'error');
             }
-        }, $('#gh-modal'), function() {
-
-            // Cache the trigger
-            if(msg && msg.data && msg.data.trigger) {
-                $trigger = $(msg.data.trigger);
-            }
-
-            // Show the login modal
-            $('#gh-modal-login').modal();
+            window.location = '/';
         });
     };
 
-    /**
-     * Add logic when the modal is shown
-     *
-     * @private
-     */
-    var onModalShown = function() {
-        // Bind the validator to the login form
-        $('body').on('submit', '#gh-modal-login .gh-signin-form', doLogin).validator({'disable': false});
-        // Track an event when the login modal is shown
-        gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
-    };
+
+    /////////////
+    // BINDING //
+    /////////////
 
     /**
-     * Focus the trigger when the modal is hidden
-     *
-     * @private
-     */
-    var onModalHidden = function() {
-        $trigger.focus();
-    };
-
-
-    ///////////////
-    //  BINDING  //
-    ///////////////
-
-    /**
-     * Add handlers for the login modal
+     * Add handlers to various elements
      *
      * @private
      */
     var addBinding = function() {
-        // Setup and show the modal
-        $(document).on('gh.login-modal.show', setupAndShowModal);
-        // On modal hidden
-        $('body').on('hidden.bs.modal', '#gh-modal-login', onModalHidden);
-        // On modal shown
-        $('body').on('shown.bs.modal', '#gh-modal-login', onModalShown);
+        // Sign out the user when the form is submitted
+        $('body').on('submit', '#gh-signout-form', doLogout);
+        // Bind the validator to the login form when it becomes available
+        $('body').on('submit', '.gh-signin-form', doLogin).validator({'disable': false});
     };
 
     addBinding();

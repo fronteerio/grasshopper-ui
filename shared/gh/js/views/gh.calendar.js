@@ -672,9 +672,9 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
     };
 
 
-    ///////////////
-    //  BINDING  //
-    ///////////////
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
 
     /**
      * Set the height of the calendar view
@@ -689,7 +689,97 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
     };
 
     /**
-     * Add event listeners to UI-components
+     * Initialise FullCalendar on the page and bind event handlers for navigating it
+     *
+     * @param  {Object[]}    calendarData    An Array of tripos data
+     * @private
+     */
+    var setUpCalendar = function(calendarData) {
+        // Render the calendar template
+        gh.utils.renderTemplate('calendar', {
+            'data': {
+                'gh': gh
+            }
+        }, $('#gh-main'), function() {
+
+            // Create an empty array if there are no events yet
+            var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
+
+            // Retrieve the organisational unit ID
+            orgUnitID = calendarData.orgUnitId || null;
+
+            // Manipulate the dates so they always display in GMT+0
+            gh.utils.fixDatesToGMT(events);
+
+            if (calendarData) {
+                // Cache the received calendar data
+                triposData = calendarData;
+                // Get the event context
+                getEventContext(events);
+            }
+
+            // If the calendar instance is initialised while another is on the page,
+            // tear it down first
+            if (calendar) {
+                calendar.fullCalendar('destroy');
+            }
+
+            // Initialize the calendar object
+            calendar = $('#gh-calendar-container').fullCalendar({
+                'header': false,
+                'columnFormat': {
+                    'month': 'ddd',
+                    'week': 'ddd D/M',
+                    'day': 'dddd'
+                },
+                'allDaySlot': false,
+                'defaultDate': Date.now(),
+                'defaultView': currentView,
+                'editable': false,
+                'eventLimit': true,
+                'firstDay': 4,
+                'handleWindowResize': false,
+                'maxTime': '20:00:00',
+                'minTime': '07:00:00',
+                'slotDuration': '00:30:00',
+                'events': events,
+                'eventRender': function(data) {
+                    return gh.utils.renderTemplate('event', {
+                        'data': data,
+                        'utils': gh.utils
+                    });
+                }
+            });
+
+            // Show extra information for the event in a popover when it's clicked
+            $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
+
+            // Add binding to various elements
+            addBinding();
+            // Set the current day
+            setCurrentDay();
+            // Set the calendar height
+            setCalendarHeight();
+            // Set the period label
+            setPeriodLabel();
+            // Set the term label
+            setTermLabel();
+
+            // Fetch the user's events
+            if (!gh.data.me.anon) {
+                // Put the calendar on today's view
+                $(document).trigger('gh.calendar.navigateToToday');
+            }
+        });
+    };
+
+
+    ///////////////
+    //  BINDING  //
+    ///////////////
+
+    /**
+     * Add binding to the calendar component
      *
      * @private
      */
@@ -729,6 +819,11 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
         // Change the calendar's view
         $('.gh-switch-view').off('click', changeView).on('click', changeView);
 
+        // Initialise the calendar
+        $(document).on('gh.calendar.init', function(evt, msg) {
+            setUpCalendar(msg.triposData);
+        });
+
         // Return the calendar's current view
         $(document).off('gh.calendar.getCurrentView').on('gh.calendar.getCurrentView', function(ev, callback) {
             return callback(getCurrentView());
@@ -749,83 +844,5 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
         $(window).off('resize', setCalendarHeight).on('resize', setCalendarHeight);
     };
 
-    /**
-     * Initialise FullCalendar on the page and bind event handlers for navigating it
-     *
-     * @param  {Event}       ev                         Standard event object
-     * @param  {Object}      calendarData               The data associated to the calendar to render
-     * @param  {Object[]}    calendarData.triposData    An Array of tripos data
-     * @param  {Object[]}    calendarData.events        An Array of events to add to the calendar on initialisation
-     * @private
-     */
-    var setUpCalendar = function(ev, calendarData) {
-        // Create an empty array if there are no events yet
-        var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
-
-        orgUnitID = calendarData.orgUnitId || null;
-
-        // Manipulate the dates so they always display in GMT+0
-        gh.utils.fixDatesToGMT(events);
-
-        if (calendarData && calendarData.triposData) {
-            // Cache the triposData for later use
-            triposData = calendarData.triposData;
-            // Get the event context
-            getEventContext(events);
-        }
-
-        // If the calendar instance is initialised while another is on the page,
-        // tear it down first
-        if (calendar) {
-            calendar.fullCalendar('destroy');
-        }
-
-        // Initialize the calendar object
-        calendar = $('#gh-calendar-container').fullCalendar({
-            'header': false,
-            'columnFormat': {
-                'month': 'ddd',
-                'week': 'ddd D/M',
-                'day': 'dddd'
-            },
-            'allDaySlot': false,
-            'defaultDate': Date.now(),
-            'defaultView': currentView,
-            'editable': false,
-            'eventLimit': true,
-            'firstDay': 4,
-            'handleWindowResize': false,
-            'maxTime': '20:00:00',
-            'minTime': '07:00:00',
-            'slotDuration': '00:30:00',
-            'events': events,
-            'eventRender': function(data) {
-                return gh.utils.renderTemplate('event', {
-                    'data': data,
-                    'utils': gh.utils
-                });
-            }
-        });
-
-        // Show extra information for the event in a popover when it's clicked
-        $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
-
-        // Add binding to various elements
-        addBinding();
-        // Set the current day
-        setCurrentDay();
-        // Set the calendar height
-        setCalendarHeight();
-        // Set the period label
-        setPeriodLabel();
-        // Set the term label
-        setTermLabel();
-    };
-
-    // Initialise the calendar
-    $(document).on('gh.calendar.init', setUpCalendar);
-
-    // Inform the page that the calendar is ready to go so that
-    // it can initialise the calendar when it's ready for it
-    $(document).trigger('gh.calendar.ready');
+    addBinding();
 });
