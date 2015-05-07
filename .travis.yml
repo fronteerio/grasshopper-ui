@@ -14,12 +14,7 @@ env:
 addons:
   postgresql: "9.3"
 
-git:
-  submodules: false
-
 before_install:
-  - git submodule update --init --recursive
-
   # Create virtual hosts
   - sudo sed -i "2i127.0.0.2  2013.timetable.cam.ac.uk" /etc/hosts
   - sudo sed -i "2i127.0.0.2  2014.timetable.cam.ac.uk" /etc/hosts
