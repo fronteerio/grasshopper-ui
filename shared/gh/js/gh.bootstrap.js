@@ -70,7 +70,12 @@ requirejs.config({
         'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
         'gh.utils.time': 'gh/js/utils/gh.utils.time',
 
-        // GH view controllers
+        // GH global admin view controllers
+        'gh.global-admin.configuration': 'gh/js/views/global-admin/gh.configuration',
+        'gh.global-admin.tenants': 'gh/js/views/global-admin/gh.tenants',
+        'gh.global-admin.users': 'gh/js/views/global-admin/gh.users',
+
+        // GH student and tenant admin view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',
         'gh.admin-batch-edit-date': 'gh/js/views/gh.admin-batch-edit-date',
         'gh.admin-batch-edit-organiser': 'gh/js/views/gh.admin-batch-edit-organiser',
