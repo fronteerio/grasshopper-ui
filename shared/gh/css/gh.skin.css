@@ -92,16 +92,18 @@ a,
 /* LAYOUT */
 /**********/
 
+#gh-page-container,
+#gh-page-container #gh-left-container #gh-navigation-container,
+#gh-page-container #gh-left-container #gh-modules-container {
+    background-color: #171717;
+}
+
 #gh-page-container #gh-left-container #gh-result-summary {
     background-color: #127077;
     border-bottom-color: #171717;
 }
 
-#gh-page-container #gh-left-container,
-#gh-page-container #gh-left-container #gh-meta-container {
-    background-color: #171717;
-}
-
+#gh-page-container #gh-right-container,
 #gh-page-container #gh-header {
     background-color: #FFF;
 }
