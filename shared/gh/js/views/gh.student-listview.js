@@ -29,7 +29,7 @@ define(['gh.core', 'gh.constants', 'gh.login-modal', 'gh.series-info', 'gh.serie
      */
     var addAllToCalendar = function() {
         if (gh.data.me.anon) {
-            return $(document).trigger('gh.login-modal.show');
+            return $(document).trigger('gh.login-modal.show', {'data': {'trigger': $(this)}});
         }
 
         var $list = $(this).closest('li');
@@ -84,7 +84,7 @@ define(['gh.core', 'gh.constants', 'gh.login-modal', 'gh.series-info', 'gh.serie
      */
     var removeAllFromCalendar = function() {
         if (gh.data.me.anon) {
-            return $(document).trigger('gh.login-modal.show');
+            return $(document).trigger('gh.login-modal.show', {'data': {'trigger': $(this)}});
         }
 
         var $list = $(this).closest('li');
@@ -139,7 +139,7 @@ define(['gh.core', 'gh.constants', 'gh.login-modal', 'gh.series-info', 'gh.serie
      */
     var addToCalendar = function() {
         if (gh.data.me.anon) {
-            return $(document).trigger('gh.login-modal.show');
+            return $(document).trigger('gh.login-modal.show', {'data': {'trigger': $(this)}});
         }
 
         var $this = $(this);
@@ -209,7 +209,7 @@ define(['gh.core', 'gh.constants', 'gh.login-modal', 'gh.series-info', 'gh.serie
      */
     var removeFromCalendar = function() {
         if (gh.data.me.anon) {
-            return $(document).trigger('gh.login-modal.show');
+            return $(document).trigger('gh.login-modal.show', {'data': {'trigger': $(this)}});
         }
 
         var $this = $(this);

@@ -53,9 +53,11 @@ define(['gh.core'], function(gh) {
     /**
      * Setup and show the login modal
      *
+     * @param  {Object}    evt    The dispatched jQuery event
+     * @param  {Object}    msg    The event message
      * @private
      */
-    var setupAndShowModal = function() {
+    var setupAndShowModal = function(evt, msg) {
 
         // Render the login modal template
         gh.utils.renderTemplate('login-modal', {
@@ -66,7 +68,7 @@ define(['gh.core'], function(gh) {
         }, $('#gh-modal'), function() {
 
             // Add logic once the modal is shown
-            $('#gh-modal-login').on('shown.bs.modal', function () {
+            $('#gh-modal-login').on('shown.bs.modal', function() {
 
                 // Track an event when the login modal is shown
                 gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
@@ -75,6 +77,13 @@ define(['gh.core'], function(gh) {
                 $('.modal-body .gh-signin-form').validator({
                     'disable': false
                 }).on('submit', doLogin);
+            });
+
+            // Put the focus back on the trigger on hide
+            $('#gh-modal-login').on('hidden.bs.modal', function() {
+                if(msg && msg.data && msg.data.trigger) {
+                    $(msg.data.trigger).focus();
+                }
             });
 
             // Show the login modal
