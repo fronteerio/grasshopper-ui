@@ -15,6 +15,9 @@
 
 define(['gh.core'], function(gh) {
 
+    // The trigger that invoked the modal window
+    var $trigger = null;
+
 
     //////////////////////
     //  AUTHENTICATION  //
@@ -67,28 +70,36 @@ define(['gh.core'], function(gh) {
             }
         }, $('#gh-modal'), function() {
 
-            // Add logic once the modal is shown
-            $('#gh-modal-login').on('shown.bs.modal', function() {
-
-                // Track an event when the login modal is shown
-                gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
-
-                // Bind the validator to the login form
-                $('.modal-body .gh-signin-form').validator({
-                    'disable': false
-                }).on('submit', doLogin);
-            });
-
-            // Put the focus back on the trigger on hide
-            $('#gh-modal-login').on('hidden.bs.modal', function() {
-                if(msg && msg.data && msg.data.trigger) {
-                    $(msg.data.trigger).focus();
-                }
-            });
+            // Cache the trigger
+            if(msg && msg.data && msg.data.trigger) {
+                $trigger = $(msg.data.trigger);
+            }
 
             // Show the login modal
             $('#gh-modal-login').modal();
         });
+    };
+
+    /**
+     * Add logic when the modal is shown
+     *
+     * @private
+     */
+    var onModalShown = function() {
+        // Track an event when the login modal is shown
+        gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
+
+        // Bind the validator to the login form
+        $('body').on('submit', '#gh-modal-login .gh-signin-form', doLogin).validator({'disable': false});
+    };
+
+    /**
+     * Focus the trigger when the modal is hidden
+     *
+     * @private
+     */
+    var onModalHidden = function() {
+        $trigger.focus();
     };
 
 
@@ -102,7 +113,12 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var addBinding = function() {
+        // Setup and show the modal
         $(document).on('gh.login-modal.show', setupAndShowModal);
+        // On modal hidden
+        $('body').on('hidden.bs.modal', '#gh-modal-login', onModalHidden);
+        // On modal shown
+        $('body').on('shown.bs.modal', '#gh-modal-login', onModalShown);
     };
 
     addBinding();
