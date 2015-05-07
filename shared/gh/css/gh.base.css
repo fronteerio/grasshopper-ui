@@ -350,8 +350,8 @@ select[disabled],
 /* Content containers */
 
 .gh-collapsed #gh-page-container #gh-left-container {
-    width: 50px !important;
     position: fixed;
+    width: 50px !important;
 }
 
 .gh-collapsed #gh-page-container #gh-right-container {
