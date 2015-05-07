@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover', 'gh.series-borrowed-published-popover', 'clickover'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.login-modal', 'gh.series-info', 'gh.series-borrowed-popover', 'gh.series-borrowed-published-popover', 'clickover'], function(gh, constants) {
 
     var modules = null;
 
@@ -29,7 +29,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
      */
     var addAllToCalendar = function() {
         if (gh.data.me.anon) {
-            return $('#gh-modal-login').modal();
+            return $(document).trigger('gh.login-modal.show');
         }
 
         var $list = $(this).closest('li');
@@ -84,7 +84,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
      */
     var removeAllFromCalendar = function() {
         if (gh.data.me.anon) {
-            return $('#gh-modal-login').modal();
+            return $(document).trigger('gh.login-modal.show');
         }
 
         var $list = $(this).closest('li');
@@ -139,7 +139,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
      */
     var addToCalendar = function() {
         if (gh.data.me.anon) {
-            return $('#gh-modal-login').modal();
+            return $(document).trigger('gh.login-modal.show');
         }
 
         var $this = $(this);
@@ -209,7 +209,7 @@ define(['gh.core', 'gh.constants', 'gh.series-info', 'gh.series-borrowed-popover
      */
     var removeFromCalendar = function() {
         if (gh.data.me.anon) {
-            return $('#gh-modal-login').modal();
+            return $(document).trigger('gh.login-modal.show');
         }
 
         var $this = $(this);

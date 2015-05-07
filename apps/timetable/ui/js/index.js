@@ -110,30 +110,6 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         }
     };
 
-    /**
-     * Render the login modal dialog used to prompt anonymous users to sign in
-     *
-     * @private
-     */
-    var renderLoginModal = function() {
-        gh.utils.renderTemplate('login-modal', {
-            'data': {
-                'gh': gh,
-                'isGlobalAdminUI': false
-            }
-        }, $('#gh-modal'), function() {
-            // Bind the validator to the login form
-            $('.gh-signin-form').validator({
-                'disable': false
-            }).on('submit', doLogin);
-        });
-
-        // Track an event when the login modal is shown
-        $('#gh-modal-login').on('shown.bs.modal', function () {
-            gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
-        });
-    };
-
 
     /////////////////
     //  UTILITIES  //
@@ -238,7 +214,6 @@ define(['gh.core', 'gh.constants', 'gh.subheader', 'gh.calendar', 'gh.student-li
         fetchTriposData(function() {
             setUpHeader();
             setUpCalendar();
-            renderLoginModal();
         });
     };
 
