@@ -65,6 +65,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview',
         gh.utils.renderTemplate('header', {
             'data': {
                 'gh': gh,
+                'includeLoginForm': false,
                 'isGlobalAdminUI': false
             }
         }, $('#gh-header'));

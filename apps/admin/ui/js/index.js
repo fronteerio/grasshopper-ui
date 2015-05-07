@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'chosen', 'validator', 'gh.header'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -89,27 +89,6 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
     };
 
     /**
-     * Render the header
-     *
-     * @private
-     */
-    var renderHeader = function() {
-        gh.utils.renderTemplate('header', {
-            'data': {
-                'gh': gh,
-                'isGlobalAdminUI': true
-            }
-        }, $('#gh-header'), function() {
-            // Bind the validator to the login form when it becomes available
-            $('.gh-signin-form').onAvailable(function() {
-                $('.gh-signin-form').validator({
-                    'disable': false
-                }).on('submit', doLogin);
-            });
-        });
-    };
-
-    /**
      * Render the admin navigation
      *
      * @private
@@ -150,29 +129,6 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      */
     var updateCheckboxValue = function() {
         $(this).val($(this).is(':checked'));
-    };
-
-    /**
-     * Log in using the local authentication strategy
-     *
-     * @param  {Event}    ev    The jQuery event
-     * @private
-     */
-    var doLogin = function(ev) {
-        // Log in to the system if the form is valid
-        if (!ev.isDefaultPrevented()) {
-            // Collect and submit the form data
-            var formValues = _.object(_.map($(this).serializeArray(), _.values));
-            gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
-                if (err) {
-                    return gh.utils.notification('Could not sign you in', 'Please check that you are entering a correct username & password', 'error');
-                }
-                window.location.reload();
-            });
-        }
-
-        // Avoid default form submit behaviour
-        return false;
     };
 
 
@@ -732,9 +688,17 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
      *
      * @private
      */
-    var initIndex = function() {
+    var initialise = function() {
+
+        // Add event listeners to various components on the page
         addBinding();
-        renderHeader();
+
+        // Initialise the page header
+        $(document).trigger('gh.header.init', {
+            'includeLoginForm': true,
+            'isGlobalAdminUI': true
+        });
+
         // Determine which page to load based on the login state and
         // page the user's on
         if (gh.data && !gh.data.me.anon) {
@@ -753,5 +717,5 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator'], function(gh, constant
         }
     };
 
-    initIndex();
+    initialise();
 });

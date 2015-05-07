@@ -103,10 +103,16 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
         fetchTriposData(function(triposData) {
 
             // Set up the header
-            $(document).trigger('gh.header.init', {'triposData': triposData});
+            $(document).trigger('gh.header.init', {
+                'includeLoginForm': true,
+                'isGlobalAdminUI': false,
+                'triposData': triposData
+            });
 
             // Set up the calendar
-            $(document).trigger('gh.calendar.init', {'triposData': triposData});
+            $(document).trigger('gh.calendar.init', {
+                'triposData': triposData
+            });
         });
     };
 

@@ -18,25 +18,34 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
     /**
      * Set up the header component by rendering the header and initialising the subheader component
      *
-     * @param  {Object}    triposData
+     * @param  {Boolean}    includeLoginForm    Whether or not the login form should be displayed
+     * @param  {Boolean}    isGlobalAdminUI     Whether or not the global admin UI is in use
+     * @param  {Object}     [triposData]        Object containing the tripos data
      * @private
      */
-    var setUpHeader = function(triposData) {
+    var setUpHeader = function(includeLoginForm, isGlobalAdminUI, triposData) {
         // Render the header template
         gh.utils.renderTemplate('header', {
             'data': {
-                'gh': gh
+                'gh': gh,
+                'includeLoginForm': includeLoginForm,
+                'isGlobalAdminUI': isGlobalAdminUI
             }
         }, $('#gh-header'), function() {
-            // Render the tripos pickers
-            gh.utils.renderTemplate('subheader-pickers', {
-                'gh': gh
-            }, $('#gh-subheader'), function() {
-                // Initialise the subheader component
-                $(document).trigger('gh.subheader.init', {
-                    'triposData': triposData
+
+            // Only render the pickers for the student UI and the tenant admin UI
+            if (!isGlobalAdminUI) {
+
+                // Render the tripos pickers
+                gh.utils.renderTemplate('subheader-pickers', {
+                    'gh': gh
+                }, $('#gh-subheader'), function() {
+                    // Initialise the subheader component
+                    $(document).trigger('gh.subheader.init', {
+                        'triposData': triposData
+                    });
                 });
-            });
+            }
         });
     };
 
@@ -53,7 +62,10 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
     var addBinding = function() {
         // Initialise the header
         $(document).on('gh.header.init', function(evt, msg) {
-            setUpHeader(msg.triposData);
+            var includeLoginForm = msg.includeLoginForm || false;
+            var isGlobalAdminUI = msg.isGlobalAdminUI || false;
+            var triposData = msg.triposData || null;
+            setUpHeader(includeLoginForm, isGlobalAdminUI, triposData);
         });
 
         // Track an event when the user clicks the Cambridge logo

@@ -28,10 +28,13 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var doLogin = function(ev) {
+        // Determine whether or not the global admin is in use
+        var isGlobalAdminUI = $('body').hasClass('gh-global-admin');
+
         // Log in to the system if the form is valid and local authentication is enabled.
         // If Shibboleth is required the native form behaviour will be used and no extra
         // handling is required
-        if (!ev.isDefaultPrevented() && gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
+        if (!ev.isDefaultPrevented() && (isGlobalAdminUI || (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth))) {
             // Collect and submit the form data
             var formValues = _.object(_.map($(this).serializeArray(), _.values));
             gh.api.authenticationAPI.login(formValues.username, formValues.password, function(err) {
