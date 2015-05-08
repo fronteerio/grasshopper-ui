@@ -94,16 +94,18 @@ requirejs.config({
         'gh.admin.visibility': 'gh/js/views/tenant-admin/gh.visibility',
 
         // GH student view controllers
-        'gh.agenda-view': 'gh/js/views/gh.agenda-view',
+        'gh.student.agenda-view': 'gh/js/views/tenant-student/gh.agendaview',
+        'gh.student.listview': 'gh/js/views/tenant-student/gh.listview',
+        'gh.student.login-modal': 'gh/js/views/tenant-student/gh.login-modal',
+        'gh.student.series-info': 'gh/js/views/tenant-student/gh.series-info',
+        'gh.student.series-borrowed-published-popover': 'gh/js/views/tenant-student/gh.series-borrowed-published-popover',
+
+        // GH shared view controllers
         'gh.calendar': 'gh/js/views/gh.calendar',
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.login-form': 'gh/js/views/gh.login-form',
-        'gh.login-modal': 'gh/js/views/gh.login-modal',
         'gh.header': 'gh/js/views/gh.header',
-        'gh.series-info': 'gh/js/views/gh.series-info',
         'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
-        'gh.series-borrowed-published-popover': 'gh/js/views/gh.series-borrowed-published-popover',
-        'gh.student-listview': 'gh/js/views/gh.student-listview',
         'gh.subheader': 'gh/js/views/gh.subheader'
     },
     'priority': ['jquery', 'lodash'],
