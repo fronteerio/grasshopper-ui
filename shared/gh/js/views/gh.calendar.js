@@ -418,8 +418,12 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
      * @private
      */
     var printCalendar = function() {
+        // Get the view name that's to be printed
+        var printedView = $('.tab-pane.active#gh-my-agenda-view').length ? 'My Agenda' : 'My Calendar';
         // Send a tracking event when a user prints the calendar
-        gh.utils.trackEvent(['Calendar', 'Print clicked']);
+        gh.utils.trackEvent(['Calendar', 'Print clicked'], {
+            'view': printedView
+        });
         return window.print();
     };
 
@@ -694,6 +698,13 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
      * @private
      */
     var addBinding = function() {
+        // Track the user opening the calendar
+        $(document).on('shown.bs.tab', '#gh-calendar-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
+            if ($(ev.target).attr('aria-controls') === 'gh-my-calendar-view') {
+                // Send a tracking event
+                gh.utils.trackEvent(['Tab', 'My Calendar']);
+            }
+        });
         // Export the calendar
         $('#gh-btn-calendar-export').off('click', exportCalendar).on('click', exportCalendar);
         $('#gh-export-subscribe').off('click').on('click', function() {
