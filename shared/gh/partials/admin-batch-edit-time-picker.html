@@ -1,5 +1,5 @@
 <% var dayIndex = parseInt(data.dayIndex, 10) %>
-<% var daysInUse = _.map(data.daysInUse, function(value, key) {return parseInt(key, 10)}) %>
+<% var daysInUse = _.map(data.daysInUse, function(value, key) { return parseInt(key, 10); }) %>
 
 <div class="form-inline gh-batch-edit-time-picker">
     <select class="pull-left form-control gh-batch-edit-day-picker" data-prev="<%- data.dayIndex %>">
