@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit-date', 'gh.admin.batch-edit-organiser', 'gh.admin.datepicker', 'gh.admin.delete-series', 'gh.admin.event-type-select', 'gh.admin.edit-organiser', 'gh.admin.series-title'], function(gh, constants, moment) {
 
     // Object used to cache the triposData
     var triposData = null;
