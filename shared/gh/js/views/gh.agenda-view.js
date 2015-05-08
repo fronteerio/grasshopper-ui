@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core'], function(gh) {
+define(['gh.core', 'moment'], function(gh, moment) {
 
     // Get the configuration
     var config = require('gh.core').config;
@@ -38,6 +38,7 @@ define(['gh.core'], function(gh) {
         // Render the agenda view
         gh.utils.renderTemplate('agenda-view', {
             'data': {
+                'moment': moment,
                 'openedTerms': require('gh.core').utils.localDataStorage().get('myagenda'),
                 'terms': terms,
                 'utils': gh.utils
