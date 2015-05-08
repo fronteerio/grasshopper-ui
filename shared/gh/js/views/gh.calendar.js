@@ -691,16 +691,19 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
     /**
      * Initialise FullCalendar on the page and bind event handlers for navigating it
      *
-     * @param  {Object[]}    calendarData    An Array of tripos data
+     * @param  {Object[]}         calendarData    An Array of tripos data
+     * @param  {String}           view            The current view. ('student', 'admin')
+     * @param  {Object|String}    $target         The container where the calendar should be rendered in
      * @private
      */
-    var setUpCalendar = function(calendarData) {
+    var setUpCalendar = function(calendarData, view, $target) {
         // Render the calendar template
         gh.utils.renderTemplate('calendar', {
             'data': {
-                'gh': gh
+                'gh': gh,
+                'view': view
             }
-        }, $('#gh-main'), function() {
+        }, $($target), function() {
 
             // Create an empty array if there are no events yet
             var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
@@ -821,7 +824,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
 
         // Initialise the calendar
         $(document).on('gh.calendar.init', function(evt, msg) {
-            setUpCalendar(msg.triposData);
+            setUpCalendar(msg.triposData, msg.view, msg.target);
         });
 
         // Return the calendar's current view

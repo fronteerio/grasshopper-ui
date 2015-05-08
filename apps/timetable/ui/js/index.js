@@ -111,7 +111,9 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
 
             // Set up the calendar
             $(document).trigger('gh.calendar.init', {
-                'triposData': triposData
+                'triposData': triposData,
+                'view': 'student',
+                'target': '#gh-main'
             });
         });
     };
