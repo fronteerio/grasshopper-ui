@@ -712,9 +712,6 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
             // Create an empty array if there are no events yet
             var events = calendarData && calendarData.events && calendarData.events.results ? calendarData.events.results : [];
 
-            // Retrieve the organisational unit ID
-            orgUnitID = calendarData.orgUnitId || null;
-
             // Manipulate the dates so they always display in GMT+0
             gh.utils.fixDatesToGMT(events);
 
@@ -835,6 +832,10 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], fun
 
         // Initialise the calendar
         $(document).on('gh.calendar.init', function(evt, msg) {
+            if (msg.orgUnitId) {
+                orgUnitID = msg.orgUnitId;
+            }
+
             setUpCalendar(msg.triposData, msg.view, msg.target);
         });
 
