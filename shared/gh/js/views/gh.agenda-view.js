@@ -18,7 +18,7 @@ define(['gh.core'], function(gh) {
     // Get the configuration
     var config = require('gh.core').config;
     // Get the correct terms associated to the current application
-    var terms = config.terms[config.academicYear];
+    var terms = _.map(config.terms[config.academicYear], _.clone);
 
 
     ///////////////
