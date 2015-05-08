@@ -18,7 +18,7 @@ define(['gh.core'], function(gh) {
     // Get the configuration
     var config = require('gh.core').config;
     // Get the correct terms associated to the current application
-    var terms = config.terms[config.academicYear];
+    var terms = _.map(config.terms[config.academicYear], _.clone);
 
 
     ///////////////
@@ -113,6 +113,11 @@ define(['gh.core'], function(gh) {
         });
         // Load and render the next week
         getAgendaViewData(term, nextWeek);
+        // Send a tracking event
+        gh.utils.trackEvent(['My agenda', 'Term', 'Load week'], {
+            'term': term.name,
+            'week': (nextWeek + 1)
+        });
     };
 
     /**
@@ -149,6 +154,10 @@ define(['gh.core'], function(gh) {
         expandedTerms = _.map(expandedTerms, function(id) { return id; });
         // Store the toggled terms in the local storage
         gh.utils.localDataStorage().store('myagenda', expandedTerms);
+        // Send a tracking event
+        gh.utils.trackEvent(['My agenda', 'Term', $(this).parent().next().is(':visible') ? 'Open' : 'Close'], {
+            'term': $(this).text().trim().toLowerCase()
+        });
     };
 
 
@@ -169,6 +178,9 @@ define(['gh.core'], function(gh) {
                 _.each(terms, function(term) {
                     getAgendaViewData(term, 0);
                 });
+
+                // Send a tracking event
+                gh.utils.trackEvent(['Tab', 'My agenda']);
             }
         });
 

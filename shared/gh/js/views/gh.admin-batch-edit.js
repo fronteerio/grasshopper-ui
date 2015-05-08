@@ -1379,8 +1379,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
                     // Track the user opening a series
                     gh.utils.trackEvent(['Navigation', 'Series opened'], {
                         'seriesID': seriesId,
-                        'is_borrowed': 'TBD',
-                        'can_be_edited': 'TBD'
+                        'is_borrowed': data.borrowedFrom ? true : false,
+                        'can_be_edited': data.series.canManage
                     });
 
                     // TODO: Remove this and only trigger when button is clicked/expanded

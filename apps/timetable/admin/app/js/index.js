@@ -226,6 +226,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 return gh.utils.notification('App configuration not updated', constants.messaging.default.error, 'error');
             }
             gh.utils.notification('App configuration updated', null, 'success');
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Config', 'Updated'], {
+                'app': $form.data('appid')
+            });
         });
 
         // Avoid default form submit behaviour
@@ -258,6 +262,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 return gh.utils.notification('Could not update the system app', constants.messaging.default.error, 'error');
             }
             gh.utils.notification('System app ' + displayName + ' successfully updated', null, 'success');
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'App', 'Updated'], {
+                'app': appId
+            });
         });
 
         // Avoid default form submit behaviour
@@ -348,6 +356,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             updateGroupMember(changeSet[0], function() {
                 gh.utils.notification('User access updated', 'The user\'s access to parts has been updated successfully', 'success');
                 getTriposStructure();
+                // Send a tracking event
+                gh.utils.trackEvent(['Manage', 'Users', 'Group membership updated'], {
+                    'user': getUserSelection().id
+                });
             });
         }
 
@@ -417,25 +429,14 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                     return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
                 }
 
-                // TODO: enable password updates once it's implemented in the backend
-                // If the password field is not empty, submit a password update
-                // if (password) {
-                //     gh.api.userAPI.changePassword(userId, newPassword, oldPassword, function(passwordErr) {
-                //         if (passwordErr) {
-                //             return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
-                //         }
-
-                //         // Update the user list
-                //         getUsers.apply($form);
-                //         // Notify the user of a successful update
-                //         gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
-                //     });
-                // } else {
-                    // Update the user display
-                    getTriposStructure();
-                    // Show a success message
-                    gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
-                // }
+                // Update the user display
+                getTriposStructure();
+                // Show a success message
+                gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
+                // Send a tracking event
+                gh.utils.trackEvent(['Manage', 'Users', 'Updated'], {
+                    'user': userId
+                });
             });
         });
 
@@ -461,6 +462,9 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
 
             // Render the configuration
             renderConfig(config);
+
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Config', 'Opened']);
         });
     };
 
@@ -471,6 +475,8 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      */
     var setUpApp = function() {
         renderApp();
+        // Send a tracking event
+        gh.utils.trackEvent(['Manage', 'App', 'Opened']);
     };
 
     /**
@@ -481,6 +487,8 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
     var setUpUsers = function() {
         // Render the app user search
         renderAppUserSearch();
+        // Send a tracking event
+        gh.utils.trackEvent(['Manage', 'Users', 'Opened']);
     };
 
     /**
@@ -507,6 +515,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                     var suffix = user.shibbolethId ? ' (' + user.shibbolethId + ')' : '';
                     user.displayName = user.displayName + suffix;
                 });
+                // Send a tracking event
+                gh.utils.trackEvent(['Manage', 'Users', 'Searched user'], {
+                    'query': $('.as-input').val(),
+                });
                 return data.results;
             },
             'selectionAdded': function(element, userId) {
@@ -515,6 +527,10 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
                 } else {
                     getTriposStructure();
                 }
+                // Send a tracking event
+                gh.utils.trackEvent(['Manage', 'Users', 'Selected user'], {
+                    'user': userId,
+                });
             },
             'selectionRemoved': function(elem) {
                 // Remove the previously selected user from the AutoSuggest

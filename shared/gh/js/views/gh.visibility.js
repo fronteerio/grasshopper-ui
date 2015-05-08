@@ -186,6 +186,9 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
         $('body').on('change', '#gh-visibility-form input[type="radio"]', selectVisibilityType);
         // Change the visibility selection to published
         $('body').on('click', '#gh-visibility-form #gh-visibility-divider', function() {
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Publishing', 'Divider arrow clicked']);
+            // Click the publish button
             $('#gh-visibility-published').click();
         });
         // Update the visibility status
