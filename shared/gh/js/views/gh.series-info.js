@@ -131,7 +131,9 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
     var groupSeriesEventsByTerms = function(events) {
 
         // Cache the terms
-        var _terms = _.map(gh.config.terms[gh.config.academicYear], function(term) { return _.clone(term); });
+        var _terms = _.map(gh.config.terms[gh.config.academicYear], function(term) {
+            return _.extend({}, term);
+        });
 
         // Add the events to the corresponding term
         _.each(events, function(evt) {
