@@ -70,7 +70,12 @@ requirejs.config({
         'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
         'gh.utils.time': 'gh/js/utils/gh.utils.time',
 
-        // GH view controllers
+        // GH global admin view controllers
+        'gh.global-admin.configuration': 'gh/js/views/global-admin/gh.configuration',
+        'gh.global-admin.tenants': 'gh/js/views/global-admin/gh.tenants',
+        'gh.global-admin.users': 'gh/js/views/global-admin/gh.users',
+
+        // GH student and tenant admin view controllers
         'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',
         'gh.admin-batch-edit-date': 'gh/js/views/gh.admin-batch-edit-date',
         'gh.admin-batch-edit-organiser': 'gh/js/views/gh.admin-batch-edit-organiser',
@@ -85,7 +90,9 @@ requirejs.config({
         'gh.delete-module': 'gh/js/views/gh.delete-module',
         'gh.delete-series': 'gh/js/views/gh.delete-series',
         'gh.listview': 'gh/js/views/gh.listview',
+        'gh.login-form': 'gh/js/views/gh.login-form',
         'gh.login-modal': 'gh/js/views/gh.login-modal',
+        'gh.header': 'gh/js/views/gh.header',
         'gh.new-module': 'gh/js/views/gh.new-module',
         'gh.new-series': 'gh/js/views/gh.new-series',
         'gh.rename-module': 'gh/js/views/gh.rename-module',

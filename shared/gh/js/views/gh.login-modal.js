@@ -86,11 +86,10 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var onModalShown = function() {
-        // Track an event when the login modal is shown
-        gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
-
         // Bind the validator to the login form
         $('body').on('submit', '#gh-modal-login .gh-signin-form', doLogin).validator({'disable': false});
+        // Track an event when the login modal is shown
+        gh.utils.trackEvent(['Navigation', 'Authentication modal triggered']);
     };
 
     /**

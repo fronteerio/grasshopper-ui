@@ -549,7 +549,9 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             // Initialise the calendar
             $(document).trigger('gh.calendar.init', {
                 'triposData': triposData,
-                'orgUnitId': History.getState().data.module
+                'orgUnitId': History.getState().data.module,
+                'view': 'admin',
+                'target': '#gh-batch-calendar-view'
             });
 
             // Put the calendar on today's view
@@ -1513,10 +1515,12 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('body').on('keypress', 'td.gh-edit-event-organisers', handleEditableKeyPress);
 
         // Tabs
-        $(document).on('shown.bs.tab', '#gh-batch-edit-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
+        $(document).on('shown.bs.tab', '#gh-toolbar-container .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
             // Only set up the calendar if that tab is active
             if ($(ev.target).attr('aria-controls') === 'gh-batch-calendar-view') {
+                // Set up and show the preview calendar
                 setUpPreviewCalendar();
+
                 // Track the user opening the calendar view
                 gh.utils.trackEvent(['Navigation', 'Calendar view selected'], {
                     'partId': History.getState().data.part
