@@ -1,15 +1,18 @@
+<% var dayIndex = parseInt(data.dayIndex, 10) %>
+<% var daysInUse = _.map(data.daysInUse, function(value, key) { return parseInt(key, 10); }) %>
+
 <div class="form-inline gh-batch-edit-time-picker">
     <select class="pull-left form-control gh-batch-edit-day-picker" data-prev="<%- data.dayIndex %>">
-        <% if (parseInt(data.dayIndex, 10) === 7) { %>
-            <option value="7" <% if (parseInt(data.dayIndex, 10) === 7) { %> selected="true" <% } %>>Choose a day</option>
+        <% if (dayIndex === 7) { %>
+            <option value="7" <% if (dayIndex === 7) { %> selected="true" <% } %>>Choose a day</option>
         <% } %>
-        <option value="4" <% if (parseInt(data.dayIndex, 10) === 4) { %> selected="true" <% } %>>Thursdays</option>
-        <option value="5" <% if (parseInt(data.dayIndex, 10) === 5) { %> selected="true" <% } %>>Fridays</option>
-        <option value="6" <% if (parseInt(data.dayIndex, 10) === 6) { %> selected="true" <% } %>>Saturdays</option>
-        <option value="0" <% if (parseInt(data.dayIndex, 10) === 0) { %> selected="true" <% } %>>Sundays</option>
-        <option value="1" <% if (parseInt(data.dayIndex, 10) === 1) { %> selected="true" <% } %>>Mondays</option>
-        <option value="2" <% if (parseInt(data.dayIndex, 10) === 2) { %> selected="true" <% } %>>Tuesdays</option>
-        <option value="3" <% if (parseInt(data.dayIndex, 10) === 3) { %> selected="true" <% } %>>Wednesdays</option>
+        <option value="4" <% if (dayIndex === 4) { %> selected="true" <% } else if (_.indexOf(daysInUse, 4) > -1) {%> disabled<% } %>>Thursdays</option>
+        <option value="5" <% if (dayIndex === 5) { %> selected="true" <% } else if (_.indexOf(daysInUse, 5) > -1) {%> disabled<% } %>>Fridays</option>
+        <option value="6" <% if (dayIndex === 6) { %> selected="true" <% } else if (_.indexOf(daysInUse, 6) > -1) {%> disabled<% } %>>Saturdays</option>
+        <option value="0" <% if (dayIndex === 0) { %> selected="true" <% } else if (_.indexOf(daysInUse, 0) > -1) {%> disabled<% } %>>Sundays</option>
+        <option value="1" <% if (dayIndex === 1) { %> selected="true" <% } else if (_.indexOf(daysInUse, 1) > -1) {%> disabled<% } %>>Mondays</option>
+        <option value="2" <% if (dayIndex === 2) { %> selected="true" <% } else if (_.indexOf(daysInUse, 2) > -1) {%> disabled<% } %>>Tuesdays</option>
+        <option value="3" <% if (dayIndex === 3) { %> selected="true" <% } else if (_.indexOf(daysInUse, 3) > -1) {%> disabled<% } %>>Wednesdays</option>
     </select>
     <div class="pull-left gh-batch-edit-date-start">
         <select class="form-control gh-batch-edit-hours-picker gh-batch-edit-hours-start">
@@ -38,7 +41,7 @@
     </div>
 
     <!-- Only show the delete button if more than one days are in use -->
-    <% if (_.keys(data.daysInUse).length > 1) { %>
+    <% if (daysInUse.length > 1) { %>
         <button class="btn btn-link gh-batch-edit-date-delete" title="Delete day from selection"><i class="fa fa-trash"></i></button>
     <% } %>
 </div>
