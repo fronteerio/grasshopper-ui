@@ -196,6 +196,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
                 $('html').toggleClass('gh-collapsed-finished');
                 // Trigger a window resize event to let all components adjust themselves
                 $(window).trigger('resize');
+                // Send a tracking event
+                utils.trackEvent(['Navigation', 'Collapsed']);
             }, 300);
         } else {
             // Show the modules list before the animation starts
@@ -205,6 +207,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
             setTimeout(function() {
                 // Trigger a window resize event to let all components adjust themselves
                 $(window).trigger('resize');
+                // Send a tracking event
+                utils.trackEvent(['Navigation', 'Expanded']);
             }, 300);
         }
     };
@@ -231,6 +235,18 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         $(document).on('gh.listview.preselect', preselectSeries);
         // Responsive collapse/expand
         $(document).on('click', '.gh-collapse-modules', toggleModulesCollapse);
+        // Module settings dropdown opened
+        $('body').on('shown.bs.dropdown', '#gh-modules-list .dropdown', function() {
+            utils.trackEvent(['Navigation', 'Modules', 'Settings dropdown opened'], {
+                'module': parseInt($(this).closest('.list-group-item').attr('data-id'), 10)
+            });
+        });
+        // Module settings dropdown closed
+        $('body').on('hidden.bs.dropdown', '#gh-modules-list .dropdown', function() {
+            utils.trackEvent(['Navigation', 'Modules', 'Settings dropdown closed'], {
+                'module': parseInt($(this).closest('.list-group-item').attr('data-id'), 10)
+            });
+        });
     };
 
     addBinding();
