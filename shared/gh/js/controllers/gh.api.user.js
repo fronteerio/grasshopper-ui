@@ -30,6 +30,7 @@ define(['exports'], function(exports) {
 
         $.ajax({
             'url': '/api/me',
+            'cache': false,
             'type': 'GET',
             'success': function(data) {
                 return callback(null, data);
