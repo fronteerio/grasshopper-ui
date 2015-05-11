@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(gh, constants, orgunitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'chosen'], function(gh, constants, orgunitAPI) {
 
     var triposData = null;
 

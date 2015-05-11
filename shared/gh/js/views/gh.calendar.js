@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.agenda-view'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-view'], function(gh, constants, moment) {
 
 
     /////////////////////

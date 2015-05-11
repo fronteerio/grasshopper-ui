@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.borrow-series', 'gh.delete-module', 'gh.new-module', 'gh.new-series', 'gh.rename-module', 'gh.series-borrowed-popover', 'clickover'], function(gh) {
+define(['gh.core', 'gh.admin.borrow-series', 'gh.admin.delete-module', 'gh.admin.new-module', 'gh.admin.new-series', 'gh.admin.rename-module', 'gh.series-borrowed-popover', 'clickover'], function(gh) {
 
     /**
      * Set up the modules of events in the sidebar. Note that the generic gh.listview.js does

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin-listview', 'gh.admin-batch-edit', 'gh.subheader', 'gh.video', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit', 'gh.admin.listview', 'gh.admin.video', 'gh.subheader', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment) {
 
     // Cache the tripos data
     var triposData = {};
