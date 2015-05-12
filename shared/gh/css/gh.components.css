@@ -733,6 +733,7 @@ tbody tr:last-child > td.fc-widget-content {
 
 .list-group .list-group-item .gh-series-borrowed {
     height: 100%;
+    padding-left: 5px;
     width: 40px;
 }
 
