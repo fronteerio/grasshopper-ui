@@ -341,6 +341,7 @@ ul.nav-tabs li.active {
 }
 
 .gh-list-group-item-container.gh-series-active .gh-borrowed-icon-container .fa-link,
+.gh-list-group-item-container.gh-series-active .gh-list-action i,
 .list-group .list-group-item .gh-borrowed-icon-container:hover .fa-link {
     color: #171717;
 }

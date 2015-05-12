@@ -127,9 +127,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
             // Fetch the group ID
             var groupId = $(this).data('groupid');
             // Feth the parent ID
-            var parentId = $(this).closest('.list-group-item').data('id');
+            var parentId = $(this).closest('.list-group-item').attr('data-moduleid');
             // Fetch the part ID
-            var partId = $(this).closest('#gh-modules-list-container').data('partid');
+            var partId = $(this).closest('#gh-modules-list-container').attr('data-partid');
             // Dispatch an event to the admin view controller
             $(document).trigger('gh.admin.changeView', {
                 'name': constants.views.NEW_SERIES,

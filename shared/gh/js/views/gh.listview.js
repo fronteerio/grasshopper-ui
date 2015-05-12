@@ -77,7 +77,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
 
             // Add the current expanded module(s) back to the local storage
             expandedIds = $('.gh-list-group-item-open', $(data.container)).map(function(index, value) {
-                return $(value).attr('data-id');
+                return $(value).attr('data-moduleid');
             });
 
             expandedIds = _.map(expandedIds, function(id) { return id; });
@@ -103,7 +103,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // If both module and series are defined, open them up
         if ($firstModule.length && $firstSeries.length) {
             utils.addToState({
-                'module': $firstModule.attr('data-id'),
+                'module': $firstModule.attr('data-moduleid'),
                 'series': $firstSeries.attr('data-id')
             }, true);
             // Reset the preselect value for the next iteration
@@ -160,7 +160,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Fetch the IDs of the expanded list
         var expandedItems = $('#gh-modules-list > .list-group-item', $(this).closest('#gh-modules-container')).map(function(index, module) {
             return {
-                'id': $(module).attr('data-id'),
+                'id': $(module).attr('data-moduleid'),
                 'expanded': $(module).hasClass('gh-list-group-item-open')
             };
         });
@@ -168,7 +168,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Send an event when the module has been opened or closed
         var verb = $module.hasClass('gh-list-group-item-open') ? 'opened' : 'closed';
         utils.trackEvent(['Navigation', 'Module ' + verb], {
-            'module': $module.attr('data-id')
+            'module': $module.attr('data-moduleid')
         });
 
         // Store the expanded list items
@@ -238,13 +238,13 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // Module settings dropdown opened
         $('body').on('shown.bs.dropdown', '#gh-modules-list .dropdown', function() {
             utils.trackEvent(['Navigation', 'Modules', 'Settings dropdown opened'], {
-                'module': parseInt($(this).closest('.list-group-item').attr('data-id'), 10)
+                'module': parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10)
             });
         });
         // Module settings dropdown closed
         $('body').on('hidden.bs.dropdown', '#gh-modules-list .dropdown', function() {
             utils.trackEvent(['Navigation', 'Modules', 'Settings dropdown closed'], {
-                'module': parseInt($(this).closest('.list-group-item').attr('data-id'), 10)
+                'module': parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10)
             });
         });
     };

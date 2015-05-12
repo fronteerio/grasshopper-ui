@@ -98,9 +98,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var showBorrowSeriesModal = function() {
         // Get the ID of the module to borrow series to
-        var moduleId = $(this).closest('.list-group-item').data('id');
+        var moduleId = $(this).closest('.list-group-item').attr('data-moduleid');
         // Get the part ID of the module
-        var partId = $(this).closest('#gh-modules-list-container').data('partid');
+        var partId = $(this).closest('#gh-modules-list-container').attr('data-partid');
 
         // Fetch the triposes
         gh.utils.getTriposStructure(null, true, function(err, _triposData) {

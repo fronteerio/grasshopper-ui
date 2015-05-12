@@ -50,8 +50,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             $('#gh-rename-module-modal').modal('hide');
 
             // Update the modules list display name
-            $('.list-group-item[data-id="' + moduleId + '"] .gh-toggle-list .gh-list-description-text').text(displayName);
-            $('.list-group-item[data-id="' + moduleId + '"] .gh-toggle-list + ul .gh-rename-module').data('displayname', displayName);
+            $('.list-group-item[data-moduleid="' + moduleId + '"] .gh-toggle-list .gh-list-description-text').text(displayName);
+            $('.list-group-item[data-moduleid="' + moduleId + '"] .gh-toggle-list + ul .gh-rename-module').data('displayname', displayName);
         });
 
         return false;
@@ -65,7 +65,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
     var showRenameModuleModal = function() {
         // Cache the display name and module ID
         oldDisplayName = $(this).data('displayname');
-        moduleId = parseInt($(this).attr('data-id'), 10);
+        moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
         gh.utils.renderTemplate('rename-module-modal', {
