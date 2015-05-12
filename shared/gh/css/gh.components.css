@@ -687,11 +687,11 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .list-group .list-group-item .gh-list-action .btn-link {
-    height: 100%;
-    padding: 13px 16px;
+    height: 44px;
+    margin-top: -22px;
+    padding: 0 16px;
     position: absolute;
     right: 0;
-    top: 0;
 }
 
 .list-group .list-group-item .gh-list-action .btn-link:disabled {
