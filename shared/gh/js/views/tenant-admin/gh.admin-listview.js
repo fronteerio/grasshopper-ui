@@ -39,8 +39,8 @@ define(['gh.core', 'gh.admin.borrow-series', 'gh.admin.delete-module', 'gh.admin
      * @private
      */
     var selectSeries = function() {
-        var moduleId = $(this).closest('ul').closest('.list-group-item').data('id');
-        var seriesId = $(this).closest('.list-group-item').data('id');
+        var moduleId = $(this).closest('ul').closest('.list-group-item').attr('data-moduleid');
+        var seriesId = $(this).closest('.list-group-item').attr('data-id');
          // Push the selected module and series in the URL
         gh.utils.addToState({
             'module': moduleId,
@@ -61,6 +61,8 @@ define(['gh.core', 'gh.admin.borrow-series', 'gh.admin.delete-module', 'gh.admin
     var addBinding = function() {
         // Select a series in the sidebar
         $('body').on('click', '.gh-series-select', selectSeries);
+        // Select a series in the sidebar
+        $('body').on('click', '.gh-series-select + .gh-list-action', selectSeries);
         // Set up the modules in the sidebar
         $(document).on('gh.part.selected.admin', setUpModules);
     };

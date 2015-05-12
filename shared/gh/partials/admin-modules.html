@@ -18,7 +18,7 @@
                 var groupId = orgunit.GroupId;
             %>
 
-            <li class="list-group-item<% if (orgunit.expanded || parseInt(state.module, 10) === orgunit.id) { %> gh-list-group-item-open<% } %>" data-id="<%- orgunit.id %>">
+            <li class="list-group-item<% if (orgunit.expanded || parseInt(state.module, 10) === orgunit.id) { %> gh-list-group-item-open<% } %>" <% if (isChild) { %>data-id="<%- orgunit.id %>"<% } else { %>data-moduleid="<%- orgunit.id %>"<% } %>>
                 <div class="gh-list-group-item-container <% if (parseInt(state.series, 10) === orgunit.id && orgunit.moduleMatch) { %> gh-series-active<% } %>">
                     <% if (!isChild) { %>
                         <button class="btn btn-link gh-toggle-list">
@@ -32,23 +32,23 @@
                                 <p class="gh-list-description-text"><%- orgunit.displayName %></p>
                             </div>
                         </button>
-                            <% if (isChild) { %>
-                                <div class="gh-series-borrowed">
-                                    <span <% if (orgunit.borrowedFrom) { %>class="gh-borrowed-icon-container"<% } %>>
-                                    <% if(orgunit.borrowedFrom) { %>
-                                        <i class="fa fa-link" data-id="<%- orgunit.id %>"></i>
-                                    <% } else { %>
-                                        <i class="fa fa-angle-right"></i>
-                                    <% } %>
-                                    </span>
-                                </div>
-                                <% if (orgunit.borrowedFrom) {%>
-                                    <% var randomId = data.utils.generateRandomString(); %>
-                                    <div id="<%- randomId %>">
-                                        <% _.partial('series-borrowed-popover', {'data': orgunit}, null, '#' + randomId) %>
-                                    </div>
+                        <% if (isChild) { %>
+                            <div class="<% if (orgunit.borrowedFrom) { %>gh-series-borrowed<% } else { %>gh-list-action<% } %>">
+                                <span <% if (orgunit.borrowedFrom) { %>class="gh-borrowed-icon-container"<% } %>>
+                                <% if (orgunit.borrowedFrom) { %>
+                                    <i class="fa fa-link" data-id="<%- orgunit.id %>"></i>
+                                <% } else { %>
+                                    <i class="fa fa-angle-right"></i>
                                 <% } %>
+                                </span>
+                            </div>
+                            <% if (orgunit.borrowedFrom) {%>
+                                <% var randomId = data.utils.generateRandomString(); %>
+                                <div id="<%- randomId %>">
+                                    <% _.partial('series-borrowed-popover', {'data': orgunit}, null, '#' + randomId) %>
+                                </div>
                             <% } %>
+                        <% } %>
                         <% if (!isChild) { %>
                             <ul class="nav nav-pills pull-right" role="tablist">
                                 <li role="presentation" class="dropdown">
@@ -65,10 +65,10 @@
                                             <button type="button" class="btn btn-default gh-btn-secondary gh-borrow-series" role="menuitem">Borrow series</button>
                                         </li>
                                         <li role="presentation">
-                                            <button type="button" class="btn btn-default gh-btn-secondary gh-rename-module" role="menuitem" data-id="<%= orgunit.id %>" data-displayname="<%- orgunit.displayName %>">Rename module</button>
+                                            <button type="button" class="btn btn-default gh-btn-secondary gh-rename-module" role="menuitem" data-displayname="<%- orgunit.displayName %>">Rename module</button>
                                         </li>
                                         <li role="presentation">
-                                            <button type="button" class="btn btn-default gh-btn-secondary gh-delete-module" role="menuitem" data-id="<%= orgunit.id %>">Delete module</button>
+                                            <button type="button" class="btn btn-default gh-btn-secondary gh-delete-module" role="menuitem">Delete module</button>
                                         </li>
                                     </ul>
                                 </li>

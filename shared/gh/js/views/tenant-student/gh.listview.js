@@ -289,7 +289,7 @@ define(['gh.core', 'gh.constants', 'gh.student.login-modal', 'gh.student.series-
         $('body').on('click', '.gh-add-to-calendar', addToCalendar);
         $('body').on('click', '.gh-remove-from-calendar', removeFromCalendar);
         $('body').on('click', '.list-group .list-group-item .list-group .list-group-item .gh-list-description', function() {
-            $($(this).next().find('button')).click();
+            $($(this).nextAll().find('button')).click();
         });
     };
 

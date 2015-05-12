@@ -179,7 +179,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var setUpDeleteModuleModal = function() {
         // Cache the module ID
-        moduleId = parseInt($(this).attr('data-id'), 10);
+        moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
         gh.utils.renderTemplate('delete-module-modal', null, $('#gh-modal'), function() {
