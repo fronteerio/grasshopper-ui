@@ -27,8 +27,8 @@ define(['gh.core', 'gh.admin.borrow-series', 'gh.admin.delete-module', 'gh.admin
         // Hide the tripos help text
         $('.gh-tripos-help').hide();
         // Highlight the selected series
-        $('.gh-series-select').removeClass('gh-series-active');
-        $('.list-group-item[data-id="' + History.getState().data.series + '"] .gh-series-select').addClass('gh-series-active');
+        $('.gh-list-group-item-container').removeClass('gh-series-active');
+        $('.list-group-item[data-id="' + History.getState().data.series + '"] .gh-list-group-item-container').addClass('gh-series-active');
         // Make sure its parent is opened
         $('.list-group-item[data-id="' + History.getState().data.series + '"]').parents('.list-group-item').addClass('gh-list-group-item-open');
     };

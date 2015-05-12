@@ -70,7 +70,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
             }
 
             // Put focus on the selected series
-            $('.gh-series-active').focus();
+            $('.gh-series-active .gh-series-select').focus();
 
             // Clear local storage
             utils.localDataStorage().remove('expanded');

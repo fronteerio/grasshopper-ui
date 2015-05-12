@@ -73,6 +73,11 @@
     border-bottom: none;
 }
 
+.nav-tabs > li,
+.nav-tabs > li a {
+    max-height: 44px;
+}
+
 .nav-tabs > li > a,
 .nav-tabs > li.active > a,
 .nav-tabs > li > a:hover {
