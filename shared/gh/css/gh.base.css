@@ -200,7 +200,6 @@ select[disabled],
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
     min-height: 100%;
-    padding-bottom: 45px;
     padding-top: 215px;
 }
 
@@ -306,7 +305,7 @@ select[disabled],
     -webkit-background-clip: content-box;
        -moz-background-clip: content-box;
             background-clip: content-box;
-    height: 100%;
+    min-height: 100%;
     min-width: 992px;
     padding-left: 320px;
     -webkit-transition: padding-left .3s;
