@@ -686,10 +686,12 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
      * @private
      */
     var setCalendarHeight = function() {
-        // Calculate the new height
-        var height = window.innerHeight - 380;
-        // Apply the new height on the calendar
-        calendar.fullCalendar('option', 'height', height);
+        if (calendar && calendar.fullCalendar) {
+            // Calculate the new height
+            var height = window.innerHeight - 380;
+            // Apply the new height on the calendar
+            calendar.fullCalendar('option', 'height', height);
+        }
     };
 
     /**
