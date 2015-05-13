@@ -48,10 +48,14 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
                 return gh.utils.redirect().accessdenied();
             }
 
-            // Set up the tripos picker after all data has been retrieved
-            // Initialise the subheader component after all data has been retrieved
-            $(document).trigger('gh.subheader.init', {
-                'triposData': triposData
+            gh.utils.renderTemplate('admin-subheader-pickers', {
+                'gh': gh
+            }, $('#gh-subheader'), function() {
+                // Set up the tripos picker after all data has been retrieved
+                // Initialise the subheader component after all data has been retrieved
+                $(document).trigger('gh.subheader.init', {
+                    'triposData': triposData
+                });
             });
         });
     };
@@ -95,17 +99,6 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
                 'disable': false
             }).on('submit', doLogin);
         });
-    };
-
-    /**
-     * Render the tripos pickers
-     *
-     * @private
-     */
-    var renderPickers = function() {
-        gh.utils.renderTemplate('admin-subheader-pickers', {
-            'gh': gh
-        }, $('#gh-subheader'));
     };
 
     /**
@@ -448,9 +441,6 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
 
             // Render the header
             renderHeader();
-
-            // Render the picker container
-            renderPickers();
 
             // Show the tripos help info
             showTriposHelp();
