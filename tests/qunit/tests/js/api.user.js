@@ -230,21 +230,17 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
             }, 'Verify that an error is thrown when an invalid callback was provided');
 
             // Verify that the me feed can be successfully retrieved
-            // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-            var body = {'code': 200, 'msg': 'OK'};
-            gh.utils.mockRequest('GET', '/api/me', 200, {'Content-Type': 'application/json'}, body, function() {
-                gh.api.userAPI.getMe(function(err, data) {
-                    assert.ok(!err, 'Verify that the me feed can be successfully retrieved');
+            gh.api.userAPI.getMe(function(err, data) {
+                assert.ok(!err, 'Verify that the me feed can be successfully retrieved');
 
-                    // Verify that the error is handled when the calendar can't be retrieved
-                    body = {'code': 400, 'msg': 'Bad Request'};
-                    gh.utils.mockRequest('GET', '/api/me', 400, {'Content-Type': 'application/json'}, body, function() {
-                        gh.api.userAPI.getMe(function(err, data) {
-                            assert.ok(err, 'Verify that the error is handled when the me feed can\'t be successfully retrieved');
-                            assert.ok(!data, 'Verify that no data returns when the me feed can\'t be successfully retrieved');
+                // Verify that the error is handled when the calendar can't be retrieved
+                var body = {'code': 400, 'msg': 'Bad Request'};
+                gh.utils.mockRequest('GET', '/api/me', 400, {'Content-Type': 'application/json'}, body, function() {
+                    gh.api.userAPI.getMe(function(err, data) {
+                        assert.ok(err, 'Verify that the error is handled when the me feed can\'t be successfully retrieved');
+                        assert.ok(!data, 'Verify that no data returns when the me feed can\'t be successfully retrieved');
 
-                            QUnit.start();
-                        });
+                        QUnit.start();
                     });
                 });
             });
