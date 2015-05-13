@@ -290,8 +290,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
      * @private
      */
     var addBinding = function() {
-        // Handle hash changes
-        $(window).on('statechange', handleStateChange);
+        // Handle hash changes but be careful with repeated triggers and throttle the function call
+        $(window).on('statechange', function() {
+            _.throttle(handleStateChange, 50);
+        });
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;
