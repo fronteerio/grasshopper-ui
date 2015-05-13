@@ -241,15 +241,10 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
     opacity: 1;
-    overflow: hidden;
     -webkit-transition: opacity .3s;
        -moz-transition: opacity .3s;
          -o-transition: opacity .3s;
             transition: opacity .3s;
-}
-
-#gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container:hover {
-    overflow-y: auto;
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list {
