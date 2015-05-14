@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type-select', 'gh.admin-series-title', 'gh.datepicker', 'gh.admin-batch-edit-date', 'gh.admin-batch-edit-organiser', 'gh.admin-edit-organiser', 'gh.delete-series'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit-date', 'gh.admin.batch-edit-organiser', 'gh.admin.datepicker', 'gh.admin.delete-series', 'gh.admin.event-type-select', 'gh.admin.edit-organiser', 'gh.admin.series-title'], function(gh, constants, moment) {
 
     // Object used to cache the triposData
     var triposData = null;
@@ -549,7 +549,9 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
             // Initialise the calendar
             $(document).trigger('gh.calendar.init', {
                 'triposData': triposData,
-                'orgUnitId': History.getState().data.module
+                'orgUnitId': History.getState().data.module,
+                'view': 'admin',
+                'target': '#gh-batch-calendar-view'
             });
 
             // Put the calendar on today's view
@@ -1377,8 +1379,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
                     // Track the user opening a series
                     gh.utils.trackEvent(['Navigation', 'Series opened'], {
                         'seriesID': seriesId,
-                        'is_borrowed': 'TBD',
-                        'can_be_edited': 'TBD'
+                        'is_borrowed': data.borrowedFrom ? true : false,
+                        'can_be_edited': data.series.canManage
                     });
 
                     // TODO: Remove this and only trigger when button is clicked/expanded
@@ -1513,10 +1515,12 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin-event-type
         $('body').on('keypress', 'td.gh-edit-event-organisers', handleEditableKeyPress);
 
         // Tabs
-        $(document).on('shown.bs.tab', '#gh-batch-edit-view .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
+        $(document).on('shown.bs.tab', '#gh-toolbar-container .gh-toolbar-primary a[data-toggle="tab"]', function(ev) {
             // Only set up the calendar if that tab is active
             if ($(ev.target).attr('aria-controls') === 'gh-batch-calendar-view') {
+                // Set up and show the preview calendar
                 setUpPreviewCalendar();
+
                 // Track the user opening the calendar view
                 gh.utils.trackEvent(['Navigation', 'Calendar view selected'], {
                     'partId': History.getState().data.part

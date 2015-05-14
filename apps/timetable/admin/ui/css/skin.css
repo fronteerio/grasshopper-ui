@@ -162,7 +162,7 @@
     background-color: transparent;
 }
 
-.list-group .list-group-item .gh-list-group-item-container .gh-series-select:hover {
+.list-group .list-group-item .gh-list-group-item-container:hover {
     background-color: #62326E;
 }
 
@@ -197,12 +197,12 @@
 /* MODULES */
 /***********/
 
-.list-group .list-group-item .gh-list-group-item-container .gh-series-select.gh-series-active {
+.list-group .list-group-item .gh-list-group-item-container.gh-series-active {
     background-color: #FFF;
 }
 
-.list-group .list-group-item .gh-series-select.gh-series-active p,
-.list-group .list-group-item .gh-series-select.gh-series-active .gh-list-action i {
+.list-group .list-group-item .gh-series-active .gh-series-select p,
+.list-group .list-group-item .gh-series-active .gh-series-select .gh-list-action i {
     color: #171717;
 }
 

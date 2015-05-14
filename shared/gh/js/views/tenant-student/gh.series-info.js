@@ -131,7 +131,9 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
     var groupSeriesEventsByTerms = function(events) {
 
         // Cache the terms
-        var _terms = _.map(gh.config.terms[gh.config.academicYear], function(term) { return _.clone(term); });
+        var _terms = _.map(gh.config.terms[gh.config.academicYear], function(term) {
+            return _.extend({}, term);
+        });
 
         // Add the events to the corresponding term
         _.each(events, function(evt) {
@@ -201,6 +203,11 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
             // Show the modal
             $('#gh-series-info-modal').modal();
         });
+
+        // Send a tracking event
+        gh.utils.trackEvent(['Navigation', 'Series', 'Series info modal displayed'], {
+            'series': seriesId
+        });
     };
 
 
@@ -216,6 +223,13 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
     var addBinding = function() {
         // Retrieve the series when the modal is shown
         $('body').on('shown.bs.modal', '#gh-series-info-modal', retrieveSeries);
+        // Track the user closing the modal
+        $('body').on('hidden.bs.modal', '#gh-series-info-modal', function() {
+            // Send a tracking event
+            gh.utils.trackEvent(['Series Info', 'Canceled'], {
+                'series': seriesId
+            });
+        });
         // Set up and show the series info modal
         $('body').on('click', '.fa-info-circle', setUpModal);
     };

@@ -70,31 +70,43 @@ requirejs.config({
         'gh.utils.templates': 'gh/js/utils/gh.utils.templates',
         'gh.utils.time': 'gh/js/utils/gh.utils.time',
 
-        // GH view controllers
-        'gh.admin-batch-edit': 'gh/js/views/gh.admin-batch-edit',
-        'gh.admin-batch-edit-date': 'gh/js/views/gh.admin-batch-edit-date',
-        'gh.admin-batch-edit-organiser': 'gh/js/views/gh.admin-batch-edit-organiser',
-        'gh.admin-edit-organiser': 'gh/js/views/gh.admin-edit-organiser',
-        'gh.admin-event-type-select': 'gh/js/views/gh.admin-event-type-select',
-        'gh.admin-listview': 'gh/js/views/gh.admin-listview',
-        'gh.admin-series-title': 'gh/js/views/gh.admin-series-title',
-        'gh.agenda-view': 'gh/js/views/gh.agenda-view',
-        'gh.borrow-series': 'gh/js/views/gh.borrow-series',
+        // GH global admin view controllers
+        'gh.global-admin.configuration': 'gh/js/views/global-admin/gh.configuration',
+        'gh.global-admin.tenants': 'gh/js/views/global-admin/gh.tenants',
+        'gh.global-admin.users': 'gh/js/views/global-admin/gh.users',
+
+        // GH tenant admin view controllers
+        'gh.admin.batch-edit': 'gh/js/views/tenant-admin/gh.admin-batch-edit',
+        'gh.admin.batch-edit-date': 'gh/js/views/tenant-admin/gh.admin-batch-edit-date',
+        'gh.admin.batch-edit-organiser': 'gh/js/views/tenant-admin/gh.admin-batch-edit-organiser',
+        'gh.admin.borrow-series': 'gh/js/views/tenant-admin/gh.borrow-series',
+        'gh.admin.datepicker': 'gh/js/views/tenant-admin/gh.datepicker',
+        'gh.admin.delete-module': 'gh/js/views/tenant-admin/gh.delete-module',
+        'gh.admin.delete-series': 'gh/js/views/tenant-admin/gh.delete-series',
+        'gh.admin.edit-organiser': 'gh/js/views/tenant-admin/gh.admin-edit-organiser',
+        'gh.admin.event-type-select': 'gh/js/views/tenant-admin/gh.admin-event-type-select',
+        'gh.admin.listview': 'gh/js/views/tenant-admin/gh.admin-listview',
+        'gh.admin.new-module': 'gh/js/views/tenant-admin/gh.new-module',
+        'gh.admin.new-series': 'gh/js/views/tenant-admin/gh.new-series',
+        'gh.admin.rename-module': 'gh/js/views/tenant-admin/gh.rename-module',
+        'gh.admin.series-title': 'gh/js/views/tenant-admin/gh.admin-series-title',
+        'gh.admin.video': 'gh/js/views/tenant-admin/gh.video',
+        'gh.admin.visibility': 'gh/js/views/tenant-admin/gh.visibility',
+
+        // GH student view controllers
+        'gh.student.agenda-view': 'gh/js/views/tenant-student/gh.agendaview',
+        'gh.student.listview': 'gh/js/views/tenant-student/gh.listview',
+        'gh.student.login-modal': 'gh/js/views/tenant-student/gh.login-modal',
+        'gh.student.series-info': 'gh/js/views/tenant-student/gh.series-info',
+        'gh.student.series-borrowed-published-popover': 'gh/js/views/tenant-student/gh.series-borrowed-published-popover',
+
+        // GH shared view controllers
         'gh.calendar': 'gh/js/views/gh.calendar',
-        'gh.datepicker': 'gh/js/views/gh.datepicker',
-        'gh.delete-module': 'gh/js/views/gh.delete-module',
-        'gh.delete-series': 'gh/js/views/gh.delete-series',
         'gh.listview': 'gh/js/views/gh.listview',
-        'gh.new-module': 'gh/js/views/gh.new-module',
-        'gh.new-series': 'gh/js/views/gh.new-series',
-        'gh.rename-module': 'gh/js/views/gh.rename-module',
-        'gh.series-info': 'gh/js/views/gh.series-info',
+        'gh.login-form': 'gh/js/views/gh.login-form',
+        'gh.header': 'gh/js/views/gh.header',
         'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
-        'gh.series-borrowed-published-popover': 'gh/js/views/gh.series-borrowed-published-popover',
-        'gh.student-listview': 'gh/js/views/gh.student-listview',
-        'gh.subheader': 'gh/js/views/gh.subheader',
-        'gh.video': 'gh/js/views/gh.video',
-        'gh.visibility': 'gh/js/views/gh.visibility'
+        'gh.subheader': 'gh/js/views/gh.subheader'
     },
     'priority': ['jquery', 'lodash'],
     'shim' : {

@@ -26,9 +26,12 @@ define(['gh.utils', 'clickover'], function(utils) {
      * @private
      */
     var setUpPopover = function() {
+        // Cache the trigger
         var $trigger = $(this);
+        // Get the content for the popover
         var $content = $('.list-group-item .popover.published[data-id="' + $trigger.data('id') + '"]');
 
+        // Set options for the popover
         var options = {
             'class_name': 'gh-series-popover gh-borrowed-published-popover',
             'container': 'body',
@@ -37,8 +40,14 @@ define(['gh.utils', 'clickover'], function(utils) {
             'html': true
         };
 
+        // Show the popover
         $trigger.clickover(options);
         $trigger.trigger('click');
+
+        // Send a tracking event
+        utils.trackEvent(['Navigation', 'Series', 'Borrowed published popover displayed'], {
+            'series': parseInt($content.attr('data-id'), 10)
+        });
     };
 
     /**
@@ -66,9 +75,9 @@ define(['gh.utils', 'clickover'], function(utils) {
      */
     var addBinding = function() {
         // Hide the popover window
-        $('body').on('mouseout', '.gh-list-action .gh-disabled-overlay', dismissPopover);
+        $('body').on('mouseout', '.gh-list-action.disabled', dismissPopover);
         // set up and show the popover window
-        $('body').on('mouseover', '.gh-list-action .gh-disabled-overlay', setUpPopover);
+        $('body').on('mouseover', '.gh-list-action.disabled', setUpPopover);
     };
 
     addBinding();

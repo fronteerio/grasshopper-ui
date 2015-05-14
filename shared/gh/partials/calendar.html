@@ -1,5 +1,6 @@
 <div id="gh-calendar-view" class="gh-main-view">
 
+    <!-- Navigation -->
     <% if (!data.gh.data.me.anon && data.view !== 'admin') { %>
         <div id="gh-toolbar-container">
             <div class="gh-toolbar gh-toolbar-primary">
@@ -22,6 +23,7 @@
         </div>
     <% } %>
 
+    <!-- Calendar content -->
     <div class="tab-content">
         <div id="gh-my-calendar-view" class="tab-pane active" role="tabpanel">
             <div class="gh-toolbar gh-toolbar-secondary">

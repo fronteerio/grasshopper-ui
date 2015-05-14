@@ -1,9 +1,11 @@
 <% if (!data.gh.data.me || data.gh.data.me.anon) { %>
-    <div class="pull-right">
-        <div id="gh-login-form-container">
-            <% _.partial('login-form', {'data': data}, true, '#gh-login-form-container') %>
+    <% if (data.includeLoginForm) { %>
+        <div class="pull-right">
+            <div id="gh-login-form-container">
+                <% _.partial('login-form', {'data': data}, true, '#gh-login-form-container') %>
+            </div>
         </div>
-    </div>
+    <% } %>
 <% } else { %>
     <form id="gh-signout-form" class="form-inline pull-right" role="form" action="/api/auth/logout" method="POST">
         <button type="submit" class="btn btn-default gh-btn-secondary">

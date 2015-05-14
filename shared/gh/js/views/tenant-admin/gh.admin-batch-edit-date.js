@@ -252,6 +252,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     'startMinute': 0,
                     'endMinute': 0
                 },
+                'daysInUse': getDaysInUse($('.gh-batch-edit-events-container tr.info:visible:not(".gh-event-deleted")')),
                 'dayIndex': 7
             }
         }, null, function(template) {

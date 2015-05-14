@@ -41,6 +41,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         var actual = $.trim($('#gh-delete-module-form input').val());
         // Disable the submit button if the message was correctly entered
         if (required === actual) {
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Delete module', '\'DELETE\' confirmation text entered'], {
+                'module': moduleId
+            });
             $('#gh-delete-module-delete').removeAttr('disabled');
             return true;
         } else {
@@ -150,6 +154,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
 
                     // Remove the module and series from the state
                     gh.utils.removeFromState(['series', 'module']);
+
+                    // Send a tracking event
+                    gh.utils.trackEvent(['Manage', 'Delete module', 'Module deleted'], {
+                        'module': moduleId
+                    });
                 });
             });
         });
@@ -170,7 +179,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var setUpDeleteModuleModal = function() {
         // Cache the module ID
-        moduleId = parseInt($(this).attr('data-id'), 10);
+        moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
         gh.utils.renderTemplate('delete-module-modal', null, $('#gh-modal'), function() {
@@ -301,6 +310,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      * @private
      */
     var retrieveModuleInfo = function() {
+        // Send a tracking event
+        gh.utils.trackEvent(['Manage', 'Delete module', 'Delete module modal displayed'], {
+            'module': moduleId
+        });
+
         // Get the organisational unit info (module)
         orgUnitAPI.getOrgUnit(moduleId, true, function(err, moduleOrgUnit) {
             if (err) {
@@ -349,6 +363,12 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var addBinding = function() {
         $('body').on('shown.bs.modal', '#gh-delete-module-modal', retrieveModuleInfo);
+        $('body').on('hidden.bs.modal', '#gh-delete-module-modal', function() {
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Delete module', 'Canceled'], {
+                'module': moduleId
+            });
+        });
         $('body').on('click', '.gh-delete-module', setUpDeleteModuleModal);
         $('body').on('keyup', '#gh-delete-module-confirm-text', validateDeleteConfirmation);
         $('body').on('click', '#gh-delete-module-delete', submitDeleteModal);

@@ -80,7 +80,7 @@ body {
 
 .fc-agendaWeek-view td.fc-today,
 .fc-month-view td.fc-today {
-    background-color: none !important;
+    background-color: transparent !important;
 }
 
 

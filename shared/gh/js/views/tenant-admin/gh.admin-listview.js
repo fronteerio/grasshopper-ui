@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.borrow-series', 'gh.delete-module', 'gh.new-module', 'gh.new-series', 'gh.rename-module', 'gh.series-borrowed-popover', 'clickover'], function(gh) {
+define(['gh.core', 'gh.admin.borrow-series', 'gh.admin.delete-module', 'gh.admin.new-module', 'gh.admin.new-series', 'gh.admin.rename-module', 'gh.series-borrowed-popover', 'clickover'], function(gh) {
 
     /**
      * Set up the modules of events in the sidebar. Note that the generic gh.listview.js does
@@ -27,8 +27,8 @@ define(['gh.core', 'gh.borrow-series', 'gh.delete-module', 'gh.new-module', 'gh.
         // Hide the tripos help text
         $('.gh-tripos-help').hide();
         // Highlight the selected series
-        $('.gh-series-select').removeClass('gh-series-active');
-        $('.list-group-item[data-id="' + History.getState().data.series + '"] .gh-series-select').addClass('gh-series-active');
+        $('.gh-list-group-item-container').removeClass('gh-series-active');
+        $('.list-group-item[data-id="' + History.getState().data.series + '"] .gh-list-group-item-container').addClass('gh-series-active');
         // Make sure its parent is opened
         $('.list-group-item[data-id="' + History.getState().data.series + '"]').parents('.list-group-item').addClass('gh-list-group-item-open');
     };
@@ -39,8 +39,8 @@ define(['gh.core', 'gh.borrow-series', 'gh.delete-module', 'gh.new-module', 'gh.
      * @private
      */
     var selectSeries = function() {
-        var moduleId = $(this).closest('ul').closest('.list-group-item').data('id');
-        var seriesId = $(this).closest('.list-group-item').data('id');
+        var moduleId = $(this).closest('ul').closest('.list-group-item').attr('data-moduleid');
+        var seriesId = $(this).closest('.list-group-item').attr('data-id');
          // Push the selected module and series in the URL
         gh.utils.addToState({
             'module': moduleId,
@@ -61,6 +61,8 @@ define(['gh.core', 'gh.borrow-series', 'gh.delete-module', 'gh.new-module', 'gh.
     var addBinding = function() {
         // Select a series in the sidebar
         $('body').on('click', '.gh-series-select', selectSeries);
+        // Select a series in the sidebar
+        $('body').on('click', '.gh-series-select + .gh-list-action', selectSeries);
         // Set up the modules in the sidebar
         $(document).on('gh.part.selected.admin', setUpModules);
     };

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'], function(gh, constants, orgunitAPI) {
+define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'chosen'], function(gh, constants, orgunitAPI) {
 
     var triposData = null;
 
@@ -109,10 +109,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
 
         // Get the parts associated to the selected tripos
         var parts = _.filter(triposData.parts, function(part) {
-            // Only add the parts that are published for the normal users
-            if (part.published || (!part.published && part.canManage)) {
-                return parseInt(data.selected, 10) === part.ParentId;
-            }
+            return parseInt(data.selected, 10) === part.ParentId;
         });
 
         // Render the results in the part picker
@@ -290,8 +287,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.visibility', 'chosen'],
      * @private
      */
     var addBinding = function() {
-        // Handle hash changes
-        $(window).on('statechange', handleStateChange);
+        // Handle hash changes but be careful with repeated triggers and throttle the function call
+        var throttleHandleStateChange = _.throttle(handleStateChange, 200, {'trailing': false});
+        $(window).on('statechange', throttleHandleStateChange);
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;

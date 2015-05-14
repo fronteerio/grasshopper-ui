@@ -18,6 +18,9 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
     // Cache whether the series is borrowed from another module
     var isBorrowedFrom = false;
 
+    // Cache the seriesId for tracking purposes
+    var seriesId = null;
+
     /**
      * Remove the series from the current hash state
      *
@@ -163,13 +166,15 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
             removeSeriesFromModule();
             // Track the user removing a borrowed series from a module
             gh.utils.trackEvent(['Manage', 'Remove borrowed series'], {
-                'is_borrowed': true
+                'is_borrowed': true,
+                'series': seriesId
             });
         // If the series is not borrowed by or from another module, it can be deleted
         } else {
             // Track the user removing a series from a module
             gh.utils.trackEvent(['Manage', 'Delete series'], {
-                'is_borrowed': false
+                'is_borrowed': false,
+                'series': seriesId
             });
             deleteSeries();
         }
@@ -214,8 +219,13 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
      * @private
      */
     var setUpDeleteSeriesModal = function() {
-        var seriesId = parseInt(History.getState().data.series, 10);
+        seriesId = parseInt(History.getState().data.series, 10);
         var moduleId = parseInt(History.getState().data.module, 10);
+
+        // Send a tracking event
+        gh.utils.trackEvent(['Manage', 'Delete series', 'Opened'], {
+            'series': seriesId
+        });
 
         gh.api.seriesAPI.getSeries(seriesId, true, function(seriesErr, series) {
             if (seriesErr) {
@@ -260,6 +270,12 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
      */
     var addBinding = function() {
         $('body').on('click', '.gh-delete-series', setUpDeleteSeriesModal);
+        $('body').on('hidden.bs.modal', '#gh-delete-series-modal', function() {
+            // Send a tracking event
+            gh.utils.trackEvent(['Manage', 'Delete series', 'Canceled'], {
+                'series': seriesId
+            });
+        });
         $('body').on('click', '#gh-delete-series-delete', submitDeleteSeries);
     };
 
