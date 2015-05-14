@@ -104,7 +104,17 @@
                             });
                         }
                     %>
-                    <div class="gh-list-action <% if (disabled) { %>disabled<% } %>" data-id="<%- orgunit.id %>">
+
+                    <!-- Disabled module popover window -->
+                    <% if (!isChild && disabled) { %>
+                        <% randomId = data.utils.generateRandomString(); %>
+                        <div id="<%- randomId %>">
+                            <% _.partial('module-disabled-popover', {'data': orgunit}, null, '#' + randomId) %>
+                        </div>
+                    <% } %>
+
+                    <!-- List action buttons -->
+                    <div class="gh-list-action <% if (isChild) { %>series<% } else { %>module<% } %> <% if (disabled) { %>disabled<% } %>" data-id="<%- orgunit.id %>">
                         <% if (orgunit.subscribed || (!isChild && subscribedAll)) { %>
                             <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>disabled<% } %>>
                                 <i class="fa fa-remove"></i>

@@ -78,6 +78,7 @@ define(['exports'], function(exports) {
         'header': '/shared/gh/partials/header.html',
         'login-form': '/shared/gh/partials/login-form.html',
         'login-modal': '/shared/gh/partials/login-modal.html',
+        'module-disabled-popover': '/shared/gh/partials/module-disabled-popover.html',
         'new-module-modal': '/shared/gh/partials/new-module-modal.html',
         'new-series': '/shared/gh/partials/new-series.html',
         'qunit-basic-test': '/shared/gh/partials/qunit-basic-test.html',

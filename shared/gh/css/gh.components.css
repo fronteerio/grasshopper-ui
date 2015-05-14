@@ -1096,8 +1096,12 @@ tbody tr:last-child > td.fc-widget-content {
     width: 250px;
 }
 
+.gh-student .popover.gh-module-disabled-popover {
+    margin-left: 5px;
+}
+
 .gh-student .popover.gh-series-popover.gh-borrowed-popover {
-    margin-left: 60px;
+    margin-left: 65px;
 }
 
 .gh-student .popover.gh-series-popover.gh-borrowed-published-popover {
