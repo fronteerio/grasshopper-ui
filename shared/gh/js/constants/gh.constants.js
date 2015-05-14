@@ -45,6 +45,16 @@ define(['exports'], function(exports) {
 
     // Object of template names and paths needed to make the production build work
     var templates = exports.templates = {
+
+        // GH global admin views
+        'global-admin-administrators': '/shared/gh/partials/global-admin-administrators.html',
+        'global-admin-app-user': '/shared/gh/partials/global-admin-app-user.html',
+        'global-admin-configuration': '/shared/gh/partials/global-admin-configuration.html',
+        'global-admin-navigation': '/shared/gh/partials/global-admin-navigation.html',
+        'global-admin-tenants': '/shared/gh/partials/global-admin-tenants.html',
+        'global-admin-users': '/shared/gh/partials/global-admin-users.html',
+
+        // GH tenant admin views
         'admin-batch-edit-actions': '/shared/gh/partials/admin-batch-edit-actions.html',
         'admin-batch-edit-date': '/shared/gh/partials/admin-batch-edit-date.html',
         'admin-batch-edit-event-row': '/shared/gh/partials/admin-batch-edit-event-row.html',
@@ -59,45 +69,45 @@ define(['exports'], function(exports) {
         'admin-modules': '/shared/gh/partials/admin-modules.html',
         'admin-subheader-pickers': '/shared/gh/partials/admin-subheader-pickers.html',
         'admin-tripos-help': '/shared/gh/partials/admin-tripos-help.html',
-        'agenda-view': '/shared/gh/partials/agenda-view.html',
         'borrow-series-modal': '/shared/gh/partials/borrow-series-modal.html',
-        'calendar': '/shared/gh/partials/calendar.html',
         'delete-module-modal': '/shared/gh/partials/delete-module-modal.html',
         'delete-module-overview': '/shared/gh/partials/delete-module-overview.html',
         'delete-series-modal': '/shared/gh/partials/delete-series-modal.html',
         'editable-parts': '/shared/gh/partials/editable-parts.html',
-        'empty-timetable': '/shared/gh/partials/empty-timetable.html',
-        'event-popover': '/shared/gh/partials/event-popover.html',
-        'event': '/shared/gh/partials/event.html',
-        'global-admin-administrators': '/shared/gh/partials/global-admin-administrators.html',
-        'global-admin-app-user': '/shared/gh/partials/global-admin-app-user.html',
-        'global-admin-configuration': '/shared/gh/partials/global-admin-configuration.html',
-        'global-admin-navigation': '/shared/gh/partials/global-admin-navigation.html',
-        'global-admin-tenants': '/shared/gh/partials/global-admin-tenants.html',
-        'global-admin-users': '/shared/gh/partials/global-admin-users.html',
-        'header': '/shared/gh/partials/header.html',
-        'login-form': '/shared/gh/partials/login-form.html',
-        'login-modal': '/shared/gh/partials/login-modal.html',
-        'module-disabled-popover': '/shared/gh/partials/module-disabled-popover.html',
         'new-module-modal': '/shared/gh/partials/new-module-modal.html',
         'new-series': '/shared/gh/partials/new-series.html',
-        'qunit-basic-test': '/shared/gh/partials/qunit-basic-test.html',
-        'qunit-partial-test': '/shared/gh/partials/qunit-partial-test.html',
         'rename-module-modal': '/shared/gh/partials/rename-module-modal.html',
-        'series-borrowed-popover': '/shared/gh/partials/series-borrowed-popover.html',
-        'series-borrowed-published-popover': '/shared/gh/partials/series-borrowed-published-popover.html',
-        'series-info-modal': '/shared/gh/partials/series-info-modal.html',
-        'series-info': '/shared/gh/partials/series-info.html',
-        'student-modules': '/shared/gh/partials/student-modules.html',
-        'subheader-part': '/shared/gh/partials/subheader-part.html',
-        'subheader-picker': '/shared/gh/partials/subheader-picker.html',
-        'subheader-pickers': '/shared/gh/partials/subheader-pickers.html',
         'tenant-admin-app-user-search': '/shared/gh/partials/tenant-admin-app-user-search.html',
         'tenant-admin-app-user': '/shared/gh/partials/tenant-admin-app-user.html',
         'tenant-admin-app': '/shared/gh/partials/tenant-admin-app.html',
         'tenant-admin-config': '/shared/gh/partials/tenant-admin-config.html',
         'tenant-admin-navigation': '/shared/gh/partials/tenant-admin-navigation.html',
         'visibility-button': '/shared/gh/partials/visibility-button.html',
-        'visibility-modal': '/shared/gh/partials/visibility-modal.html'
+        'visibility-modal': '/shared/gh/partials/visibility-modal.html',
+
+        // GH student views
+        'agenda-view': '/shared/gh/partials/agenda-view.html',
+        'empty-timetable': '/shared/gh/partials/empty-timetable.html',
+        'module-disabled-popover': '/shared/gh/partials/module-disabled-popover.html',
+        'series-borrowed-published-popover': '/shared/gh/partials/series-borrowed-published-popover.html',
+        'series-info-modal': '/shared/gh/partials/series-info-modal.html',
+        'series-info': '/shared/gh/partials/series-info.html',
+        'student-modules': '/shared/gh/partials/student-modules.html',
+
+        // GH shared views
+        'calendar': '/shared/gh/partials/calendar.html',
+        'event': '/shared/gh/partials/event.html',
+        'event-popover': '/shared/gh/partials/event-popover.html',
+        'header': '/shared/gh/partials/header.html',
+        'login-form': '/shared/gh/partials/login-form.html',
+        'login-modal': '/shared/gh/partials/login-modal.html',
+        'series-borrowed-popover': '/shared/gh/partials/series-borrowed-popover.html',
+        'subheader-part': '/shared/gh/partials/subheader-part.html',
+        'subheader-picker': '/shared/gh/partials/subheader-picker.html',
+        'subheader-pickers': '/shared/gh/partials/subheader-pickers.html',
+
+        // GH tests
+        'qunit-basic-test': '/shared/gh/partials/qunit-basic-test.html',
+        'qunit-partial-test': '/shared/gh/partials/qunit-partial-test.html'
     };
 });
