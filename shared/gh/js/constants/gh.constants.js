@@ -59,6 +59,7 @@ define(['exports'], function(exports) {
         'admin-modules': '/shared/gh/partials/admin-modules.html',
         'admin-subheader-pickers': '/shared/gh/partials/admin-subheader-pickers.html',
         'admin-tripos-help': '/shared/gh/partials/admin-tripos-help.html',
+        'admin-video': '/shared/gh/partials/admin-video.html',
         'agenda-view': '/shared/gh/partials/agenda-view.html',
         'borrow-series-modal': '/shared/gh/partials/borrow-series-modal.html',
         'calendar': '/shared/gh/partials/calendar.html',
