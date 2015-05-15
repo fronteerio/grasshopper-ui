@@ -499,6 +499,24 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit
                 // Remove the sticky class from the header
                 $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
+
+            // Only update the batch edit actions when they're in view
+            if ($('.gh-batch-edit-actions-container').is(':visible')) {
+                // Get the top and bottom position of the document
+                var docViewTop = $(window).scrollTop();
+                var docViewBottom = docViewTop + window.innerHeight;
+
+                // Get the top and bottom position of the footer
+                var footerTop = $($('footer')[0]).position().top;
+                var footerBottom = footerTop + $($('footer')[0]).height();
+
+                // If the document footer becomes visible on the page, stick the batch edit actions to the document footer
+                if (footerTop <= docViewBottom) {
+                    $('.gh-batch-edit-actions-container').addClass('gh-sticky-batch-edit-actions');
+                } else {
+                    $('.gh-batch-edit-actions-container').removeClass('gh-sticky-batch-edit-actions');
+                }
+            }
         }
     };
 

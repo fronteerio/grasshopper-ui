@@ -786,6 +786,10 @@ ul.gh-borrowed-list li p {
     margin: 0 30px 30px;
 }
 
+.gh-collapsed #gh-batch-edit-term-container {
+    margin-bottom: 280px;
+}
+
 #gh-batch-edit-term-container .gh-batch-edit-events-container {
     margin-bottom: 0;
 }
@@ -920,10 +924,28 @@ ul.gh-borrowed-list li p {
     border-top-style: solid;
     padding: 15px 30px;
     position: fixed;
+    -webkit-transition: none;
+       -moz-transition: none;
+         -o-transition: none;
+            transition: none;
     width: -moz-calc(100% - 320px); /* Firefox */
     width: -o-calc(100% - 320px); /* Opera */
     width: -webkit-calc(100% - 320px); /* WebKit */
     width: calc(100% - 320px); /* Standard */
+}
+
+.gh-batch-edit-actions-container.gh-sticky-batch-edit-actions {
+    bottom: -30px;
+    height: 70px;
+    margin-top: -70px;
+    position: relative;
+    width: 100%;
+}
+
+.gh-collapsed .gh-batch-edit-actions-container.gh-sticky-batch-edit-actions {
+    margin-bottom: 247px;
+    position: fixed;
+    width: calc(100% - 50px);
 }
 
 .gh-batch-edit-actions-container #gh-batch-edit-change-summary {
