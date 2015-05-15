@@ -348,8 +348,8 @@ ul.nav-tabs li.active {
     background-color: #07525D;
 }
 
-.list-group .list-group-item .list-group .list-group-item .gh-list-action.disabled {
-    background-color: #DDD !important;
+.list-group .list-group-item .gh-list-action.disabled {
+    background-color: #127077 !important;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action,
