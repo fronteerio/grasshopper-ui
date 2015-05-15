@@ -28,6 +28,7 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var doLogin = function(ev) {
+
         // Determine whether or not the global admin is in use
         var isGlobalAdminUI = $('body').hasClass('gh-global-admin');
 
@@ -43,10 +44,10 @@ define(['gh.core'], function(gh) {
                 }
                 window.location.reload();
             });
-        }
 
-        // Avoid default form submit behaviour
-        return false;
+            // Avoid default form submit behaviour
+            return false;
+        }
     };
 
     /**
