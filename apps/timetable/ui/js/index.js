@@ -28,21 +28,8 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
             // Request the organisational units for the selected part
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
 
-                // Render the 'empty-timetable' template
-                gh.utils.renderTemplate('empty-timetable', {
-                    'data': {
-                        'gh': gh,
-                        'record': data
-                    }
-                }, $('#gh-empty'));
-
-                // Show/hide components when an empty timetable was selected
-                $('#gh-left-container').addClass('gh-minimised');
-                $('#gh-main').hide();
-                $('#gh-empty').show();
-
-                // Track the user selecting an empty part
-                gh.utils.trackEvent(['Navigation', 'Draft timetable page shown']);
+                // Show the empty timetable notification
+                showEmptyTimetable(data);
             });
 
         // Show/hide components when a timetable was selected
@@ -70,6 +57,31 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
         });
     };
 
+    /**
+     * Show the empty timetable notification
+     *
+     * @param  {Object}    data    Object containing the module data
+     * @private
+     */
+    var showEmptyTimetable = function(data) {
+
+        // Render the 'empty-timetable' template
+        gh.utils.renderTemplate('empty-timetable', {
+            'data': {
+                'gh': gh,
+                'record': data
+            }
+        }, $('#gh-empty'));
+
+        // Show/hide components when an empty timetable was selected
+        $('#gh-left-container').addClass('gh-minimised');
+        $('#gh-main').hide();
+        $('#gh-empty').show();
+
+        // Track the user selecting an empty part
+        gh.utils.trackEvent(['Navigation', 'Draft timetable page shown']);
+    };
+
 
     ///////////////
     //  BINDING  //
@@ -81,6 +93,15 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
      * @private
      */
     var addBinding = function() {
+
+        // Show the empty timetable page
+        $(document).on('gh.empty.timetable', function(evt, data) {
+
+            // Show the empty timetable
+            showEmptyTimetable(data);
+        });
+
+        // Display the appropriate view
         $(document).on('gh.part.selected', onPartSelected);
     };
 
