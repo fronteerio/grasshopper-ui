@@ -265,7 +265,6 @@ footer ul li {
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
     opacity: 1;
-    overflow: hidden;
     -webkit-transition: opacity .3s;
        -moz-transition: opacity .3s;
          -o-transition: opacity .3s;
