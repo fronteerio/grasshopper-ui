@@ -528,6 +528,7 @@ tbody tr:last-child > td.fc-widget-content {
 /**************/
 
 #gh-empty {
+    margin-bottom: 30px;
     margin-left: -320px;
     text-align: center;
 }

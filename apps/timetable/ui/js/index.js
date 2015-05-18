@@ -36,7 +36,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
 
         // Show/hide components when a timetable was selected
         } else {
-            $('#gh-left-container').removeClass('gh-minimised');
+            $('#gh-page-container').removeClass('gh-minimised');
             $('#gh-empty').hide();
             $('#gh-main').show();
         }
@@ -62,6 +62,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
     /**
      * Show the empty timetable notification
      *
+     * @param  {Object}    evt     The dispatched jQuery event
      * @param  {Object}    data    Object containing the module data
      * @private
      */
@@ -75,7 +76,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
         }, $('#gh-empty'));
 
         // Show/hide components when an empty timetable was selected
-        $('#gh-left-container').addClass('gh-minimised');
+        $('#gh-page-container').addClass('gh-minimised');
         $('#gh-main').hide();
         $('#gh-empty').show();
 
