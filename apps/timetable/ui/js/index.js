@@ -23,13 +23,15 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
      * @private
      */
     var onPartSelected = function(evt, data) {
-        if (!data.modules.results.length) {
+        // Retrieve the selected part data
+        var selectedPart = _.find(gh.utils.triposData().parts, function(part) { return part.id === data.partId; });
+        if (!data.modules.results.length || (selectedPart && !selectedPart.published)) {
 
             // Request the organisational units for the selected part
             gh.api.orgunitAPI.getOrgUnit(data.partId, true, function(err, data) {
 
                 // Show the empty timetable notification
-                showEmptyTimetable(data);
+                showEmptyTimetable(evt, data);
             });
 
         // Show/hide components when a timetable was selected
@@ -63,8 +65,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
      * @param  {Object}    data    Object containing the module data
      * @private
      */
-    var showEmptyTimetable = function(data) {
-
+    var showEmptyTimetable = function(evt, data) {
         // Render the 'empty-timetable' template
         gh.utils.renderTemplate('empty-timetable', {
             'data': {
@@ -95,11 +96,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
     var addBinding = function() {
 
         // Show the empty timetable page
-        $(document).on('gh.empty.timetable', function(evt, data) {
-
-            // Show the empty timetable
-            showEmptyTimetable(data);
-        });
+        $(document).on('gh.empty.timetable', showEmptyTimetable);
 
         // Display the appropriate view
         $(document).on('gh.part.selected', onPartSelected);
