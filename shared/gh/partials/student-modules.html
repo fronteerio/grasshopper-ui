@@ -88,19 +88,39 @@
                     <% } %>
 
                     <!-- Series actions -->
-                    <div class="gh-list-action">
+                    <%
+                        var disabled = false;
+                        if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) {
+                            disabled = true;
+                        }
 
-                        <!-- Disabled button overlay -->
-                        <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>
-                            <div class="gh-disabled-overlay" data-id="<%- orgunit.id %>"></div>
-                        <% } %>
+                        if (!isChild) {
+                            _.each(orgunit.Series, function(serie) {
+                                if (serie.borrowedFrom && serie.borrowedFrom.Parent) {
+                                    if (!serie.borrowedFrom.Parent.published) {
+                                        disabled = true;
+                                    }
+                                }
+                            });
+                        }
+                    %>
 
+                    <!-- Disabled module popover window -->
+                    <% if (!isChild && disabled) { %>
+                        <% randomId = data.utils.generateRandomString(); %>
+                        <div id="<%- randomId %>">
+                            <% _.partial('module-disabled-popover', {'data': orgunit}, null, '#' + randomId) %>
+                        </div>
+                    <% } %>
+
+                    <!-- List action buttons -->
+                    <div class="gh-list-action <% if (isChild) { %>series<% } else { %>module<% } %> <% if (disabled) { %>disabled<% } %>" data-id="<%- orgunit.id %>">
                         <% if (orgunit.subscribed || (!isChild && subscribedAll)) { %>
                             <button class="btn btn-link <% if (isChild) { %>gh-remove-from-calendar<% } else { %>gh-remove-all-from-calendar<% } %>" <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>disabled<% } %>>
                                 <i class="fa fa-remove"></i>
                             </button>
                         <% } else { %>
-                            <button class="btn btn-link <% if (isChild) { %>gh-add-to-calendar<% } else { %>gh-add-all-to-calendar<% } %>" <% if (orgunit.borrowedFrom && orgunit.borrowedFrom.Parent && !orgunit.borrowedFrom.Parent.published) { %>disabled<% } %>>
+                            <button class="btn btn-link <% if (isChild) { %>gh-add-to-calendar<% } else { %>gh-add-all-to-calendar<% } %>" <% if (disabled) { %>disabled<% } %>>
                                 <% if (!isChild && subscribedSome) { %>
                                     <i class="fa fa-minus"></i>
                                 <% } else { %>

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.student.login-modal', 'gh.student.series-info', 'gh.student.series-borrowed-published-popover', 'gh.series-borrowed-popover', 'clickover'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.student.login-modal', 'gh.student.module-borrowed', 'gh.student.series-info', 'gh.student.series-borrowed-published-popover', 'gh.series-borrowed-popover', 'clickover'], function(gh, constants) {
 
     var modules = null;
 

@@ -26,7 +26,7 @@ define(['gh.core'], function(gh) {
      * @private
      */
     var renderAndPlayVideo = function() {
-        var youtubeId = 'M7lc1UVf-VE';
+        var youtubeId = gh.config.video.adminhowto;
         var videoURL = '//www.youtube.com/embed/' + youtubeId + '?enablejsapi=1&autoplay=1&hl=en-gb&modestbranding=1&rel=0&showinfo=0&color=white&theme=light';
 
         gh.utils.renderTemplate('admin-video', {

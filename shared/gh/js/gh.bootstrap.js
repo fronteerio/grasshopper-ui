@@ -97,6 +97,7 @@ requirejs.config({
         'gh.student.agenda-view': 'gh/js/views/tenant-student/gh.agendaview',
         'gh.student.listview': 'gh/js/views/tenant-student/gh.listview',
         'gh.student.login-modal': 'gh/js/views/tenant-student/gh.login-modal',
+        'gh.student.module-borrowed': 'gh/js/views/tenant-student/gh.module-borrowed-popover',
         'gh.student.series-info': 'gh/js/views/tenant-student/gh.series-info',
         'gh.student.series-borrowed-published-popover': 'gh/js/views/tenant-student/gh.series-borrowed-published-popover',
 
