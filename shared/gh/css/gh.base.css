@@ -135,6 +135,7 @@ select[disabled],
 
 /* Main page container */
 
+footer,
 #gh-page-container {
     min-width: 1280px;
 }
@@ -143,7 +144,6 @@ select[disabled],
 
 #gh-page-container #gh-left-container {
     float: left;
-    height: 100%;
     padding: 0;
     position: relative;
     -webkit-transition: width .3s;
@@ -159,10 +159,12 @@ select[disabled],
     overflow: hidden;
 }
 
+footer #gh-header-logo,
 #gh-page-container #gh-left-container #gh-header-logo {
     height: 115px;
 }
 
+footer #gh-header-logo img,
 #gh-page-container #gh-left-container #gh-header-logo img {
     -webkit-box-sizing: content-box;
        -moz-box-sizing: content-box;
@@ -173,6 +175,37 @@ select[disabled],
        -moz-transition: padding .3s;
          -o-transition: padding .3s;
             transition: padding .3s;
+}
+
+footer #gh-header-logo img {
+    padding: 30px 30px 30px 41px;
+}
+
+footer #footer-help-logo {
+    width: 320px;
+}
+
+footer#footer-copyright p {
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0;
+    padding: 20px 0 20px 336px;
+}
+
+footer h3 {
+    font-weight: 600;
+    margin: 30px 0 20px;
+}
+
+footer ul {
+    font-weight: 200;
+    list-style-type: none;
+    margin: 0 0 25px;
+    padding: 0;
+}
+
+footer ul li {
+    margin: 3px 0;
 }
 
 #gh-page-container #gh-left-container #gh-content-description p {
@@ -191,7 +224,7 @@ select[disabled],
 
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    min-height: 100%;
+    min-height: calc(100% - 217px);
     padding-top: 215px;
 }
 
@@ -292,7 +325,7 @@ select[disabled],
     -webkit-background-clip: content-box;
        -moz-background-clip: content-box;
             background-clip: content-box;
-    min-height: 100%;
+    min-height: calc(100% - 217px);
     min-width: 992px;
     padding-left: 320px;
     -webkit-transition: padding-left .3s;
@@ -336,6 +369,7 @@ select[disabled],
 /* Content containers */
 
 .gh-collapsed #gh-page-container #gh-left-container {
+    height: 100%;
     position: fixed;
     width: 50px !important;
 }
@@ -351,6 +385,18 @@ select[disabled],
 
 .gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-modules-list-container {
     opacity: 0;
+}
+
+/* Footer */
+
+.gh-collapsed footer {
+    bottom: 58px;
+    position: fixed;
+    width: 100%;
+}
+
+.gh-collapsed footer + footer {
+    bottom: 0;
 }
 
 /* Content */
@@ -433,7 +479,6 @@ select[disabled],
 }
 
 .modal-header .close:hover {
-    color: #AAA;
     font-weight: 200;
     opacity: 1;
 }
@@ -448,7 +493,6 @@ select[disabled],
 }
 
 .modal-content form label {
-    color: #8D8D8D;
     font-weight: 200;
 }
 

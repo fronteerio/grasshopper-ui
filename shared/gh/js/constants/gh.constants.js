@@ -15,28 +15,6 @@
 
 define(['exports'], function(exports) {
 
-    // The admin views
-    var views = exports.views = {
-        'BATCH_EDIT': 'batchEdit',
-        'EDITABLE_PARTS': 'editableParts',
-        'NEW_SERIES': 'newSeries'
-    };
-
-    // Time constants
-    var time = exports.time = {
-
-        // Store the shorthand names of the weekdays
-        'DAYS': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        'MONTHS': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-
-        // Keep track of number of milliseconds in a day, week and month for use in the calendar
-        'PERIODS': {
-            'day': 1000 * 60 * 60 * 24,
-            'week': 1000 * 60 * 60 * 24 * 7,
-            'month': 1000 * 60 * 60 * 24 * 7 * 30
-        }
-    };
-
     var messaging = exports.messaging = {
         'default': {
             'error': 'This is a Timetable error, if you still see this after reloading a Timetable in your browser please contact <a href="mailto:help@timetable.cam.ac.uk" title="Contact support">support</a>'
@@ -69,6 +47,7 @@ define(['exports'], function(exports) {
         'admin-modules': '/shared/gh/partials/tenant-admin/modules.html',
         'admin-subheader-pickers': '/shared/gh/partials/tenant-admin/subheader-pickers.html',
         'admin-tripos-help': '/shared/gh/partials/tenant-admin/tripos-help.html',
+        'admin-video': '/shared/gh/partials/tenant-admin/admin-video.html',
         'borrow-series-modal': '/shared/gh/partials/tenant-admin/borrow-series-modal.html',
         'delete-module-modal': '/shared/gh/partials/tenant-admin/delete-module-modal.html',
         'delete-module-overview': '/shared/gh/partials/tenant-admin/delete-module-overview.html',
@@ -109,5 +88,31 @@ define(['exports'], function(exports) {
         // GH tests
         'qunit-basic-test': '/shared/gh/partials/tests/qunit-basic-test.html',
         'qunit-partial-test': '/shared/gh/partials/tests/qunit-partial-test.html'
+    };
+
+    // Time constants
+    var time = exports.time = {
+
+        // Store the shorthand names of the weekdays
+        'DAYS': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        'MONTHS': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
+        // Keep track of number of milliseconds in a day, week and month for use in the calendar
+        'PERIODS': {
+            'day': 1000 * 60 * 60 * 24,
+            'week': 1000 * 60 * 60 * 24 * 7,
+            'month': 1000 * 60 * 60 * 24 * 7 * 30
+        }
+    };
+
+    var video = exports.video = {
+        'adminhowto': 'fmojPnWju54'
+    };
+
+    // The admin views
+    var views = exports.views = {
+        'BATCH_EDIT': 'batchEdit',
+        'EDITABLE_PARTS': 'editableParts',
+        'NEW_SERIES': 'newSeries'
     };
 });
