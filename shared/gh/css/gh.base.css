@@ -52,6 +52,7 @@ h3 {
 
 select.form-control {
     height: 45px;
+    padding: 0 0 0 2px;
 }
 
 label {
