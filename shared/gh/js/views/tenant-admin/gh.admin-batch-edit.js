@@ -512,9 +512,9 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit
 
                 // If the document footer becomes visible on the page, stick the batch edit actions to the document footer
                 if (footerTop <= docViewBottom) {
-                    $('.gh-batch-edit-actions-container').addClass('gh-sticky-batch-edit-actions');
+                    $('.gh-batch-edit-actions-container').css({'bottom': (docViewBottom - footerTop) + 'px'});
                 } else {
-                    $('.gh-batch-edit-actions-container').removeClass('gh-sticky-batch-edit-actions');
+                    $('.gh-batch-edit-actions-container').css({'bottom': 0});
                 }
             }
         }
@@ -1511,6 +1511,8 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit
                 'time_from_start': timeFromStart,
                 'tripos': History.getState().data.tripos
             });
+            // Scroll to the top
+            window.scrollTo(0, 0);
             // Reload the event series
             loadSeriesEvents();
         });
