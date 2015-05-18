@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define([], function() {
+define(['gh.core', 'gh.constants'], function(gh, constants) {
 
 
     /////////////////
@@ -21,26 +21,29 @@ define([], function() {
     /////////////////
 
     /**
-     * Play the video
+     * Render and play the video
      *
      * @private
      */
-    var playVideo = function() {
-        $('.gh-video').addClass('isPlaying');
-        var $video = $('#gh-video').get(0);
-        $video.load();
-        $video.play();
+    var renderAndPlayVideo = function() {
+        var youtubeId = constants.video.adminhowto;
+        var videoURL = '//www.youtube.com/embed/' + youtubeId + '?enablejsapi=1&autoplay=1&hl=en-gb&modestbranding=1&rel=0&showinfo=0&color=white&theme=light';
+
+        gh.utils.renderTemplate('admin-video', {
+            'videoURL': videoURL
+        }, $('#gh-video-container'), function() {
+            $('.gh-video').addClass('isPlaying');
+        });
     };
 
     /**
-     * Stop the video
+     * Stop the video by removing it from the page
      *
      * @private
      */
     var stopVideo = function() {
         $('.gh-video').removeClass('isPlaying');
-        var $video = $('#gh-video').get(0);
-        $video.pause();
+        $('#gh-video-container').empty();
     };
 
 
@@ -54,7 +57,7 @@ define([], function() {
      * @private
      */
     var addBinding = function() {
-        $(document).on('gh.video.play', playVideo);
+        $(document).on('gh.video.play', renderAndPlayVideo);
         $(document).on('gh.video.stop', stopVideo);
     };
 
