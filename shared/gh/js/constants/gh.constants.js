@@ -34,8 +34,8 @@ define(['exports'], function(exports) {
 
         // GH tenant admin views
         'admin-app': '/shared/gh/partials/tenant-admin/admin-app.html',
-        'admin-app-config': '/shared/gh/partials/tenant-admin/admin-config.html',
-        'admin-app-navigation': '/shared/gh/partials/tenant-admin/admin-navigation.html',
+        'admin-app-config': '/shared/gh/partials/tenant-admin/admin-app-config.html',
+        'admin-app-navigation': '/shared/gh/partials/tenant-admin/admin-app-navigation.html',
         'admin-app-user': '/shared/gh/partials/tenant-admin/admin-app-user.html',
         'admin-app-user-search': '/shared/gh/partials/tenant-admin/admin-app-user-search.html',
         'admin-batch-edit': '/shared/gh/partials/tenant-admin/admin-batch-edit.html',
