@@ -67,6 +67,8 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
      * @private
      */
     var showEmptyTimetable = function(evt, data) {
+        data = data.record || data;
+
         // Render the 'empty-timetable' template
         gh.utils.renderTemplate('empty-timetable', {
             'data': {
