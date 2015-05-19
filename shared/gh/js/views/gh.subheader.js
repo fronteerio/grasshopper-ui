@@ -69,6 +69,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
             timeFromStart = null;
         }
 
+        // Only preselect if a part was chosen and a series wasn't yet
         var preselect = ((prevPartId === null || (prevPartId !== partId)) && !History.getState().data.series) || (prevPartId !== null && (prevPartId !== partId));
         // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
         // the current one OR if the modules list hasn't been rendered
@@ -226,11 +227,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
 
         // If the URL shows a preselected part, select that part automatically
         if (state.part) {
-            if (state.part !== prevPartId) {
-                // gh.utils.removeFromState(['module', 'series']);
-                // gh.utils.setStateData();
-                // state = History.getState().data;
-            }
             $('#gh_subheader_part_chosen').onAvailable(function() {
                 // Only select the part if it is available in the part picker, if it's not
                 // it indicates that either the tripos has changed since the last iteration
