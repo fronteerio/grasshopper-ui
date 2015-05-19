@@ -68,7 +68,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
-        gh.utils.renderTemplate('rename-module-modal', {
+        gh.utils.renderTemplate('admin-rename-module-modal', {
             'data': {
                 'displayName': oldDisplayName,
                 'moduleId': moduleId

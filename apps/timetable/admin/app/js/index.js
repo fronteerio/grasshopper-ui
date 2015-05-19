@@ -29,7 +29,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderNavigation = function() {
-        gh.utils.renderTemplate('tenant-admin-navigation', {
+        gh.utils.renderTemplate('admin-app-navigation', {
             'gh': gh,
             'currentPage': currentPage
         }, $('#gh-navigation-container'));
@@ -72,7 +72,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderAppUserSearch = function() {
-        gh.utils.renderTemplate('tenant-admin-app-user-search', null, $('#gh-main'), function() {
+        gh.utils.renderTemplate('admin-app-user-search', null, $('#gh-main'), function() {
             // Set up user management
             setUpAutoSuggest();
         });
@@ -87,7 +87,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderUser = function(triposData, user, memberships) {
-        gh.utils.renderTemplate('tenant-admin-app-user', {
+        gh.utils.renderTemplate('admin-app-user', {
             'gh': gh,
             'memberships': memberships.results,
             'triposData': triposData,
@@ -101,7 +101,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderApp = function() {
-        gh.utils.renderTemplate('tenant-admin-app', {
+        gh.utils.renderTemplate('admin-app', {
             'app': gh.data.me.app
         }, $('#gh-main'));
     };
@@ -113,7 +113,7 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
      * @private
      */
     var renderConfig = function(config) {
-        gh.utils.renderTemplate('tenant-admin-config', {
+        gh.utils.renderTemplate('admin-app-config', {
             'app': gh.data.me.app,
             'config': config
         }, $('#gh-main'));

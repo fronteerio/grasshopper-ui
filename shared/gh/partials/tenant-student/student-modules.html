@@ -74,7 +74,7 @@
                         <!-- Published popover-->
                         <% randomId = data.utils.generateRandomString(); %>
                         <div id="<%- randomId %>">
-                            <% _.partial('series-borrowed-published-popover', {'data': orgunit}, null, '#' + randomId) %>
+                            <% _.partial('student-series-borrowed-published-popover', {'data': orgunit}, null, '#' + randomId) %>
                         </div>
 
                         <!-- Borrowed icon -->
@@ -109,7 +109,7 @@
                     <% if (!isChild && disabled) { %>
                         <% randomId = data.utils.generateRandomString(); %>
                         <div id="<%- randomId %>">
-                            <% _.partial('module-disabled-popover', {'data': orgunit}, null, '#' + randomId) %>
+                            <% _.partial('student-module-disabled-popover', {'data': orgunit}, null, '#' + randomId) %>
                         </div>
                     <% } %>
 

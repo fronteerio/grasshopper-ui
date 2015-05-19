@@ -242,7 +242,7 @@ define(['gh.core', 'gh.constants', 'gh.api.series', 'gh.api.orgunit'], function(
 
                 getModuleData(series, function(series) {
                     // Render the modal
-                    gh.utils.renderTemplate('delete-series-modal', {
+                    gh.utils.renderTemplate('admin-delete-series-modal', {
                         'data': {
                             'series': series,
                             'module': module,

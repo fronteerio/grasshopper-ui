@@ -74,7 +74,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
      */
     var showNewModuleModal = function() {
         // Render the modal
-        gh.utils.renderTemplate('new-module-modal', {
+        gh.utils.renderTemplate('admin-new-module-modal', {
             'data': {
                 'partId': $(this).data('partid'),
                 'groupId': $(this).data('groupid')

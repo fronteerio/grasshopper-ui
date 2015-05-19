@@ -61,7 +61,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var renderDeleteModule = function() {
         // Render the module overview
-        gh.utils.renderTemplate('delete-module-overview', {
+        gh.utils.renderTemplate('admin-delete-module-overview', {
             'data': templateData
         }, $('#delete-module-overview-container'), function() {
             // Hide the loading indicator
@@ -182,7 +182,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
-        gh.utils.renderTemplate('delete-module-modal', null, $('#gh-modal'), function() {
+        gh.utils.renderTemplate('admin-delete-module-modal', null, $('#gh-modal'), function() {
             // Show the modal
             $('#gh-delete-module-modal').modal();
         });
