@@ -66,7 +66,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
             }
 
             // Render the modal
-            gh.utils.renderTemplate('visibility-modal', {
+            gh.utils.renderTemplate('admin-visibility-modal', {
                 'data': {
                     'published': data.published
                 }
@@ -160,7 +160,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
      */
     var renderVisibilityButton = function(id, published) {
         // Render the visibility button
-        gh.utils.renderTemplate('visibility-button', {
+        gh.utils.renderTemplate('admin-visibility-button', {
             'data': {
                 'gh': gh,
                 'id': id,

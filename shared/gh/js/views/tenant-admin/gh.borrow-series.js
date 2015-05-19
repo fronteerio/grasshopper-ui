@@ -120,7 +120,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             });
 
             // Render the modal and pickers
-            gh.utils.renderTemplate('borrow-series-modal', {
+            gh.utils.renderTemplate('admin-borrow-series-modal', {
                 'data': {
                     'triposPickerData': triposPickerData,
                     'moduleId': moduleId,

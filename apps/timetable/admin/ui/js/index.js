@@ -160,7 +160,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
         });
 
         // Render the editable parts template
-        gh.utils.renderTemplate('editable-parts', {
+        gh.utils.renderTemplate('admin-editable-parts', {
             'data': {
                 'editableParts': editableParts,
                 'gh': gh,
@@ -176,7 +176,7 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
      * @private
      */
     var renderNewSeriesForm = function(data) {
-        gh.utils.renderTemplate('new-series', {
+        gh.utils.renderTemplate('admin-new-series', {
             'gh': gh,
             'data': data
         }, $('#gh-main'), function() {

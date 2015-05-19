@@ -61,7 +61,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
      */
     var renderDeleteModule = function() {
         // Render the module overview
-        gh.utils.renderTemplate('delete-module-overview', {
+        gh.utils.renderTemplate('admin-delete-module-overview', {
             'data': templateData
         }, $('#delete-module-overview-container'), function() {
             // Hide the loading indicator
@@ -96,7 +96,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
          * @private
          */
         var deleteSeries = function(series, callback) {
-            // If the series was originally created in the module to be deleted and it's borrowed 
+            // If the series was originally created in the module to be deleted and it's borrowed
             // into a different module, delete it from the system to delete it everywhere
             if (series && series.id && _.contains(_.pluck(templateData.borrowedElsewhere, 'seriesId'), series.id)) {
                 // Remove the series from the module
@@ -182,7 +182,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         moduleId = parseInt($(this).closest('.list-group-item').attr('data-moduleid'), 10);
 
         // Render the modal
-        gh.utils.renderTemplate('delete-module-modal', null, $('#gh-modal'), function() {
+        gh.utils.renderTemplate('admin-delete-module-modal', null, $('#gh-modal'), function() {
             // Show the modal
             $('#gh-delete-module-modal').modal();
         });
@@ -273,7 +273,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
 
         /**
          * Retrieve information on a series inside of the organisational unit to delete
-         * 
+         *
          * @param  {Object}      series       The series to retrieve extra information for
          * @param  {Function}    _callback    Standard callback function
          * @private
