@@ -299,9 +299,13 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
      * @private
      */
     var addBinding = function() {
-        // Handle hash changes but be careful with repeated triggers and throttle the function call
-        // var throttleHandleStateChange = _.throttle(handleStateChange, 200, {'trailing': false});
-        $(window).on('statechange', handleStateChange);
+        // Handle hash changes but be careful with repeated triggers and throttle the function call for IE9
+        if ($('html').hasClass('lt-ie10')) {
+            var throttleHandleStateChange = _.throttle(handleStateChange, 200, {'trailing': false});
+            $(window).on('statechange', throttleHandleStateChange);
+        } else {
+            $(window).on('statechange', handleStateChange);
+        }
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;
