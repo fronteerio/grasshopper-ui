@@ -15,9 +15,6 @@
 
 define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAPI, constants) {
 
-    // Whether to preselect the first module and series or not
-    var preselect = false;
-
     /**
      * Set up the modules of events in the sidebar. Note that context-specific handling should be done
      * in the appropriate components
@@ -31,7 +28,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         data.container = data.container || $('#gh-left-container');
         // Assign a default template based on the UI the user is in
         data.template = data.template || ($('body').hasClass('gh-admin') ? 'admin-modules' : 'student-modules');
-
+        // Assign a default preselect value
+        data.preselect = data.preselect || false;
         // Cache the modules
         var modules = data.modules;
 
@@ -60,12 +58,12 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
             'data': {
                 'modules': modules.results,
                 'state': History.getState().data,
-                'preselect': preselect,
+                'preselect': data.preselect,
                 'utils': utils
             }
         }, $('#gh-modules-container', $(data.container)), function() {
             // Reset the preselect value for next iteration
-            if (preselect) {
+            if (data.preselect) {
                 preselectSeries();
             }
 
@@ -106,11 +104,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
                 'module': $firstModule.attr('data-moduleid'),
                 'series': $firstSeries.attr('data-id')
             }, true);
-            // Reset the preselect value for the next iteration
-            preselect = false;
         } else {
             $(document).trigger('gh.admin.changeView', {'name': constants.views.EDITABLE_PARTS});
-            preselect = true;
         }
     };
 
