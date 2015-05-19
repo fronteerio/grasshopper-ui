@@ -88,10 +88,39 @@ a,
 /* LAYOUT */
 /**********/
 
+footer {
+    color: #FFF;
+}
+
+footer,
 #gh-page-container,
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
     background-color: #171717;
+}
+
+footer#footer-help {
+    background-color: #07525D;
+}
+
+.gh-admin footer#footer-help,
+.gh-global-admin footer#footer-help {
+    background-color: #412F5B;
+}
+
+footer h3 {
+    color: #FFF;
+}
+
+footer ul li a:hover,
+footer ul li a:active,
+footer ul li a:focus,
+footer ul li a {
+    color: #FFF;
+}
+
+#gh-page-container.gh-minimised {
+    background-color: transparent !important;
 }
 
 #gh-page-container #gh-left-container #gh-result-summary {
@@ -100,6 +129,7 @@ a,
 }
 
 #gh-page-container #gh-right-container,
+#gh-page-container #gh-right-container + .clearfix,
 #gh-page-container #gh-header {
     background-color: #FFF;
 }
@@ -322,8 +352,8 @@ ul.nav-tabs li.active {
     background-color: #07525D;
 }
 
-.list-group .list-group-item .list-group .list-group-item .gh-list-action.disabled {
-    background-color: #DDD !important;
+.list-group .list-group-item .gh-list-action.disabled {
+    background-color: #127077 !important;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action,
@@ -771,6 +801,14 @@ span.gh-agenda-view-middot {
 #gh-series-info-modal .modal-header button,
 #gh-series-info-modal .modal-header p {
     color: #FFF;
+}
+
+.modal-header .close:hover {
+    color: #AAA;
+}
+
+.modal-content form label {
+    color: #8D8D8D;
 }
 
 /* Term */

@@ -28,12 +28,12 @@ define(['gh.utils', 'clickover'], function(utils) {
     var setUpPopover = function() {
         // Cache the trigger
         var $trigger = $(this);
-        // Get the content for the popover
-        var $content = $('.list-group-item .popover.published[data-id="' + $trigger.data('id') + '"]');
+        // Retrieve the html
+        var $content = $('.gh-module-disabled-popover');
 
         // Set options for the popover
         var options = {
-            'class_name': 'gh-series-popover gh-borrowed-published-popover',
+            'class_name': 'gh-series-popover gh-module-disabled-popover',
             'container': 'body',
             'content': $content.html(),
             'global_close': true,
@@ -45,7 +45,7 @@ define(['gh.utils', 'clickover'], function(utils) {
         $trigger.trigger('click');
 
         // Send a tracking event
-        utils.trackEvent(['Navigation', 'Series', 'Borrowed published popover displayed'], {
+        utils.trackEvent(['Navigation', 'Module', 'Disabled module popover displayed'], {
             'series': parseInt($content.attr('data-id'), 10)
         });
     };
@@ -75,9 +75,9 @@ define(['gh.utils', 'clickover'], function(utils) {
      */
     var addBinding = function() {
         // Hide the popover window
-        $('body').on('mouseout', '.gh-list-action.series.disabled', dismissPopover);
+        $('body').on('mouseout', '.gh-list-action.module.disabled', dismissPopover);
         // set up and show the popover window
-        $('body').on('mouseover', '.gh-list-action.series.disabled', setUpPopover);
+        $('body').on('mouseover', '.gh-list-action.module.disabled', setUpPopover);
     };
 
     addBinding();
