@@ -74,7 +74,6 @@ select[disabled],
 
 .gh-disabled {
     cursor: not-allowed;
-    opacity: 0.25;
 }
 
 /* When the page loads and it's laying itself out, animations shouldn't occur.
