@@ -44,7 +44,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
      */
     var setUpModules = function(ev, data) {
         var selectedPart = _.find(gh.utils.triposData().parts, function(part) { return part.id === data.selected; });
-        if (selectedPart && !selectedPart.published) {
+        if ((selectedPart && !selectedPart.published) && !$('body').hasClass('gh-admin')) {
             return $(document).trigger('gh.empty.timetable', {
                 'record': selectedPart
             });
@@ -69,6 +69,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
             timeFromStart = null;
         }
 
+        var preselect = ((prevPartId === null || (prevPartId !== partId)) && !History.getState().data.series) || (prevPartId !== null && (prevPartId !== partId));
         // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
         // the current one OR if the modules list hasn't been rendered
         if ((prevPartId !== partId) || !$('#gh-modules-container #gh-modules-list-container ul').length) {
@@ -84,7 +85,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
                 $(document).trigger('gh.part.selected', {
                     'partId': partId,
                     'modules': cachedModules,
-                    'container': $('#gh-left-container')
+                    'container': $('#gh-left-container'),
+                    'preselect': preselect ? true : false
                 });
             });
         } else {
@@ -224,8 +226,17 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
 
         // If the URL shows a preselected part, select that part automatically
         if (state.part) {
+            if (state.part !== prevPartId) {
+                // gh.utils.removeFromState(['module', 'series']);
+                // gh.utils.setStateData();
+                // state = History.getState().data;
+            }
             $('#gh_subheader_part_chosen').onAvailable(function() {
-                if ($('#gh-subheader-part [value="' + state.part + '"]').length) {
+                // Only select the part if it is available in the part picker, if it's not
+                // it indicates that either the tripos has changed since the last iteration
+                // or the part is no longer available. Either way, the part, module and series
+                // should be removed from the url in that case
+                if ($('#gh-subheader-part option[value="' + state.part + '"]').length) {
                     $('#gh-subheader-part').val(state.part);
                     $('#gh-subheader-part').trigger('change', {'selected': state.part});
                     $('#gh-subheader-part').trigger('chosen:updated');
@@ -235,17 +246,11 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
                         $('#gh-content-description p').hide();
                     }
 
-                    // Only select the part if it is available in the part picker, if it's not
-                    // it indicates that either the tripos has changed since the last iteration
-                    // or the part is no longer available. Either way, the part, module and series
-                    // should be removed from the url in that case
-                    if (!$('#gh-subheader-part option[value="' + state.part + '"]').length) {
-                        // If there is no part to select, part, module and series should be removed from the hash
-                        gh.utils.removeFromState(['part', 'module', 'series']);
-                    }
-
                     // Dispatch an event to update the visibility button
                     $(document).trigger('gh.part.changed', {'part': state.part});
+                } else {
+                    // If there is no part to select, part, module and series should be removed from the hash
+                    gh.utils.removeFromState(['part', 'module', 'series']);
                 }
             });
         } else {
@@ -295,8 +300,8 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
      */
     var addBinding = function() {
         // Handle hash changes but be careful with repeated triggers and throttle the function call
-        var throttleHandleStateChange = _.throttle(handleStateChange, 200, {'trailing': false});
-        $(window).on('statechange', throttleHandleStateChange);
+        // var throttleHandleStateChange = _.throttle(handleStateChange, 200, {'trailing': false});
+        $(window).on('statechange', handleStateChange);
         // Initialise the subheader component
         $(document).on('gh.subheader.init', function(ev, data) {
             triposData = data.triposData;
