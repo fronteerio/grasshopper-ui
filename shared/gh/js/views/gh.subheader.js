@@ -43,6 +43,13 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
      * @private
      */
     var setUpModules = function(ev, data) {
+        var selectedPart = _.find(gh.utils.triposData().parts, function(part) { return part.id === data.selected; });
+        if (selectedPart && !selectedPart.published) {
+            return $(document).trigger('gh.empty.timetable', {
+                'record': selectedPart
+            });
+        }
+
         var partId = parseInt(data.selected, 10);
 
         // Push the selected part in the URL

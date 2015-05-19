@@ -119,6 +119,10 @@ footer ul li a {
     color: #FFF;
 }
 
+#gh-page-container.gh-minimised {
+    background-color: transparent !important;
+}
+
 #gh-page-container #gh-left-container #gh-result-summary {
     background-color: #127077;
     border-bottom-color: #171717;

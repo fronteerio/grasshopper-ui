@@ -3,7 +3,7 @@
     <i class="fa fa-share-square-o"></i>
 </div>
 <p class="gh-empty-main">Unfortunately this is not in Timetable yet</p>
-<% if (data.record.metadata.external) { %>
+<% if (data.record && data.record.metadata && data.record.metadata.external) { %>
     <p class="gh-empty-description">Click below to access it, and ask your departmental administrator about making it available via Timetable</p>
     <a href="<%- data.gh.utils.validateExternalURL(data.record.metadata.external) %>" target="_blank" id="gh-empty-access" class="btn btn-default">Access timetable</a>
 <% } else { %>
