@@ -96,7 +96,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
          * @private
          */
         var deleteSeries = function(series, callback) {
-            // If the series was originally created in the module to be deleted and it's borrowed 
+            // If the series was originally created in the module to be deleted and it's borrowed
             // into a different module, delete it from the system to delete it everywhere
             if (series && series.id && _.contains(_.pluck(templateData.borrowedElsewhere, 'seriesId'), series.id)) {
                 // Remove the series from the module
@@ -150,7 +150,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
                     gh.utils.notification('The module has been removed', null, 'success');
 
                     // Remove the module from the navigation
-                    $('.list-group-item[data-id="' + moduleId + '"]').remove();
+                    $('.list-group-item[data-moduleid="' + moduleId + '"]').remove();
 
                     // Remove the module and series from the state
                     gh.utils.removeFromState(['series', 'module']);
@@ -273,7 +273,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
 
         /**
          * Retrieve information on a series inside of the organisational unit to delete
-         * 
+         *
          * @param  {Object}      series       The series to retrieve extra information for
          * @param  {Function}    _callback    Standard callback function
          * @private
