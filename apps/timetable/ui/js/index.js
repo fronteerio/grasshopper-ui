@@ -70,7 +70,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
         data = data.record || data;
 
         // Render the 'empty-timetable' template
-        gh.utils.renderTemplate('empty-timetable', {
+        gh.utils.renderTemplate('student-empty-timetable', {
             'data': {
                 'gh': gh,
                 'record': data

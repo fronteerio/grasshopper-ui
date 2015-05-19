@@ -36,7 +36,7 @@ define(['gh.core', 'moment'], function(gh, moment) {
         addParentInfo();
 
         // Render the agenda view
-        gh.utils.renderTemplate('agenda-view', {
+        gh.utils.renderTemplate('student-agenda-view', {
             'data': {
                 'moment': moment,
                 'openedTerms': require('gh.core').utils.localDataStorage().get('myagenda'),
