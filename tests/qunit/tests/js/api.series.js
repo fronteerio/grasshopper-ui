@@ -491,7 +491,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                     // Verify that the error is handled
                                     body = {'code': 400, 'msg': 'Bad Request'};
                                     gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/events?limit=0&offset=0&upcoming=true', 400, {'Content-Type': 'application/json'}, body, function() {
-                                        gh.api.seriesAPI.getSeriesEvents(testSeries.id, 0, 0, true, function(err, data) {
+                                        gh.api.seriesAPI.getSeriesEvents(testSeries.id, null, null, null, function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the events in the event series can\'t be successfully retrieved');
                                             assert.ok(!data, 'Verify that no data returns when the events in the event series can\'t be successfully retrieved');
 
@@ -663,7 +663,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the error is handled
                                 body = {'code': 400, 'msg': 'Bad Request'};
                                 gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/upcoming?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.seriesAPI.getSeriesUpcoming(testSeries.id, 0, 0, function(err, data) {
+                                    gh.api.seriesAPI.getSeriesUpcoming(testSeries.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the upcoming events in an event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the upcoming events in an event series can\'t be successfully retrieved');
 
@@ -720,7 +720,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the error is handled
                                 body = {'code': 400, 'msg': 'Bad Request'};
                                 gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/subscribers?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.seriesAPI.getSeriesSubscribers(testSeries.id, 0, 0, function(err, data) {
+                                    gh.api.seriesAPI.getSeriesSubscribers(testSeries.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the users that have subscribed to an event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the users that have subscribed to an event series can\'t be successfully retrieved');
 

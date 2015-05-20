@@ -457,8 +457,8 @@ define(['exports'], function(exports) {
      * Get the users that have subscribed to an event series
      *
      * @param  {Number}      eventId             The id of the event to get the subscribers for
-     * @param  {Number}      limit               The maximum number of results to retrieve. Default: 10
-     * @param  {Number}      offset              The paging number of the results to retrieve
+     * @param  {Number}      [limit]             The maximum number of results to retrieve. Default: 10
+     * @param  {Number}      [offset]            The paging number of the results to retrieve
      * @param  {Function}    callback            Standard callback functions
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {User[]}      callback.reponse    The users that have subscribed to the event
@@ -475,13 +475,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+
         $.ajax({
             'url': '/api/events/' + eventId + '/subscribers',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

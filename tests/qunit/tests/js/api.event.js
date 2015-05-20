@@ -749,8 +749,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                 // Verify that a thrown error is handled successfully
                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.utils.mockRequest('GET', '/api/events/' + evt.id + '/subscribers?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.eventAPI.getEventSubscribers(evt.id, 0, 0, function(err, data) {
+                                gh.utils.mockRequest('GET', '/api/events/' + evt.id + '/subscribers', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.eventAPI.getEventSubscribers(evt.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that a thrown error is handled successfully');
                                         assert.ok(!data, 'Verify that no subscribers are returned');
                                     });

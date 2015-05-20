@@ -84,6 +84,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
         }
 
+        // Request options object
         var data = {
             'displayName': displayName
         };
@@ -120,6 +121,7 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid displayName should be provided'});
         }
 
+        // Request options object
         var data = {
             'displayName': displayName
         };

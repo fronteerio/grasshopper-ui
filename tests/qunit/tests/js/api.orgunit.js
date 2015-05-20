@@ -168,7 +168,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the error is handled when the organisational unit event series can't be successfully retrieved
                                 var body = {'code': 400, 'msg': 'Bad Request'};
                                 gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/series', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.orgunitAPI.getOrgUnitSeries(testOrgUnit.id, 0, 0, true, function(err, data) {
+                                    gh.api.orgunitAPI.getOrgUnitSeries(testOrgUnit.id, null, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the organisational unit event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the organisational unit event series can\'t be successfully retrieved');
 
@@ -385,8 +385,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                                 // Verify that the error is handled when the upcoming events in an organisational unit can't be retrieved
                                 body = {'code': 400, 'msg': 'Bad Request'};
-                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, 0, 0, function(err, data) {
+                                gh.utils.mockRequest('GET', '/api/orgunit/' + testOrgUnit.id + '/upcoming', 400, {'Content-Type': 'application/json'}, body, function() {
+                                    gh.api.orgunitAPI.getOrgUnitUpcoming(testOrgUnit.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the upcoming events in an organisational unit can\'t be retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the upcoming events in an organisational unit can\'t be retrieved');
 
