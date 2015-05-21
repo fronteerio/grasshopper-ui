@@ -158,13 +158,13 @@ footer,
     overflow: hidden;
 }
 
-footer #gh-header-logo,
-#gh-page-container #gh-left-container #gh-header-logo {
+footer .gh-uni-logo,
+#gh-page-container #gh-left-container .gh-uni-logo {
     height: 115px;
 }
 
-footer #gh-header-logo img,
-#gh-page-container #gh-left-container #gh-header-logo img {
+footer .gh-uni-logo img,
+#gh-page-container #gh-left-container .gh-uni-logo img {
     -webkit-box-sizing: content-box;
        -moz-box-sizing: content-box;
             box-sizing: content-box;
@@ -176,7 +176,7 @@ footer #gh-header-logo img,
             transition: padding .3s;
 }
 
-footer #gh-header-logo img {
+footer .gh-uni-logo img {
     padding: 30px 30px 30px 41px;
 }
 
@@ -400,7 +400,7 @@ footer ul li {
 
 /* Content */
 
-.gh-collapsed #gh-page-container #gh-left-container #gh-header-logo img {
+.gh-collapsed #gh-page-container #gh-left-container .gh-uni-logo img {
     padding: 39px 46px 36px 8px;
 }
 

@@ -107,6 +107,7 @@ requirejs.config({
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.login-form': 'gh/js/views/gh.login-form',
         'gh.header': 'gh/js/views/gh.header',
+        'gh.footer': 'gh/js/views/gh.footer',
         'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
         'gh.subheader': 'gh/js/views/gh.subheader'
     },

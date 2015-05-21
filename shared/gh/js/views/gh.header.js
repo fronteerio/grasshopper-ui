@@ -34,7 +34,7 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
         }, $('#gh-header'), function() {
 
             // Only render the pickers for the student UI and the tenant admin UI
-            if (!isGlobalAdminUI) {
+            if (!isGlobalAdminUI && (!gh.data.me.anon || $('body').hasClass('gh-student'))) {
 
                 // Render the tripos pickers
                 gh.utils.renderTemplate('subheader-pickers', {
@@ -69,7 +69,7 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
         });
 
         // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '#gh-header-logo', function() {
+        $('body').on('click', '.gh-uni-logo', function() {
             gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
                 window.location = '/';
             });

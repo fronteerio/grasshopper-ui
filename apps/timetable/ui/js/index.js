@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.student.listview'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.footer', 'gh.student.listview'], function(gh, constants) {
 
     /**
      * Display the appropriate view depending on the state of the selected part
@@ -129,6 +129,9 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
                 'isGlobalAdminUI': false,
                 'triposData': triposData
             });
+
+            // Set up the footer
+            $(document).trigger('gh.footer.init');
 
             // Set up the calendar
             $(document).trigger('gh.calendar.init', {

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'chosen', 'validator', 'gh.global-admin.configuration', 'gh.global-admin.tenants', 'gh.global-admin.users', 'gh.header'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'chosen', 'validator', 'gh.global-admin.configuration', 'gh.global-admin.tenants', 'gh.global-admin.users', 'gh.header', 'gh.footer'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[1];
@@ -334,11 +334,14 @@ define(['gh.core', 'gh.constants', 'chosen', 'validator', 'gh.global-admin.confi
         // Add event listeners to various components on the page
         addBinding();
 
-        // Initialise the page header
+        // Set up the page header
         $(document).trigger('gh.header.init', {
             'includeLoginForm': true,
             'isGlobalAdminUI': true
         });
+
+        // Set up the page footer
+        $(document).trigger('gh.footer.init');
 
         // Determine which page to load based on the login state and
         // page the user's on

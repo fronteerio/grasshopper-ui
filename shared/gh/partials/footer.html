@@ -1,0 +1,41 @@
+<footer id="footer-help">
+    <div id="footer-help-logo" class="pull-left">
+        <a href="javascript:;" class="gh-uni-logo" target="_blank" title="Visit Timetable">
+            <img src="/shared/gh/img/unilogo.png" alt="Cambridge University">
+        </a>
+    </div>
+
+    <div>
+        <div class="col-xs-3">
+            <h3>Help</h3>
+            <ul>
+                <% if (data.me.isAdmin) { %>
+                    <li><a href="http://www.ucs.cam.ac.uk/support/service-desk" target="_blank" title="Read more about the help desk">Help desk</a></li>
+                <% } %>
+                <li><a href="mailto:service-desk@ucs.cam.ac.uk" title="Contact us">Contact us</a></li>
+                <li><a href="javascript:;" target="_blank" title="Read the frequently asked questions" class="hide">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-3">
+            <h3>Legal</h3>
+            <ul>
+                <li><a href="https://www.uis.cam.ac.uk/privacy-policies-for-uis-services/privacy-and-cookie-policy-for-timetable" target="_blank" title="Read the privacy and cookie policy">Privacy &amp; cookie policy</a></li>
+            </ul>
+        </div>
+        <% if (data.me.isAdmin) { %>
+            <div class="col-xs-3">
+                <h3>Administration</h3>
+                <ul>
+                    <li><a href="/admin" title="Manage the timetable">Timetable management</a></li>
+                    <li><a href="/admin/configuration" title="Manage the application's configuration">Configuration</a></li>
+                    <li><a href="/admin/app" title="Manage the application">Application</a></li>
+                    <li><a href="/admin/users" title="Manage users of this application">Users</a></li>
+                </ul>
+            </div>
+        <% } %>
+    </div>
+    <div class="clearfix"></div>
+</footer>
+<footer id="footer-copyright">
+    <p>&copy; Digital Services, Cambridge University</p>
+</footer>
