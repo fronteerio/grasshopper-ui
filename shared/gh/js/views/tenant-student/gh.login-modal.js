@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core'], function(gh) {
+define(['gh.core', 'validator'], function(gh) {
 
     // The trigger that invoked the modal window
     var $trigger = null;
