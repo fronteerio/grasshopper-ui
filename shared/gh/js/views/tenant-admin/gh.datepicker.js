@@ -215,7 +215,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
 
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz($(msg.trigger).attr('data-start'), 'Europe/London').format('YYYY-MM-DD')), true);
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz($(msg.trigger).attr('data-start'), 'Europe/London').format('YYYY-MM-DD')));
         if (_term) {
             numWeeks = gh.utils.getWeeksInTerm(_term);
         }
@@ -320,7 +320,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
         setDatePicker(calendarDate);
 
         // Set the week value
-        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate), true);
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
         $('.popover #gh-module-week').val(week);
 
         // Set the day value
@@ -398,7 +398,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
             if (weekVal) {
 
                 // Retrieve the term
-                var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')), true);
+                var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')));
                 if (term) {
                     _term = term;
 
@@ -457,7 +457,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
 
                 // Update the week
                 if ($(component).selector === '#gh-module-week') {
-                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')), true);
+                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')));
                     $(component).val(week);
 
                 // Update the day

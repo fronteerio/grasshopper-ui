@@ -130,7 +130,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     var addNewEventRow = function(ev, data) {
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
-        var termStart = gh.utils.getFirstDayOfTerm(termName);
+        var termStart = gh.utils.getFirstLectureDayOfTerm(termName);
         var eventObj = {
             'data': {
                 'ev': null
