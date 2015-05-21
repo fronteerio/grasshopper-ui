@@ -356,6 +356,10 @@ footer ul li {
     position: fixed;
 }
 
+.gh-collapsed main {
+    margin-bottom: 230px;
+}
+
 .gh-collapsed-finished main {
     margin-top: 215px;
 }
@@ -392,6 +396,7 @@ footer ul li {
     bottom: 58px;
     position: fixed;
     width: 100%;
+    z-index: 9999;
 }
 
 .gh-collapsed footer + footer {

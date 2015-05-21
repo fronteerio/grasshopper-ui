@@ -25,8 +25,8 @@ requirejs.config({
         // Vendor paths
         'bootstrap': 'vendor/js/bootstrap',
         'bootstrap-notify': 'vendor/js/bootstrap-notify',
-        'clickover': 'vendor/js/bootstrapx-clickover',
         'chosen': 'vendor/js/chosen.jquery',
+        'clickover': 'vendor/js/bootstrapx-clickover',
         'fullcalendar': 'vendor/js/fullcalendar',
         'jquery-autosuggest': 'vendor/js/jquery.autosuggest',
         'jquery-datepicker': 'vendor/js/jquery-datepicker',
@@ -104,10 +104,10 @@ requirejs.config({
 
         // GH shared view controllers
         'gh.calendar': 'gh/js/views/gh.calendar',
+        'gh.footer': 'gh/js/views/gh.footer',
+        'gh.header': 'gh/js/views/gh.header',
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.login-form': 'gh/js/views/gh.login-form',
-        'gh.header': 'gh/js/views/gh.header',
-        'gh.footer': 'gh/js/views/gh.footer',
         'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
         'gh.subheader': 'gh/js/views/gh.subheader'
     },

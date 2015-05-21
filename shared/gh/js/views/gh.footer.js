@@ -26,7 +26,9 @@ define(['gh.core'], function(gh) {
             'data': {
                 'me': gh.data.me
             }
-        }, $('footer'));
+        }, null, function(renderedFooter) {
+            $('footer').replaceWith(renderedFooter);
+        });
     };
 
 
