@@ -48,8 +48,8 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
 
                             // Verify that the error is handled
                             body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.utils.mockRequest('GET', '/api/groups/' + 1 + '/members?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.groupsAPI.getGroupMembers(1, 0, 0, function(err, data) {
+                            gh.utils.mockRequest('GET', '/api/groups/' + 1 + '/members', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.groupsAPI.getGroupMembers(1, null, null, function(err, data) {
                                     assert.ok(err, 'Verify that the error is handled when the group members can\'t be successfully retrieved');
                                     assert.ok(!data, 'Verify that no data returns when the group members can\'t be successfully retrieved');
                                     QUnit.start();

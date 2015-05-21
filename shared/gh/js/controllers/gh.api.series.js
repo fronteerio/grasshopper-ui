@@ -105,48 +105,6 @@ define(['exports'], function(exports) {
     };
 
     /**
-     * Crop the picture for an event series
-     *
-     * @param  {Number}      serieId              The ID of the series to crop the picture for
-     * @param  {Number}      width                The width of the square that needs to be cropped out
-     * @param  {Number}      x                    The x coordinate of the top left corner to start cropping at
-     * @param  {Number}      y                    The y coordinate of the top left corner to start cropping at
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    Object representing the cropped picture
-     * @throws {Error}                            A parameter validation error
-     */
-    var cropSeriesPicture = exports.cropSeriesPicture = function(serieId, width, x, y, callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(serieId)) {
-            return callback({'code': 400, 'msg': 'A valid series ID should be provided'});
-        } else if (!_.isNumber(width)) {
-            return callback({'code': 400, 'msg': 'A valid width should be provided'});
-        } else if (!_.isNumber(x)) {
-            return callback({'code': 400, 'msg': 'A valid x should be provided'});
-        } else if (!_.isNumber(y)) {
-            return callback({'code': 400, 'msg': 'A valid y should be provided'});
-        }
-
-        $.ajax({
-            'url': '/api/series/' + serieId + '/picture/crop',
-            'type': 'POST',
-            'data': {
-                'width': width,
-                'x': x,
-                'y': y
-            },
-            'success': function(data) {
-                return callback(null, data);
-            },
-            'error': function(jqXHR, textStatus) {
-                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-            }
-        });
-    };
-
-    /**
      * Delete an event series
      *
      * @param  {Number}      serieId                The ID of the event series to delete
@@ -315,14 +273,24 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid upcoming should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+        if (_.isBoolean(upcoming)) {
+            data['upcoming'] = upcoming;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId + '/events',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset,
-                'upcoming': upcoming
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -336,8 +304,8 @@ define(['exports'], function(exports) {
      * Get the calendar for an event series in iCal
      *
      * @param  {Number}      serieId              The ID of the series to retrieve the iCal calendar for
-     * @param  {String}      [start]              The timestamp (ISO 8601) from which to get the calendar for the event series
-     * @param  {String}      [end]                The timestamp (ISO 8601) until which to get the calendar for the event series
+     * @param  {String}      start                The timestamp (ISO 8601) from which to get the calendar for the event series
+     * @param  {String}      end                  The timestamp (ISO 8601) until which to get the calendar for the event series
      * @param  {Function}    callback             Standard callback function
      * @param  {Object}      callback.err         Error object containing the error code and error message
      * @param  {Object}      callback.response    Object representing the iCal calendar
@@ -430,13 +398,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+
         $.ajax({
             'url': '/api/series/' + serieId + '/upcoming',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -468,44 +444,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
         }
 
-        $.ajax({
-            'url': '/api/series/' + serieId + '/subscribers',
-            'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset
-            },
-            'success': function(data) {
-                return callback(null, data);
-            },
-            'error': function(jqXHR, textStatus) {
-                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-            }
-        });
-    };
+        // Request options object
+        var data = {};
 
-    /**
-     * Store a picture for an event series
-     *
-     * @param  {Number}     serieId              The ID of the series to store a picture for
-     * @param  {Form}       file                 Image that should be stored as the event series picture
-     * @param  {Function}   callback             Standard callback function
-     * @param  {Object}     callback.err         Error object containing the error code and error message
-     * @param  {Object}     callback.response    Object representing the picture for an event series
-     * @throws {Error}                           A parameter validation error
-     */
-    var setSeriesPicture = exports.setSeriesPicture = function(serieId, file, callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(serieId)) {
-            return callback({'code': 400, 'msg': 'A valid serieId should be provided'});
-        } else if (_.isEmpty(file)) {
-            return callback({'code': 400, 'msg': 'A valid file should be provided'});
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
         }
 
         $.ajax({
-            'url': '/api/series/' + serieId + '/picture',
-            'type': 'POST',
+            'url': '/api/series/' + serieId + '/subscribers',
+            'type': 'GET',
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

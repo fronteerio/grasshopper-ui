@@ -75,9 +75,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for offset should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+
         $.ajax({
-            'url': '/api/admins?limit=' + limit + '&offset=' + offset,
+            'url': '/api/admins',
             'type': 'GET',
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

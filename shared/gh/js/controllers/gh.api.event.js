@@ -380,48 +380,6 @@ define(['exports'], function(exports) {
     };
 
     /**
-     * Crop the picture for an event
-     *
-     * @param  {Number}      eventId             The ID of the event to crop the picture for
-     * @param  {Number}      width               The width of the square that needs to be cropped out
-     * @param  {Number}      x                   The x coordinate of the top left corner to start cropping at
-     * @param  {Number}      y                   The y coordinate of the top left corner to start cropping at
-     * @param  {Function}    callback            Standard callback function
-     * @param  {Error}       callback.err        Error object containing the error code and error message
-     * @param  {Event}       callback.reponse    The updated event
-     * @throws {Error}                           A parameter validation error
-     */
-    var cropPicture = exports.cropPicture = function(eventId, width, x, y, callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        } else if (!_.isNumber(eventId)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'eventId\' should be provided'});
-        } else if (!_.isNumber(width)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'width\' should be provided'});
-        } else if (!_.isNumber(x)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'x\' should be provided'});
-        } else if (!_.isNumber(y)) {
-            return callback({'code': 400, 'msg': 'A valid value for \'y\' should be provided'});
-        }
-
-        $.ajax({
-            'url': '/api/events/' + eventId + '/picture/crop',
-            'type': 'POST',
-            'data': {
-                'width': width,
-                'x': x,
-                'y': y
-            },
-            'success': function(data) {
-                return callback(null, data);
-            },
-            'error': function(jqXHR, textStatus) {
-                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
-            }
-        });
-    };
-
-    /**
      * Delete an event
      *
      * @param  {Number}      eventId           The ID of the event to delete
@@ -457,8 +415,8 @@ define(['exports'], function(exports) {
      * Get the users that have subscribed to an event series
      *
      * @param  {Number}      eventId             The id of the event to get the subscribers for
-     * @param  {Number}      limit               The maximum number of results to retrieve. Default: 10
-     * @param  {Number}      offset              The paging number of the results to retrieve
+     * @param  {Number}      [limit]             The maximum number of results to retrieve. Default: 10
+     * @param  {Number}      [offset]            The paging number of the results to retrieve
      * @param  {Function}    callback            Standard callback functions
      * @param  {Error}       callback.err        Error object containing the error code and error message
      * @param  {User[]}      callback.reponse    The users that have subscribed to the event
@@ -475,13 +433,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid value for \'offset\' should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the optional parameters if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+
         $.ajax({
             'url': '/api/events/' + eventId + '/subscribers',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },

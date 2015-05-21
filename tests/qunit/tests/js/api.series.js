@@ -144,83 +144,6 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the `cropSeriesPicture` functionality
-    QUnit.asyncTest('cropSeriesPicture', function(assert) {
-        expect(13);
-
-        var testSeries = testAPI.getRandomSeries();
-
-        // Verify that an error is thrown when no callback was provided
-        assert.throws(function() {
-            gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, 10);
-        }, 'Verify that an error is thrown when no callback was provided');
-
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, 10, 'not_a_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
-
-        // Verify that an error is thrown when no serieId was provided
-        gh.api.seriesAPI.cropSeriesPicture(null, 10, 1, 10, function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no serie id was provided');
-
-            // Verify that an error is thrown when an invalid serieId was provided
-            gh.api.seriesAPI.cropSeriesPicture('invalid_series_id', 10, 1, 10, function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
-
-                // Verify that an error is thrown when no width was provided
-                gh.api.seriesAPI.cropSeriesPicture(testSeries.id, null, 1, 10, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no width was provided');
-
-                    // Verify that an error is thrown when an invalid width was provided
-                    gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 'invalid_width', 1, 10, function(err, data) {
-                        assert.ok(err, 'Verify that an error is thrown when an invalid width was provided');
-
-                        // Verify that an error is thrown when no x was provided
-                        gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, null, 10, function(err, data) {
-                            assert.ok(err, 'Verify that an error is thrown when no x was provided');
-
-                            // Verify that an error is thrown when an invalid x was provided
-                            gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 'invalid_x', 10, function(err, data) {
-                                assert.ok(err, 'Verify that an error is thrown when an invalid x was provided');
-
-                                // Verify that an error is thrown when no y was provided
-                                gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, null, function(err, data) {
-                                    assert.ok(err, 'Verify that an error is thrown when no y was provided');
-
-                                    // Verify that an error is thrown when an invalid y was provided
-                                    gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, 'invalid_y', function(err, data) {
-                                        assert.ok(err, 'Verify that an error is thrown when an invalid y was provided');
-
-                                        // Verify that pictures can be successfully cropped
-                                        // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-                                        var body = {'code': 200, 'msg': 'OK'};
-                                        gh.utils.mockRequest('POST', '/api/series/' + testSeries.id + '/picture/crop', 200, {'Content-Type': 'application/json'}, body, function() {
-                                            gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, 10, function(err, data) {
-                                                assert.ok(!err, 'Verify that pictures can be successfully cropped');
-
-                                                // Verify that the error is handled
-                                                body = {'code': 400, 'msg': 'Bad Request'};
-                                                gh.utils.mockRequest('POST', '/api/series/' + testSeries.id + '/picture/crop', 400, {'Content-Type': 'application/json'}, body, function() {
-                                                    gh.api.seriesAPI.cropSeriesPicture(testSeries.id, 10, 1, 10, function(err, data) {
-                                                        assert.ok(err, 'Verify that the error is handled when the event series picture can\'t be successfully cropped');
-                                                        assert.ok(!data, 'Verify that no data returns when the event series picture can\'t be successfully cropped');
-
-                                                        QUnit.start();
-                                                    });
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    });
-
     // Test the `deleteSeries` functionality
     QUnit.asyncTest('deleteSeries', function(assert) {
         expect(7);
@@ -491,7 +414,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                     // Verify that the error is handled
                                     body = {'code': 400, 'msg': 'Bad Request'};
                                     gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/events?limit=0&offset=0&upcoming=true', 400, {'Content-Type': 'application/json'}, body, function() {
-                                        gh.api.seriesAPI.getSeriesEvents(testSeries.id, 0, 0, true, function(err, data) {
+                                        gh.api.seriesAPI.getSeriesEvents(testSeries.id, null, null, null, function(err, data) {
                                             assert.ok(err, 'Verify that the error is handled when the events in the event series can\'t be successfully retrieved');
                                             assert.ok(!data, 'Verify that no data returns when the events in the event series can\'t be successfully retrieved');
 
@@ -663,7 +586,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the error is handled
                                 body = {'code': 400, 'msg': 'Bad Request'};
                                 gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/upcoming?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.seriesAPI.getSeriesUpcoming(testSeries.id, 0, 0, function(err, data) {
+                                    gh.api.seriesAPI.getSeriesUpcoming(testSeries.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the upcoming events in an event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the upcoming events in an event series can\'t be successfully retrieved');
 
@@ -720,64 +643,12 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                                 // Verify that the error is handled
                                 body = {'code': 400, 'msg': 'Bad Request'};
                                 gh.utils.mockRequest('GET', '/api/series/' + testSeries.id + '/subscribers?limit=0&offset=0', 400, {'Content-Type': 'application/json'}, body, function() {
-                                    gh.api.seriesAPI.getSeriesSubscribers(testSeries.id, 0, 0, function(err, data) {
+                                    gh.api.seriesAPI.getSeriesSubscribers(testSeries.id, null, null, function(err, data) {
                                         assert.ok(err, 'Verify that the error is handled when the users that have subscribed to an event series can\'t be successfully retrieved');
                                         assert.ok(!data, 'Verify that no data returns when the users that have subscribed to an event series can\'t be successfully retrieved');
 
                                         QUnit.start();
                                     });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    });
-
-    // Test the `setSeriesPicture` functionality
-    QUnit.asyncTest('setSeriesPicture', function(assert) {
-        expect(8);
-
-        var testSeries = testAPI.getRandomSeries();
-
-        // Verify that an error is thrown when no callback was provided
-        assert.throws(function() {
-            gh.api.seriesAPI.setSeriesPicture(testSeries.id, 'file placeholder');
-        }, 'Verify that an error is thrown when no callback was provided');
-
-        // Verify that an error is thrown when an invalid callback was provided
-        assert.throws(function() {
-            gh.api.seriesAPI.setSeriesPicture(testSeries.id, 'file placeholder', 'not_a_callback');
-        }, 'Verify that an error is thrown when an invalid callback was provided');
-
-        // Verify that an error is thrown when no serieId was provided
-        gh.api.seriesAPI.setSeriesPicture(null, 'file placeholder', function(err, data) {
-            assert.ok(err, 'Verify that an error is thrown when no serie id was provided');
-
-            // Verify that an error is thrown when an invalid serieId was provided
-            gh.api.seriesAPI.setSeriesPicture('invalid_serie_id', 'file placeholder', function(err, data) {
-                assert.ok(err, 'Verify that an error is thrown when an invalid serie id was provided');
-
-                // Verify that an error is thrown when no file was provided
-                gh.api.seriesAPI.setSeriesPicture(testSeries.id, null, function(err, data) {
-                    assert.ok(err, 'Verify that an error is thrown when no file was provided');
-
-                    // Verify that the event series picture can be successfully set
-                    // TODO: Switch this mocked call out with the proper API request once it has been implemented in the backend
-                    var body = {'code': 200, 'msg': 'OK'};
-                    gh.utils.mockRequest('POST', '/api/series/' + testSeries.id + '/picture', 200, {'Content-Type': 'application/json'}, body, function() {
-                        gh.api.seriesAPI.setSeriesPicture(testSeries.id, 'file placeholder', function(err, data) {
-                            assert.ok(!err, 'Verify that the event series picture can be successfully set');
-
-                            // Verify that the error is handled
-                            body = {'code': 400, 'msg': 'Bad Request'};
-                            gh.utils.mockRequest('POST', '/api/series/' + testSeries.id + '/picture', 400, {'Content-Type': 'application/json'}, body, function() {
-                                gh.api.seriesAPI.setSeriesPicture(testSeries.id, 'file placeholder', function(err, data) {
-                                    assert.ok(err, 'Verify that the error is handled when the event series picture can\'t be successfully set');
-                                    assert.ok(!data, 'Verify that no data returns when the event series picture can\'t be successfully set');
-
-                                    QUnit.start();
                                 });
                             });
                         });

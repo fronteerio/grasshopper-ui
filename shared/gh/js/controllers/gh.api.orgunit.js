@@ -216,14 +216,24 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid upcoming should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+        if (_.isBoolean(upcoming)) {
+            data['upcoming'] = upcoming;
+        }
+
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/series',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset,
-                'upcoming': upcoming
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
@@ -443,13 +453,21 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid offset should be provided'});
         }
 
+        // Request options object
+        var data = {};
+
+        // Only add the parameters to the request object if they have been explicitly specified
+        if (!_.isNull(limit)) {
+            data['limit'] = limit;
+        }
+        if (!_.isNull(offset)) {
+            data['offset'] = offset;
+        }
+
         $.ajax({
             'url': '/api/orgunit/' + orgUnitId + '/upcoming',
             'type': 'GET',
-            'data': {
-                'limit': limit,
-                'offset': offset
-            },
+            'data': data,
             'success': function(data) {
                 return callback(null, data);
             },
