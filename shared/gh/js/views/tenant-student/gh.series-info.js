@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants'], function(gh, constants) {
 
     // Cache the retrieved series
     var series = {};

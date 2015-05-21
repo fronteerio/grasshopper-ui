@@ -36,6 +36,7 @@ requirejs.config({
         'jquery.serializeobject': 'vendor/js/jquery.serializeobject',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
+        'moment-timezone': 'vendor/js/moment-timezone',
         'sinon': 'vendor/js/sinon-1.12.1',
         'text': 'vendor/js/require.text',
         'validator': 'vendor/js/bootstrap-validator',

@@ -10,7 +10,7 @@
      * @private
      */
     var isADifferentDay = function(_prevDate, currDate, moment) {
-        return moment(_prevDate).format('YYYYMMDD') === moment(currDate).format('YYYYMMDD');
+        return moment.tz(_prevDate, 'Europe/London').format('YYYYMMDD') === moment.tz(currDate, 'Europe/London').format('YYYYMMDD');
     };
 
     /**
@@ -20,7 +20,7 @@
      * @private
      */
     var getCurrentAcademicWeekNumber = function(moment) {
-        return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment(new Date()).format('YYYY-MM-DD'))), true);
+        return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment.tz(new Date(), 'Europe/London').format('YYYY-MM-DD'))), true);
     };
 
     /**
@@ -31,7 +31,7 @@
      * @private
      */
     var isToday = function(date, moment) {
-        return moment(date).format('YYYYMMDD') === moment(new Date()).format('YYYYMMDD');
+        return moment.tz(date, 'Europe/London').format('YYYYMMDD') === moment.tz(new Date(), 'Europe/London').format('YYYYMMDD');
     }
 %>
 
@@ -80,7 +80,7 @@
                                     <span class="gh-agenda-view-event-module"> in <%- event.context.displayName %></span>
                                 <% } %>
                                 <br/>
-                                <span class="gh-agenda-view-event-time"><%- moment.utc(event.start).format('h:mma') %> - <%- moment.utc(event.end).format('h:mma') %></span>
+                                <span class="gh-agenda-view-event-time"><%- data.moment.tz(event.start, 'Europe/London').format('h:mma') %> - <%- data.moment.tz(event.end, 'Europe/London').format('h:mma') %></span>
                                 <span class="gh-agenda-view-middot">&middot;</span>
                                 <span class="gh-agenda-view-event-location"><% if (event.location) { %><%- event.location%><% } else { %>Location not known<% } %></span>
                                 <span class="gh-agenda-view-middot">&middot;</span>

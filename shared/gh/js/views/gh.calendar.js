@@ -480,7 +480,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         // Get the start date from the current calendar view
         var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return gh.utils.convertISODatetoUnixDate(moment(viewStartDate).add({'hours': 1}).utc().format('YYYY-MM-DD'));
+        return gh.utils.convertISODatetoUnixDate(moment.utc(viewStartDate).add({'hours': 1}).format('YYYY-MM-DD'));
     };
 
     /**
@@ -544,7 +544,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         var termDates = _.map(terms, function(term) {
             return {
                 'name': term.name,
-                'date': gh.utils.convertISODatetoUnixDate(moment(term[property]).utc().format('YYYY-MM-DD'))
+                'date': gh.utils.convertISODatetoUnixDate(moment.utc(term[property]).format('YYYY-MM-DD'))
             };
         });
 

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh, configAPI) {
+define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], function(gh, configAPI, _, moment, tz) {
 
 
     ///////////////
@@ -180,18 +180,18 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
                     if (!_.contains([2,3], dayOfTheWeek)) {
-                        dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
+                        dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
                     }
 
                     // Only add a new event for the generated day if the day is within a term
-                    var inTerm = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dateByWeekAndDay).utc().format()), true);
+                    var inTerm = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dateByWeekAndDay, 'Europe/London').format()), true);
                     if (inTerm) {
 
-                        var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                        var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
                         // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
-                        var eventMonth = parseInt(moment(dateByWeekAndDay).utc().format('MM'), 10) - 1;
+                        var eventMonth = parseInt(moment.tz(dateByWeekAndDay, 'Europe/London').format('MM'), 10) - 1;
                         // We're adding one hour here to fix the summer- and wintertime issue
-                        var eventDay = moment(dateByWeekAndDay).add({'hours': 1}).utc().format('DD');
+                        var eventDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'hours': 1}).format('DD');
 
                         var eventStartHour = 13;
                         var eventStartMinute = 0;
@@ -199,12 +199,12 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                         var eventEndMinute = 0;
 
                         // Create the start date of the event
-                        var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
+                        var startDate = moment.tz([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0], 'Europe/London');
                         // Create the end date of the event
-                        var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+                        var endDate = moment.tz([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0], 'Europe/London');
 
                         // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                        var alreadyAdded = $('.gh-event-date[data-start="' + gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format()) + '"]').length;
+                        var alreadyAdded = $('.gh-event-date[data-start="' + moment.tz(startDate, 'Europe/London').format() + '"]').length;
                         if (!alreadyAdded) {
                             $(document).trigger('gh.batchedit.addevent', {
                                 'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
@@ -213,11 +213,11 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                                     'isNew': true, // Used in the template to know this one needs special handling
                                     'selected': true,
                                     'displayName': $('.gh-jeditable-series-title').text(),
-                                    'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                    'end': moment.tz(endDate, 'Europe/London').format(),
                                     'location': defaultLocation,
                                     'type': gh.config.events.default,
                                     'organisers': defaultOrganisers,
-                                    'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
+                                    'start': moment.tz(startDate, 'Europe/London').format()
                                 },
                                 'startDate': startDate
                             });
@@ -302,14 +302,14 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
                             if (!_.contains([2,3], eventDay)) {
-                                dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
+                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
                             }
                             // Retrieve the year of the event
-                            var eventYear = moment(dateByWeekAndDay).utc().format('YYYY');
+                            var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
                             // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
-                            var eventMonth = parseInt(moment(dateByWeekAndDay).utc().format('MM'), 10) - 1;
+                            var eventMonth = parseInt(moment.tz(dateByWeekAndDay, 'Europe/London').format('MM'), 10) - 1;
                             // We're adding one hour here to fix the summer- and wintertime issue
-                            eventDay = moment(dateByWeekAndDay).add({'hours': 1}).utc().format('DD');
+                            eventDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'hours': 1}).format('DD');
 
                             var eventStartHour = parseInt($('.gh-batch-edit-hours-start', $timePickerContainer).val(), 10);
                             var eventStartMinute = parseInt($('.gh-batch-edit-minutes-start', $timePickerContainer).val(), 10);
@@ -317,12 +317,12 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                             var eventEndMinute = parseInt($('.gh-batch-edit-minutes-end', $timePickerContainer).val(), 10);
 
                             // Create the start date of the event
-                            var startDate = moment([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0]);
+                            var startDate = moment.tz([eventYear, eventMonth, eventDay, eventStartHour, eventStartMinute, 0, 0], 'Europe/London');
                             // Create the end date of the event
-                            var endDate = moment([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0]);
+                            var endDate = moment.tz([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0], 'Europe/London');
 
                             // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                            var alreadyAdded = $('.gh-event-date[data-start="' + moment(startDate).utc().format() + '"]').length;
+                            var alreadyAdded = $('.gh-event-date[data-start="' + moment.tz(startDate, 'Europe/London').format() + '"]').length;
                             if (!alreadyAdded || forceAdd) {
                                 $(document).trigger('gh.batchedit.addevent', {
                                     'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
@@ -331,11 +331,11 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                                         'isNew': true, // Used in the template to know this one needs special handling
                                         'selected': true,
                                         'displayName': $('.gh-jeditable-series-title').text(),
-                                        'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                        'end': moment.tz(endDate, 'Europe/London').format(),
                                         'location': defaultLocation,
                                         'type': gh.config.events.default,
                                         'organisers': defaultOrganisers,
-                                        'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
+                                        'start': moment.tz(startDate, 'Europe/London').format()
                                     },
                                     'startDate': startDate
                                 });
@@ -353,7 +353,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                         // Get the week number
                         var eventWeek = parseInt(chk.value, 10);
                         // Determine the day number, based on the academic week number
-                        var eventDay = parseInt(moment(new Date()).format('E'), 10);
+                        var eventDay = parseInt(moment.tz(new Date(), 'Europe/London').format('E'), 10);
                         // Get the date by week and day
                         var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
                         // Since Cambridge weeks start on Thursdays, we should prevent that
@@ -361,13 +361,13 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                         // we need to subtract one week for all the days except Tuesdays and
                         // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                         if (!_.contains([2,3], eventDay)) {
-                            dateByWeekAndDay = moment(dateByWeekAndDay).subtract({'weeks': 1});
+                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
                         }
 
                         // Create the start date of the event
-                        var startDate = moment(dateByWeekAndDay).hour(13);
+                        var startDate = moment.tz(dateByWeekAndDay, 'Europe/London').hour(13);
                         // Create the end date of the event
-                        var endDate = moment(dateByWeekAndDay).hour(14);
+                        var endDate = moment.tz(dateByWeekAndDay, 'Europe/London').hour(14);
 
                         // Send off an event that will be picked up by the batch edit and add the rows to the terms
                         $(document).trigger('gh.batchedit.addevent', {
@@ -377,11 +377,11 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                                 'isNew': true, // Used in the template to know this one needs special handling
                                 'selected': true,
                                 'displayName': $('.gh-jeditable-series-title').text(),
-                                'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format()),
+                                'end': moment.tz(endDate, 'Europe/London').format(),
                                 'location': defaultLocation,
                                 'type': gh.config.events.default,
                                 'organisers': defaultOrganisers,
-                                'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format())
+                                'start': moment.tz(startDate, 'Europe/London').format()
                             },
                             'startDate': startDate
                         });
@@ -462,7 +462,7 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
         var weeksInUse = [];
         // Extract the weeks from the batch
         _.each($rows, function(row) {
-            var start = gh.utils.convertISODatetoUnixDate(moment($(row).find('.gh-event-date').attr('data-start')).utc().format('YYYY-MM-DD'));
+            var start = gh.utils.convertISODatetoUnixDate(moment.tz($(row).find('.gh-event-date').attr('data-start'), 'Europe/London').format('YYYY-MM-DD'));
             weeksInUse.push(gh.utils.getAcademicWeekNumber(start, true));
         });
         return _.uniq(weeksInUse);
@@ -561,16 +561,16 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
             _.defer(function() {
                 $row = $($row);
                 // Get the date the event starts on
-                var eventStart = moment($row.find('.gh-event-date').attr('data-start'));
+                var eventStart = moment.tz($row.find('.gh-event-date').attr('data-start'), 'Europe/London');
                 // Retrieve the day number
-                var eventStartDayNumber = parseInt(moment(eventStart).utc().format('E'), 10);
+                var eventStartDayNumber = parseInt(moment.tz(eventStart, 'Europe/London').format('E'), 10);
                 // Only update the date when the event takes place on the day that was selected in the picker
                 var dayNumberToEdit = parseInt(prevEventDay, 10);
                 if (eventStartDayNumber === dayNumberToEdit) {
                     // Get the date the event finishes on
-                    var eventEnd = moment($row.find('.gh-event-date').attr('data-end'));
+                    var eventEnd = moment.tz($row.find('.gh-event-date').attr('data-end'), 'Europe/London');
                     // Get which week of the term this event takes place in
-                    var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(eventStart).utc().format()));
+                    var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(eventStart, 'Europe/London').format()));
                     // Get the name of the term this date is in
                     var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
                     // Get the date the event would be on after the change
@@ -580,24 +580,24 @@ define(['lodash', 'moment', 'gh.core', 'gh.api.config'], function(_, moment, gh,
                     // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
                     if (!_.contains([2,3], eventDay)) {
-                        newDate = moment(newDate).subtract({'weeks': 1});
+                        newDate = moment.tz(newDate, 'Europe/London').subtract({'weeks': 1});
                     }
 
                     // Only update the year/month/day when we change the day
                     if (!dayChange) {
-                        newDate = moment(newDate).year(moment(eventEnd).utc().format('YYYY'));
-                        newDate = moment(newDate).month(moment(eventEnd).utc().format('MM'));
-                        newDate = moment(newDate).date(moment(eventEnd).utc().format('DD'));
+                        newDate = moment.tz(newDate, 'Europe/London').year(moment.tz(eventEnd, 'Europe/London').format('YYYY'));
+                        newDate = moment.tz(newDate, 'Europe/London').month(moment.tz(eventEnd, 'Europe/London').format('MM'));
+                        newDate = moment.tz(newDate, 'Europe/London').date(moment.tz(eventEnd, 'Europe/London').format('DD'));
                     }
 
                     // Retrieve and calculate the event dates
-                    var newDateYear = moment(newDate).utc().format('YYYY');
-                    var newDateMonth = parseInt(moment(newDate).utc().format('MM'), 10) - 1;
-                    var newDateDay = moment(newDate).add({'hours': 1}).utc().format('DD');
+                    var newDateYear = moment.tz(newDate, 'Europe/London').format('YYYY');
+                    var newDateMonth = parseInt(moment.tz(newDate, 'Europe/London').format('MM'), 10) - 1;
+                    var newDateDay = moment.tz(newDate, 'Europe/London').add({'hours': 1}).format('DD');
 
                     // Create the new date for the row
-                    eventStart = moment([newDateYear, newDateMonth, newDateDay, eventStartHour, eventStartMinute, 0, 0]).utc().format();
-                    eventEnd = moment([newDateYear, newDateMonth, newDateDay, eventEndHour, eventEndMinute, 0, 0]).utc().format();
+                    eventStart = moment.tz([newDateYear, newDateMonth, newDateDay, eventStartHour, eventStartMinute, 0, 0], 'Europe/London').format();
+                    eventEnd = moment.tz([newDateYear, newDateMonth, newDateDay, eventEndHour, eventEndMinute, 0, 0], 'Europe/London').format();
 
                     // Re-render the date fields
                     gh.utils.renderTemplate('admin-edit-date-field', {

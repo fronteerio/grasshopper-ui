@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['exports', 'gh.constants', 'moment'], function(exports, constants, moment) {
+define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(exports, constants, moment, tz) {
 
     /**
      * Add a leading zero to a digit
@@ -62,7 +62,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         if (!date || !moment(date, 'x').isValid()) {
             throw new Error('An invalid value for date has been provided');
         }
-        return moment(date).utc().format();
+        return moment.utc(date).format();
     };
 
     /**
@@ -79,8 +79,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         }
 
         var weekNumber = 'OT';
-        if (getTerm(convertISODatetoUnixDate(moment(startDate).utc().format('YYYY-MM-DD')), true)) {
-            weekNumber = getAcademicWeekNumber(convertISODatetoUnixDate(moment(startDate).utc().format('YYYY-MM-DD')));
+        if (getTerm(convertISODatetoUnixDate(moment.tz(endDate, 'Europe/London').format('YYYY-MM-DD')), true)) {
+            weekNumber = getAcademicWeekNumber(convertISODatetoUnixDate(moment.tz(endDate, 'Europe/London').format('YYYY-MM-DD')));
             /* istanbul ignore else */
             if (weekNumber) {
                 weekNumber = 'W' + weekNumber;
@@ -88,17 +88,17 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         }
 
         // Retrieve the day
-        var weekDay = moment(endDate).utc().format('E');
+        var weekDay = moment.tz(endDate, 'Europe/London').format('E');
         weekDay = constants.time.DAYS[weekDay - 1];
 
         // Retrieve the meridien values
-        var startMeridien = moment(startDate).utc().format('a');
-        var endMeridien = moment(endDate).utc().format('a');
+        var startMeridien = moment.tz(startDate, 'Europe/London').format('a');
+        var endMeridien = moment.tz(endDate, 'Europe/London').format('a');
 
         // Compose the start part
         var startParts = [];
-        startParts.push(moment(startDate).utc().format('h'));
-        var startMinutes = moment(startDate).utc().format('mm');
+        startParts.push(moment.tz(startDate, 'Europe/London').format('h'));
+        var startMinutes = moment.tz(startDate, 'Europe/London').format('mm');
         if (parseInt(startMinutes, 10)) {
             startParts.push(':' + startMinutes);
         }
@@ -109,8 +109,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
 
         // Compose the end part
         var endParts = [];
-        endParts.push(moment(endDate).utc().format('h'));
-        var endMinutes = moment(endDate).utc().format('mm');
+        endParts.push(moment.tz(endDate, 'Europe/London').format('h'));
+        var endMinutes = moment.tz(endDate, 'Europe/London').format('mm');
         if (parseInt(endMinutes, 10)) {
             endParts.push(':' + endMinutes);
         }
@@ -179,10 +179,10 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         }
 
         // Get the start date of the corresponding term
-        var startDate = convertISODatetoUnixDate(moment(currentTerm.start).add({'hours': 1}).utc().format('YYYY-MM-DD'));
+        var startDate = convertISODatetoUnixDate(moment.tz(currentTerm.start, 'Europe/London').add({'hours': 1}).format('YYYY-MM-DD'));
 
         // Retrieve the day number of the first day of the term
-        var dayNumber = parseInt(moment(startDate).format('E'), 10);
+        var dayNumber = parseInt(moment.tz(startDate, 'Europe/London').format('E'), 10);
 
         // Since the terms start on a Tuesday we have an offset of 2 days.
         var dayOffset = ((1 / 7) * dayNumber) - 0.01;
@@ -194,7 +194,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         var weekNumber = 0;
 
         // Fix the summer time issue
-        date = moment(date).add({'hours': 1});
+        date = moment.tz(date, 'Europe/London').add({'hours': 1});
 
         // Calculate the week number if it's within an academic term
         /* istanbul ignore else */
@@ -230,8 +230,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         return _.find(terms, function(term) {
 
             // Convert the dates from ISO to UNIX for easier calculation
-            var startDate = convertISODatetoUnixDate(moment(term.start).toISOString());
-            var endDate = convertISODatetoUnixDate(moment(term.end).toISOString());
+            var startDate = convertISODatetoUnixDate(moment.tz(term.start, 'Europe/London').toISOString());
+            var endDate = convertISODatetoUnixDate(moment.tz(term.end, 'Europe/London').toISOString());
 
             // Only use an offset for the week calculation when specified
             if (!usePrecise) {
@@ -240,7 +240,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
                 // E.g. A term starts on Tuesday 13th February, but the academic weeks always start on a Thursday.
                 //      This means that the first academic week of that term starts on the 13th and ends on the 14th.
                 //      The second academic week will start on Thursday 15th February.
-                var datePlus = convertISODatetoUnixDate(moment(date).add({'days': 6}).toISOString());
+                var datePlus = convertISODatetoUnixDate(moment.tz(date, 'Europe/London').add({'days': 6}).toISOString());
                 /* istanbul ignore else */
                 if (date < startDate && datePlus >= startDate) {
                     date = datePlus;
@@ -381,7 +381,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
                 throw new Error('A valid date should be provided');
             }
-            return moment(date).utc().format('ddd');
+            return moment.tz(date, 'Europe/London').format('ddd');
         };
 
         /**
@@ -394,7 +394,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
                 throw new Error('A valid date should be provided');
             }
-            return parseInt(moment(date).utc().format('D'), 10);
+            return parseInt(moment.tz(date, 'Europe/London').format('D'), 10);
         };
 
         /**
@@ -407,7 +407,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
                 throw new Error('A valid date should be provided');
             }
-            return constants.time.MONTHS[moment(date).utc().format('M') - 1];
+            return constants.time.MONTHS[moment.tz(date, 'Europe/London').format('M') - 1];
         };
 
         return {
@@ -418,7 +418,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
     };
 
     /**
-     * Convert a date to GMT+0 for display in the calendar
+     * Convert a date to GMT/BST for display in the calendar
      *
      * @param  {String}    date    The date that needs conversion
      */
@@ -426,7 +426,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
         if (!_.isString(date) || !moment(date, 'YYYY-MM-DD').isValid()) {
             throw new Error('A valid date should be provided');
         }
-        return (new Date(date)).getTime() - ((new Date(date)).getTimezoneOffset() * 60000);
+
+        return moment.tz(date, 'Europe/London');
     };
 
     /**
@@ -440,8 +441,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             throw new Error('A valid array should be provided');
         }
         _.each(events, function(ev) {
-            ev.start = fixDateToGMT(ev.start);
-            ev.end = fixDateToGMT(ev.end);
+            ev.start = moment.tz(ev.start, 'Europe/London');
+            ev.end = moment.tz(ev.end, 'Europe/London');
         });
     };
 
@@ -599,8 +600,8 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             if (name !== 'OT') {
                 _terms.push({
                     'name': name,
-                    'start': moment(term.start).toISOString(),
-                    'end': moment(term.end).toISOString(),
+                    'start': moment.tz(term.start, 'Europe/London').toISOString(),
+                    'end': moment.tz(term.end, 'Europe/London').toISOString(),
                     'events': term.events
                 });
             }
@@ -612,7 +613,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             _.each(terms['OT'].events, function(event) {
                 _terms.push({
                     'name': 'OT',
-                    'start': moment(event.start).toISOString(),
+                    'start': moment.tz(event.start, 'Europe/London').toISOString(),
                     'events': [event]
                 });
             });
@@ -692,7 +693,7 @@ define(['exports', 'gh.constants', 'moment'], function(exports, constants, momen
             // falls between the term start and end date. If it does, push
             // it into the term's Array
             _.each(terms, function(term) {
-                var eventStartDay = convertISODatetoUnixDate(moment(evStart).utc().format('YYYY-MM-DD'));
+                var eventStartDay = convertISODatetoUnixDate(moment.tz(evStart, 'Europe/London').format('YYYY-MM-DD'));
                 if (evStart >= term.start && eventStartDay <= term.end) {
                     outOfTerm = false;
                     // The event takes place in this term, push it into the Array
