@@ -214,11 +214,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
         }
 
         // Calculate the number of weeks in a term based on the date
-        var numWeeks = 0;
-        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz($(msg.trigger).attr('data-start'), 'Europe/London').format('YYYY-MM-DD')));
-        if (_term) {
-            numWeeks = gh.utils.getWeeksInTerm(_term);
-        }
+        var numWeeks = getNumberOfWeeks($(msg.trigger).attr('data-start'));
 
         // Cache the trigger
         $trigger = $(msg.trigger);
@@ -234,6 +230,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
                 }
             }
         }, null, function(template) {
+
             // Show the popover window
             _.defer(function() {
                 $trigger.clickover({
@@ -244,27 +241,39 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
                     'html': true,
                     'placement': calculatePopoverPosition(msg.ev),
                     'onShown': function() {
-                        // Track how long the user takes to adjust the date
-                        timeFromStart = new Date();
 
-                        // Track the user starting to edit dates
-                        gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
+                        // Render the weeks list template
+                        gh.utils.renderTemplate('admin-edit-dates-weeks', {
+                            'data': {
+                                'numWeeks': numWeeks
+                            }
+                        }, null, function(template) {
 
-                        // Cache the trigger
-                        $trigger = $(msg.trigger).closest('tr .gh-event-date');
+                            // Inject the generated weeks list
+                            $('.gh-datepicker-popover').find('#gh-edit-dates-weeks').html(template);
 
-                        // Cache the delegating components
-                        components = [
-                            $('#gh-datepicker'),
-                            $('#gh-module-week'),
-                            $('#gh-module-day')
-                        ];
+                            // Track how long the user takes to adjust the date
+                            timeFromStart = new Date();
 
-                        initialiseDatePicker();
-                        setComponents();
+                            // Track the user starting to edit dates
+                            gh.utils.trackEvent(['Data', 'DateTime edit', 'Started']);
 
-                        // Set the focus on current day of the calendar
-                        $('.popover .ui-state-active').focus();
+                            // Cache the trigger
+                            $trigger = $(msg.trigger).closest('tr .gh-event-date');
+
+                            // Cache the delegating components
+                            components = [
+                                $('#gh-datepicker'),
+                                $('#gh-module-week'),
+                                $('#gh-module-day')
+                            ];
+
+                            initialiseDatePicker();
+                            setComponents();
+
+                            // Set the focus on current day of the calendar
+                            $('.popover .ui-state-active').focus();
+                        });
                     }
                 });
                 $trigger.trigger('click');
@@ -320,7 +329,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
         setDatePicker(calendarDate);
 
         // Set the week value
-        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(startDate));
+        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(startDate, 'Europe/London').format('YYYY-MM-DD')));
         $('.popover #gh-module-week').val(week);
 
         // Set the day value
@@ -402,19 +411,16 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
                 if (term) {
                     _term = term;
 
+                    var termStart = gh.utils.getFirstLectureDayOfTerm(_term.name);
+
                     // Jump to the start of the term if the first week was chosen
                     if (weekVal === 1) {
-                        setDatePicker(moment.tz(_term.start, 'Europe/London').format('YYYY-MM-DD'));
+                        setDatePicker(moment.tz(termStart, 'Europe/London').format('YYYY-MM-DD'));
+
                     } else {
 
-                        // Calculate the offset
-                        var offset = moment.tz(_term.start, 'Europe/London').day();
-
-                        // Calculate the start date of the first full week
-                        var startDate = moment.tz(_term.start, 'Europe/London').add({'days': offset});
-
                         // Change the date picker
-                        setDatePicker(moment.tz(startDate, 'Europe/London').add({'weeks': (weekVal - 2)}).format('YYYY-MM-DD'));
+                        setDatePicker(moment.tz(termStart, 'Europe/London').add({'weeks': (weekVal - 1)}).format('YYYY-MM-DD'));
                     }
                 } else {
                     var dayNumber = 2;
@@ -457,8 +463,18 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
 
                 // Update the week
                 if ($(component).selector === '#gh-module-week') {
-                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')));
-                    $(component).val(week);
+
+                    // Render the weeks list template
+                    gh.utils.renderTemplate('admin-edit-dates-weeks', {
+                        'data': {
+                            'numWeeks': getNumberOfWeeks(dates.start)
+                        }
+                    }, '#gh-edit-dates-weeks', function(template) {
+
+                        // Display the chosen week
+                        var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')));
+                        $('#gh-module-week').val(week);
+                    });
 
                 // Update the day
                 } else if ($(component).selector === '#gh-module-day') {
@@ -467,6 +483,29 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
                 }
             }
         });
+    };
+
+
+    /////////////////
+    //  UTILITIES  //
+    /////////////////
+
+    /**
+     * Return the number of weeks for a date, if it occurs in a term
+     *
+     * @param  {String}    startDate    The start date of the term to return the number of weeks for
+     * @return {Number}                 The number of weeks
+     * @private
+     */
+    var getNumberOfWeeks = function(startDate) {
+        // Calculate the number of weeks in a term based on the date
+        var numWeeks = 0;
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(startDate, 'Europe/London').format('YYYY-MM-DD')));
+        if (_term) {
+            numWeeks = gh.utils.getWeeksInTerm(_term);
+        }
+
+        return numWeeks;
     };
 
 

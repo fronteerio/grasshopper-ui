@@ -159,10 +159,10 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         } else {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0], 'Europe/London').format(),
+                'end': moment.tz(termStart, 'Europe/London').hours(14).format(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0], 'Europe/London').format(),
+                'start': moment.tz(termStart, 'Europe/London').hours(13).format(),
                 'type': gh.config.events.default
             };
         }
