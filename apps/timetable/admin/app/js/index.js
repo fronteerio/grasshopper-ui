@@ -536,13 +536,6 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
         // Log out
         $('body').on('submit', '#gh-signout-form', doLogout);
 
-        // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '.gh-uni-logo', function() {
-            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
-                window.location = '/admin/';
-            });
-        });
-
         // Update the value attribute of a checkbox when it changes
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
 

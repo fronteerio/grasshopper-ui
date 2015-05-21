@@ -44,7 +44,7 @@ define(['gh.core'], function(gh) {
         $(document).on('gh.header.init', setUpFooter);
 
         // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '#gh-footer-logo', function() {
+        $('body').on('click', 'footer .gh-uni-logo', function() {
             gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
                 window.location = '/';
             });

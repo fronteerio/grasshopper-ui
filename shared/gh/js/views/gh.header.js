@@ -69,7 +69,7 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
         });
 
         // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '.gh-uni-logo', function() {
+        $('body').on('click', '#gh-left-container .gh-uni-logo', function() {
             gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
                 window.location = '/';
             });
