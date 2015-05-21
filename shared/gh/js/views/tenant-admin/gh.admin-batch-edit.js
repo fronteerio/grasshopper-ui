@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit-date', 'gh.admin.batch-edit-organiser', 'gh.admin.datepicker', 'gh.admin.delete-series', 'gh.admin.event-type-select', 'gh.admin.edit-organiser', 'gh.admin.series-title'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', 'gh.admin.batch-edit-date', 'gh.admin.batch-edit-organiser', 'gh.admin.datepicker', 'gh.admin.delete-series', 'gh.admin.event-type-select', 'gh.admin.edit-organiser', 'gh.admin.series-title'], function(gh, constants, moment, tz) {
 
     // Object used to cache the triposData
     var triposData = null;
@@ -149,20 +149,20 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.calendar', 'gh.admin.batch-edit
         if ($lastEventInTerm.length) {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': gh.utils.convertUnixDatetoISODate(moment($($lastEventInTerm.find('.gh-event-date')).attr('data-end')).add(7, 'days').utc().format()),
+                'end': moment.tz($($lastEventInTerm.find('.gh-event-date')).attr('data-end'), 'Europe/London').add(7, 'days').format(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': gh.utils.convertUnixDatetoISODate(moment($($lastEventInTerm.find('.gh-event-date')).attr('data-start')).add(7, 'days').utc().format()),
+                'start': moment.tz($($lastEventInTerm.find('.gh-event-date')).attr('data-start'), 'Europe/London').add(7, 'days').format(),
                 'type': gh.config.events.default
             };
         // If no events were previously added to the term, create a default event object
         } else {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': gh.utils.convertUnixDatetoISODate(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0]).utc().format()),
+                'end': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0], 'Europe/London').format(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': gh.utils.convertUnixDatetoISODate(moment([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0]).utc().format()),
+                'start': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0], 'Europe/London').format(),
                 'type': gh.config.events.default
             };
         }

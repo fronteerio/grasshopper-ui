@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, moment) {
+define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'], function(gh, moment, tz) {
 
     var $trigger = null;
     var components = null;
@@ -103,13 +103,13 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var entries = getFormValues();
 
         // Generate the start and end dates
-        var startDate = moment(entries.date).add({'h': entries.startHour, 'm': entries.startMinutes}).toISOString();
-        var endDate = moment(entries.date).add({'h': entries.endHour, 'm': entries.endMinutes}).toISOString();
+        var startDate = moment.tz(entries.date, 'Europe/London').hour(entries.startHour).minute(entries.startMinutes).toISOString();
+        var endDate = moment.tz(entries.date, 'Europe/London').hour(entries.endHour).minute(entries.endMinutes).toISOString();
 
         // Return the full dates
         return {
-            'start': gh.utils.convertUnixDatetoISODate(moment(startDate).utc().format()),
-            'end': gh.utils.convertUnixDatetoISODate(moment(endDate).utc().format())
+            'start': moment.tz(startDate, 'Europe/London').format(),
+            'end': moment.tz(endDate, 'Europe/London').format()
         };
     };
 
@@ -215,7 +215,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
         // Calculate the number of weeks in a term based on the date
         var numWeeks = 0;
-        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment($(msg.trigger).attr('data-start')).utc().format('YYYY-MM-DD')), true);
+        var _term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz($(msg.trigger).attr('data-start'), 'Europe/London').format('YYYY-MM-DD')), true);
         if (_term) {
             numWeeks = gh.utils.getWeeksInTerm(_term);
         }
@@ -316,7 +316,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         var endDate = gh.utils.convertUnixDatetoISODate($trigger.attr('data-end'));
 
         // Set the datepicker value
-        var calendarDate = moment(startDate).utc().format('YYYY-MM-DD');
+        var calendarDate = moment.tz(startDate, 'Europe/London').format('YYYY-MM-DD');
         setDatePicker(calendarDate);
 
         // Set the week value
@@ -324,18 +324,18 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         $('.popover #gh-module-week').val(week);
 
         // Set the day value
-        var day = moment(startDate).day();
+        var day = moment.tz(startDate, 'Europe/London').day();
         $('.popover #gh-module-day').val(day);
 
         // Set the start time values
         startDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(startDate));
-        $('.popover #gh-module-from-hour').val(moment(startDate).utc().format('HH'));
-        $('.popover #gh-module-from-minutes').val(moment(startDate).utc().format('mm'));
+        $('.popover #gh-module-from-hour').val(moment.tz(startDate, 'Europe/London').format('HH'));
+        $('.popover #gh-module-from-minutes').val(moment.tz(startDate, 'Europe/London').format('mm'));
 
         // Set the end time values
         endDate = gh.utils.convertUnixDatetoISODate(gh.utils.fixDateToGMT(endDate));
-        $('.popover #gh-module-to-hour').val(moment(endDate).utc().format('HH'));
-        $('.popover #gh-module-to-minutes').val(moment(endDate).utc().format('mm'));
+        $('.popover #gh-module-to-hour').val(moment.tz(endDate, 'Europe/London').format('HH'));
+        $('.popover #gh-module-to-minutes').val(moment.tz(endDate, 'Europe/London').format('mm'));
     };
 
     /**
@@ -398,23 +398,23 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             if (weekVal) {
 
                 // Retrieve the term
-                var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment(dates.start).utc().format('YYYY-MM-DD')), true);
+                var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')), true);
                 if (term) {
                     _term = term;
 
                     // Jump to the start of the term if the first week was chosen
                     if (weekVal === 1) {
-                        setDatePicker(moment(_term.start).utc().format('YYYY-MM-DD'));
+                        setDatePicker(moment.tz(_term.start, 'Europe/London').format('YYYY-MM-DD'));
                     } else {
 
                         // Calculate the offset
-                        var offset = moment(_term.start).day();
+                        var offset = moment.tz(_term.start, 'Europe/London').day();
 
                         // Calculate the start date of the first full week
-                        var startDate = moment(_term.start).add({'days': offset});
+                        var startDate = moment.tz(_term.start, 'Europe/London').add({'days': offset});
 
                         // Change the date picker
-                        setDatePicker(moment(startDate).add({'weeks': (weekVal - 2)}).utc().format('YYYY-MM-DD'));
+                        setDatePicker(moment.tz(startDate, 'Europe/London').add({'weeks': (weekVal - 2)}).format('YYYY-MM-DD'));
                     }
                 } else {
                     var dayNumber = 2;
@@ -422,7 +422,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
                         dayNumber = 4;
                         weekVal -= 1;
                     }
-                    setDatePicker(moment(gh.utils.getDateByWeekAndDay(_term.name, weekVal, dayNumber)).utc().format('YYYY-MM-DD'));
+                    setDatePicker(moment.tz(gh.utils.getDateByWeekAndDay(_term.name, weekVal, dayNumber), 'Europe/London').format('YYYY-MM-DD'));
                 }
             }
 
@@ -430,7 +430,7 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
         } else if (trigger === '#gh-module-day') {
 
             // Retrieve the current day
-            var currentDay = moment(dates.start).format('E');
+            var currentDay = moment.tz(dates.start, 'Europe/London').format('E');
 
             // Calculate the start of the week
             var dayOffset = -3;
@@ -439,13 +439,13 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
             }
             dayOffset = currentDay - dayOffset;
 
-            var weekStart = moment(dates.start).add({'hours': 1}).subtract({'days': dayOffset}).utc().format('YYYY-MM-DD');
+            var weekStart = moment.tz(dates.start, 'Europe/London').add({'hours': 1}).subtract({'days': dayOffset}).format('YYYY-MM-DD');
 
             // Retrieve the selected day value
             var dayVal = parseInt($('#gh-module-day option:selected').attr('data-day'), 10);
 
             // Calculate the new date
-            setDatePicker(moment(weekStart).add({'days': dayVal, 'hours': 1}).utc().format('YYYY-MM-DD'));
+            setDatePicker(moment.tz(weekStart, 'Europe/London').add({'days': dayVal, 'hours': 1}).format('YYYY-MM-DD'));
         }
 
         // Refetch the dates
@@ -457,12 +457,12 @@ define(['gh.core', 'moment', 'clickover', 'jquery-datepicker'], function(gh, mom
 
                 // Update the week
                 if ($(component).selector === '#gh-module-week') {
-                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment(dates.start).utc().format('YYYY-MM-DD')), true);
+                    var week = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(dates.start, 'Europe/London').format('YYYY-MM-DD')), true);
                     $(component).val(week);
 
                 // Update the day
                 } else if ($(component).selector === '#gh-module-day') {
-                    var day = moment(dates.start).day();
+                    var day = moment.tz(dates.start, 'Europe/London').day();
                     $(component).val(day);
                 }
             }

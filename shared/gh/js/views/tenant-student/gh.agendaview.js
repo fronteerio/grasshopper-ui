@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'moment'], function(gh, moment) {
+define(['gh.core', 'moment', 'moment-timezone'], function(gh, moment, tz) {
 
     // Get the configuration
     var config = require('gh.core').config;
@@ -84,8 +84,8 @@ define(['gh.core', 'moment'], function(gh, moment) {
         var startOffsetDays = week * 7;
         var endOffsetDays = startOffsetDays + 7;
 
-        var startDate = gh.utils.convertUnixDatetoISODate(moment(term.start).add({'days': startOffsetDays}).toISOString());
-        var endDate = gh.utils.convertUnixDatetoISODate(moment(term.start).add({'days': endOffsetDays}).toISOString());
+        var startDate = gh.utils.convertUnixDatetoISODate(moment.utc(term.start).add({'days': startOffsetDays}).toISOString());
+        var endDate = gh.utils.convertUnixDatetoISODate(moment.utc(term.start).add({'days': endOffsetDays}).toISOString());
 
         // Get the user's events for each term in the year
         gh.api.userAPI.getUserCalendar(gh.data.me.id, startDate, endDate, function(err, data) {
