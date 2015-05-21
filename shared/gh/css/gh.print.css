@@ -1,4 +1,4 @@
-today/*!
+/*!
  * Copyright 2015 Digital Services, University of Cambridge Licensed
  * under the Educational Community License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the
@@ -35,6 +35,7 @@ body {
 /* CALENDAR */
 /************/
 
+footer,
 #gh-page-container #gh-left-container,
 #gh-page-container #gh-right-container #gh-header-container,
 #gh-page-container #gh-right-container #gh-main #gh-toolbar-container,
