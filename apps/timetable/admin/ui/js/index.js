@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit', 'gh.admin.listview', 'gh.admin.video', 'gh.subheader', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', 'gh.admin.batch-edit', 'gh.admin.listview', 'gh.admin.video', 'gh.subheader', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment, tz) {
 
     // Cache the tripos data
     var triposData = {};
@@ -201,10 +201,11 @@ define(['gh.core', 'gh.constants', 'moment', 'gh.listview', 'gh.admin.batch-edit
         // Refactor each start and end date to the same format the UI expects
         _.each(data.eventsByTerm, function(term) {
             _.each(term.events, function(ev) {
-                ev.start = gh.utils.convertUnixDatetoISODate(moment(ev.end).utc().format());
-                ev.end = gh.utils.convertUnixDatetoISODate(moment(ev.end).utc().format());
+                ev.start = moment.tz(ev.start, 'Europe/London').format();
+                ev.end = moment.tz(ev.end, 'Europe/London').format();
             });
         });
+
         // Render the batch edit template
         gh.utils.renderTemplate('admin-batch-edit', {
             'data': {

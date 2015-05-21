@@ -359,11 +359,11 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
             gh.utils.fixDateToGMT('invalid_date');
         }, 'Verify that a valid date needs to be provided');
 
-        // Verify that a correct date is returned when a GMT+0 is specified
-        assert.strictEqual(gh.utils.fixDateToGMT('2015-02-11T16:00:00.000Z'), 1423670400000, 'Verify that a correct date is returned when a GMT+0 is specified');
+        // Verify that a correct date is returned when a GMT+0 date is specified
+        assert.strictEqual(gh.utils.fixDateToGMT('2015-02-11T16:00:00.000Z').format(), '2015-02-11T16:00:00+00:00', 'Verify that a correct date is returned when a GMT+0 is specified');
 
-        // Verify that a correct date is returned when a BST+1 is specified
-        assert.strictEqual(gh.utils.fixDateToGMT('2014-11-11T10:00:00.000Z'), 1415700000000, 'Verify that a correct date is returned when a BST+1 is specified');
+        // Verify that a correct date is returned when a GMT+1 (BST) date is specified
+        assert.strictEqual(gh.utils.fixDateToGMT('2014-10-07T10:00:00.000Z').format(), '2014-10-07T11:00:00+01:00', 'Verify that a correct date is returned when a BST+1 is specified');
     });
 
     // Test the 'fixDatesToGMT' functionality
@@ -382,13 +382,13 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         // Convert some test event dates
         var events = [{
             'start': '2015-02-11T16:00:00.000Z',
-            'end': '2014-11-11T10:00:00.000Z'
+            'end': '2014-10-07T10:00:00.000Z'
         }];
         gh.utils.fixDatesToGMT(events);
 
         // Verify that the dates have been successfully converted
-        assert.strictEqual(events[0].start, 1423670400000, 'Verify that the start date has been converted successfully');
-        assert.strictEqual(events[0].end, 1415700000000, 'Verify that the end date has been converted successfully');
+        assert.strictEqual(events[0].start.format(), '2015-02-11T16:00:00+00:00', 'Verify that the start date has been converted successfully');
+        assert.strictEqual(events[0].end.format(), '2014-10-07T11:00:00+01:00', 'Verify that the end date has been converted successfully');
     });
 
     // Test the 'isDateInRange' functionality
