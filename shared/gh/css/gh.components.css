@@ -528,8 +528,9 @@ tbody tr:last-child > td.fc-widget-content {
 /**************/
 
 #gh-empty {
-    margin-bottom: 30px;
+    margin-bottom: 70px;
     margin-left: -320px;
+    position: relative;
     text-align: center;
 }
 
@@ -541,6 +542,7 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 .gh-empty-icons .fa {
+    left: 50%;
     position: absolute;
 }
 
