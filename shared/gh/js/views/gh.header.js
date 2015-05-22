@@ -36,8 +36,14 @@ define(['gh.core', 'gh.login-form', 'gh.subheader'], function(gh) {
             // Only render the pickers for the student UI and the tenant admin UI
             if (!isGlobalAdminUI && (!gh.data.me.anon || $('body').hasClass('gh-student'))) {
 
+                // Select a picker template based on the UI we're in
+                var pickerTemplate = 'subheader-pickers';
+                if ($('body').hasClass('gh-admin')) {
+                    pickerTemplate = 'admin-subheader-pickers';
+                }
+
                 // Render the tripos pickers
-                gh.utils.renderTemplate('subheader-pickers', {
+                gh.utils.renderTemplate(pickerTemplate, {
                     'gh': gh
                 }, $('#gh-subheader'), function() {
                     // Initialise the subheader component

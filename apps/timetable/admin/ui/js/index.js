@@ -48,14 +48,11 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
                 return gh.utils.redirect().accessdenied();
             }
 
-            gh.utils.renderTemplate('admin-subheader-pickers', {
-                'gh': gh
-            }, $('#gh-subheader'), function() {
-                // Set up the tripos picker after all data has been retrieved
-                // Initialise the subheader component after all data has been retrieved
-                $(document).trigger('gh.subheader.init', {
-                    'triposData': triposData
-                });
+            // Set up the header
+            $(document).trigger('gh.header.init', {
+                'includeLoginForm': false,
+                'isGlobalAdminUI': false,
+                'triposData': triposData
             });
         });
     };
@@ -424,13 +421,6 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
 
             // Add event handlers
             addBinding();
-
-            // Set up the header
-            $(document).trigger('gh.header.init', {
-                'includeLoginForm': false,
-                'isGlobalAdminUI': false,
-                'triposData': triposData
-            });
 
             // Set up the footer
             $(document).trigger('gh.footer.init');

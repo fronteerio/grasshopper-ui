@@ -70,7 +70,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
         }
 
         // Only preselect if a part was chosen and a series wasn't yet
-        var preselect = ((prevPartId === null || (prevPartId !== partId)) && !History.getState().data.series) || (prevPartId !== null && (prevPartId !== partId));
+        var preselect = $('body').hasClass('gh-admin') && (((prevPartId === null || (prevPartId !== partId)) && !History.getState().data.series) || (prevPartId !== null && (prevPartId !== partId)));
         // Retrieve the organisational unit information for the modules, only if the previous part is not the same as
         // the current one OR if the modules list hasn't been rendered
         if ((prevPartId !== partId) || !$('#gh-modules-container #gh-modules-list-container ul').length) {
