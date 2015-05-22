@@ -297,12 +297,12 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                             var eventDay = parseInt($('.gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
                             // Get the date by week and day
                             // Since Cambridge weeks start on Thursdays, we should prevent that
-                            // chosen days are put after the current selected day. Therefore
-                            // we need to subtract one week for all the days except Tuesdays and
-                            // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                            // chosen days are put before the current selected day. Therefore
+                            // we need to add one week for all the days except Tuesdays and Wednesdays.
+                            // (We have a 2 day offset, since terms start on Tuesdays, sigh).
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
-                            if (!_.contains([2,3], eventDay)) {
-                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
+                            if (_.contains([2,3], eventDay)) {
+                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
                             }
                             // Retrieve the year of the event
                             var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
@@ -352,16 +352,19 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     _.defer(function() {
                         // Get the week number
                         var eventWeek = parseInt(chk.value, 10);
+
                         // Determine the day number, based on the academic week number
                         var eventDay = parseInt(moment.tz(new Date(), 'Europe/London').format('E'), 10);
+
                         // Get the date by week and day
                         var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
+
                         // Since Cambridge weeks start on Thursdays, we should prevent that
-                        // chosen days are put after the current selected day. Therefore
-                        // we need to subtract one week for all the days except Tuesdays and
-                        // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
-                        if (!_.contains([2,3], eventDay)) {
-                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
+                        // chosen days are put before the current selected day. Therefore
+                        // we need to add one week for the Tuesdays and Wednesdays
+                        // (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                        if (_.contains([2,3], eventDay)) {
+                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
                         }
 
                         // Create the start date of the event
