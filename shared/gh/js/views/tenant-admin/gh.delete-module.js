@@ -66,9 +66,10 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series'], function(
         }, $('#delete-module-overview-container'), function() {
             // Hide the loading indicator
             $('#delete-module-body-preload-container').hide();
-
             // Show the confirmation footer
             $('#delete-module-confirm-container').show();
+            // Add the placeholder to the input field
+            $('#gh-delete-module-confirm-text').placeholder();
         });
     };
 

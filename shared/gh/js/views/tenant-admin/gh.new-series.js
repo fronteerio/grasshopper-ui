@@ -155,5 +155,25 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
         $('body').on('click', '#gh-create-series-cancel', cancelCreateNewSeries);
     };
 
-    addBinding();
+
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
+
+    /**
+     * Initialise the new series functionality
+     * @private
+     */
+    var initialise = function() {
+
+        // Add the placeholder to the input field (IE fix)
+        $('#gh-new-series-form').find('#gh-series-name').onAvailable(function() {
+            $('#gh-series-name').placeholder();
+        });
+
+        // Add binding to various elements
+        addBinding();
+    };
+
+    initialise();
 });

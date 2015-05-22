@@ -344,6 +344,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
      * @private
      */
     var toggleBatchEditEnabled = function() {
+        $('input', $('#gh-batch-edit-header')).placeholder();
         if ($('.gh-batch-edit-events-container:not(.gh-ot) tbody .gh-select-single:checked').length ||
             $('.gh-batch-edit-events-container:not(.gh-ot) thead .gh-select-all:checked').length) {
             $('input, button, select', $('#gh-batch-edit-header')).removeAttr('disabled');
@@ -1450,7 +1451,17 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     var addBinding = function() {
         // Setup
         $(document).on('gh.batchedit.setup', loadSeriesEvents);
-        $(document).on('gh.batchedit.rendered', setUpJEditable);
+        $(document).on('gh.batchedit.rendered', function() {
+
+            // Set up the placeholders for input fields
+            $('#gh-batch-edit-header').onAvailable(function() {
+                $('#gh-batch-edit-title').placeholder();
+                $('#gh-batch-edit-location').placeholder();
+            });
+
+            // Set up the jEditable components
+            setUpJEditable
+        });
         $(window).scroll(handleStickyHeader);
         $(window).resize(handleStickyHeader);
 
