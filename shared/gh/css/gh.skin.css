@@ -88,6 +88,10 @@ a,
 /* LAYOUT */
 /**********/
 
+.lt-ie9 #gh-main {
+    background-color: #FFF;
+}
+
 footer {
     color: #FFF;
 }
@@ -132,6 +136,10 @@ footer ul li a {
 #gh-page-container #gh-right-container + .clearfix,
 #gh-page-container #gh-header {
     background-color: #FFF;
+}
+
+.lt-ie9 #gh-page-container #gh-right-container {
+    background-color: transparent;
 }
 
 #gh-page-container #gh-right-container #gh-subheader,
