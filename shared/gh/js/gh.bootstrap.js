@@ -33,6 +33,7 @@ requirejs.config({
         'jquery-history': 'vendor/js/jquery.history',
         'jquery-ui': 'vendor/js/jquery-ui',
         'jquery.jeditable': 'vendor/js/jquery.jeditable',
+        'jquery.placeholder': 'vendor/js/jquery.placeholder',
         'jquery.serializeobject': 'vendor/js/jquery.serializeobject',
         'lodash': 'vendor/js/lodash',
         'moment': 'vendor/js/moment',
@@ -125,6 +126,9 @@ requirejs.config({
         },
         'jquery-datepicker': {
             'deps': ['jquery-ui']
+        },
+        'jquery.placeholder': {
+            'deps': ['jquery']
         },
         'admin-event-type-select': {
             'deps': ['jquery.jeditable']

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'validator'], function(gh) {
+define(['gh.core', 'jquery.placeholder', 'validator'], function(gh) {
 
 
     //////////////////////
@@ -85,5 +85,38 @@ define(['gh.core', 'validator'], function(gh) {
         $('body').on('submit', '.gh-signin-form', doLogin).validator({'disable': false});
     };
 
-    addBinding();
+
+    //////////////////////
+    //  INITIALISATION  //
+    //////////////////////
+
+    /**
+     * Set up components
+     *
+     * @private
+     */
+    var setupComponents = function() {
+
+        // Add placeholders to the input fields (IE fix)
+        $('.gh-signin-form').onAvailable(function() {
+            $('#gh-signin-email').placeholder();
+            $('#gh-signin-password').placeholder();
+        });
+    };
+
+    /**
+     * Initialise the login form
+     *
+     * @private
+     */
+    var initialise = function() {
+
+        // Set up components in the login form
+        setupComponents();
+
+        // Add binding to various elements in the login form
+        addBinding();
+    };
+
+    initialise();
 });
