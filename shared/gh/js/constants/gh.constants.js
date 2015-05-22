@@ -51,6 +51,7 @@ define(['exports'], function(exports) {
         'admin-delete-series-modal': '/shared/gh/partials/tenant-admin/admin-delete-series-modal.html',
         'admin-edit-date-field': '/shared/gh/partials/tenant-admin/admin-edit-date-field.html',
         'admin-edit-dates': '/shared/gh/partials/tenant-admin/admin-edit-dates.html',
+        'admin-edit-dates-weeks': '/shared/gh/partials/tenant-admin/admin-edit-dates-weeks.html',
         'admin-editable-parts': '/shared/gh/partials/tenant-admin/admin-editable-parts.html',
         'admin-help': '/shared/gh/partials/tenant-admin/admin-help.html',
         'admin-login-form': '/shared/gh/partials/tenant-admin/admin-login-form.html',

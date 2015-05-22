@@ -149,7 +149,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
     var changeTerm = function() {
         var termName = $(this).attr('data-term');
         // Retrieve the first day of term based on the name
-        var term = gh.utils.getFirstDayOfTerm(termName);
+        var term = gh.utils.getFirstLectureDayOfTerm(termName);
         // Navigate to a specific date in the calendar
         calendar.fullCalendar('gotoDate', term);
          // Set the current day
@@ -315,7 +315,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         if (currentView === 'agendaWeek') {
 
             // Get the current academic week number
-            var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate(), false);
+            var weekNumber = gh.utils.getAcademicWeekNumber(getCurrentViewDate());
 
             // Set the label
             label = 'Outside term week';

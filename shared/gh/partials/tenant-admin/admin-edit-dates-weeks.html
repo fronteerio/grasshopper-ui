@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label class="sr-only" for="gh-module-week">week</label>
+    <select id="gh-module-week" class="form-control" <% if (!data.numWeeks) { %>disabled<% } %>>
+        <% if (!data.numWeeks) { %><option value="0" disabled>Out of term</option><% } %>
+        <% if (data.numWeeks) { %>
+            <% for (var i = 1; i <= data.numWeeks; i++) { %>
+                <option value="<%- i %>">Week <%- i %></option>
+            <% } %>
+        <% } %>
+    </select>
+</div>

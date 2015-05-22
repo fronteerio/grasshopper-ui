@@ -20,7 +20,7 @@
      * @private
      */
     var getCurrentAcademicWeekNumber = function(moment) {
-        return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment.tz(new Date(), 'Europe/London').format('YYYY-MM-DD'))), true);
+        return data.utils.getAcademicWeekNumber(data.utils.convertISODatetoUnixDate((moment.tz(new Date(), 'Europe/London').format('YYYY-MM-DD'))));
     };
 
     /**

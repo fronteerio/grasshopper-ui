@@ -130,7 +130,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     var addNewEventRow = function(ev, data) {
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
-        var termStart = gh.utils.getFirstDayOfTerm(termName);
+        var termStart = gh.utils.getFirstLectureDayOfTerm(termName);
         var eventObj = {
             'data': {
                 'ev': null
@@ -159,10 +159,10 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         } else {
             eventObj.data.ev = data && data.eventObj ? data.eventObj : {
                 'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 14, 0, 0, 0], 'Europe/London').format(),
+                'end': moment.tz(termStart, 'Europe/London').hours(14).format(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': moment.tz([termStart.getFullYear(), termStart.getMonth(), termStart.getDate(), 13, 0, 0, 0], 'Europe/London').format(),
+                'start': moment.tz(termStart, 'Europe/London').hours(13).format(),
                 'type': gh.config.events.default
             };
         }
