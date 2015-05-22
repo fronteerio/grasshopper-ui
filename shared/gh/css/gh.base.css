@@ -122,6 +122,10 @@ select[disabled],
     padding-bottom: 30px;
 }
 
+.lt-ie9 #gh-main {
+    padding: 25px;
+}
+
 .gh-academic-year-select {
     display: table-cell;
     font-size: 18px;

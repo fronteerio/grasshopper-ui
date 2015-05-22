@@ -48,10 +48,10 @@ define(['gh.utils', 'gh.api.admin', 'gh.api.app', 'gh.api.authentication', 'gh.a
          * @private
          */
         var initGH = function(callback) {
-            // Redirect if an unsupported browser is used
+            // Redirect if an unsupported browser is used, don't assume jQuery is usable
             /* istanbul ignore if */
-            if ($('html').hasClass('lt-ie9')) {
-                return gh.utils.redirect().unsupported();
+            if (document.getElementsByTagName('HTML')[0].className.indexOf('lt-ie9') > -1) {
+                window.location = '/unsupported';
             }
 
             // Load the me feed

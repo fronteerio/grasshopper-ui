@@ -331,19 +331,10 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
             window.location = '/unavailable';
         };
 
-        /**
-         * Redirect the current user to the unsupported page. This can be used when the user browses Timetable
-         * with an unsupported browser
-         */
-        var unsupported = function() {
-            window.location = '/unsupported';
-        };
-
         return {
             'accessdenied': accessdenied,
             'notfound': notfound,
-            'unavailable': unavailable,
-            'unsupported': unsupported
+            'unavailable': unavailable
         };
     };
 
