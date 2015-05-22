@@ -836,6 +836,10 @@ ul.gh-borrowed-list li p {
     padding: 6px 0 6px 15px;
 }
 
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-event-type {
+    padding-right: 6px;
+}
+
 #gh-batch-edit-container h1.gh-disabled,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr.gh-disabled > th,
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr > td.gh-disabled {
