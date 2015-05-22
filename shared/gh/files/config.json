@@ -8,147 +8,266 @@
         ],
         "default": "Lecture"
     },
-    "terms":
-        {
-            "2013": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2013-10-08",
-                    "end": "2013-12-06"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2014-01-14",
-                    "end": "2014-03-14"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2014-04-22",
-                    "end": "2014-06-13"
-                }
-            ],
-            "2014": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2014-10-07",
-                    "end": "2014-12-05"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2015-01-13",
-                    "end": "2015-03-13"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2015-04-21",
-                    "end": "2015-06-12"
-                }
-            ],
-            "2015": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2015-10-06",
-                    "end": "2015-12-04"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2016-01-12",
-                    "end": "2016-03-11"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2016-04-19",
-                    "end": "2016-06-10"
-                }
-            ],
-            "2016": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2016-10-04",
-                    "end": "2016-12-02"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2017-01-17",
-                    "end": "2017-03-17"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2017-04-25",
-                    "end": "2017-06-16"
-                }
-            ],
-            "2017": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2017-10-03",
-                    "end": "2017-12-01"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2018-01-16",
-                    "end": "2018-03-16"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2018-04-24",
-                    "end": "2018-06-15"
-                }
-            ],
-            "2018": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2018-10-02",
-                    "end": "2018-11-30"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2019-01-15",
-                    "end": "2019-03-15"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2019-04-23",
-                    "end": "2019-06-14"
-                }
-            ],
-            "2019": [
-                {
-                    "name": "michaelmas",
-                    "label": "Michaelmas",
-                    "start": "2019-10-08",
-                    "end": "2019-12-06"
-                },
-                {
-                    "name": "lent",
-                    "label": "Lent",
-                    "start": "2020-01-14",
-                    "end": "2020-03-13"
-                },
-                {
-                    "name": "easter",
-                    "label": "Easter",
-                    "start": "2020-04-21",
-                    "end": "2020-06-12"
-                }
-            ]
-        }
+    "terms": {
+        "2013": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2013-10-08",
+                "end": "2013-12-06"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2014-01-14",
+                "end": "2014-03-14"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2014-04-22",
+                "end": "2014-06-13"
+            }
+        ],
+        "2014": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2014-10-07",
+                "end": "2014-12-05"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2015-01-13",
+                "end": "2015-03-13"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2015-04-21",
+                "end": "2015-06-12"
+            }
+        ],
+        "2015": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2015-10-06",
+                "end": "2015-12-04"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2016-01-12",
+                "end": "2016-03-11"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2016-04-19",
+                "end": "2016-06-10"
+            }
+        ],
+        "2016": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2016-10-04",
+                "end": "2016-12-02"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2017-01-17",
+                "end": "2017-03-17"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2017-04-25",
+                "end": "2017-06-16"
+            }
+        ],
+        "2017": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2017-10-03",
+                "end": "2017-12-01"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2018-01-16",
+                "end": "2018-03-16"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2018-04-24",
+                "end": "2018-06-15"
+            }
+        ],
+        "2018": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2018-10-02",
+                "end": "2018-11-30"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2019-01-15",
+                "end": "2019-03-15"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2019-04-23",
+                "end": "2019-06-14"
+            }
+        ],
+        "2019": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2019-10-08",
+                "end": "2019-12-06"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2020-01-14",
+                "end": "2020-03-13"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2020-04-21",
+                "end": "2020-06-12"
+            }
+        ],
+        "2020": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2020-10-06",
+                "end": "2010-12-04"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2021-01-19",
+                "end": "2021-03-19"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2021-04-27",
+                "end": "2021-06-18"
+            }
+        ],
+        "2021": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2021-10-05",
+                "end": "2021-12-03"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2022-01-18",
+                "end": "2022-03-18"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2022-04-27",
+                "end": "2022-06-18"
+            }
+        ],
+        "2022": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2022-10-04",
+                "end": "2022-12-02"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2023-01-17",
+                "end": "2023-03-17"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2023-04-25",
+                "end": "2023-06-16"
+            }
+        ],
+        "2023": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2023-10-03",
+                "end": "2023-12-01"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2024-01-16",
+                "end": "2024-03-15"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2024-04-23",
+                "end": "2024-06-14"
+            }
+        ],
+        "2024": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2024-10-08",
+                "end": "2024-12-06"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2025-01-21",
+                "end": "2025-03-21"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2025-04-29",
+                "end": "2025-06-20"
+            }
+        ],
+        "2025": [
+            {
+                "name": "michaelmas",
+                "label": "Michaelmas",
+                "start": "2025-10-07",
+                "end": "2025-12-05"
+            },
+            {
+                "name": "lent",
+                "label": "Lent",
+                "start": "2026-01-20",
+                "end": "2026-03-20"
+            },
+            {
+                "name": "easter",
+                "label": "Easter",
+                "start": "2026-04-28",
+                "end": "2026-06-19"
+            }
+        ]
+    }
 }
