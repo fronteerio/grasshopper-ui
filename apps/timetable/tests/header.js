@@ -21,7 +21,7 @@ casper.test.begin('Student - Component - Header', function(test) {
     var verifyHeader = function() {
         casper.echo('# Verify the timetable header', 'INFO');
         casper.waitForSelector('#gh-right-container #gh-header h1', function() {
-            test.assertExists('#gh-left-container #gh-header-logo img', 'Verify that the header hero has the Cambridge University logo');
+            test.assertExists('#gh-left-container .gh-uni-logo img', 'Verify that the header hero has the Cambridge University logo');
             test.assertExists('#gh-right-container #gh-header h1', 'Verify that the header has a header h1');
             test.assertEval(function() {
                 return require('gh.core').data.me.app.displayName === $('#gh-right-container #gh-header h1').text();

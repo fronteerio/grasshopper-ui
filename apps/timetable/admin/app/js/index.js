@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest', 'validator'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[2];
@@ -33,20 +33,6 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             'gh': gh,
             'currentPage': currentPage
         }, $('#gh-navigation-container'));
-    };
-
-    /**
-     * Render the header
-     *
-     * @private
-     */
-    var renderHeader = function() {
-        gh.utils.renderTemplate('header', {
-            'data': {
-                'gh': gh,
-                'isGlobalAdminUI': false
-            }
-        }, $('#gh-header'));
     };
 
     /**
@@ -550,13 +536,6 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
         // Log out
         $('body').on('submit', '#gh-signout-form', doLogout);
 
-        // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '#gh-header-logo', function() {
-            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
-                window.location = '/admin/';
-            });
-        });
-
         // Update the value attribute of a checkbox when it changes
         $('body').on('change', 'input[type="checkbox"]', updateCheckboxValue);
 
@@ -599,8 +578,13 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             // Add event handlers
             addBinding();
 
-            // Render the header
-            renderHeader();
+            // Set up the header
+            $(document).trigger('gh.header.init', {
+                'isGlobalAdminUI': true
+            });
+
+            // Set up the page footer
+            $(document).trigger('gh.footer.init');
 
             // Only show the login form is local authentication is enabled and shibboleth is disabled
             if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
@@ -612,8 +596,13 @@ define(['gh.core', 'gh.constants', 'jquery-autosuggest', 'validator'], function(
             // Add event handlers
             addBinding();
 
-            // Render the header
-            renderHeader();
+            // Set up the header
+            $(document).trigger('gh.header.init', {
+                'isGlobalAdminUI': true
+            });
+
+            // Set up the page footer
+            $(document).trigger('gh.footer.init');
 
             // Show the body as we're allowed access
             $('body').show();

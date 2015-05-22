@@ -78,6 +78,7 @@ define(['exports'], function(exports) {
         'calendar': '/shared/gh/partials/calendar.html',
         'event': '/shared/gh/partials/event.html',
         'event-popover': '/shared/gh/partials/event-popover.html',
+        'footer': '/shared/gh/partials/footer.html',
         'header': '/shared/gh/partials/header.html',
         'login-form': '/shared/gh/partials/login-form.html',
         'login-modal': '/shared/gh/partials/login-modal.html',

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', 'gh.admin.batch-edit', 'gh.admin.listview', 'gh.admin.video', 'gh.subheader', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment, tz) {
+define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh.footer', 'gh.listview', 'gh.admin.batch-edit', 'gh.admin.listview', 'gh.admin.video', 'gh.subheader', 'clickover', 'jquery.jeditable', 'validator'], function(gh, constants, moment, tz) {
 
     // Cache the tripos data
     var triposData = {};
@@ -48,31 +48,13 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', '
                 return gh.utils.redirect().accessdenied();
             }
 
-            gh.utils.renderTemplate('admin-subheader-pickers', {
-                'gh': gh
-            }, $('#gh-subheader'), function() {
-                // Set up the tripos picker after all data has been retrieved
-                // Initialise the subheader component after all data has been retrieved
-                $(document).trigger('gh.subheader.init', {
-                    'triposData': triposData
-                });
+            // Set up the header
+            $(document).trigger('gh.header.init', {
+                'includeLoginForm': false,
+                'isGlobalAdminUI': false,
+                'triposData': triposData
             });
         });
-    };
-
-    /**
-     * Render the header
-     *
-     * @private
-     */
-    var renderHeader = function() {
-        gh.utils.renderTemplate('header', {
-            'data': {
-                'gh': gh,
-                'includeLoginForm': false,
-                'isGlobalAdminUI': false
-            }
-        }, $('#gh-header'));
     };
 
     /**
@@ -396,13 +378,6 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', '
         // logout
         $('body').on('submit', '#gh-signout-form', doLogout);
 
-        // Track an event when the user clicks the Cambridge logo
-        $('body').on('click', '#gh-header-logo', function() {
-            gh.utils.trackEvent(['Navigation', 'Cambridge Logo clicked'], null, null, function() {
-                window.location = '/admin/';
-            });
-        });
-
         // Change the view
         $(document).on('gh.admin.changeView', onViewChange);
 
@@ -421,8 +396,15 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', '
             // Add event handlers
             addBinding();
 
-            // Render the header
-            renderHeader();
+            // Set up the header
+            $(document).trigger('gh.header.init', {
+                'includeLoginForm': false,
+                'isGlobalAdminUI': false,
+                'triposData': triposData
+            });
+
+            // Set up the footer
+            $(document).trigger('gh.footer.init');
 
             // Only show the login form is local authentication is enabled and shibboleth is disabled
             if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
@@ -440,8 +422,8 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.listview', '
             // Add event handlers
             addBinding();
 
-            // Render the header
-            renderHeader();
+            // Set up the footer
+            $(document).trigger('gh.footer.init');
 
             // Show the tripos help info
             showTriposHelp();
