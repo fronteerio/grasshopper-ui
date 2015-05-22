@@ -130,7 +130,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                 // Get the start date of the event
                 var startDate = gh.utils.convertISODatetoUnixDate($row.find('.gh-event-date').attr('data-start'));
                 // Get the week in which the event takes place
-                var dateWeek = gh.utils.getAcademicWeekNumber(startDate, true);
+                var dateWeek = gh.utils.getAcademicWeekNumber(startDate);
                 // If the event takes place in the week that needs to be removed, delete it
                 if (dateWeek === weekNumber) {
                     $row.addClass('gh-event-deleted').find('.gh-event-delete button').click();
@@ -184,7 +184,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     }
 
                     // Only add a new event for the generated day if the day is within a term
-                    var inTerm = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dateByWeekAndDay, 'Europe/London').format()), true);
+                    var inTerm = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dateByWeekAndDay, 'Europe/London').format()));
                     if (inTerm) {
 
                         var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
@@ -297,12 +297,12 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                             var eventDay = parseInt($('.gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
                             // Get the date by week and day
                             // Since Cambridge weeks start on Thursdays, we should prevent that
-                            // chosen days are put after the current selected day. Therefore
-                            // we need to subtract one week for all the days except Tuesdays and
-                            // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                            // chosen days are put before the current selected day. Therefore
+                            // we need to add one week for all the days except Tuesdays and Wednesdays.
+                            // (We have a 2 day offset, since terms start on Tuesdays, sigh).
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
-                            if (!_.contains([2,3], eventDay)) {
-                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
+                            if (_.contains([2,3], eventDay)) {
+                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
                             }
                             // Retrieve the year of the event
                             var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
@@ -352,16 +352,19 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     _.defer(function() {
                         // Get the week number
                         var eventWeek = parseInt(chk.value, 10);
+
                         // Determine the day number, based on the academic week number
                         var eventDay = parseInt(moment.tz(new Date(), 'Europe/London').format('E'), 10);
+
                         // Get the date by week and day
                         var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
+
                         // Since Cambridge weeks start on Thursdays, we should prevent that
-                        // chosen days are put after the current selected day. Therefore
-                        // we need to subtract one week for all the days except Tuesdays and
-                        // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
-                        if (!_.contains([2,3], eventDay)) {
-                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
+                        // chosen days are put before the current selected day. Therefore
+                        // we need to add one week for the Tuesdays and Wednesdays
+                        // (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                        if (_.contains([2,3], eventDay)) {
+                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
                         }
 
                         // Create the start date of the event
@@ -463,7 +466,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
         // Extract the weeks from the batch
         _.each($rows, function(row) {
             var start = gh.utils.convertISODatetoUnixDate(moment.tz($(row).find('.gh-event-date').attr('data-start'), 'Europe/London').format('YYYY-MM-DD'));
-            weeksInUse.push(gh.utils.getAcademicWeekNumber(start, true));
+            weeksInUse.push(gh.utils.getAcademicWeekNumber(start));
         });
         return _.uniq(weeksInUse);
     };

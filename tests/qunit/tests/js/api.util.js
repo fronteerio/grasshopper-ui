@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, testAPI) {
+require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, moment, orgUnitAPI, testAPI) {
     module('Util API');
 
     // Mock a configuration object to test with
@@ -146,11 +146,11 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         }, 'Verify that a valid end date needs to be provided');
 
         // Verify that all the cases are covered
-        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 10am-5:30pm');
-        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W6 · Wed 4-5:30pm');
-        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W6 · Wed 10-11:30am');
-        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W6 · Wed 10:30-11am');
-        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W6 · Wed 10:30am-1:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W5 · Wed 10am-5:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T16:00:00.000Z', '2015-02-18T17:30:00.000Z'), 'W5 · Wed 4-5:30pm');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:00:00.000Z', '2015-02-18T11:30:00.000Z'), 'W5 · Wed 10-11:30am');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T11:00:00.000Z'), 'W5 · Wed 10:30-11am');
+        assert.strictEqual(gh.utils.generateDisplayDate('2015-02-18T10:30:00.000Z', '2015-02-18T13:30:00.000Z'), 'W5 · Wed 10:30am-1:30pm');
         assert.strictEqual(gh.utils.generateDisplayDate('2015-01-01T10:30:00.000Z', '2015-01-01T13:30:00.000Z'), 'OT · Thu 10:30am-1:30pm');
     });
 
@@ -168,24 +168,16 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
         }, 'Verify that a valid date needs to be provided');
 
         // Verify that no week number is returned when specifying an out-of-term date
-        var weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
+        var weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-01T12:30:00.000Z'));
         assert.strictEqual(weekNumber, 0, 'Verify that no week number is returned when specifying an out-of-term date');
-
-        // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term
-        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'));
-        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an out-of-term date');
-
-        // Verify that a valid week number is returned when specifying an out-of-term date that leans close to the start of a term, using precise calculation
-        weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-12T10:30:00.000Z'), true);
-        assert.strictEqual(weekNumber, 0, 'Verify that a valid week number is returned when specifying an out-of-term date, using precise calculation');
 
         // Verify that a valid week number is returned when specifying an in-term date
         weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-14T10:30:00.000Z'));
-        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
+        assert.strictEqual(weekNumber, 0, 'Verify that a valid week number is returned when specifying an in-term date');
 
         // Verify that a valid week number is returned when specifying an in-term date
         weekNumber = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate('2015-01-15T10:30:00.000Z'));
-        assert.strictEqual(weekNumber, 2, 'Verify that a valid week number is returned when specifying an in-term date');
+        assert.strictEqual(weekNumber, 1, 'Verify that a valid week number is returned when specifying an in-term date');
     });
 
     // Test the 'getTerm' functionality
@@ -201,21 +193,12 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
             gh.utils.getTerm('invalid_date');
         }, 'Verify that a valid date needs to be provided');
 
-        // Verify that a valid value for useOffset needs to be provided
-        assert.throws(function() {
-            gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'), 'invalid_value');
-        }, 'Verify that a valid value for useOffset needs to be provided');
-
         // Verify that the corresponding term is returned when specifying an in-term date
         var term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-02-01T10:30:00.000Z'));
         assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
 
-        // Verify that the corresponding term is returned when specifying an out-of-term date that leans close to the start of a term
-        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
-        assert.strictEqual(term.name, 'lent', 'Verify that the corresponding term is returned');
-
         // Verify that no term is returned when specifying an out-of-term date that leans close to the start of a term
-        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'), true);
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-11T00:00:00.000Z'));
         assert.ok(!term);
 
         // Verify that no term is returned when specifying an out-of-term date
@@ -225,28 +208,30 @@ require(['gh.core', 'gh.api.orgunit', 'gh.api.tests'], function(gh, orgUnitAPI, 
 
     // Test the 'getWeeksInTerm' functionality
     QUnit.test('getWeeksInTerm', function(assert) {
-        // Get the first term of 2014 which has 9 weeks in it
         // Verify that a valid term needs to be provided
         assert.throws(function() {
             gh.utils.getWeeksInTerm();
         }, 'Verify that a valid term needs to be provided');
 
         // Verify that the correct number of weeks is returned
-        assert.strictEqual(gh.utils.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 10, 'Verify that the correct number of weeks is returned');
+        assert.strictEqual(gh.utils.getWeeksInTerm(require('gh.core').config.terms['2014'][0]), 8, 'Verify that the correct number of weeks is returned');
+        assert.strictEqual(gh.utils.getWeeksInTerm(require('gh.core').config.terms['2014'][1]), 8, 'Verify that the correct number of weeks is returned');
+        assert.strictEqual(gh.utils.getWeeksInTerm(require('gh.core').config.terms['2014'][2]), 7, 'Verify that the correct number of weeks is returned');
     });
 
-    // Test the 'getFirstDayOfTerm' functionality
-    QUnit.test('getFirstDayOfTerm', function(assert) {
+    // Test the 'getFirstLectureDayOfTerm' functionality
+    QUnit.test('getFirstLectureDayOfTerm', function(assert) {
         // Verify that a valid term name needs to be provided
         assert.throws(function() {
-            gh.utils.getFirstDayOfTerm(null);
+            gh.utils.getFirstLectureDayOfTerm(null);
         }, 'Verify that a valid term name needs to be provided');
 
         // Use the first day of Michaelmas to test with
-        var testDate = new Date('2014-10-07T00:00:00.000Z');
-        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.utils.getFirstDayOfTerm('michaelmas').getFullYear(), testDate.getFullYear(), 'Verify that the correct year is returned');
+        var testDate = moment('2014-10-09T00:00:00.000Z');
+        var firstLectureDay = gh.utils.getFirstLectureDayOfTerm('michaelmas');
+        assert.strictEqual(moment.utc(firstLectureDay).format('DD'), moment.utc(testDate).format('DD'), 'Verify that the correct day is returned');
+        assert.strictEqual(moment.utc(firstLectureDay).format('MM'), moment.utc(testDate).format('MM'), 'Verify that the correct month is returned');
+        assert.strictEqual(moment.utc(firstLectureDay).format('YYYY'), moment.utc(testDate).format('YYYY'), 'Verify that the correct year is returned');
     });
 
     // Test the 'getDateByWeekAndDay' functionality

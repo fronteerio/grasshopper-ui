@@ -2,17 +2,7 @@
     <form id="gh-edit-dates-form" role="form">
         <div class="col-xs-7 gh-col-datepicker" id="gh-datepicker"></div>
         <div class="col-xs-5 gh-col-time">
-            <div class="form-group">
-                <label class="sr-only" for="gh-module-week">week</label>
-                <select id="gh-module-week" class="form-control" <% if (!data.numWeeks) { %>disabled<% } %>>
-                    <option value="0" <% if (!data.numWeeks) { %>selected<% } %>>Out of term</option>
-                    <% if (data.numWeeks) { %>
-                        <% for (var i = 1; i <= data.numWeeks; i++) { %>
-                            <option value="<%- i %>">Week <%- i %></option>
-                        <% } %>
-                    <% } %>
-                </select>
-            </div>
+            <div id="gh-edit-dates-weeks"><!-- --></div>
             <div class="form-group">
                 <label class="sr-only" for="gh-module-day">day</label>
                 <select id="gh-module-day" class="form-control">
