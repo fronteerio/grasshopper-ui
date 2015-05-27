@@ -560,6 +560,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
 
         // Mark the rows that are not eligible for updating
         $(_.difference($selectedRows, $rows)).addClass('gh-not-eligible');
+
         _.each($rows, function($row) {
             _.defer(function() {
                 $row = $($row);
@@ -582,8 +583,8 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     // we need to subtract one week for all the days except Tuesdays and
                     // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
-                    if (!_.contains([2,3], eventDay)) {
-                        newDate = moment.tz(newDate, 'Europe/London').subtract({'weeks': 1});
+                    if (_.contains([2,3], eventDay)) {
+                        newDate = moment.tz(newDate, 'Europe/London').add({'weeks': 1});
                     }
 
                     // Only update the year/month/day when we change the day
@@ -610,6 +611,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                         },
                         'utils': gh.utils
                     }, null, function(template) {
+
                         // Update the trigger
                         $row.find('.gh-event-date').attr('data-start', eventStart).attr('data-end', eventEnd).html(template);
 
