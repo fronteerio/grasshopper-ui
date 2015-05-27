@@ -1247,7 +1247,8 @@ tbody tr:last-child > td.fc-widget-content {
     margin: 15px 0 12px;
 }
 
-.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week  .gh-agenda-view-no-events {
+#gh-borrow-series-modal .gh-admin-borrow-series-no-modules,
+.agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-no-events {
     padding: 20px;
     text-align: center;
 }
