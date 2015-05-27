@@ -104,7 +104,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
             // Track how long the user takes to create the module
             timeFromStart = new Date();
             // Focus the input field after the modal is shown
-            $('#gh-module-title').focus();
+            $('#gh-module-title').placeholder().focus();
         });
         $('body').on('click', '#gh-new-module-modal [data-dismiss="modal"]', function() {
             // Track the user cancelling creation of a module
