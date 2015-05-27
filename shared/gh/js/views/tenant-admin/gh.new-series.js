@@ -168,7 +168,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.api.series', 'gh.api.or
 
         // Add the placeholder to the input field (IE fix)
         $('#gh-new-series-form').find('#gh-series-name').onAvailable(function() {
-            $('#gh-series-name').placeholder();
+            $('#gh-series-name').placeholder().focus();
         });
 
         // Add binding to various elements

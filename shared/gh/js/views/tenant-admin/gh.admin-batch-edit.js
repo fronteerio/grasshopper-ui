@@ -1460,7 +1460,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
             });
 
             // Set up the jEditable components
-            setUpJEditable
+            setUpJEditable();
         });
         $(window).scroll(handleStickyHeader);
         $(window).resize(handleStickyHeader);
