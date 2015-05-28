@@ -764,6 +764,7 @@ tbody .fc-sun {
     color: #919191;
 }
 
+#gh-borrow-series-modal .gh-admin-borrow-series-no-modules,
 .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week  .gh-agenda-view-no-events {
     background-color: #F5F5F5;
     color: #999;
@@ -835,6 +836,7 @@ span.gh-agenda-view-middot {
     border-top-color: #DDD;
 }
 
+#gh-borrow-series-modal .gh-admin-borrow-series-no-modules,
 #gh-series-info-modal .gh-series-info-list-no-events,
 #gh-series-info-modal .gh-series-info-location,
 #gh-series-info-modal .gh-series-info-organiser {
