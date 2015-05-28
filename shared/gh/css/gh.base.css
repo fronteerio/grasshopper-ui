@@ -227,7 +227,7 @@ footer ul li {
 
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    min-height: calc(100% - 217px);
+    min-height: 100%;
     padding-top: 215px;
 }
 
