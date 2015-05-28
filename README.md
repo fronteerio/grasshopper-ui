@@ -68,6 +68,19 @@ the global admin application can serve a different set of HTML files than the `t
 application.
 
 
+## Compiling stylesheets
+
+To reduce the number of requests, we concatenate all the CSS files using [SASS](http://sass-lang.com) and [Compass](http://compass-style.org).
+
+To make use of this technology, make sure you have [Ruby](http://www.ruby-lang.org) installed before executing the following commands:
+```
+gem install sass
+gem install compass
+```
+
+To compile the CSS files you can simply run: `./etc/scripts/compass.sh` from the folder root.
+
+
 ## Testing
 
 The UI uses QUnit and Istanbul to provide functional tests and code coverage. CasperJS is used to take a more visual approach to testing by spinning up a headless webkit browser and clicking around while making assertions. Note that the CasperJS framework is in place but tests have not been written yet. Linting tests are available for JavaScript and CSS and comply to the standard of code we set for our projects ([Code styleguide](https://raw.githubusercontent.com/airbnb/javascript/master/README.md))

@@ -15,6 +15,7 @@ addons:
   postgresql: "9.3"
 
 before_install:
+
   # Create virtual hosts
   - sudo sed -i "2i127.0.0.2  2013.timetable.cam.ac.uk" /etc/hosts
   - sudo sed -i "2i127.0.0.2  2014.timetable.cam.ac.uk" /etc/hosts
@@ -98,6 +99,16 @@ before_install:
   - grunt configApache
   - sudo cp ./target/optimized/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
   - sudo cp -R ./target/optimized/apache/app_*.conf /usr/local/apache2/conf/sites-enabled
+
+  # Install SASS and Compass
+  - echo 'Install SASS and Compass'
+  - gem install sass --version "=3.4.14"
+  - gem install compass --version "=1.0.3"
+
+  # Compile the SCSS files
+  - echo 'Compiling CSS files'
+  - cd ~/build/CUL-DigitalServices/grasshopper-ui
+  - ./etc/scripts/compass.sh
 
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start

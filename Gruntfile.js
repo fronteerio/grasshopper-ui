@@ -68,12 +68,15 @@ module.exports = function(grunt) {
                 'unqualified-attributes': false
             },
             'files': [
-                'apps/**/*.css',
-                'shared/gh/**/*.css',
+                'apps/**/*.scss',
+                'shared/gh/**/*.scss',
                 'tests/**/*.css'
             ]
         },
         'exec': {
+            'compileCSS': {
+                'cmd': 'etc/scripts/compass.sh'
+            },
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
@@ -460,7 +463,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'exec:compileCSS', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**

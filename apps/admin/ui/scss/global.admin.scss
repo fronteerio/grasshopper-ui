@@ -13,25 +13,13 @@
  * permissions and limitations under the License.
  */
 
-/* Main elements*/
+@import 'bootstrap';
+@import 'chosen';
+@import 'font-awesome';
+@import 'jquery.autosuggest';
 
-main h1 {
-    margin-bottom: 20px;
-}
+@import 'gh.base';
+@import 'gh.components';
+@import 'gh.skin';
 
-main h2 {
-    margin: 30px 0 12px;
-}
-
-form,
-table {
-    margin-bottom: 0 !important;
-}
-
-.gh-administration-container {
-    margin: 20px;
-}
-
-.gh-administration-container .gh-configuration-form {
-    margin-bottom: 15px !important;
-}
+@import 'global.admin.components';

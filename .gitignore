@@ -1,5 +1,8 @@
 .DS_Store
+.sass-cache
+apps/**/css/
 bootstrap.log
+config.rb
 coverage/
 node_modules/
 target/
