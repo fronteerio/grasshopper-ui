@@ -18,6 +18,11 @@
 /* BASE STYLES */
 /***************/
 
+.gh-chosen-no-search + .chosen-container .chosen-search {
+    height: 0;
+    overflow: hidden;
+}
+
 html, html a {
     -webkit-font-smoothing: antialiased;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
@@ -218,6 +223,15 @@ footer ul li {
        -moz-transition: opacity .3s;
          -o-transition: opacity .3s;
             transition: opacity .3s;
+}
+
+.gh-tripos-help {
+    display: table-cell;
+    font-size: 20px;
+    font-weight: 100;
+    height: 415px;
+    padding: 45px;
+    vertical-align: middle;
 }
 
 #gh-page-container #gh-left-container #gh-meta-container {

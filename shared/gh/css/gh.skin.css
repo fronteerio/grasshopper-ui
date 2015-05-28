@@ -148,6 +148,10 @@ footer ul li a {
     color: #FFF;
 }
 
+.gh-tripos-help {
+    color: #BEBEBE;
+}
+
 .gh-global-admin #gh-page-container #gh-right-container #gh-subheader,
 .gh-global-admin #gh-page-container #gh-left-container #gh-content-description,
 .gh-admin #gh-page-container #gh-right-container #gh-subheader,

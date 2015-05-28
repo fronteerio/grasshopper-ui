@@ -21,6 +21,16 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
     var timeFromStart = null;
 
     /**
+     * Open the closest picker component when it receives keyboard focus
+     *
+     * @private
+     */
+    var openPicker = function() {
+        var $picker = $($(this).closest('.chosen-container').prev());
+        $picker.trigger('chosen:open');
+    };
+
+    /**
      * Set up the modules of events in the list.
      *
      * @param  {Event}     ev      Standard jQuery event
@@ -85,9 +95,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
                 'no_results_text': 'No matches for',
                 'disable_search_threshold': 10
             }).on('change', setUpModules);
-
-            // Chosen has a bug where search sometimes isn't disabled properly
-            $('#gh_borrow_series_part_chosen .chosen-search').hide();
         });
     };
 
@@ -254,6 +261,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
         });
         // Borrow all series marked as 'to borrow' into a module
         $('body').on('click', '#gh-borrow-series-submit', borrowSeries);
+
+        var throttlePickerFocus = _.throttle(openPicker, 200, {'trailing': false});
+        $('body').on('focus', '.chosen-search input', throttlePickerFocus);
     };
 
     addBinding();
