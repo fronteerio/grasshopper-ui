@@ -25,6 +25,16 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
     var timeFromStart = null;
 
     /**
+     * Open the closest picker component when it receives keyboard focus
+     *
+     * @private
+     */
+    var openPicker = function() {
+        var $picker = $($(this).closest('.chosen-container').prev());
+        $picker.trigger('chosen:open');
+    };
+
+    /**
      * Return to the home page
      *
      * @private
@@ -139,9 +149,6 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
             $('#gh-subheader-part').chosen({
                 'disable_search': true
             }).on('change', setUpModules);
-
-            // Chosen has a bug where search sometimes isn't disabled properly
-            $('#gh_subheader_part_chosen .chosen-search').hide();
         });
     };
 
@@ -333,6 +340,9 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
         });
 
         $('body').on('click', '.gh-home', goHome);
+
+        var throttlePickerFocus = _.throttle(openPicker, 200, {'trailing': false});
+        $('body').on('focus', '.chosen-search input', throttlePickerFocus);
     };
 
     addBinding();

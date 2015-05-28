@@ -78,6 +78,7 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
         }, $('#gh-empty'));
 
         // Show/hide components when an empty timetable was selected
+        $('html').removeClass('gh-collapsed gh-collapsed-finished');
         $('#gh-page-container').addClass('gh-minimised');
         $('#gh-main').hide();
         $('#gh-empty').show();
