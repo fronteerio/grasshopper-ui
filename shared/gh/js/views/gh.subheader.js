@@ -180,7 +180,7 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit', 'gh.admin.visibility', 'cho
             }).change(setUpPartPicker);
 
             // Set the default placeholder text
-            $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search triposes');
+            $('#gh_subheader_tripos_chosen .chosen-search input').attr('placeholder', 'Search courses');
         });
     };
 
