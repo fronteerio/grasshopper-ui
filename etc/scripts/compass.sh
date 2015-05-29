@@ -31,5 +31,8 @@ createCSS apps/timetable/admin/app/scss apps/timetable/admin/app/css
 # Generate the CSS files for the global admin UI
 createCSS apps/admin/ui/scss apps/admin/ui/css
 
+# Generate the CSS files for the error pages
+createCSS shared/gh/errors/scss shared/gh/errors/css
+
 # Remove the SASS cache folder
 rm -rf .sass-cache

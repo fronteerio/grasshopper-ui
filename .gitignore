@@ -1,6 +1,7 @@
 .DS_Store
 .sass-cache
 apps/**/css/
+shared/**/css/
 bootstrap.log
 config.rb
 coverage/
