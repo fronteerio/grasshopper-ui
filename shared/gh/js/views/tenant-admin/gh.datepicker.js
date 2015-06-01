@@ -103,8 +103,9 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
         var entries = getFormValues();
 
         // Generate the start and end dates
-        var startDate = moment.tz(entries.date, 'Europe/London').hour(entries.startHour).minute(entries.startMinutes).toISOString();
-        var endDate = moment.tz(entries.date, 'Europe/London').hour(entries.endHour).minute(entries.endMinutes).toISOString();
+        // The selected date will be in local time, keep in mind the offset when adding hours to match the correct date
+        var startDate = moment.tz(moment(entries.date).add({'hours': -((new Date()).getTimezoneOffset() / 60)}), 'Europe/London').hour(entries.startHour).minute(entries.startMinutes).toISOString();
+        var endDate = moment.tz(moment(entries.date).add({'hours': -((new Date()).getTimezoneOffset() / 60)}), 'Europe/London').hour(entries.endHour).minute(entries.endMinutes).toISOString();
 
         // Return the full dates
         return {
