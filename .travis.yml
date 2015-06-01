@@ -107,7 +107,7 @@ before_install:
   # Compile the SCSS files
   - echo 'Compiling CSS files'
   - cd ~/build/CUL-DigitalServices/grasshopper-ui
-  - ./etc/scripts/compass.sh
+  - ./etc/scripts/compileCSS.sh
 
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start
