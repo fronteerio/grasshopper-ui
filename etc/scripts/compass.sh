@@ -16,7 +16,7 @@ function createCSS () {
     compass config --force config.rb --sass-dir=$1 --css-dir=$2
 
     # Make the shared files available for import
-    compass compile -I "shared/vendor/scss" -I "shared/gh/scss" -I "apps/admin/ui/scss"
+    compass compile -I "shared/vendor/scss" -I "shared/gh/scss" -I "apps/admin/ui/scss" -I "apps/timetable/admin/ui/scss"
 }
 
 # Generate the CSS files for the student UI
