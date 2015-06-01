@@ -435,9 +435,8 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
 
         // Recalculate the date based on the selected day
         } else if (trigger === '#gh-module-day') {
-
             // Retrieve the current day
-            var currentDay = moment.tz(dates.start, 'Europe/London').format('E');
+            var currentDay = parseInt(moment.tz(moment(dates.start).add({'hours': 1}), 'Europe/London').format('E'), 10);
 
             // Calculate the start of the week
             var dayOffset = -3;
@@ -446,7 +445,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
             }
             dayOffset = currentDay - dayOffset;
 
-            var weekStart = moment.tz(dates.start, 'Europe/London').add({'hours': 1}).subtract({'days': dayOffset}).format('YYYY-MM-DD');
+            var weekStart = moment.tz(moment(dates.start).add({'hours': 1}), 'Europe/London').subtract({'days': dayOffset}).format('YYYY-MM-DD');
 
             // Retrieve the selected day value
             var dayVal = parseInt($('#gh-module-day option:selected').attr('data-day'), 10);
@@ -479,7 +478,7 @@ define(['gh.core', 'moment', 'moment-timezone', 'clickover', 'jquery-datepicker'
 
                 // Update the day
                 } else if ($(component).selector === '#gh-module-day') {
-                    var day = moment.tz(dates.start, 'Europe/London').day();
+                    var day = moment.tz(moment(dates.start).add({'hours': 1}), 'Europe/London').day();
                     $(component).val(day);
                 }
             }

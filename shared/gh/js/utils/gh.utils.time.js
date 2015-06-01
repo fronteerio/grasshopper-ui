@@ -247,7 +247,7 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         });
 
         // Return the date of the first lecture day
-        return moment(term.start).add({'days': 2, 'hours': 1}).toISOString();
+        return moment(term.start).add({'days': 2, 'hours': -((new Date()).getTimezoneOffset() / 60)}).toISOString();
     };
 
     /**

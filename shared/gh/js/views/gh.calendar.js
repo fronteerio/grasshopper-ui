@@ -149,9 +149,9 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
     var changeTerm = function() {
         var termName = $(this).attr('data-term');
         // Retrieve the first day of term based on the name
-        var term = gh.utils.getFirstLectureDayOfTerm(termName);
+        var firstLectureDay = gh.utils.getFirstLectureDayOfTerm(termName);
         // Navigate to a specific date in the calendar
-        calendar.fullCalendar('gotoDate', term);
+        calendar.fullCalendar('gotoDate', firstLectureDay);
          // Set the current day
         setCurrentDay();
         // Set the week label
