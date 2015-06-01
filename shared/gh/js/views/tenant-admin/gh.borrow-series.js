@@ -231,21 +231,23 @@ define(['gh.core', 'gh.constants', 'gh.api.orgunit'], function(gh, constants, or
     var addBinding = function() {
         $('body').on('click', '.gh-borrow-series', showBorrowSeriesModal);
         $('body').on('shown.bs.modal', '#gh-borrow-series-modal', function () {
-            // Show the subheader tripos picker
-            $('#gh-borrow-series-tripos').show();
+            $('#gh-borrow-series-tripos option + option').onAvailable(function() {
+                // Show the subheader tripos picker
+                $('#gh-borrow-series-tripos').show();
 
-            // Destroy the field if it's been initialised previously
-            $('#gh-borrow-series-tripos').chosen('destroy').off('change', setUpModules);
+                // Destroy the field if it's been initialised previously
+                $('#gh-borrow-series-tripos').chosen('destroy').off('change', setUpModules);
 
-            // Initialise the Chosen plugin on the tripos picker
-            $('#gh-borrow-series-tripos').chosen({
-                'no_results_text': 'No matches for'
-            }).change(setUpPartPicker);
+                // Initialise the Chosen plugin on the tripos picker
+                $('#gh-borrow-series-tripos').chosen({
+                    'no_results_text': 'No matches for'
+                }).change(setUpPartPicker);
 
-            // Track the user starting borrowing of a series
-            gh.utils.trackEvent(['Manage', 'Borrow series', 'Started']);
-            // Track how long the user takes to borrow the series
-            timeFromStart = new Date();
+                // Track the user starting borrowing of a series
+                gh.utils.trackEvent(['Manage', 'Borrow series', 'Started']);
+                // Track how long the user takes to borrow the series
+                timeFromStart = new Date();
+            });
         });
         $('body').on('click', '#gh-borrow-series-modal [data-dismiss="modal"]', function() {
             // Track the user cancelling borrowing of a module
