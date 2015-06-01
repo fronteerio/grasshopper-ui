@@ -178,7 +178,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 return gh.utils.notification('Could not create user: ' + displayName, constants.messaging.default.error, 'error');
             }
             // Update the user list
-            getUsers.apply($form);
+            $('#gh-administrators-container .collapse').trigger('show.bs.collapse');
             // Reset the form
             $form[0].reset();
             // Show a success message
@@ -217,26 +217,10 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
                 if (adminStatusErr) {
                     return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
                 }
-
-                // TODO: enable password updates once it's implemented in the backend
-                // If the password field is not empty, submit a password update
-                // if (password) {
-                //     gh.api.userAPI.changePassword(userId, newPassword, oldPassword, function(passwordErr) {
-                //         if (passwordErr) {
-                //             return gh.utils.notification('Administrator ' + displayName + ' could not be updated', constants.messaging.default.error, 'error');
-                //         }
-
-                //         // Update the user list
-                //         getUsers.apply($form);
-                //         // Notify the user of a successful update
-                //         gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
-                //     });
-                // } else {
-                    // Update the user list
-                    getUsers.apply($form);
-                    // Show a success message
-                    gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
-                // }
+                // Update the user list
+                $('#gh-administrators-container .collapse').trigger('show.bs.collapse');
+                // Show a success message
+                gh.utils.notification('Administrator ' + displayName + ' successfully updated', null, 'success');
             });
         });
 

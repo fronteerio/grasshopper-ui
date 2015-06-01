@@ -1,0 +1,14 @@
+<% if (!data.gh.data.me.anon) { %>
+    <div id="gh-export-container">
+        <div id="gh-export-main">
+            <!-- <div class="alert alert-warning">Log in to Timetable through a tablet or computer to make edits to your personal timetable.</div> -->
+            <p id="gh-export-add-description">Add &amp; subscribe to your timetable on your phone.</p>
+            <a href="<%= 'webcal://' + window.location.hostname + '/api/users/' + data.gh.data.me.id + '/' + data.gh.data.me.calendarToken + '/calendar.ical' %>" id="gh-export-subscribe" class="btn btn-primary">Subscribe</a>
+        </div>
+        <div id="gh-export-sync-message">
+            <i class="fa fa-info-circle"></i>
+            <small>Updates will be synced automatically,<br/>within ~ 8 hours after a change.</small>
+        </div>
+    </div>
+    <div class="alert alert-warning">Please log in to Timetable through a tablet or desktop computer to make edits to your personal timetable.</div>
+<% } %>

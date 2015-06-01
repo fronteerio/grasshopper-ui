@@ -402,17 +402,17 @@ tbody tr:last-child > td.fc-widget-content {
         position: relative;
     }
 
-    #gh-calendar-view #gh-export-container {
+    #gh-export-container {
         top: 43px;
     }
 }
 
-#gh-calendar-view #gh-export-container a,
-#gh-calendar-view #gh-export-container .btn-link {
+#gh-export-container a,
+#gh-export-container .btn-link {
     font-weight: 400 !important;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main {
+#gh-export-container #gh-export-main {
     margin-top: 30px;
     padding: 30px 30px 10px 40px;
     width: 370px;
@@ -426,24 +426,24 @@ tbody tr:last-child > td.fc-widget-content {
             transition: opacity .2s;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main p#gh-export-add-description {
+#gh-export-container #gh-export-main p#gh-export-add-description {
     font-weight: 400;
     margin-bottom: 20px;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
+#gh-export-container #gh-export-main #gh-export-subscribe {
     border: none;
     display: block;
     padding: 16px 0 14px 0;
     width: 100%;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main #gh-export-collapsed-other-toggle {
+#gh-export-container #gh-export-main #gh-export-collapsed-other-toggle {
     margin: 20px 0 12px 0;
     padding: 8px 0;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main .gh-export-other-option {
+#gh-export-container #gh-export-main .gh-export-other-option {
     display: list-item;
     font-weight: 400;
     list-style-type: decimal;
@@ -451,7 +451,7 @@ tbody tr:last-child > td.fc-widget-content {
     padding-bottom: 5px;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main textarea {
+#gh-export-container #gh-export-main textarea {
     font-family: monospace;
     font-size: 13px;
     height: 100px;
@@ -461,30 +461,30 @@ tbody tr:last-child > td.fc-widget-content {
     width: 280px;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main ul {
+#gh-export-container #gh-export-main ul {
     list-style-type: circle;
     padding: 0 0 0 33px;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main ul li {
+#gh-export-container #gh-export-main ul li {
     margin: 7px 0;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main ul li:last-child {
+#gh-export-container #gh-export-main ul li:last-child {
     margin: 0;
 }
 
-#gh-calendar-view #gh-export-container #gh-export-main ul li i {
+#gh-export-container #gh-export-main ul li i {
     font-size: 14px;
 }
 
-#gh-calendar-view #gh-export-container > #gh-export-sync-message {
+#gh-export-container > #gh-export-sync-message {
     display: block;
     padding: 20px 20px 20px 40px;
     width: 400px;
 }
 
-#gh-calendar-view #gh-export-container > #gh-export-sync-message i {
+#gh-export-container > #gh-export-sync-message i {
     float: left;
     font-size: 20px;
     height: 20px;
@@ -492,7 +492,7 @@ tbody tr:last-child > td.fc-widget-content {
     width: 20px;
 }
 
-#gh-calendar-view #gh-export-container > #gh-export-sync-message small {
+#gh-export-container > #gh-export-sync-message small {
     display: block;
     font-size: 15px;
     overflow: auto;

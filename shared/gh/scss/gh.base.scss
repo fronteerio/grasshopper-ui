@@ -374,6 +374,11 @@ footer ul li {
     position: fixed;
 }
 
+.gh-collapsed #gh-page-container #gh-left-container #gh-meta-container,
+.gh-collapsed #gh-page-container #gh-left-container #gh-content-description {
+    width: 50px;
+}
+
 .gh-collapsed main {
     margin-bottom: 230px;
 }

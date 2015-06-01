@@ -32,6 +32,9 @@ define(['exports'], function(exports) {
         'global-admin-tenants': '/shared/gh/partials/global-admin/tenants.html',
         'global-admin-users': '/shared/gh/partials/global-admin/users.html',
 
+        // GH Mobile views
+        'mobile-export': '/shared/gh/partials/mobile/mobile-export.html',
+
         // GH tenant admin views
         'admin-app': '/shared/gh/partials/tenant-admin/admin-app.html',
         'admin-app-config': '/shared/gh/partials/tenant-admin/admin-app-config.html',
