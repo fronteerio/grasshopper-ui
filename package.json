@@ -30,6 +30,7 @@
     "grunt-contrib-csslint": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-requirejs": "latest",
+    "grunt-contrib-watch": "latest",
     "grunt-coveralls": "latest",
     "grunt-exec": "latest",
     "grunt-ghost": "latest",

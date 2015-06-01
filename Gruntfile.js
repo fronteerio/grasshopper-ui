@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         },
         'exec': {
             'compileCSS': {
-                'cmd': 'etc/scripts/compass.sh'
+                'cmd': 'etc/scripts/compileCSS.sh'
             },
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
@@ -289,6 +289,12 @@ module.exports = function(grunt) {
                 ],
                 'version': '<%= target %>/optimized/hashes.json'
             }
+        },
+        'watch': {
+            'css': {
+                'files': '**/*.scss',
+                'tasks': ['exec:compileCSS']
+            }
         }
     });
 
@@ -302,6 +308,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-ghost');

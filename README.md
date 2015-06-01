@@ -78,7 +78,7 @@ gem install sass
 gem install compass
 ```
 
-To compile the CSS files you can simply run: `./etc/scripts/compass.sh` from the folder root.
+To compile the CSS files you can simply run `grunt watch` to compile the changed SCSS files automatically, or run `./etc/scripts/compass.sh` from the folder root.
 
 
 ## Testing
