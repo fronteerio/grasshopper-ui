@@ -470,7 +470,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'exec:compileCSS', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'exec:compileCSS', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**
