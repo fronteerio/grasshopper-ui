@@ -68,12 +68,15 @@ module.exports = function(grunt) {
                 'unqualified-attributes': false
             },
             'files': [
-                'apps/**/*.css',
-                'shared/gh/**/*.css',
+                'apps/**/*.scss',
+                'shared/gh/**/*.scss',
                 'tests/**/*.css'
             ]
         },
         'exec': {
+            'compileCSS': {
+                'cmd': 'etc/scripts/compileCSS.sh'
+            },
             'removeTarget': {
                 'cmd': 'rm -rf <%= target %>/optimized/<%= target %>'
             },
@@ -286,6 +289,12 @@ module.exports = function(grunt) {
                 ],
                 'version': '<%= target %>/optimized/hashes.json'
             }
+        },
+        'watch': {
+            'css': {
+                'files': '**/*.scss',
+                'tasks': ['exec:compileCSS']
+            }
         }
     });
 
@@ -299,6 +308,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-ghost');
@@ -460,7 +470,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'copy', 'exec:compileCSS', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**

@@ -99,6 +99,16 @@ before_install:
   - sudo cp ./target/optimized/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
   - sudo cp -R ./target/optimized/apache/app_*.conf /usr/local/apache2/conf/sites-enabled
 
+  # Install SASS and Compass
+  - echo 'Install SASS and Compass'
+  - gem install sass --version "=3.4.14"
+  - gem install compass --version "=1.0.3"
+
+  # Compile the SCSS files
+  - echo 'Compiling CSS files'
+  - cd ~/build/CUL-DigitalServices/grasshopper-ui
+  - ./etc/scripts/compass.sh
+
   # Start Apache
   - sudo /usr/local/apache2/bin/apachectl start
   - sleep 5
