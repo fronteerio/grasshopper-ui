@@ -34,5 +34,8 @@ createCSS apps/admin/ui/scss apps/admin/ui/css
 # Generate the CSS files for the error pages
 createCSS shared/gh/errors/scss shared/gh/errors/css
 
+# Generate the CSS files for the mobile phone view
+createCSS shared/gh/mobile/scss shared/gh/mobile/css
+
 # Remove the SASS cache folder
 rm -rf .sass-cache
