@@ -94,4 +94,13 @@
     #gh-my-agenda-view .gh-btn-load-next-week {
         display: none;
     }
+
+    .gh-event-type:not(:empty)::before {
+        display: none;
+    }
+
+    /* Calendar today icon */
+    .gh-agenda-view-today .gh-event-calendar-icon {
+        border-color: #888;
+    }
 }
