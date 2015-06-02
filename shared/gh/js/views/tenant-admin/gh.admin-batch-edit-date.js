@@ -172,15 +172,17 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
 
                     // Get the week number
                     var eventWeek = parseInt(chk.value, 10);
+                    // Get the date of the event
+                    // var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
 
                     // Get the date by week and day
                     // Since Cambridge weeks start on Thursdays, we should prevent that
-                    // chosen days are put after the current selected day. Therefore
-                    // we need to subtract one week for all the days except Tuesdays and
-                    // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                    // chosen days are put before the current selected day. Therefore
+                    // we need to add one week for all the days except Tuesdays and Wednesdays.
+                    // (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
-                    if (!_.contains([2,3], dayOfTheWeek)) {
-                        dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').subtract({'weeks': 1});
+                    if (_.contains([2,3], dayOfTheWeek)) {
+                        dateByWeekAndDay = moment(dateByWeekAndDay).add({'weeks': 1});
                     }
 
                     // Only add a new event for the generated day if the day is within a term
@@ -409,14 +411,14 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
         var daysObj = {};
         _.each($rows, function($row) {
             $row = $($row);
-            var startDate = new Date($row.find('.gh-event-date').attr('data-start'));
-            var endDate = new Date($row.find('.gh-event-date').attr('data-end'));
-            var dayOfTheWeek = new Date(startDate).getDay();
+            var startDate = moment.tz($row.find('.gh-event-date').attr('data-start'), 'Europe/London');
+            var endDate = moment.tz($row.find('.gh-event-date').attr('data-end'), 'Europe/London');
+            var dayOfTheWeek = parseInt(moment(startDate).format('E'), 10);
             daysObj[dayOfTheWeek] = {
-                'startHour': startDate.getHours(),
-                'endHour': endDate.getHours(),
-                'startMinute': startDate.getMinutes(),
-                'endMinute': endDate.getMinutes()
+                'startHour': parseInt(moment(startDate).format('H'), 10),
+                'endHour': parseInt(moment(endDate).format('H'), 10),
+                'startMinute': parseInt(moment(startDate).format('m'), 10),
+                'endMinute': parseInt(moment(endDate).format('m'), 10)
             };
         });
 
