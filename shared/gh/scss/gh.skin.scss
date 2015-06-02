@@ -739,11 +739,25 @@ tbody .fc-sun {
 .gh-event-calendar-icon .day {
     background-color: #FFF;
     color: #4D4D4D;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.004);
 }
 
 .gh-event-calendar-icon.gh-event-calendar-icon-xl + .dayname {
     color: #919191;
+}
+
+/* Today's icon */
+
+.gh-agenda-view-today .gh-event-calendar-icon {
+    border-color: #016470;
+}
+
+.gh-agenda-view-today .gh-event-calendar-icon .month {
+    background-color: #016470;
+}
+
+.gh-agenda-view-today .gh-event-calendar-icon .day {
+    background-color: #30818A;
+    color: #FFF;
 }
 
 
