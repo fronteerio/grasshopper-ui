@@ -450,10 +450,10 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
             $(document).trigger('gh.calendar.getCurrentViewDate', function(currentViewDate) {
 
                 // Calculate the start date
-                range.start = convertUnixDatetoISODate(currentViewDate - constants.time.PERIODS[currentView]);
+                range.start = convertUnixDatetoISODate(moment(currentViewDate).subtract('milliseconds', constants.time.PERIODS[currentView]));
 
                 // Calculate the end date
-                range.end = convertUnixDatetoISODate(currentViewDate + constants.time.PERIODS[currentView]);
+                range.end = convertUnixDatetoISODate(moment(currentViewDate).add('milliseconds', constants.time.PERIODS[currentView]));
 
                 // Return the range object
                 return callback(range);

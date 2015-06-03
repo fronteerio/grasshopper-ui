@@ -480,7 +480,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         // Get the start date from the current calendar view
         var viewStartDate = calendar.fullCalendar('getDate');
         // Convert the Moment object to a UTC date
-        return gh.utils.convertISODatetoUnixDate(moment.utc(viewStartDate).add({'hours': 1}).format('YYYY-MM-DD'));
+        return gh.utils.convertISODatetoUnixDate(moment.utc(viewStartDate).add({'hours': -((new Date()).getTimezoneOffset() / 60)}).format('YYYY-MM-DD'));
     };
 
     /**
