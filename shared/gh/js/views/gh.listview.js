@@ -184,6 +184,7 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
 
         // If the modules are toggled, set the display of the module list to none
         if ($('html').hasClass('gh-collapsed')) {
+            $('#gh-left-container').addClass('gh-collapsed');
             setTimeout(function() {
                 // Hide the modules list after the animations complete
                 $('#gh-modules-list').css('display', 'none');
@@ -195,11 +196,12 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
                 utils.trackEvent(['Navigation', 'Collapsed']);
             }, 300);
         } else {
-            // Show the modules list before the animation starts
-            $('#gh-modules-list').css('display', 'block');
             // Toggle the animation finished class
             $('html').toggleClass('gh-collapsed-finished');
+            // Show the modules list before the animation starts
+            $('#gh-modules-list').css('display', 'block');
             setTimeout(function() {
+                $('#gh-left-container').removeClass('gh-collapsed');
                 // Trigger a window resize event to let all components adjust themselves
                 $(window).trigger('resize');
                 // Send a tracking event
