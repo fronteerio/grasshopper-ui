@@ -92,7 +92,8 @@
     /* MY AGENDA */
     /*************/
 
-    #gh-my-agenda-view .gh-btn-load-next-week {
+    #gh-my-agenda-view .gh-btn-load-next-week,
+    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week h3 span {
         display: none;
     }
 
