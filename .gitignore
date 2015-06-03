@@ -2,6 +2,7 @@
 .sass-cache
 apps/**/css/
 shared/**/css/
+!shared/vendor/css/
 bootstrap.log
 config.rb
 coverage/

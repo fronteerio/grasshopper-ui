@@ -81,6 +81,10 @@ select[disabled],
     cursor: not-allowed;
 }
 
+.gh-focus {
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
 /* When the page loads and it's laying itself out, animations shouldn't occur.
    The class gets removed after the page has been set up */
 .gh-preload * {
