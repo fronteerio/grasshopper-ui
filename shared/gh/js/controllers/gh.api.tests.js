@@ -281,6 +281,12 @@ define(['exports', 'gh.utils', 'gh.api.app', 'gh.api.authentication', 'gh.api.or
     var onTestStart = function(details) {
         QUnit.stop();
 
+        // Enable cache for GET requests as Sinon relies on a known URL in order to be able
+        // to intercept the call
+        $.ajaxSetup({
+            'cache': true
+        });
+
         // Reset the test data
         _apps = null;
         _tenants = null;
