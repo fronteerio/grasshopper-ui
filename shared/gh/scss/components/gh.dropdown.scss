@@ -13,10 +13,12 @@
  * permissions and limitations under the License.
  */
 
-@import 'gh.base';
-@import 'gh.components';
-@import 'gh.skin';
+/******************************************************/
+/* DROPDOWN                                           */
+/* @see http://getbootstrap.com/javascript/#dropdowns */
+/******************************************************/
 
-#gh-main {
-    padding: 40px;
+.dropdown ul.dropdown-menu li button {
+    text-align: left;
+    width: 100%;
 }

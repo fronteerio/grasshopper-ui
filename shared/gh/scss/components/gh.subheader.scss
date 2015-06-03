@@ -13,10 +13,13 @@
  * permissions and limitations under the License.
  */
 
-@import 'gh.base';
-@import 'gh.components';
-@import 'gh.skin';
 
-#gh-main {
-    padding: 40px;
+/*************/
+/* SUBHEADER */
+/*************/
+
+#gh-right-container #gh-subheader form {
+    margin: 0 0 0 40px;
+    min-width: 900px;
+    padding: 28px 0 0;
 }

@@ -1,0 +1,94 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/**********/
+/* CHOSEN */
+/**********/
+
+.chosen-container {
+    font-size: 15px;
+    margin-right: 20px;
+}
+
+.chosen-container .chosen-single {
+    height: 45px !important;
+    padding-top: 2px;
+}
+
+.chosen-container .chosen-single,
+.chosen-container .chosen-drop {
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+}
+
+.chosen-container .chosen-single span,
+.chosen-container .chosen-single b {
+    margin-top: 9px;
+}
+
+.chosen-container .chosen-single b {
+    height: 18px !important;
+    width: 18px !important;
+}
+
+.chosen-container .chosen-search {
+    padding: 0 8px;
+}
+
+.chosen-container .chosen-search input {
+    padding: 5px 20px 4px 7px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    background-image: none !important;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+       -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+       -moz-transition: border-color ease-in-out .15s, -moz-box-shadow ease-in-out .15s !important;
+         -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+}
+
+.chosen-container .chosen-results {
+    margin: 0 8px 0 0;
+    max-height: 320px;
+    padding: 0 0 5px 8px;
+}
+
+.chosen-container .chosen-results li {
+    font-weight: 400;
+    padding: 10px 8px;
+}
+
+.chosen-container .chosen-results li.highlighted {
+    background-image: none;
+}
+
+.chosen-container.chosen-with-drop .chosen-drop,
+.chosen-container.chosen-with-drop .chosen-single {
+    border-style: solid;
+}
+
+.chosen-container.chosen-with-drop .chosen-drop {
+    border-width: 0 1px 1px 1px;
+}
+
+.chosen-container.chosen-with-drop .chosen-single {
+    border-width: 1px 1px 0 1px;
+}

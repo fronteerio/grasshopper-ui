@@ -81,6 +81,10 @@ select[disabled],
     cursor: not-allowed;
 }
 
+.gh-focus {
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
 /* When the page loads and it's laying itself out, animations shouldn't occur.
    The class gets removed after the page has been set up */
 .gh-preload * {
@@ -152,6 +156,7 @@ footer,
 
 #gh-page-container #gh-left-container {
     float: left;
+    overflow: hidden;
     padding: 0;
     position: relative;
     -webkit-transition: width .3s;
@@ -436,7 +441,10 @@ footer ul li {
     border-bottom: none !important;
 }
 
-.gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p,
+.gh-collapsed #gh-left-container #gh-meta-container #gh-content-description p {
+    display: none;
+}
+
 .gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
 .gh-collapsed #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary p {
     opacity: 0;

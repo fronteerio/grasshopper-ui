@@ -13,10 +13,21 @@
  * permissions and limitations under the License.
  */
 
-@import 'gh.base';
-@import 'gh.components';
-@import 'gh.skin';
+/**********/
+/* EVENTS */
+/**********/
 
-#gh-main {
-    padding: 40px;
+.gh-event-type:not(:empty)::before {
+    border-radius: 12px;
+    content: attr(data-first);
+    display: inline-block;
+    height: 20px;
+    margin-right: 6px;
+    padding: 1px;
+    text-align: center;
+    width: 20px;
+}
+
+.gh-event-type:not(:empty) span {
+    display: none;
 }

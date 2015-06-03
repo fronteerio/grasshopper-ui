@@ -13,10 +13,23 @@
  * permissions and limitations under the License.
  */
 
-@import 'gh.base';
-@import 'gh.components';
-@import 'gh.skin';
 
-#gh-main {
-    padding: 40px;
+/***********/
+/* BUTTONS */
+/***********/
+
+.btn {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    padding: 8px 12px;
+}
+
+.btn i {
+    padding-right: 5px;
+}
+
+.btn:hover,
+.btn:focus {
+    text-decoration: none;
 }

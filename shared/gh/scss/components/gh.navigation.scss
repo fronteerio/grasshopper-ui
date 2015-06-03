@@ -1,0 +1,57 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*******************/
+/* NAVIGATION TABS */
+/*******************/
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs > li,
+.nav-tabs > li a {
+    max-height: 44px;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li.active > a,
+.nav-tabs > li > a:hover {
+    border: none !important;
+    -webkit-border-radius: 0 !important;
+       -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+}
+
+/*******************/
+/* NAVIGATION PILL */
+/*******************/
+
+.nav-stacked > li + li {
+    margin-top: 0;
+}
+
+.nav-pills.nav-stacked > li > a {
+    border-radius: 0;
+    font-weight: 200;
+}
+
+.nav-pills.nav-stacked > li.active > a,
+.nav-pills.nav-stacked > li.active > a:hover,
+.nav-pills.nav-stacked > li.active > a:focus {
+    cursor: default;
+    font-weight: 400;
+}

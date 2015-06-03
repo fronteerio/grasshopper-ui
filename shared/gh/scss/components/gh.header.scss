@@ -13,10 +13,17 @@
  * permissions and limitations under the License.
  */
 
-@import 'gh.base';
-@import 'gh.components';
-@import 'gh.skin';
 
-#gh-main {
-    padding: 40px;
+/**********/
+/* HEADER */
+/**********/
+
+#gh-right-container #gh-header h1 {
+    display: inline-block;
+    margin: 36px 0 35px 40px;
+}
+
+#gh-right-container #gh-header .gh-signin-form,
+#gh-right-container #gh-header #gh-signout-form {
+    margin: 38px 30px 38px 40px;
 }
