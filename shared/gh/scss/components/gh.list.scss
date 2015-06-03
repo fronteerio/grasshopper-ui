@@ -1,0 +1,240 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/**************/
+/* LIST GROUP */
+/**************/
+
+.list-group {
+    margin: 0;
+}
+
+.list-group .list-group-item {
+    border-width: 0 0 1px 0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.list-group .list-group-item .list-group .list-group-item {
+    border-bottom-width: 0;
+}
+
+.list-group .list-group-item .gh-list-group-item-container {
+    width: 100%;
+}
+
+/* This container is needed to let the 3 columns behave like table cells and thus create the perfect layout */
+.list-group .list-group-item .gh-list-group-item-container,
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list {
+    display: table;
+}
+
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list {
+    font-weight: 200;
+    width: 100%;
+    padding: 0;
+}
+
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list:focus,
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list:hover {
+    text-decoration: none;
+}
+
+.list-group .list-group-item .gh-list-group-item-container .gh-toggle-list + ul {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 9px;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .gh-list-group-item-container .gh-toggle-list + ul {
+    display: block;
+}
+
+.list-group-item:first-child,
+.list-group-item:last-child {
+    border-radius: 0;
+}
+
+.list-group-item .gh-list-action {
+    border-top: none;
+}
+
+.list-group .list-group-item p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.8;
+    text-align: left;
+    white-space: pre-line;
+    word-break: normal;
+}
+
+.list-group .list-group-item p.gh-list-description-text {
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 1;
+}
+
+.list-group .list-group-item span.gh-borrowed-icon-container {
+    border-radius: 3px;
+    display: block;
+    height: 25px;
+    overflow: hidden;
+    text-align: center;
+    width: 25px;
+}
+
+.list-group .list-group-item .gh-list-action,
+.list-group .list-group-item .gh-list-description,
+.list-group .list-group-item .gh-list-icon,
+.list-group .list-group-item .gh-series-borrowed {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.list-group .list-group-item .gh-list-action,
+.list-group .list-group-item .gh-list-description,
+.list-group .list-group-item .gh-list-icon {
+    padding: 14px 0;
+}
+
+
+.list-group .list-group-item .list-group .gh-list-action,
+.list-group .list-group-item .gh-series-borrowed,
+.list-group .list-group-item .list-group .gh-list-description {
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+/* List action */
+
+.list-group .list-group-item .gh-list-action {
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    width: 50px;
+}
+
+.list-group .list-group-item .gh-list-action.disabled {
+    cursor: not-allowed !important;
+}
+
+.list-group .list-group-item .gh-list-action.disabled button{
+    opacity: 0.25;
+}
+
+.list-group .list-group-item .gh-list-action .btn-link {
+    height: 44px;
+    margin-top: -22px;
+    padding: 0 16px;
+    position: absolute;
+    right: 0;
+}
+
+.list-group .list-group-item .gh-list-action .btn-link:disabled {
+    cursor: not-allowed !important;
+}
+
+.list-group .list-group-item .gh-list-action .btn-link i {
+    font-size: 19px;
+    padding: 0;
+}
+
+/* List description */
+
+.list-group .list-group-item .gh-list-description {
+    max-width: 230px;
+    overflow: auto;
+    padding: 12px 0 12px 0;
+    width: auto;
+}
+
+.list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
+    font-weight: 400;
+}
+
+/* List icon */
+
+.list-group .list-group-item .gh-list-icon {
+    max-width: 40px;
+    overflow: hidden;
+    text-align: center;
+    width: 40px;
+}
+
+.list-group .list-group-item .gh-list-icon i {
+    font-size: 26px;
+}
+
+/* List borrowed */
+
+.list-group .list-group-item .gh-series-borrowed {
+    height: 100%;
+    padding-left: 5px;
+    width: 40px;
+}
+
+.list-group .list-group-item .gh-series-borrowed .fa-link {
+    font-weight: 400;
+    padding: 5px;
+}
+
+/* Nested list */
+
+.list-group .list-group-item .list-group .list-group-item {
+    cursor: pointer;
+}
+
+.list-group .list-group-item.gh-list-group-item-open .list-group {
+    display: block !important;
+}
+
+.list-group .list-group-item .list-group .list-group-item:first-child {
+    border-top-style: solid;
+    border-top-width: 0;
+}
+
+.list-group .list-group-item .list-group .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-info {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    visibility: hidden;
+    width: 60px;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle {
+    font-size: 20px;
+    opacity: 0.75;
+}
+
+.list-group .list-group-item .list-group .list-group-item .gh-list-info .fa-info-circle:hover {
+    font-size: 20px;
+    opacity: 1;
+}
+
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-info {
+    visibility: visible;
+}
+
+.list-group .list-group-item .list-group .list-group-item:hover .gh-list-info .fa-info-circle {
+    padding: 10px;
+}

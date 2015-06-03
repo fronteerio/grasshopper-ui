@@ -14,18 +14,27 @@
  */
 
 
+/***********/
+/* COLOURS */
+/***********/
+
+$dark-tone: #171717;
+$mid-tone: #07525D;
+$light-tone: #127077;
+
+
 /***************/
 /* BASE STYLES */
 /***************/
 
 h1, h2, h3, h4, h5 {
-    color: #171717;
+    color: $dark-tone;
 }
 
 input,
 textarea {
     border-color: #CCC;
-    color: #171717 !important;
+    color: $dark-tone !important;
 }
 
 input[disabled],
@@ -44,7 +53,7 @@ select[disabled],
 
 a,
 .btn-link {
-    color: #127077;
+    color: $light-tone;
 }
 
 .btn-link:hover,
@@ -100,11 +109,11 @@ footer,
 #gh-page-container,
 #gh-page-container #gh-left-container #gh-navigation-container,
 #gh-page-container #gh-left-container #gh-modules-container {
-    background-color: #171717;
+    background-color: $dark-tone;
 }
 
 footer#footer-help {
-    background-color: #07525D;
+    background-color: $mid-tone;
 }
 
 .gh-admin footer#footer-help,
@@ -128,8 +137,8 @@ footer ul li a {
 }
 
 #gh-page-container #gh-left-container #gh-result-summary {
-    background-color: #127077;
-    border-bottom-color: #171717;
+    background-color: $light-tone;
+    border-bottom-color: $dark-tone;
 }
 
 #gh-page-container #gh-right-container,
@@ -144,7 +153,7 @@ footer ul li a {
 
 #gh-page-container #gh-right-container #gh-subheader,
 #gh-page-container #gh-left-container #gh-content-description {
-    background-color: #07525D;
+    background-color: $mid-tone;
     color: #FFF;
 }
 
@@ -185,8 +194,8 @@ footer ul li a {
 
 .btn-default {
     color: #FFF;
-    background-color: #171717;
-    border-color: #171717;
+    background-color: $dark-tone;
+    border-color: $dark-tone;
 }
 
 .btn-default:hover,
@@ -212,7 +221,7 @@ footer ul li a {
 .btn-default.gh-btn-secondary {
     background-color: transparent;
     border-color: transparent;
-    color: #171717;
+    color: $dark-tone;
 }
 
 .btn-default.gh-btn-secondary:hover,
@@ -255,7 +264,7 @@ footer ul li a {
 ul.nav-tabs li.active {
     background-color: #FFF;
     border-color: #FFF;
-    color: #171717;
+    color: $dark-tone;
 }
 
 /* Secondary buttons */
@@ -263,13 +272,13 @@ ul.nav-tabs li.active {
 .btn-default.gh-btn-tertiary {
     background-color: #FFF;
     border-color: #FFF;
-    color: #171717;
+    color: $dark-tone;
 }
 
 .btn-default.gh-btn-tertiary:hover,
 .btn-default.gh-btn-tertiary:focus {
-    background-color: #171717;
-    border-color: #171717;
+    background-color: $dark-tone;
+    border-color: $dark-tone;
     color: #FFF;
 }
 
@@ -281,7 +290,7 @@ ul.nav-tabs li.active {
 /* Link buttons */
 
 .btn-link i {
-    color: #171717;
+    color: $dark-tone;
 }
 
 
@@ -307,7 +316,7 @@ ul.nav-tabs li.active {
 }
 
 .gh-empty-icons .fa-share-square-o {
-    color: #07525D;
+    color: $mid-tone;
 }
 
 
@@ -316,8 +325,8 @@ ul.nav-tabs li.active {
 /**************/
 
 .list-group .list-group-item {
-    background-color: #07525D;
-    border-bottom-color: #171717;
+    background-color: $mid-tone;
+    border-bottom-color: $dark-tone;
     color: #FFF;
 }
 
@@ -330,7 +339,7 @@ ul.nav-tabs li.active {
 }
 
 .list-group .list-group-item .gh-list-action {
-    background-color: #127077;
+    background-color: $light-tone;
 }
 
 .list-group .list-group-item .gh-list-icon i,
@@ -349,7 +358,7 @@ ul.nav-tabs li.active {
 /* Nested lists */
 .list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
     background-color: #3C858E;
-    border-bottom-color: #127077;
+    border-bottom-color: $light-tone;
 }
 
 .list-group .list-group-item .list-group .list-group-item:hover {
@@ -357,21 +366,21 @@ ul.nav-tabs li.active {
 }
 
 .list-group .list-group-item .list-group .list-group-item:first-child {
-    border-color: #127077;
+    border-color: $light-tone;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action {
-    background-color: #07525D;
+    background-color: $mid-tone;
 }
 
 .list-group .list-group-item .gh-list-action.disabled {
-    background-color: #127077 !important;
+    background-color: $light-tone !important;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-action,
 .list-group .list-group-item .list-group .list-group-item .gh-list-description,
 .list-group .list-group-item .list-group .list-group-item .gh-series-borrowed {
-    border-top-color: #171717;
+    border-top-color: $dark-tone;
 }
 
 .list-group .list-group-item .list-group .list-group-item .gh-list-description p.gh-list-metadata:not(.no-information){
@@ -385,7 +394,7 @@ ul.nav-tabs li.active {
 .gh-list-group-item-container.gh-series-active .gh-borrowed-icon-container .fa-link,
 .gh-list-group-item-container.gh-series-active .gh-list-action i,
 .list-group .list-group-item .gh-borrowed-icon-container:hover .fa-link {
-    color: #171717;
+    color: $dark-tone;
 }
 
 
@@ -401,13 +410,13 @@ ul.nav-tabs li.active {
 .nav-pills.nav-stacked > li > a:hover,
 .nav-pills.nav-stacked > li > a:focus {
     background-color: #DDD;
-    color: #171717;
+    color: $dark-tone;
 }
 
 .nav-pills.nav-stacked > li.active > a,
 .nav-pills.nav-stacked > li.active > a:hover,
 .nav-pills.nav-stacked > li.active > a:focus {
-    background-color: #127077;
+    background-color: $light-tone;
 }
 
 .gh-global-admin .nav-pills.nav-stacked > li.active > a,
@@ -446,7 +455,7 @@ ul.nav-tabs li.active {
 
 .chosen-container .chosen-single {
     background: #FFF;
-    color: #171717;
+    color: $dark-tone;
 }
 
 .chosen-container .chosen-single,
@@ -481,7 +490,7 @@ ul.nav-tabs li.active {
 }
 
 .chosen-container .chosen-results li.highlighted {
-    background-color: #127077;
+    background-color: $light-tone;
 }
 
 .chosen-container.chosen-with-drop .chosen-drop,
@@ -507,7 +516,7 @@ ul.nav-tabs li.active {
 /* Primary toolbar */
 
 .gh-toolbar-primary {
-    background-color: #127077;
+    background-color: $light-tone;
 }
 
 .fc-row.fc-widget-header thead tr th,
@@ -517,7 +526,7 @@ ul.nav-tabs li.active {
 
 .fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today,
 .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
-    border-bottom-color: #171717 !important;
+    border-bottom-color: $dark-tone !important;
 }
 
 .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
@@ -550,7 +559,7 @@ tbody .fc-sun {
 }
 
 .fc-event-container .fc-event .fc-content {
-    color: #171717;
+    color: $dark-tone;
 }
 
 .fc-time-grid-event .fc-location {
@@ -587,7 +596,7 @@ tbody .fc-sun {
 #gh-calendar-view.gh-export-enabled #gh-btn-calendar-export {
     background-color: #EEF2F0;
     border-color: #EEF2F0;
-    color: #171717;
+    color: $dark-tone;
 }
 
 #gh-calendar-view #gh-export-container {
@@ -604,15 +613,15 @@ tbody .fc-sun {
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe {
-    background-color: #07525D;
+    background-color: $mid-tone;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main #gh-export-subscribe:hover {
-    background-color: #127077;
+    background-color: $light-tone;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-collapsed-other-toggle.btn-link i {
-    color: #127077;
+    color: $light-tone;
 }
 
 #gh-calendar-view #gh-export-container #gh-export-main ul li i {
@@ -821,7 +830,7 @@ span.gh-agenda-view-middot {
 /* Header */
 
 #gh-series-info-modal .modal-header {
-    background-color: #07525D;
+    background-color: $mid-tone;
 }
 
 #gh-series-info-modal .modal-header h4,

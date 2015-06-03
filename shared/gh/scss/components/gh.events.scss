@@ -13,22 +13,21 @@
  * permissions and limitations under the License.
  */
 
-.gh-focus {
-    outline: -webkit-focus-ring-color auto 5px;
+/**********/
+/* EVENTS */
+/**********/
+
+.gh-event-type:not(:empty)::before {
+    border-radius: 12px;
+    content: attr(data-first);
+    display: inline-block;
+    height: 20px;
+    margin-right: 6px;
+    padding: 1px;
+    text-align: center;
+    width: 20px;
 }
 
-@import 'components/gh.header';
-@import 'components/gh.subheader';
-@import 'components/gh.buttons';
-@import 'components/gh.navigation';
-@import 'components/gh.calendar';
-@import 'components/gh.empty';
-@import 'components/gh.list';
-@import 'components/gh.panel';
-@import 'components/gh.chosen';
-@import 'components/gh.events';
-@import 'components/gh.popover';
-@import 'components/gh.dropdown';
-@import 'components/gh.calendar.icon';
-@import 'components/gh.agenda.view';
-@import 'components/gh.series.info.modal';
+.gh-event-type:not(:empty) span {
+    display: none;
+}

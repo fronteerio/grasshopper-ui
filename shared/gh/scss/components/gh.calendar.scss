@@ -1,0 +1,449 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/************/
+/* CALENDAR */
+/************/
+
+#gh-my-calendar-view,
+#gh-calendar-view-container {
+    margin-top: 30px;
+}
+
+#gh-calendar-loading-container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#gh-calendar-loading-container h2 {
+    font-size: 30px;
+    font-weight: 200;
+    margin-bottom: 12px;
+}
+
+#gh-calendar-loading-container i {
+    font-size: 25px;
+}
+
+#gh-calendar-container {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
+            transition: opacity .2s;
+}
+
+#gh-calendar-container,
+.gh-toolbar-secondary {
+    margin: 0 30px;
+}
+
+/* Toolbar */
+#gh-toolbar-container {
+    height: 44px;
+}
+
+.gh-toolbar-primary .gh-toolbar-actions {
+    margin-right: 30px;
+}
+
+/* Default buttons */
+
+#gh-toolbar-container .btn-default,
+.gh-toolbar-secondary .btn-default,
+.nav-tabs > li > a {
+    font-weight: 400;
+    height: 100%;
+    padding: 12px 25px;
+}
+
+#gh-toolbar-container .btn-default.gh-btn-reverse.active {
+    font-weight: 600;
+}
+
+.gh-toolbar-secondary .btn-default {
+    padding: 8px 12px;
+}
+
+/* Primary toolbar */
+.gh-toolbar-primary {
+    height: 44px;
+    left: 320px;
+    right: 0;
+    z-index: 2;
+}
+
+.gh-toolbar-primary .gh-toolbar-views,
+.gh-toolbar-primary .gh-toolbar-actions {
+    height: 100%;
+}
+
+/* Secondary toolbar */
+
+.gh-toolbar-secondary {
+    font-weight: 600;
+    opacity: 1;
+    padding: 0 20px 60px;
+    position: relative;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
+            transition: opacity .2s;
+    z-index: 2;
+}
+
+.gh-toolbar-secondary #gh-calendar-toolbar-period,
+.gh-toolbar-secondary #gh-calendar-toolbar-terms,
+.gh-toolbar-secondary #gh-calendar-toolbar-view {
+    display: table;
+    height: 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.gh-toolbar-secondary #gh-calendar-toolbar-terms {
+    min-width: 200px;
+}
+
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary {
+    height: auto;
+    margin-bottom: 2px;
+}
+
+.gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
+    padding: 2px 0 3px;
+}
+
+.gh-toolbar-inner {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/* Today button */
+
+.gh-toolbar-secondary #gh-calendar-toolbar-today {
+    height: 32px;
+    position: absolute;
+    width: 100%;
+}
+
+.gh-toolbar-secondary #gh-btn-calendar-today {
+    border: none;
+}
+
+.gh-toolbar-label {
+    display: inline-block;
+    font-weight: 400;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Calendar (assumes weekly view and other views inherit unless otherwise specified) */
+
+.fc-time-grid-container {
+    height: 100% !important;
+}
+
+.fc-widget-header,
+.fc-slats .fc-minor td:first-child,
+.fc td:first-child,
+.fc-content-skeleton td,
+.fc-state-highlight,
+.fc-ltr .fc-axis,
+.fc-row.fc-widget-header thead tr th:first-child {
+    border-style: none !important;
+}
+
+.fc-time-grid-container td.fc-time {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#gh-calendar-container .fc-widget-header .fc-row > table {
+    border-collapse: separate;
+}
+
+.fc-row.fc-widget-header thead tr th,
+.fc-month-view .fc-row.fc-widget-header thead tr th:first-child {
+    border-bottom-style: solid !important;
+    border-bottom-width: 6px;
+    font-size: 16px;
+    font-weight: 400;
+    height: 40px;
+    padding-top: 9px;
+}
+
+.fc-agendaDay-view .fc-row.fc-widget-header thead tr th.fc-today, .fc-agendaWeek-view .fc-row.fc-widget-header thead tr th.fc-today {
+    font-weight: 600;
+}
+
+.fc-month-view .fc-today.fc-day-number {
+    border-right-style: solid !important;
+    border-right-width: 1px !important;
+}
+
+.fc-ltr .fc-basic-view .fc-day-number,
+.fc-ltr .fc-basic-view .fc-today.fc-day-number {
+    padding: 10px 8px 6px 11px;
+}
+
+.fc-ltr .fc-basic-view .fc-day-number {
+    text-align: left;
+}
+
+.fc-ltr .fc-basic-view .fc-today.fc-day-number {
+    font-weight: bold;
+}
+
+.fc-slats .fc-minor td {
+    border: none !important;
+}
+
+.fc td.fc-today {
+    border-right-style: solid !important;
+}
+
+.fc td:last-child.fc-today {
+    border-right-style: none !important;
+}
+
+.fc-event-container {
+    margin: 1px 1px 0 0 !important;
+}
+
+.fc-event-container .fc-event {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    border: none;
+    border-bottom-style: solid;
+    border-bottom-width: 1px !important;
+    border-left-style: solid;
+    border-left-width: 5px;
+    cursor: pointer;
+}
+
+.fc-event-container .fc-event.highlighted {
+    z-index: 1000 !important;
+}
+
+.fc-event-container .fc-event .fc-content {
+    font-weight: 600;
+}
+
+.fc-time-grid-event .fc-title,
+.fc-time-grid-event .fc-location {
+    display: block !important;
+    margin: 4px 6px;
+    overflow: hidden;
+}
+
+.fc-time-grid-event .fc-title {
+    font-weight: 400;
+}
+
+.fc-time-grid-event .fc-location {
+    margin-top: 2px;
+}
+
+.fc-time-grid > hr {
+    display: none !important;
+}
+
+.fc-bg tbody tr > td.fc-widget-content {
+    border-right-style: solid;
+}
+
+.fc-bg tbody tr > td.fc-widget-content:last-child {
+    border-right-style: none;
+}
+
+td.fc-widget-content {
+    border-style: none;
+    border-top-style: solid;
+}
+
+.fc-month-view tbody > tr > td.fc-day.fc-widget-content {
+    border-style: solid !important;
+}
+
+.fc-month-view tbody > tr > td.fc-today.fc-widget-content {
+    border-top-width: 0;
+    position: relative;
+}
+
+.fc-day-grid .fc-week:first-child tbody tr td,
+.fc-agendaDay-view tbody tr:first-child > td.fc-widget-content,
+.fc-agendaWeek-view tbody tr:first-child > td.fc-widget-content {
+    border-top-width: 0;
+}
+
+tbody tr:last-child > td.fc-widget-content {
+    border-bottom-width: 0;
+}
+
+/* Calendar 'more' popover */
+.fc-more-popover .fc-header .fc-close {
+    padding: 1px;
+}
+
+.fc-more-popover .fc-header .fc-title {
+    font-size: 13px;
+    padding: 3px 3px 0;
+}
+
+/* Export calendar */
+
+#gh-calendar-view #gh-export-container {
+    height: 100%;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 30px;
+    top: 259px;
+    -webkit-transition: width .2s, opacity .2s;
+       -moz-transition: width .2s, opacity .2s;
+         -o-transition: width .2s, opacity .2s;
+            transition: width .2s, opacity .2s;
+    width: 0;
+}
+
+/* Position the export panel on mobile devices */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)  {
+    #gh-calendar-view {
+        position: relative;
+    }
+
+    #gh-export-container {
+        top: 43px;
+    }
+}
+
+#gh-export-container a,
+#gh-export-container .btn-link {
+    font-weight: 400 !important;
+}
+
+#gh-export-container #gh-export-main {
+    margin-top: 30px;
+    padding: 30px 30px 10px 40px;
+    width: 370px;
+}
+
+#gh-calendar-view .gh-toolbar-primary button {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
+            transition: opacity .2s;
+}
+
+#gh-export-container #gh-export-main p#gh-export-add-description {
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+#gh-export-container #gh-export-main #gh-export-subscribe {
+    border: none;
+    display: block;
+    padding: 16px 0 14px 0;
+    width: 100%;
+}
+
+#gh-export-container #gh-export-main #gh-export-collapsed-other-toggle {
+    margin: 20px 0 12px 0;
+    padding: 8px 0;
+}
+
+#gh-export-container #gh-export-main .gh-export-other-option {
+    display: list-item;
+    font-weight: 400;
+    list-style-type: decimal;
+    margin-left: 18px;
+    padding-bottom: 5px;
+}
+
+#gh-export-container #gh-export-main textarea {
+    font-family: monospace;
+    font-size: 13px;
+    height: 100px;
+    margin: 0 0 20px 18px;
+    padding: 5px 5px;
+    resize: none;
+    width: 280px;
+}
+
+#gh-export-container #gh-export-main ul {
+    list-style-type: circle;
+    padding: 0 0 0 33px;
+}
+
+#gh-export-container #gh-export-main ul li {
+    margin: 7px 0;
+}
+
+#gh-export-container #gh-export-main ul li:last-child {
+    margin: 0;
+}
+
+#gh-export-container #gh-export-main ul li i {
+    font-size: 14px;
+}
+
+#gh-export-container > #gh-export-sync-message {
+    display: block;
+    padding: 20px 20px 20px 40px;
+    width: 400px;
+}
+
+#gh-export-container > #gh-export-sync-message i {
+    float: left;
+    font-size: 20px;
+    height: 20px;
+    margin: 9px 12px 0 0;
+    width: 20px;
+}
+
+#gh-export-container > #gh-export-sync-message small {
+    display: block;
+    font-size: 15px;
+    overflow: auto;
+}
+
+/* Export calendar animations */
+
+#gh-calendar-view.gh-export-enabled #gh-calendar-container {
+    opacity: 0.2;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-secondary {
+    opacity: 0.2;
+}
+
+#gh-calendar-view.gh-export-enabled #gh-export-container {
+    opacity: 1;
+    width: 400px;
+    z-index: 2;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {
+    opacity: 0;
+}
+
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary #gh-btn-calendar-export {
+    opacity: 1;
+}
