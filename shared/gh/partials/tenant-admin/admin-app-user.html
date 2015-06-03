@@ -70,49 +70,37 @@
         <% _.each(triposData.courses, function(course) { %>
             <li>
                 <%
-                    <!-- Get all subjects belonging to this course -->
                     var courseSubjects = _.filter(triposData.subjects, function(subject) {return subject.ParentId === course.id;});
-                    <!-- Get all parts belonging to this course -->
                     var courseParts = _.filter(triposData.parts, function(part) {return part.ParentId === course.id;});
-                    <!-- Check whether all parts in the course and subject should be selected -->
                     if (courseSubjects.length) {
                         _.each(courseSubjects, function(courseSubject) {
-                            <!-- Get all parts associated to this course subject-->
                             var partsForCourseSubject = _.filter(triposData.parts, function(part) {
                                 return part.ParentId === courseSubject.id;
                             });
 
-                            <!-- If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked and the corresponsing course neither -->
                             var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
                                 return !part.isGroupMember;
                             });
 
-                            <!-- If there are parts that the user is not a member of mark the subject and course as unchecked -->
                             if (partsForCourseSubjectMembership) {
                                 courseSubject.checked = false;
                                 course.checked = false;
                             } else {
                                 courseSubject.checked = true;
-                                <!-- Only set the course checking to true if it was not previously set to false -->
                                 if  (course.checked !== false) {
                                     course.checked = true;
                                 }
                             }
                         });
-                    <!-- Check whether all parts in the course should be selected -->
                     } else {
-                        <!-- Get all parts associated to this course subject-->
                         var partsForCourseSubject = _.filter(courseParts, function(part) {
                             return part.ParentId === course.id;
                         });
 
-                        <!-- If we find at least one part that the user is not a group member of, the course subject checkbox should not be checked 
-                             // and the corresponsing course neither -->
                         var partsForCourseSubjectMembership = _.find(partsForCourseSubject, function(part) {
                             return !part.isGroupMember;
                         });
 
-                        <!-- If there are parts that the user is not a member of mark the subject and course as unchecked -->
                         if (partsForCourseSubjectMembership) {
                             course.checked = false;
                         } else {
