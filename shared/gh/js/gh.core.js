@@ -60,6 +60,11 @@ define([
         // can be removed, allowing for animations in the page.
         $('body').removeClass('gh-preload');
 
+        // Disable cache for GET requests. Especially IE9 has problems without this
+        $.ajaxSetup({
+            'cache': false
+        });
+
         // Globally catch ajax errors and track the error when it's an API call
         $(document).ajaxError(function(ev, jqXHR, ajaxSettings) {
             // Only track the error if it's an API call
