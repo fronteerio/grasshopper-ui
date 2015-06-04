@@ -176,6 +176,11 @@ footer,
     height: 215px;
 }
 
+footer {
+    position: relative;
+    z-index: 2;
+}
+
 footer .gh-uni-logo,
 #gh-page-container #gh-left-container .gh-uni-logo {
     height: 115px;

@@ -344,7 +344,8 @@ tbody tr:last-child > td.fc-widget-content {
     width: 370px;
 }
 
-#gh-calendar-view .gh-toolbar-primary button {
+#gh-calendar-view .gh-toolbar-primary button,
+#gh-calendar-view .gh-toolbar-primary .nav-tabs li {
     opacity: 1;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
@@ -435,12 +436,15 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 #gh-calendar-view.gh-export-enabled #gh-export-container {
+    height: calc(100% - 44px);
+    min-height: 760px;
     opacity: 1;
     width: 400px;
     z-index: 2;
 }
 
-#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button,
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary .nav-tabs li {
     opacity: 0;
 }
 

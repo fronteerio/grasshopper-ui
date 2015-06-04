@@ -448,9 +448,15 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         if (disable) {
             // Disable opening of popovers
             $('#gh-calendar-container').off('click', '.fc-event', setUpEventPopover);
+            // Disable clicking the tabs. Bootstrap doesn't provide a way to disable tabs so we trick it into believing there's nothing to click
+            setTimeout(function() {
+                $('.gh-toolbar-primary .nav-tabs li:not(.active)').addClass('active revert-active');
+            }, 200);
         } else {
             // Enable opening of popovers
             $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
+            // Enable clicking the tabs
+            $('.gh-toolbar-primary .nav-tabs li.revert-active').removeClass('active revert-active');
         }
 
         // Never disable the export buttons
