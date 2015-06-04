@@ -309,7 +309,7 @@ tbody tr:last-child > td.fc-widget-content {
 /* Export calendar */
 
 #gh-calendar-view #gh-export-container {
-    height: 100%;
+    height: calc(100% - 227px);
     opacity: 0;
     overflow: hidden;
     position: absolute;
