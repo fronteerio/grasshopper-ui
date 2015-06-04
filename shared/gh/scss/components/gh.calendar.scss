@@ -440,6 +440,8 @@ tbody tr:last-child > td.fc-widget-content {
 }
 
 #gh-calendar-view.gh-export-enabled #gh-export-container {
+    height: calc(100% - 44px);
+    min-height: 760px;
     opacity: 1;
     width: 400px;
     z-index: 2;
