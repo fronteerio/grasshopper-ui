@@ -760,8 +760,6 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
             // Show extra information for the event in a popover when it's clicked
             $('#gh-calendar-container').on('click', '.fc-event', setUpEventPopover);
 
-            // Add binding to various elements
-            addBinding();
             // Set the current day
             setCurrentDay();
             // Set the calendar height
@@ -798,39 +796,39 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
             }
         });
         // Export the calendar
-        $('#gh-btn-calendar-export').off('click', exportCalendar).on('click', exportCalendar);
-        $('#gh-export-subscribe').off('click').on('click', function() {
+        $('body').on('click', '#gh-btn-calendar-export', exportCalendar);
+        $('body').on('click', '#gh-export-subscribe', function() {
             // Send a tracking event when the user clicks the subscribe button
             gh.utils.trackEvent(['Calendar', 'Export', 'Subscribed to calendar feed'], {
                 'ics_feed_hash': gh.data.me.calendarToken
             });
         });
         // Toggle the other options for export
-        $('#gh-export-collapsed-other-toggle').off('click', toggleExportOptions).on('click', toggleExportOptions);
+        $('body').on('click', '#gh-export-collapsed-other-toggle', toggleExportOptions);
         // Send an event when the feed URL is copied
-        $('#gh-export-subscribe-copy').off('copy').on('copy', function() {
+        $('body').on('copy', '#gh-export-subscribe-copy', function() {
             gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Copied feed URL']);
         });
         // Send tracking events when the help links are clicked
-        $('#gh-export-other-google').off('click').on('click', function() {
+        $('body').on('click', '#gh-export-other-google', function() {
             gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Google Calendar help clicked']);
         });
-        $('#gh-export-other-microsoft').off('click').on('click', function() {
+        $('body').on('click', '#gh-export-other-microsoft', function() {
             gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'MS Outlook help clicked']);
         });
-        $('#gh-export-other-apple').off('click').on('click', function() {
+        $('body').on('click', '#gh-export-other-apple', function() {
             gh.utils.trackEvent(['Calendar', 'Export', 'Other ways', 'Apple Calendar help clicked']);
         });
         // Print the calendar
-        $('#gh-btn-calendar-print').off('click', printCalendar).on('click', printCalendar);
+        $('body').on('click', '#gh-btn-calendar-print', printCalendar);
         // Navigate to the current day
-        $('#gh-btn-calendar-today').off('click', navigateToToday).on('click', navigateToToday);
+        $('body').on('click', '#gh-btn-calendar-today', navigateToToday);
         // Change the calendar's period
-        $('#gh-calendar-toolbar-period button').off('click', changePeriod).on('click', changePeriod);
+        $('body').on('click', '#gh-calendar-toolbar-period button', changePeriod);
         // Change the calendar's term
-        $('.gh-switch-term').off('click', changeTerm).on('click', changeTerm);
+        $('body').on('click', '.gh-switch-term', changeTerm);
         // Change the calendar's view
-        $('.gh-switch-view').off('click', changeView).on('click', changeView);
+        $('body').on('click', '.gh-switch-view', changeView);
 
         // Initialise the calendar
         $(document).on('gh.calendar.init', function(evt, msg) {
@@ -842,23 +840,23 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
         });
 
         // Return the calendar's current view
-        $(document).off('gh.calendar.getCurrentView').on('gh.calendar.getCurrentView', function(ev, callback) {
+        $(document).on('gh.calendar.getCurrentView', function(ev, callback) {
             return callback(getCurrentView());
         });
 
         // Return the calendar's current view date
-        $(document).off('gh.calendar.getCurrentViewDate').on('gh.calendar.getCurrentViewDate', function(ev, callback) {
+        $(document).on('gh.calendar.getCurrentViewDate', function(ev, callback) {
             return callback(getCurrentViewDate());
         });
 
         // Navigate to today
-        $(document).off('gh.calendar.navigateToToday', navigateToToday).on('gh.calendar.navigateToToday', navigateToToday);
+        $(document).on('gh.calendar.navigateToToday', navigateToToday);
 
         // Refresh the calendar
-        $(document).off('gh.calendar.refresh', refreshCalendar).on('gh.calendar.refresh', refreshCalendar);
+        $(document).on('gh.calendar.refresh', refreshCalendar);
 
         // Resize the calendar
-        $(window).off('resize', setCalendarHeight).on('resize', setCalendarHeight);
+        $(window).on('resize', setCalendarHeight);
     };
 
     addBinding();
