@@ -111,7 +111,7 @@
                 </button>
                 <div class="collapse" id="gh-export-collapsed-other">
                     <p class="gh-export-other-option">Copy the address of your timetable</p>
-                    <textarea id="gh-export-subscribe-copy"><%= window.location.origin + '/api/users/' + data.gh.data.me.id + '/' + data.gh.data.me.calendarToken + '/calendar.ical' %></textarea>
+                    <textarea id="gh-export-subscribe-copy"><%= window.location.protocol + '//' + window.location.hostname +  '/api/users/' + data.gh.data.me.id + '/' + data.gh.data.me.calendarToken + '/calendar.ical' %></textarea>
                     <p class="gh-export-other-option">Follow the instructions to add &amp; subscribe with your favourite calendar app</p>
                     <ul>
                         <li><a id="gh-export-other-google" href="https://support.google.com/calendar/answer/37100?hl=en" target="_blank" title="Google Calendar subscription instructions">Google Calendar</a> <i class="fa fa-external-link"></i></li>
