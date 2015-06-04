@@ -156,7 +156,7 @@ footer,
 
 #gh-page-container #gh-left-container {
     float: left;
-    overflow: hidden;
+    overflow: visible;
     padding: 0;
     position: relative;
     -webkit-transition: width .3s;
@@ -167,9 +167,13 @@ footer,
     z-index: 3;
 }
 
+#gh-page-container.gh-minimised #gh-left-container,
+#gh-page-container #gh-left-container.gh-collapsed {
+    overflow: hidden !important;
+}
+
 #gh-page-container.gh-minimised #gh-left-container {
     height: 215px;
-    overflow: hidden;
 }
 
 footer .gh-uni-logo,
@@ -258,7 +262,7 @@ footer ul li {
 }
 
 #gh-page-container #gh-left-container #gh-modules-container #gh-result-summary button:not(.gh-collapse-modules),
-#gh-page-container #gh-page-container #gh-left-container #gh-modules-list-container ul {
+#gh-page-container #gh-left-container #gh-modules-list-container ul {
     -webkit-transition: opacity .3s;
        -moz-transition: opacity .3s;
          -o-transition: opacity .3s;
@@ -382,6 +386,10 @@ footer ul li {
 .gh-collapsed #gh-page-container #gh-left-container #gh-meta-container,
 .gh-collapsed #gh-page-container #gh-left-container #gh-content-description {
     width: 50px;
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
 }
 
 .gh-collapsed main {
