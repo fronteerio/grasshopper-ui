@@ -309,7 +309,7 @@ tbody tr:last-child > td.fc-widget-content {
 /* Export calendar */
 
 #gh-calendar-view #gh-export-container {
-    height: calc(100% - 227px);
+    height: 100%;
     opacity: 0;
     overflow: hidden;
     position: absolute;
@@ -320,6 +320,10 @@ tbody tr:last-child > td.fc-widget-content {
          -o-transition: width .2s, opacity .2s;
             transition: width .2s, opacity .2s;
     width: 0;
+}
+
+.gh-collapsed #gh-calendar-view #gh-export-container {
+    height: 60%;
 }
 
 /* Position the export panel on mobile devices */
@@ -344,7 +348,8 @@ tbody tr:last-child > td.fc-widget-content {
     width: 370px;
 }
 
-#gh-calendar-view .gh-toolbar-primary button {
+#gh-calendar-view .gh-toolbar-primary button,
+#gh-calendar-view .gh-toolbar-primary .nav-tabs li {
     opacity: 1;
     -webkit-transition: opacity .2s;
        -moz-transition: opacity .2s;
@@ -440,7 +445,8 @@ tbody tr:last-child > td.fc-widget-content {
     z-index: 2;
 }
 
-#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button {
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary button,
+#gh-calendar-view.gh-export-enabled .gh-toolbar-primary .nav-tabs li {
     opacity: 0;
 }
 
