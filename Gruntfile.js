@@ -215,6 +215,24 @@ module.exports = function(grunt) {
                 }
             }
         },
+        'sass': {
+            'dist': {
+                'options': {
+                    'check': true,
+                    'loadPath': [
+                        'shared/gh/scss',
+                        'apps/admin/ui/scss',
+                        'apps/timetable/admin/ui/scss'
+                    ]
+                },
+                'files': {
+                    'src': [
+                        '**/*.scss',
+                        '!target/**/*.scss'
+                    ]
+                }
+            }
+        },
         'target': 'target',
         'ver': {
             'gh': {
@@ -293,7 +311,7 @@ module.exports = function(grunt) {
         'watch': {
             'css': {
                 'files': '**/*.scss',
-                'tasks': ['exec:compileCSS']
+                'tasks': ['sass', 'exec:compileCSS']
             }
         }
     });
@@ -308,6 +326,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-coveralls');
     grunt.loadNpmTasks('grunt-exec');
@@ -322,9 +341,9 @@ module.exports = function(grunt) {
     //////////////////
 
     // Lint tasks for JavaScript and CSS
-    grunt.registerTask('lint', 'Run jshint and csslint', ['jshint', 'csslint']);
+    grunt.registerTask('lint', 'Run jshint and csslint', ['jshint', 'csslint', 'sass']);
     // Run all tests
-    grunt.registerTask('test', 'Run all tests (jshint, csslint, QUnit and CasperJS)', ['exec:stopGrasshopper', 'exec:startDependencies']);
+    grunt.registerTask('test', 'Run all tests (jshint, csslint, sass, QUnit and CasperJS)', ['exec:stopGrasshopper', 'exec:startDependencies']);
     // Run QUnit tests
     grunt.registerTask('q', 'Run the QUnit tests', ['exec:stopGrasshopper', 'exec:startQUnitDependencies']);
     // Generate a coverage report
