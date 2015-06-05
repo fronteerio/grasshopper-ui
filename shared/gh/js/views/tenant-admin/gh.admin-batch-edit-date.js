@@ -413,7 +413,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
             $row = $($row);
             var startDate = moment.tz($row.find('.gh-event-date').attr('data-start'), 'Europe/London');
             var endDate = moment.tz($row.find('.gh-event-date').attr('data-end'), 'Europe/London');
-            var dayOfTheWeek = parseInt(moment(startDate).format('E'), 10);
+            var dayOfTheWeek = new Date(startDate).getDay();
             daysObj[dayOfTheWeek] = {
                 'startHour': parseInt(moment(startDate).format('H'), 10),
                 'endHour': parseInt(moment(endDate).format('H'), 10),
