@@ -252,7 +252,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
         $notificationContainer.notify({
             'fadeOut': {
                 'enabled': !sticky,
-                'delay': 5000
+                'delay': 7000
             },
             'type': type ? type : 'success',
             'message': {'html': message}
@@ -275,7 +275,7 @@ define(['exports', 'gh.utils.instrumentation', 'gh.utils.orgunits', 'gh.utils.st
                 if (!sticky) {
                     $notification.addClass('gh-notification-fade');
                 }
-            }, 5000);
+            }, 7000);
         }
 
         // Close the notification when the 'X' is clicked

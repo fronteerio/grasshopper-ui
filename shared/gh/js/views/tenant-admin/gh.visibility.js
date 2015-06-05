@@ -101,7 +101,7 @@ define(['gh.core', 'gh.constants'], function(gh, constants) {
 
             // Only show a notification when the draft has been published
             if (published) {
-                gh.utils.notification('The ' + orgUnit.displayName + ' timetable has been successfully published.', 'All events are now available in the student interface. All event data can still be edited, but be mindful not to delete items which might be in students\' personal calendars');
+                gh.utils.notification('The ' + orgUnit.displayName + ' timetable has been successfully published.', 'All events are now available in the student interface. All event data can still be edited, but be mindful not to delete items which might be in students\' personal calendars', null, null, true);
 
                 // Track the user publishing a part
                 gh.utils.trackEvent(['Manage', 'Publishing', 'Completed'], {
