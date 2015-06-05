@@ -664,6 +664,7 @@ define(['gh.core', 'gh.constants', 'moment', 'clickover', 'gh.student.agenda-vie
                 'title': '',
                 'onHidden': function() {
                     $trigger.removeClass('highlighted');
+                    $(window).off('resize');
                 },
                 'onShown': function() {
                     $trigger.addClass('highlighted');
