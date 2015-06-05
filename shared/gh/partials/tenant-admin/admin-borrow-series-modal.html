@@ -38,7 +38,10 @@
 <script id="gh-borrow-series-modules-template" type="text/template">
     <div id="gh-modules-list-container">
         <ul id="gh-modules-list" class="list-group">
-            <%= _.partial('admin-borrow-series-module-item', {'data': data.triposPickerData}, false) %>
+            <% var randomId = data.gh.utils.generateRandomString() %>
+            <div id="<%- randomId %>">
+                <% _.partial('admin-borrow-series-module-item', {'data': data.triposPickerData}, null, '#' + randomId) %>
+            </div>
         </ul>
     </div>
 </script>
