@@ -1219,7 +1219,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
                     // Hide the save button
                     toggleSubmit();
                     // Show a success notification to the user
-                    return gh.utils.notification('All events in ' + $('.gh-jeditable-series-title').text() + ' successfully updated', 'Students will see the updated information in about 8 hours');
+                    return gh.utils.notification('All events in ' + $('.gh-jeditable-series-title').text() + ' successfully updated', 'Students will see the updated information within ~ 8 hours after the change');
                 });
             });
         });
