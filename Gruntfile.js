@@ -68,8 +68,6 @@ module.exports = function(grunt) {
                 'unqualified-attributes': false
             },
             'files': [
-                'apps/**/*.scss',
-                'shared/gh/**/*.scss',
                 'tests/**/*.css'
             ]
         },

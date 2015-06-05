@@ -13,6 +13,14 @@
  * permissions and limitations under the License.
  */
 
+/***********/
+/* COLOURS */
+/***********/
+
+$primary-colour: #412F5B;
+$secondary-colour: #62326E;
+$tertiary-colour: #913389;
+
 
 /*********/
 /* LOGIN */
@@ -36,8 +44,8 @@
 .btn-default.gh-btn-secondary.gh-btn-reverse:hover,
 .btn-default.gh-btn-secondary.gh-btn-reverse:focus,
 #gh-borrow-series-modal .list-group .list-group-item .gh-list-description:hover + .gh-list-action button {
-    background-color: #62326E;
-    border-color: #62326E;
+    background-color: $secondary-colour;
+    border-color: $secondary-colour;
 }
 
 .btn-link,
@@ -112,12 +120,12 @@
 
 #gh-main-tripos > .gh-row-part > .gh-part,
 #gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
-    background-color: #62326E;
+    background-color: $secondary-colour;
 }
 
 #gh-main-tripos > .gh-row-part > .gh-part:nth-child(even),
 #gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part {
-    background-color: #913389;
+    background-color: $tertiary-colour;
 }
 
 #gh-main-tripos > .gh-row-part > .gh-part p.gh-part-editing {
@@ -130,7 +138,7 @@
 
 /* Primary toolbar */
 .gh-toolbar-primary {
-    background-color: #62326E;
+    background-color: $secondary-colour;
 }
 
 
@@ -139,7 +147,7 @@
 /**************/
 
 .list-group .list-group-item {
-    background-color: #62326E;
+    background-color: $secondary-colour;
 }
 
 .list-group .list-group-item.gh-list-group-item-open {
@@ -159,7 +167,7 @@
 }
 
 .list-group .list-group-item .gh-list-group-item-container:hover {
-    background-color: #62326E;
+    background-color: $secondary-colour;
 }
 
 .list-group .list-group-item .list-group .list-group-item:first-child {
@@ -176,7 +184,7 @@
 /*********/
 
 .modal-header {
-    background-color: #62326E;
+    background-color: $secondary-colour;
 }
 
 .modal-header.gh-warning {
@@ -260,7 +268,7 @@ ul.gh-borrowed-list li p:first-child {
 }
 
 #gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p i {
-    color: #62326E;
+    color: $secondary-colour;
 }
 
 #gh-batch-edit-header button:not(:disabled),
@@ -333,11 +341,11 @@ ul.gh-borrowed-list li p:first-child {
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected label i {
-    color: #62326E;
+    color: $secondary-colour;
 }
 
 #gh-batch-edit-container #gh-batch-edit-date-container #gh-batch-edit-date-picker-container .checkbox.gh-batch-edit-date-picker-selected {
-    border-color: #62326E;
+    border-color: $secondary-colour;
 }
 
 #gh-batch-edit-container .gh-batch-edit-time-picker .gh-batch-edit-day-picker,
@@ -479,11 +487,11 @@ tr.info .gh-event-delete button i {
 #gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container,
 #gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container {
     background-color: #FFF;
-    border-color: #62326E;
+    border-color: $secondary-colour;
 }
 
 #gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
-    color: #62326E;
+    color: $secondary-colour;
 }
 
 #gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
@@ -559,5 +567,5 @@ ul.as-selections li.as-selection-item {
 
 .as-results .as-list .as-result-item.active em,
 .as-results .as-list .as-result-item em {
-    background-color: #412F5B !important;
+    background-color: $primary-colour !important;
 }
