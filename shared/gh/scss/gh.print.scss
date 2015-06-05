@@ -25,12 +25,15 @@
     /* COLLAPSE MODULES */
     /********************/
 
-    .gh-collapsed #gh-main {
-        margin-top: 0 !important;
-    }
+    .gh-collapsed {
 
-    .gh-collapsed #gh-page-container #gh-right-container {
-        padding-left: 0 !important;
+        #gh-main {
+            margin-top: 0 !important;
+        }
+
+        #gh-page-container #gh-right-container {
+            padding-left: 0 !important;
+        }
     }
 
 
@@ -49,11 +52,11 @@
     #gh-page-container #gh-right-container {
         padding-left: 0;
         transition: none;
-    }
 
-    #gh-page-container #gh-right-container #gh-main {
-        margin-bottom: 0;
-        padding-top: 0;
+        #gh-main {
+            margin-bottom: 0;
+            padding-top: 0;
+        }
     }
 
     #gh-my-calendar-view,
@@ -97,27 +100,27 @@
         display: none;
     }
 
-    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information .gh-event-type-container {
-        float: left !important;
-        font-weight: 600;
-        margin: 0;
-        padding-right: 5px;
-    }
+    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information {
 
-    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information .gh-event-type-container {
-        margin-top: 0;
-        width: inherit;
-    }
+        .gh-event-type-container {
+            float: left !important;
+            font-weight: 600;
+            margin: 0;
+            padding-right: 5px;
+            width: inherit;
 
-    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information .gh-event-type-container:after {
-        content: '·';
-    }
+            &:after {
+                content: '·';
+            }
+        }
 
-    .agenda-view-term .agenda-view-term-events .gh-agenda-view-term-week .gh-agenda-view-term-event .gh-agenda-view-event-information .gh-event-type:not(:empty)::before {
-        display: none;
+        .gh-event-type:not(:empty)::before {
+            display: none;
+        }
     }
 
     /* Calendar today icon */
+
     .gh-agenda-view-today .gh-event-calendar-icon {
         border-color: #888;
     }
