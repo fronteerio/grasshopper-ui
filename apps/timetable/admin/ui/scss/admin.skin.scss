@@ -13,6 +13,7 @@
  * permissions and limitations under the License.
  */
 
+
 /***********/
 /* COLOURS */
 /***********/
@@ -42,8 +43,7 @@ $tertiary-colour: #913389;
 }
 
 .btn-default.gh-btn-secondary.gh-btn-reverse:hover,
-.btn-default.gh-btn-secondary.gh-btn-reverse:focus,
-#gh-borrow-series-modal .list-group .list-group-item .gh-list-description:hover + .gh-list-action button {
+.btn-default.gh-btn-secondary.gh-btn-reverse:focus {
     background-color: $secondary-colour;
     border-color: $secondary-colour;
 }
@@ -81,19 +81,6 @@ $tertiary-colour: #913389;
     border-bottom-color: #171717;
 }
 
-#gh-main-tripos .gh-video {
-    background-image: url('/shared/gh/img/video.png');
-}
-
-#gh-main-tripos .gh-video.isPlaying {
-    background-color: #000 !important;
-    background-image: none;
-}
-
-#gh-main-tripos .gh-video:not(.isPlaying) video {
-    display: none;
-}
-
 .gh-show-video,
 .gh-show-video:hover,
 #gh-main-tripos .gh-video .gh-video-info,
@@ -106,37 +93,62 @@ $tertiary-colour: #913389;
     color: #FFF;
 }
 
-#gh-main-tripos .gh-video .gh-play-video {
-    background-color: #FFF;
+#gh-main-tripos {
+
+    /* Video */
+
+    .gh-video {
+        background-image: url('/shared/gh/img/video.png');
+
+        &.isPlaying {
+            background-color: #000 !important;
+            background-image: none;
+        }
+
+        &:not(.isPlaying) video {
+            display: none;
+        }
+
+        .gh-play-video {
+            background-color: #FFF;
+        }
+
+        .gh-hide-video {
+            color: #FFF;
+
+            &:hover {
+                color: #AAA;
+            }
+        }
+    }
+
+    /* Editable parts */
+
+    > .gh-row-part > .gh-part,
+    > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
+        background-color: $secondary-colour;
+    }
+
+    > .gh-row-part > .gh-part:nth-child(even),
+    > .gh-row-part:nth-child(even) > .gh-part {
+        background-color: $tertiary-colour;
+    }
+
+    > .gh-row-part > .gh-part {
+
+        p.gh-part-editing {
+            border: 1px solid #FFF;
+        }
+
+        .gh-part-edit {
+            background-color: #171717;
+        }
+    }
 }
 
-#gh-main-tripos .gh-video .gh-hide-video {
-    color: #FFF;
-}
-
-#gh-main-tripos .gh-video .gh-hide-video:hover {
-    color: #AAA;
-}
-
-#gh-main-tripos > .gh-row-part > .gh-part,
-#gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part:nth-child(even) {
-    background-color: $secondary-colour;
-}
-
-#gh-main-tripos > .gh-row-part > .gh-part:nth-child(even),
-#gh-main-tripos > .gh-row-part:nth-child(even) > .gh-part {
-    background-color: $tertiary-colour;
-}
-
-#gh-main-tripos > .gh-row-part > .gh-part p.gh-part-editing {
-    border: 1px solid #FFF;
-}
-
-#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit {
-    background-color: #171717;
-}
 
 /* Primary toolbar */
+
 .gh-toolbar-primary {
     background-color: $secondary-colour;
 }
@@ -148,34 +160,34 @@ $tertiary-colour: #913389;
 
 .list-group .list-group-item {
     background-color: $secondary-colour;
-}
 
-.list-group .list-group-item.gh-list-group-item-open {
-    background-color: #42305B;
-}
+    &.gh-list-group-item-open {
+        background-color: #42305B;
 
-.list-group .list-group-item .gh-list-action {
-    background-color: transparent !important;
-}
+        .list-group .list-group-item {
+            background-color: #42305B !important;
+            border-bottom-color: #594674 !important;
+        }
+    }
 
-.list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
-    background-color: #42305B;
-}
+    .gh-list-action {
+        background-color: transparent !important;
+    }
 
-.list-group .list-group-item .list-group .list-group-item:hover .gh-list-description {
-    background-color: transparent;
-}
+    .list-group .list-group-item {
 
-.list-group .list-group-item .gh-list-group-item-container:hover {
-    background-color: $secondary-colour;
-}
+        &:hover .gh-list-description {
+            background-color: transparent;
+        }
 
-.list-group .list-group-item .list-group .list-group-item:first-child {
-    border-color: #594674;
-}
+        &:first-child {
+            border-color: #594674;
+        }
+    }
 
-.list-group .list-group-item.gh-list-group-item-open .list-group .list-group-item {
-    border-bottom-color: #594674;
+    .gh-list-group-item-container:hover {
+        background-color: $secondary-colour;
+    }
 }
 
 
@@ -185,15 +197,15 @@ $tertiary-colour: #913389;
 
 .modal-header {
     background-color: $secondary-colour;
-}
 
-.modal-header.gh-warning {
-    background-color: #D92751;
-}
+    &.gh-warning {
+        background-color: #D92751;
+    }
 
-.modal-header button,
-.modal-header .modal-title {
-    color: #FFF;
+    button,
+    .modal-title {
+        color: #FFF;
+    }
 }
 
 
@@ -201,13 +213,16 @@ $tertiary-colour: #913389;
 /* MODULES */
 /***********/
 
-.list-group .list-group-item .gh-list-group-item-container.gh-series-active {
-    background-color: #FFF;
-}
+.list-group .list-group-item {
 
-.list-group .list-group-item .gh-series-active .gh-series-select p,
-.list-group .list-group-item .gh-series-active .gh-series-select .gh-list-action i {
-    color: #171717;
+    .gh-list-group-item-container.gh-series-active {
+        background-color: #FFF;
+    }
+
+    .gh-series-active .gh-series-select p,
+    .gh-series-active .gh-series-select .gh-list-action i {
+        color: #171717;
+    }
 }
 
 
@@ -237,14 +252,14 @@ $tertiary-colour: #913389;
 ul.gh-borrowed-list {
     border-bottom-color: #CCC;
     border-top-color: #CCC;
-}
 
-ul.gh-borrowed-list li {
-    border-bottom-color: #CCC;
-}
+    li {
+        border-bottom-color: #CCC;
 
-ul.gh-borrowed-list li p:first-child {
-    color: #6C6C6C;
+        p:first-child {
+            color: #6C6C6C;
+        }
+    }
 }
 
 
@@ -252,62 +267,71 @@ ul.gh-borrowed-list li p:first-child {
 /* BATCH EDITING */
 /*****************/
 
-#gh-batch-edit-container.gh-sticky-header {
-    -webkit-box-shadow: 0 0 15px #666;
-       -moz-box-shadow: 0 0 15px #666;
-            box-shadow: 0 0 15px #666;
-}
+#gh-batch-edit-header {
 
-#gh-batch-edit-header.gh-batch-edit-time-open #gh-batch-edit-time {
-    background-color: #F4F4F4;
-    color: #171717;
-}
+    &.gh-batch-edit-time-open #gh-batch-edit-time {
+        background-color: #F4F4F4;
+        color: #171717;
+    }
 
-#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay {
-    background-color: #DDD;
-}
+    #gh-batch-edit-header-disabled-overlay {
+        background-color: #DDD;
 
-#gh-batch-edit-header #gh-batch-edit-header-disabled-overlay p i {
-    color: $secondary-colour;
-}
+        p i {
+            color: $secondary-colour;
+        }
+    }
 
-#gh-batch-edit-header button:not(:disabled),
-#gh-batch-edit-header input:not(:disabled)[type="text"],
-#gh-batch-edit-header select:not(:disabled),
-#gh-batch-edit-header ul.as-selections:not(.gh-disabled) {
-    border-color: #171717 !important;
-}
+    button:not(:disabled),
+    input:not(:disabled)[type="text"],
+    select:not(:disabled),
+    ul.as-selections:not(.gh-disabled) {
+        border-color: #171717 !important;
+    }
 
-#gh-batch-edit-header input:not(:disabled)[type="text"]::-webkit-input-placeholder {
-    color: #555;
-}
+    input:not(:disabled)[type="text"]::-webkit-input-placeholder {
+        color: #555;
+    }
 
-#gh-batch-edit-header input:not(:disabled)[type="text"]::-moz-placeholder {
-    color: #555;
-}
+    input:not(:disabled)[type="text"]::-moz-placeholder {
+        color: #555;
+    }
 
-#gh-batch-edit-header input:not(:disabled)[type="text"]:-ms-input-placeholder {
-    color: #555;
+    input:not(:disabled)[type="text"]:-ms-input-placeholder {
+        color: #555;
+    }
 }
 
 #gh-batch-edit-container {
     background-color: #FFF;
-}
 
-#gh-batch-edit-container .gh-series-title-borrowed-info span {
-    color: #555;
-}
+    &.gh-sticky-header {
+        -webkit-box-shadow: 0 0 15px #666;
+           -moz-box-shadow: 0 0 15px #666;
+                box-shadow: 0 0 15px #666;
+    }
 
-#gh-batch-edit-container .gh-series-title-borrowed-info a {
-    color: #171717;
-}
+    .gh-series-title-borrowed-info {
 
-.gh-batch-edit-events-container .table > tbody > tr.info td {
-    background-color: #ECF5F9;
-}
+        span {
+            color: #555;
+        }
 
-.gh-batch-edit-events-container .table > tbody > tr.gh-not-eligible > .gh-event-date {
-    background-color: #E7E7E7;
+        a {
+            color: #171717;
+        }
+    }
+
+    .table > tbody > tr {
+
+        &.info td {
+            background-color: #ECF5F9;
+        }
+
+        &.gh-not-eligible > .gh-event-date {
+            background-color: #E7E7E7;
+        }
+    }
 }
 
 .gh-batch-edit-actions-container {
@@ -316,14 +340,14 @@ ul.gh-borrowed-list li p:first-child {
     -webkit-box-shadow: 0 0 15px #666;
        -moz-box-shadow: 0 0 15px #666;
             box-shadow: 0 0 15px #666;
-}
 
-.gh-batch-edit-actions-container #gh-batch-edit-change-summary {
-    color: #6B6B6B;
-}
+    #gh-batch-edit-change-summary {
+        color: #6B6B6B;
+    }
 
-.gh-batch-edit-actions-container #gh-batch-edit-cancel {
-    color: #171717;
+    #gh-batch-edit-cancel {
+        color: #171717;
+    }
 }
 
 .gh-batch-edit-events-container .gh-jeditable-form input {
@@ -381,20 +405,23 @@ tr.info .gh-event-delete button i {
 /* BORROWING */
 /*************/
 
-#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description {
-    background-color: #FFF;
-}
+#gh-borrow-series-modal .list-group .list-group-item {
 
-#gh-borrow-series-modal .list-group .list-group-item .gh-borrow-series-borrowed .gh-list-description p {
-    color: #171717;
-}
+    .gh-borrow-series-borrowed .gh-list-description {
+        background-color: #FFF;
 
-#gh-borrow-series-modal .list-group .list-group-item .list-group .list-group-item .gh-list-description {
-    border-top-color: #171717;
-}
+        p {
+            color: #171717;
+        }
+    }
 
-#gh-borrow-series-modal .list-group .list-group-item i.fa-check {
-    color: #42305B;
+    .list-group .list-group-item .gh-list-description {
+        border-top-color: #171717;
+    }
+
+    i.fa-check {
+        color: #42305B;
+    }
 }
 
 
@@ -402,55 +429,71 @@ tr.info .gh-event-delete button i {
 /* EDIT DATES */
 /**************/
 
-/* Date picker */
-#gh-edit-dates .ui-datepicker-header .ui-datepicker-prev,
-#gh-edit-dates .ui-datepicker-header .ui-datepicker-next {
-    color: #333;
-}
 
-#gh-edit-dates .ui-datepicker-header .ui-datepicker-title {
-    color: #777;
-}
+#gh-edit-dates {
 
-#gh-edit-dates .ui-datepicker-calendar th,
-#gh-edit-dates .ui-datepicker-calendar td {
-    border-color: #EEE;
-}
+    /* Navigation */
 
-#gh-edit-dates .ui-datepicker-calendar th {
-    background-color: #EEE;
-    color: #777;
-}
+    .ui-datepicker-header {
 
-#gh-edit-dates .ui-datepicker-calendar td a {
-    color: #222;
-}
+        .ui-datepicker-prev,
+        .ui-datepicker-next {
+            color: #333;
+        }
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-other-month,
-#gh-edit-dates .ui-datepicker-calendar td.ui-state-disabled {
-    background-color: #F3F3F3;
-}
+        .ui-datepicker-title {
+            color: #777;
+        }
+    }
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-other-month *,
-#gh-edit-dates .ui-datepicker-calendar td.ui-state-disabled * {
-    color: #CCC;
-}
+    /* Calendar */
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-today {
-    background-color: #EFF4F2;
-}
+    .ui-datepicker-calendar {
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day * {
-    color: #FFF;
-}
+        th,
+        td {
+            border-color: #EEE;
+        }
 
-#gh-edit-dates .ui-datepicker-calendar td.ui-datepicker-current-day {
-    background-color: #92308A;
-}
+        th {
+            background-color: #EEE;
+            color: #777;
+        }
 
-/* Form */
-#gh-edit-dates #gh-edit-dates-form label {
-    color: #777;
+        td {
+
+            a {
+                color: #222;
+            }
+
+            &.ui-datepicker-other-month,
+            &.ui-state-disabled {
+                background-color: #F3F3F3;
+
+                * {
+                    color: #CCC;
+                }
+            }
+
+            &.ui-datepicker-today {
+                background-color: #EFF4F2;
+            }
+
+            &.ui-datepicker-current-day {
+                background-color: #92308A;
+
+                * {
+                    color: #FFF;
+                }
+            }
+        }
+    }
+
+    /* Form */
+
+    #gh-edit-dates-form label {
+        color: #777;
+    }
 }
 
 
@@ -458,49 +501,59 @@ tr.info .gh-event-delete button i {
 /* VISIBILITY */
 /**************/
 
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container {
-    background-color: #EEE;
-    border-color: #EEE;
-    color: #8D8D8D;
-}
+#gh-visibility-modal #gh-visibility-form {
 
-#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container .visibility-type,
-#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye-slash,
-#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container i.fa-eye,
-#gh-visibility-modal #gh-visibility-form label.checked small,
-#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container .visibility-type,
-#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container i.fa-eye-slash,
-#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container i.fa-eye,
-#gh-visibility-modal #gh-visibility-form label:hover small {
-    color: #333;
-}
+    label {
 
-#gh-visibility-modal #gh-visibility-form label small p {
-    border-top-color: #BBB;
-}
+        .gh-visibility-icon-container {
+            background-color: #EEE;
+            border-color: #EEE;
+            color: #8D8D8D;
+        }
 
-#gh-visibility-modal #gh-visibility-form label.checked small p,
-#gh-visibility-modal #gh-visibility-form label:hover small p {
-    border-top-color: #333;
-}
+        &.checked .gh-visibility-icon-container .visibility-type,
+        &.checked .gh-visibility-icon-container i.fa-eye-slash,
+        &.checked .gh-visibility-icon-container i.fa-eye,
+        &.checked small,
+        &:hover .gh-visibility-icon-container .visibility-type,
+        &:hover .gh-visibility-icon-container i.fa-eye-slash,
+        &:hover .gh-visibility-icon-container i.fa-eye,
+        &:hover small {
+            color: #333;
+        }
 
-#gh-visibility-modal #gh-visibility-form label.checked .gh-visibility-icon-container,
-#gh-visibility-modal #gh-visibility-form label:hover .gh-visibility-icon-container {
-    background-color: #FFF;
-    border-color: $secondary-colour;
-}
+        small p {
+            border-top-color: #BBB;
+        }
 
-#gh-visibility-modal #gh-visibility-form label .gh-visibility-icon-container i.fa-check {
-    color: $secondary-colour;
-}
+        &.checked small p,
+        &:hover small p {
+            border-top-color: #333;
+        }
 
-#gh-visibility-modal #gh-visibility-form #gh-visibility-divider i.fa {
-    color: #939393;
-}
+        &:not(.checked) .gh-visibility-icon-container {
+            border-color: #EEE !important;
+        }
 
-#gh-visibility-modal #gh-visibility-form #gh-visibility-publish-warning {
-    background-color: #E0E6E4;
-    color: #555;
+        &.checked .gh-visibility-icon-container,
+        &:hover .gh-visibility-icon-container {
+            background-color: #FFF;
+            border-color: $secondary-colour !important;
+        }
+
+        .gh-visibility-icon-container i.fa-check {
+            color: $secondary-colour;
+        }
+    }
+
+    #gh-visibility-divider i.fa {
+        color: #939393;
+    }
+
+    #gh-visibility-publish-warning {
+        background-color: #E0E6E4;
+        color: #555;
+    }
 }
 
 
@@ -513,59 +566,86 @@ tr.info .gh-event-delete button i {
        -moz-box-shadow: none !important;
             box-shadow: none !important;
     border-color: #CCC !important;
+
+    .as-original {
+
+        &:first-child input {
+            background-color: #FFF !important;
+        }
+
+        input {
+            background-color: #EEE !important;
+            border-top-color: #BEBEBE !important;
+        }
+    }
+
+    .as-selection-item {
+        background-color: transparent !important;
+        background-image: none !important;
+        -webkit-box-shadow: none !important;
+           -moz-box-shadow: none !important;
+                box-shadow: none !important;
+
+        &.blur {
+            background-color: #E7F8F0 !important;
+        }
+
+        .as-close {
+            color: #171717 !important;
+        }
+    }
 }
 
-ul.as-selections.loading {
-    background-color: transparent !important;
+ul.as-selections {
+
+    &.loading {
+        background-color: transparent !important;
+    }
+
+    li.as-selection-item {
+        background-color: #E7F8F0 !important;
+    }
 }
 
-.as-selections .as-original input {
-    background-color: #EEE !important;
-    border-top-color: #BEBEBE !important;
-}
-
-.as-selections .as-selection-item.blur,
-ul.as-selections li.as-selection-item {
-    background-color: #E7F8F0 !important;
-}
-
-.gh-batch-event-collapsed .as-selections .as-original input,
-.as-selections .as-original:first-child input {
+.gh-batch-event-collapsed .as-selections .as-original input {
     background-color: #FFF !important;
 }
 
-.as-selections .as-selection-item {
-    background-color: transparent !important;
-    background-image: none !important;
-    -webkit-box-shadow: none !important;
-       -moz-box-shadow: none !important;
-            box-shadow: none !important;
+.as-results {
+
+    .as-list {
+        border-color: #CCC !important;
+        -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
+           -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
+                box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
+
+        .as-result-item,
+        .as-result-item.active {
+            background-image: none !important;
+
+            em {
+                background-color: $primary-colour !important;
+            }
+        }
+
+        .as-result-item {
+            background-color: #FFF !important;
+            color: #171717 !important;
+
+            &.active {
+                background-color: #92308A !important;
+                color: #FFF !important;
+            }
+        }
+    }
 }
 
-.as-selections .as-selection-item .as-close {
-    color: #171717 !important;
-}
 
-.as-results .as-list .as-result-item,
-.as-results .as-list .as-result-item.active {
-    background-color: #FFF !important;
-    background-image: none !important;
-    color: #171717 !important;
-}
+/***********************/
+/* BORROW SERIES MODAL */
+/***********************/
 
-.as-results .as-list {
-    border-color: #CCC !important;
-    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
-       -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
-            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
-}
-
-.as-results .as-list .as-result-item.active {
-    background-color: #92308A !important;
-    color: #FFF !important;
-}
-
-.as-results .as-list .as-result-item.active em,
-.as-results .as-list .as-result-item em {
-    background-color: $primary-colour !important;
+#gh-borrow-series-modal .list-group .list-group-item .gh-list-description:hover + .gh-list-action button {
+    background-color: $secondary-colour;
+    border-color: $secondary-colour;
 }

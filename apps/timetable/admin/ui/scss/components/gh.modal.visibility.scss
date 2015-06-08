@@ -1,0 +1,130 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/**************/
+/* VISIBILITY */
+/**************/
+
+#gh-visibility-modal {
+
+    .modal-body {
+        padding: 30px;
+
+        #gh-visibility-form {
+            overflow: auto;
+
+            label {
+                cursor: pointer;
+
+                small {
+                    font-weight: 400;
+
+                    p {
+                        border-top-style: solid;
+                        border-top-width: 1px;
+                        margin-top: 7px;
+                        padding-top: 10px;
+                    }
+                }
+
+                .gh-visibility-icon-container {
+                    border: 3px solid;
+                    -webkit-border-radius: 2px;
+                       -moz-border-radius: 2px;
+                            border-radius: 2px;
+                    margin-bottom: 10px;
+                    padding: 0 12px;
+                    position: relative;
+
+                    i.fa-eye,
+                    i.fa-eye-slash {
+                        font-size: 60px;
+                        margin-top: 35px;
+                    }
+
+                    i.fa-check {
+                        font-size: 30px;
+                        font-weight: 600;
+                        position: absolute;
+                        right: 8px;
+                        top: 6px;
+                    }
+
+                    input {
+                        margin-top: -100px;
+                        visibility: hidden;
+                    }
+
+                    .visibility-type {
+                        font-size: 21px;
+                        font-weight: 600;
+                    }
+                }
+
+                &:not(.checked) .gh-visibility-icon-container i.fa-check {
+                    display: none;
+                }
+            }
+
+            #gh-visibility-divider {
+                font-size: 55px;
+                padding: 77px 0 0;
+
+                i.fa {
+                    display: block;
+                    margin: 0 auto;
+                    width: 20px;
+                }
+            }
+
+            #gh-visibility-publish-warning {
+                -webkit-border-radius: 5px;
+                   -moz-border-radius: 5px;
+                        border-radius: 5px;
+                font-weight: 400;
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                padding: 0 55px;
+                text-align: center;
+                -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+                   -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+                     -o-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+                        transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+
+                &.open {
+                    max-height: 500px;
+                    opacity: 1;
+                    padding: 15px 55px;
+                }
+
+                p {
+                    line-height: 1.8;
+                    margin: 0;
+                }
+
+                strong {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .modal-footer button {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

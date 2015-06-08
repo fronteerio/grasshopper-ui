@@ -1,0 +1,94 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*****************/
+/* BORROW SERIES */
+/*****************/
+
+#gh-borrow-series-modal {
+
+    .gh-admin-borrow-series-no-modules {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .list-group-item .list-group {
+        padding-bottom: 30px;
+    }
+
+    .list-group .list-group-item {
+
+        .gh-list-description {
+            font-size: 16px;
+            font-weight: 700;
+
+            p {
+                opacity: 0.75;
+            }
+        }
+
+        .list-group .list-group-item .gh-list-description {
+            border: none;
+            border-top-style: solid;
+            border-top-width: 1px;
+            font-weight: 400;
+            padding: 10px 0 10px 15px;
+            position: relative;
+            width: 210px;
+
+            p {
+                font-size: 15.3px;
+                opacity: 1;
+            }
+        }
+
+        .gh-list-action,
+        .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-deselect i {
+            padding: 0;
+        }
+
+        .gh-list-action .gh-borrow-series-select,
+        .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-deselect {
+            display: block;
+        }
+
+        .gh-list-action .gh-borrow-series-deselect,
+        .gh-borrow-series-borrowed .gh-list-action .gh-borrow-series-select {
+            display: none;
+        }
+
+        i.fa-check {
+            display: none;
+            float: right;
+            padding-right: 12px;
+            position: absolute;
+            right: 0;
+            top: 35%;
+        }
+
+        .gh-borrow-series-borrowed {
+            width: 100%;
+
+            i.fa-check {
+                display: block;
+            }
+
+            .gh-list-description p {
+                margin-right: 40px;
+            }
+        }
+    }
+}

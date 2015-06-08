@@ -26,16 +26,16 @@
 #gh-calendar-loading-container {
     margin-top: 100px;
     text-align: center;
-}
 
-#gh-calendar-loading-container h2 {
-    font-size: 30px;
-    font-weight: 200;
-    margin-bottom: 12px;
-}
+    h2 {
+        font-size: 30px;
+        font-weight: 200;
+        margin-bottom: 12px;
+    }
 
-#gh-calendar-loading-container i {
-    font-size: 25px;
+    i {
+        font-size: 25px;
+    }
 }
 
 #gh-calendar-container {
@@ -79,16 +79,17 @@
 }
 
 /* Primary toolbar */
+
 .gh-toolbar-primary {
     height: 44px;
     left: 320px;
     right: 0;
     z-index: 2;
-}
 
-.gh-toolbar-primary .gh-toolbar-views,
-.gh-toolbar-primary .gh-toolbar-actions {
-    height: 100%;
+    .gh-toolbar-views,
+    .gh-toolbar-actions {
+        height: 100%;
+    }
 }
 
 /* Secondary toolbar */
@@ -103,46 +104,46 @@
          -o-transition: opacity .2s;
             transition: opacity .2s;
     z-index: 2;
-}
 
-.gh-toolbar-secondary #gh-calendar-toolbar-period,
-.gh-toolbar-secondary #gh-calendar-toolbar-terms,
-.gh-toolbar-secondary #gh-calendar-toolbar-view {
-    display: table;
-    height: 32px;
-    position: relative;
-    z-index: 1;
-}
+    #gh-calendar-toolbar-period,
+    #gh-calendar-toolbar-terms,
+    #gh-calendar-toolbar-view {
+        display: table;
+        height: 32px;
+        position: relative;
+        z-index: 1;
+    }
 
-.gh-toolbar-secondary #gh-calendar-toolbar-terms {
-    min-width: 200px;
-}
+    #gh-calendar-toolbar-terms {
+        min-width: 200px;
+    }
 
-.gh-toolbar-secondary .btn-default.gh-btn-tertiary {
-    height: auto;
-    margin-bottom: 2px;
-}
+    #gh-calendar-toolbar-today {
+        height: 32px;
+        position: absolute;
+        width: 100%;
+    }
 
-.gh-toolbar-secondary .btn-default.gh-btn-tertiary i {
-    padding: 2px 0 3px;
+    /* Today button */
+
+    #gh-btn-calendar-today {
+        border: none;
+    }
+
+    .btn-default.gh-btn-tertiary {
+        height: auto;
+        margin-bottom: 2px;
+
+        i {
+            padding: 2px 0 3px;
+        }
+    }
 }
 
 .gh-toolbar-inner {
     display: table-cell;
     height: 100%;
     vertical-align: middle;
-}
-
-/* Today button */
-
-.gh-toolbar-secondary #gh-calendar-toolbar-today {
-    height: 32px;
-    position: absolute;
-    width: 100%;
-}
-
-.gh-toolbar-secondary #gh-btn-calendar-today {
-    border: none;
 }
 
 .gh-toolbar-label {

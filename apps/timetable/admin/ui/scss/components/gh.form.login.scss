@@ -14,22 +14,37 @@
  */
 
 
-/***********/
-/* BUTTONS */
-/***********/
+/*********/
+/* LOGIN */
+/*********/
 
-.btn {
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    padding: 8px 12px;
+#gh-login-form {
+    padding: 0 0 50px 50px;
 
-    &:hover,
-    &:focus {
-        text-decoration: none;
+    > form {
+        min-width: inherit !important;
     }
 
-    i {
-        padding-right: 5px;
+    h2,
+    label {
+        font-weight: 200;
+    }
+
+    h2 {
+        font-size: 23px;
+        margin-bottom: 35px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input.form-control {
+        -webkit-border-radius: 0;
+           -moz-border-radius: 0;
+                border-radius: 0;
+        border-width: 0;
+        height: 45px;
+        line-height: 45px;
     }
 }

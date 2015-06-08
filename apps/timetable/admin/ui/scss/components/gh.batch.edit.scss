@@ -1,0 +1,678 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*****************/
+/* BATCH EDITING */
+/*****************/
+
+#gh-batch-edit-header .table thead tr th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(1) {
+    width: 25px;
+}
+
+#gh-batch-edit-header .table thead tr.borrowed th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr.borrowed > th:nth-child(1),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(1) {
+    width: 0 !important;
+}
+
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > tbody > tr.borrowed > td:nth-child(2) {
+    padding-left: 10px !important;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(3),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(3) {
+    width: 220px;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(4),
+#gh-batch-edit-header .table thead tr th:nth-child(5),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(4),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(5) {
+    width: 150px;
+}
+
+#gh-batch-edit-header .table thead tr th:nth-child(6),
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(6) {
+    width: 105px;
+}
+
+#gh-batch-edit-header .table thead tr th:last-child,
+#gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:last-child {
+    width: 50px;
+}
+
+.gh-batch-edit-time-open {
+
+    + #gh-batch-edit-date-container {
+        max-height: 1000px !important;
+        opacity: 1 !important;
+
+        #gh-batch-edit-day-picker-container div:nth-child(7) {
+            margin-bottom: 17px;
+
+            + button {
+                display: none;
+            }
+        }
+    }
+}
+
+/* Batch edit */
+
+#gh-batch-edit-container {
+    padding: 30px 30px 5px;
+    width: 100%;
+
+    &.gh-sticky-header {
+        position: fixed;
+        top: 0;
+        z-index: 1;
+    }
+
+    &::after,
+    &::after {
+        clear: both;
+        content: '';
+        display: block;
+    }
+
+    h1 {
+        cursor: pointer;
+        display: inline-block;
+        font-size: 25px !important;
+        font-weight: 400;
+        margin-bottom: 25px;
+        max-width: 80%;
+        min-height: 40px;
+        padding-top: 7px;
+
+        &.editing {
+            width: 80%;
+        }
+
+        &.gh-disabled {
+            cursor: default !important;
+        }
+
+        form {
+            margin-left: -3px;
+            margin-top: -6px;
+        }
+    }
+
+    > i.fa-link {
+        font-size: 18px;
+        font-weight: 400;
+        margin: 11px 10px 0 0;
+
+        + h1 {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Batch edit header */
+
+    #gh-batch-edit-header {
+        position: relative;
+
+        &.gh-batch-edit-time-open {
+
+            #gh-batch-edit-time {
+                border: none !important;
+                bottom: -20px;
+                height: 60px !important;
+                margin-top: -64px;
+                padding-bottom: 20px;
+                padding-top: 16px;
+                position: relative;
+                right: 0;
+                z-index: 9999;
+            }
+        }
+
+        #gh-batch-edit-header-disabled-overlay {
+            height: 100%;
+            opacity: 0;
+            position: absolute;
+            -webkit-transition: opacity .3s;
+               -moz-transition: opacity .3s;
+                 -o-transition: opacity .3s;
+                    transition: opacity .3s;
+            width: 100%;
+            z-index: -1;
+
+            p {
+                font-weight: 400;
+                margin: 14px 0;
+
+                strong {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &.gh-disabled:hover #gh-batch-edit-header-disabled-overlay {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        button,
+        input[type="text"]:not(.as-input),
+        select,
+        ul.as-selections {
+            -webkit-border-radius: 5px;
+               -moz-border-radius: 5px;
+                    border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+        }
+
+        input[type="text"],
+        select {
+            font-weight: 400;
+            height: 33px !important;
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+
+        th {
+            border-bottom: none;
+
+            &:first-child {
+                font-weight: 200;
+                font-size: 13px;
+                padding: 0;
+                vertical-align: middle;
+            }
+
+            > * {
+                height: 33px;
+                padding: 6px 12px;
+                width: 100%;
+            }
+        }
+
+        ul.as-selections {
+            overflow: hidden !important;
+        }
+
+        .gh-batch-edit-header-description {
+            vertical-align: middle;
+        }
+    }
+
+    /* Batch edit date container */
+
+    #gh-batch-edit-date-container {
+        clear: both;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0 0 0 15px !important;
+        -webkit-transition: max-height .3s, opacity .3s;
+           -moz-transition: max-height .3s, opacity .3s;
+             -o-transition: max-height .3s, opacity .3s;
+                transition: max-height .3s, opacity .3s;
+
+        #gh-batch-edit-date-term-description {
+            float: left;
+            margin-top: 20px;
+            width: 140px;
+
+            small {
+                font-size: 90%;
+                font-weight: 400;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin: 5px 0 0;
+                font-weight: 600;
+            }
+        }
+
+        #gh-batch-edit-date-picker-container {
+            margin-top: 20px;
+            overflow: auto;
+            width: 80%;
+
+            #gh-batch-edit-date-picker {
+                border-collapse: separate;
+                border-spacing: 1px;
+                display: table;
+                margin-bottom: 20px;
+            }
+
+            .gh-batch-edit-date-processing {
+                margin: 0 0 14px 14px;
+
+                i.fa-spinner {
+                    margin-right: 4px;
+                }
+            }
+
+            .checkbox {
+                display: table-cell;
+                min-height: 36px;
+                min-width: 62px;
+                overflow: hidden;
+                padding: 1px 4px 0;
+                vertical-align: middle;
+
+                label {
+                    font-size: 18px;
+                    font-weight: 400;
+                    padding: 5px 4px 2px;
+
+                    i.fa-square-o,
+                    i.fa-check-square-o {
+                        position: relative;
+                        top: 1px;
+                    }
+                }
+
+                input {
+                    opacity: 0;
+                }
+            }
+
+            .checkbox label i.fa-square-o,
+            .checkbox.gh-batch-edit-date-picker-selected label i {
+                margin-left: 4px;
+            }
+
+            .checkbox label i.fa-check-square-o,
+            .checkbox.gh-batch-edit-date-picker-selected label i.fa-square-o {
+                display: none;
+            }
+
+            .checkbox.gh-batch-edit-date-picker-selected {
+                border-style: solid;
+                border-width: 2px;
+                padding: 0 0 0 2px;
+
+                label {
+                    padding: 4px 4px 0;
+
+                    i.fa-check-square-o {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Borrowed info */
+
+    .gh-series-title-borrowed-info {
+        font-size: 14px;
+        margin-bottom: 30px;
+
+        > span {
+            margin-right: 20px;
+        }
+
+        a {
+            font-weight: 400;
+            margin-left: 3px;
+            text-decoration: none;
+        }
+    }
+
+    /* Date and time pickers */
+
+    .gh-batch-edit-time-picker {
+
+        &::after {
+            clear: both;
+            content: '';
+            display: block;
+        }
+
+        select.form-control {
+            height: 30px;
+        }
+
+        .gh-batch-edit-day-picker {
+            width: 130px;
+        }
+
+        select.form-control,
+        .gh-batch-edit-day-picker {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .gh-batch-edit-hours-picker,
+        .gh-batch-edit-minutes-picker {
+            width: 50px;
+        }
+
+        /* Increase the width of the minute and hour pickers on ipads */
+
+        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px)  {
+            .gh-batch-edit-hours-picker,
+            .gh-batch-edit-minutes-picker {
+                width: 60px;
+            }
+        }
+
+        .gh-batch-edit-date-start {
+            margin: 0 0 7px 17px;
+        }
+
+        .gh-batch-edit-date-end {
+            margin: 0 0 7px 5px;
+        }
+
+        .gh-batch-edit-date-to {
+            margin: 5px 0 0 5px;
+        }
+    }
+
+    .gh-batch-edit-date-add-day {
+        clear: both;
+        display: block;
+        margin-bottom: 15px;
+    }
+}
+
+/* Terms */
+
+#gh-batch-edit-term-container {
+    margin: 0 30px 30px;
+
+    /* Events */
+
+    .gh-batch-edit-events-container {
+        margin-bottom: 0;
+
+        &:not(:first-child) .table > thead > tr > th {
+            height: 65px;
+        }
+
+        &:last-child {
+            margin-bottom: 100px;
+        }
+
+        .table {
+            font-size: 15.3px;
+            table-layout: fixed;
+
+            > thead > tr > th .checkbox,
+            > tbody > tr > td .checkbox {
+                font-size: 16px;
+                margin: 0;
+
+                input {
+                    margin-top: 2px;
+                }
+            }
+
+            > thead {
+
+                > tr {
+
+                    > th {
+                        border-bottom-width: 5px;
+
+                        .checkbox {
+                            margin-bottom: 4px;
+
+                            label {
+                                font-weight: 700;
+                                white-space: nowrap;
+
+                                span {
+                                    margin-left: 11px;
+                                }
+                            }
+                        }
+
+                        .gh-new-event {
+                            margin-bottom: -5px;
+                        }
+                    }
+                }
+            }
+
+            > tbody {
+
+                > tr {
+
+                    > td {
+                        cursor: pointer;
+                        max-width: 200px;
+                        overflow: hidden;
+                        padding: 6px 0 6px 15px;
+                        text-overflow: ellipsis;
+                        vertical-align: middle;
+                        white-space: nowrap;
+
+                        &.gh-event-organisers {
+                            height: auto;
+                            padding-bottom: 4px;
+                            padding-top: 3px;
+                        }
+
+                        &.gh-event-organisers[title] {
+                            overflow: hidden;
+                            padding: 6px 0 6px 15px;
+                        }
+
+                        &.gh-event-type {
+                            padding-right: 6px;
+                        }
+
+                        &.gh-event-type:not(.gh-disabled):empty:hover::before,
+                        &.gh-event-location:not(.gh-disabled):empty:hover::before,
+                        &.gh-event-organisers[title]:not(.gh-disabled):empty:hover::before {
+                            content: 'Add lecturer';
+                        }
+
+                        &.gh-event-location:not(.gh-disabled):empty:hover::before {
+                            content: 'Add location';
+                        }
+
+                        &.gh-event-type:not(.gh-disabled):empty:hover::before {
+                            content: 'Add type';
+                        }
+
+                        &:first-child {
+                            cursor: auto;
+                            max-width: 40px;
+                            padding: 0 0 0 8px;
+                        }
+                    }
+
+                    &.danger.gh-fade td,
+                    &.success.gh-fade td {
+                        -webkit-transition: background-color 2s;
+                           -moz-transition: background-color 2s;
+                             -o-transition: background-color 2s;
+                                transition: background-color 2s;
+                    }
+                }
+            }
+
+            > tr.gh-disabled > th,
+            > td.gh-disabled {
+                cursor: default !important;
+            }
+        }
+
+        .gh-batch-edit-events-container-empty {
+            font-size: 15px;
+            font-weight: 400;
+
+            td {
+                padding: 20px !important;
+                text-align: center;
+            }
+        }
+
+        &.gh-ot {
+
+            .gh-batch-edit-events-container-empty {
+                display: none !important;
+            }
+
+            .table > thead > tr > th .checkbox label {
+                white-space: nowrap;
+            }
+        }
+
+        .gh-jeditable-form {
+            margin: 0 0 -8px -10px;
+            height: 30px;
+
+            input {
+                border: none;
+                height: 31px !important;
+                padding: 0 10px;
+            }
+        }
+    }
+}
+
+/* Batch edit actions container */
+
+.gh-batch-edit-actions-container {
+    bottom: 0;
+    border-top-width: 1px;
+    border-top-style: solid;
+    padding: 15px 30px;
+    position: fixed;
+    -webkit-transition: width .3s;
+       -moz-transition: width .3s;
+         -o-transition: width .3s;
+            transition: width .3s;
+    width: -moz-calc(100% - 320px); /* Firefox */
+    width: -o-calc(100% - 320px); /* Opera */
+    width: -webkit-calc(100% - 320px); /* WebKit */
+    width: calc(100% - 320px); /* Standard */
+
+    #gh-batch-edit-change-summary {
+        font-weight: 400;
+        margin: 9px 0 0;
+    }
+
+    #gh-batch-edit-cancel {
+        font-weight: 400;
+    }
+
+    #gh-batch-edit-submit {
+        margin-left: 50px;
+    }
+}
+
+/* Calendar view */
+
+#gh-batch-calendar-view {
+    padding: 0;
+
+    #gh-calendar-container {
+        margin-top: 60px;
+    }
+}
+
+/* jEditable */
+
+.gh-jeditable-form.gh-jeditable-form-with-submit input {
+    margin-right: 12px;
+    width: 90% !important;
+}
+
+/* Event type */
+
+.gh-batch-edit-events-container {
+
+    .gh-jeditable-form select {
+        height: 34px;
+    }
+
+    .gh-event-type.gh-editing::before {
+        display: none;
+    }
+}
+
+.gh-event-description {
+    max-width: 220px !important;
+    min-width: 175px !important;
+    text-overflow: ellipsis;
+}
+
+.gh-event-display-date {
+    line-height: 20px;
+    margin-left: 30px;
+    margin-top: -10px;
+}
+
+.gh-event-delete,
+.gh-event-delete button {
+    cursor: default !important;
+}
+
+tr.info .gh-event-delete,
+tr.info .gh-event-delete button {
+    cursor: pointer !important;
+}
+
+.gh-event-delete button {
+    opacity: 0;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: hidden;
+    width: 100%;
+}
+
+tr.info .gh-event-delete button {
+    opacity: 1;
+    -webkit-transition: opacity .2s;
+       -moz-transition: opacity .2s;
+         -o-transition: opacity .2s;
+            transition: opacity .2s;
+    visibility: visible;
+}
+
+
+/*************/
+/* COLLAPSED */
+/*************/
+
+.gh-collapsed {
+
+    #gh-batch-edit-container {
+
+        &.gh-sticky-header {
+            top: 215px;
+        }
+    }
+
+    #gh-batch-edit-term-container {
+        margin-bottom: 280px;
+    }
+
+    .gh-batch-edit-actions-container {
+        width: -moz-calc(100% - 50px);
+        width: -o-calc(100% - 50px);
+        width: -webkit-calc(100% - 50px);
+        width: calc(100% - 50px);
+    }
+}
