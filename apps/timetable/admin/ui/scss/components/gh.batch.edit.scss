@@ -14,6 +14,13 @@
  */
 
 
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /*****************/
 /* BATCH EDITING */
 /*****************/
@@ -146,12 +153,9 @@
 
         #gh-batch-edit-header-disabled-overlay {
             height: 100%;
-            opacity: 0;
+            @include opacity(0);
             position: absolute;
-            -webkit-transition: opacity .3s;
-               -moz-transition: opacity .3s;
-                 -o-transition: opacity .3s;
-                    transition: opacity .3s;
+            @include transition(opacity .3s);
             width: 100%;
             z-index: -1;
 
@@ -174,9 +178,7 @@
         input[type="text"]:not(.as-input),
         select,
         ul.as-selections {
-            -webkit-border-radius: 5px;
-               -moz-border-radius: 5px;
-                    border-radius: 5px;
+            @include border-radius(5px);
             border-style: solid;
             border-width: 1px;
         }
@@ -220,13 +222,10 @@
     #gh-batch-edit-date-container {
         clear: both;
         max-height: 0;
-        opacity: 0;
+        @include opacity(0);
         overflow: hidden;
         padding: 0 0 0 15px !important;
-        -webkit-transition: max-height .3s, opacity .3s;
-           -moz-transition: max-height .3s, opacity .3s;
-             -o-transition: max-height .3s, opacity .3s;
-                transition: max-height .3s, opacity .3s;
+        @include transition( max-height .3s, opacity .3s);
 
         #gh-batch-edit-date-term-description {
             float: left;
@@ -501,10 +500,7 @@
 
                     &.danger.gh-fade td,
                     &.success.gh-fade td {
-                        -webkit-transition: background-color 2s;
-                           -moz-transition: background-color 2s;
-                             -o-transition: background-color 2s;
-                                transition: background-color 2s;
+                        @include transition(background-color 2s);
                     }
                 }
             }
@@ -557,10 +553,7 @@
     border-top-style: solid;
     padding: 15px 30px;
     position: fixed;
-    -webkit-transition: width .3s;
-       -moz-transition: width .3s;
-         -o-transition: width .3s;
-            transition: width .3s;
+    @include transition(width .3s);
     width: -moz-calc(100% - 320px); /* Firefox */
     width: -o-calc(100% - 320px); /* Opera */
     width: -webkit-calc(100% - 320px); /* WebKit */
@@ -633,21 +626,15 @@ tr.info .gh-event-delete button {
 }
 
 .gh-event-delete button {
-    opacity: 0;
-    -webkit-transition: opacity .2s;
-       -moz-transition: opacity .2s;
-         -o-transition: opacity .2s;
-            transition: opacity .2s;
+    @include opacity(0);
+    @include transition(opacity .2s);
     visibility: hidden;
     width: 100%;
 }
 
 tr.info .gh-event-delete button {
-    opacity: 1;
-    -webkit-transition: opacity .2s;
-       -moz-transition: opacity .2s;
-         -o-transition: opacity .2s;
-            transition: opacity .2s;
+    @include opacity(1);
+    @include transition(opacity .2s);
     visibility: visible;
 }
 

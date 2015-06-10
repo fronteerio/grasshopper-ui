@@ -15,6 +15,13 @@
 
 
 /***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
+/***********/
 /* COLOURS */
 /***********/
 
@@ -822,9 +829,7 @@ tbody .fc-sun {
     }
 
     > .alert {
-        -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-           -moz-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+        @include box-shadow(0 2px 4px 0 rgba(0, 0, 0, .4));
     }
 }
 

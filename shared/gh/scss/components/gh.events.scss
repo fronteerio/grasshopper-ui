@@ -13,12 +13,20 @@
  * permissions and limitations under the License.
  */
 
+
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /**********/
 /* EVENTS */
 /**********/
 
 .gh-event-type:not(:empty)::before {
-    border-radius: 12px;
+    @include border-radius(12px);
     content: attr(data-first);
     display: inline-block;
     height: 20px;

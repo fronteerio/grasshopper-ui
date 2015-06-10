@@ -14,6 +14,13 @@
  */
 
 
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /*********/
 /* LOGIN */
 /*********/
@@ -40,9 +47,7 @@
     }
 
     input.form-control {
-        -webkit-border-radius: 0;
-           -moz-border-radius: 0;
-                border-radius: 0;
+        @include border-radius(0);
         border-width: 0;
         height: 45px;
         line-height: 45px;
