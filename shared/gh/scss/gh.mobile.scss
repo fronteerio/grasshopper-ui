@@ -31,10 +31,10 @@ footer,
 main {
     margin-bottom: 0 !important;
     margin-top: 0 !important;
-}
 
-main .gh-signin-form {
-    margin: 57px 20px 20px 20px;
+    .gh-signin-form {
+        margin: 57px 20px 20px 20px;
+    }
 }
 
 .alert {
@@ -50,26 +50,29 @@ main .gh-signin-form {
     overflow: hidden;
 }
 
-.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container {
-    left: 0;
-    position: relative;
-}
+.gh-collapsed-finished #gh-page-container #gh-right-container {
 
-.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container #gh-header {
-    height: inherit;
-}
+    #gh-header-container {
+        left: 0;
+        position: relative;
 
-.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container #gh-header h1 {
-    font-size: 22px;
-    margin: 45px 0 0 20px;
-    max-width: calc(100% - 40px);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        #gh-header {
+            height: inherit;
 
-.gh-collapsed-finished #gh-page-container #gh-right-container #gh-header-container #gh-header #gh-signout-form {
-    margin: 38px 30px 0 0;
+            h1 {
+                font-size: 22px;
+                margin: 45px 0 0 20px;
+                max-width: calc(100% - 40px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            #gh-signout-form {
+                margin: 38px 30px 0 0;
+            }
+        }
+    }
 }
 
 
@@ -79,15 +82,15 @@ main .gh-signin-form {
 
 #gh-export-container {
     margin: 20px;
-}
 
-#gh-export-container #gh-export-main {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
+    #gh-export-main {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
 
-#gh-export-container > #gh-export-sync-message {
-    padding: 20px 20px 0 0;
-    width: 100%;
+    > #gh-export-sync-message {
+        padding: 20px 20px 0 0;
+        width: 100%;
+    }
 }

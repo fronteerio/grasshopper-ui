@@ -14,22 +14,17 @@
  */
 
 
-/***********/
-/* BUTTONS */
-/***********/
+/*****************/
+/* DELETE SERIES */
+/*****************/
 
-.btn {
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    padding: 8px 12px;
+#gh-delete-series-modal {
 
-    &:hover,
-    &:focus {
-        text-decoration: none;
+    strong {
+        font-weight: 600;
     }
 
-    i {
-        padding-right: 5px;
+    small {
+        font-size: 15px;
     }
 }

@@ -14,22 +14,21 @@
  */
 
 
-/***********/
-/* BUTTONS */
-/***********/
+/*****************/
+/* RENAME MODULE */
+/*****************/
 
-.btn {
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
-    padding: 8px 12px;
+#gh-rename-module-form {
 
-    &:hover,
-    &:focus {
-        text-decoration: none;
-    }
+    .form-group {
 
-    i {
-        padding-right: 5px;
+        input {
+            font-size: 28px;
+            font-weight: 400;
+            height: 41px;
+            margin: 0;
+            padding: 5px 10px 3px 10px;
+            width: 100%;
+        }
     }
 }

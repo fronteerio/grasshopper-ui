@@ -31,14 +31,17 @@ main {
     margin: 25px 0 !important;
 }
 
-#gh-user-permissions-form ul,
-#gh-user-permissions-form ul li {
-    list-style: none;
-    margin: 0;
-    padding: 0 0 0 10px;
-}
+#gh-user-permissions-form {
 
-#gh-user-permissions-form > ul,
-#gh-user-permissions-form > ul > li {
-    padding: 0;
+    ul,
+    ul li {
+        list-style: none;
+        margin: 0;
+        padding: 0 0 0 10px;
+    }
+
+    > ul,
+    > ul > li {
+        padding: 0;
+    }
 }

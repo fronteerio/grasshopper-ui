@@ -18,12 +18,15 @@
 /* HEADER */
 /**********/
 
-#gh-right-container #gh-header h1 {
-    display: inline-block;
-    margin: 36px 0 35px 40px;
-}
+#gh-right-container #gh-header {
 
-#gh-right-container #gh-header .gh-signin-form,
-#gh-right-container #gh-header #gh-signout-form {
-    margin: 38px 30px 38px 40px;
+    h1 {
+        display: inline-block;
+        margin: 36px 0 35px 40px;
+    }
+
+    .gh-signin-form,
+    #gh-signout-form {
+        margin: 38px 30px 38px 40px;
+    }
 }

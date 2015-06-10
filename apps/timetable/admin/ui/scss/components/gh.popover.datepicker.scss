@@ -1,0 +1,129 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/***********/
+/* POPOVER */
+/***********/
+
+.popover.gh-datepicker-popover {
+    margin-top: -5px;
+    min-width: 450px !important;
+    padding: 5px 5px 20px;
+    z-index: 10000;
+
+    &.top {
+        margin-top: -60px;
+    }
+}
+
+
+/**************/
+/* EDIT DATES */
+/**************/
+
+#gh-edit-dates {
+
+    /* Navigation */
+
+    .ui-datepicker-header {
+        margin-bottom: 10px;
+
+        .ui-datepicker-prev,
+        .ui-datepicker-next {
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }
+
+        .ui-datepicker-prev {
+            float: left;
+        }
+
+        .ui-datepicker-next {
+            float: right;
+        }
+
+        .ui-datepicker-title {
+            font-size: 14px;
+            line-height: 14px;
+            text-align: center;
+        }
+    }
+
+    /* Calendar */
+
+    .ui-datepicker-calendar {
+        clear: both;
+        width: 100%;
+
+        th,
+        td {
+            border-style: solid;
+            border-width: 1px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            padding: 7px 4px 4px;
+        }
+
+        td {
+
+            &.ui-datepicker-other-month,
+            &.ui-state-disabled {
+                font-weight: 200;
+            }
+
+            a {
+                display: block;
+                padding: 8px 4px 4px;
+                text-decoration: none;
+            }
+        }
+    }
+
+    /* Form */
+
+    #gh-edit-dates-form {
+
+        label {
+            font-weight: 200;
+            line-height: 40px;
+            padding-right: 5px;
+            text-align: right;
+        }
+
+        select.gh-select-time {
+            margin-left: 5px;
+            width: 50px;
+        }
+
+        .gh-col-datepicker {
+            padding-left: 0;
+        }
+
+        .gh-col-time {
+            padding-right: 0;
+        }
+    }
+
+    #gh-edit-dates-buttons {
+        margin-top: 15px;
+    }
+}

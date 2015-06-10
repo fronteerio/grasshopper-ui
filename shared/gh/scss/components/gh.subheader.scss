@@ -18,8 +18,11 @@
 /* SUBHEADER */
 /*************/
 
-#gh-right-container #gh-subheader form {
-    margin: 0 0 0 40px;
-    min-width: 900px;
-    padding: 28px 0 0;
+#gh-right-container #gh-subheader {
+
+    form {
+        margin: 0 0 0 40px;
+        min-width: 900px;
+        padding: 28px 0 0;
+    }
 }

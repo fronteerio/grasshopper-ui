@@ -18,99 +18,106 @@
 /* SERIES INFO MODAL */
 /*********************/
 
-#gh-series-info-modal .modal-header {
-    padding: 25px 25px 0 !important;
-}
+#gh-series-info-modal {
 
-#gh-series-info-modal .modal-header i {
-    display: inline-block;
-    margin-left: 8px;
-    margin-right: 8px;
-}
+    /* Header */
 
-#gh-series-info-modal .modal-header .gh-series-info-hierarchy {
-    max-width: -moz-calc(100% - 50px);
-    max-width: -o-calc(100% - 50px);
-    max-width: -webkit-calc(100% - 50px);
-    max-width: calc(100% - 50px);
-}
+    .modal-header {
+        padding: 25px 25px 0 !important;
 
-#gh-series-info-modal .modal-body {
-    padding: 20px;
-}
+        i {
+            display: inline-block;
+            margin-left: 8px;
+            margin-right: 8px;
+        }
 
-#gh-series-info-modal .gh-series-info-list {
-    margin-top: 15px;
-    max-height: 325px;
-    overflow: auto;
-}
+        .gh-series-info-hierarchy {
+            max-width: -moz-calc(100% - 50px);
+            max-width: -o-calc(100% - 50px);
+            max-width: -webkit-calc(100% - 50px);
+            max-width: calc(100% - 50px);
+        }
+    }
 
-/* Term */
+    /* Body */
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-term {
-    position: relative;
-}
+    .modal-body {
+        padding: 20px;
 
-#gh-series-info-modal .gh-series-info-list > div {
-    padding-left: 10px;
-}
+        .gh-series-info-list {
+            margin-top: 15px;
+            max-height: 325px;
+            overflow: auto;
 
-#gh-series-info-modal .gh-series-info-list > div:not(:first-child) {
-    padding-top: 20px;
-}
+            > div {
+                padding-left: 10px;
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-no-events {
-    padding: 10px;
-}
+                &:not(:first-child) {
+                    padding-top: 20px;
+                }
+            }
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-term strong {
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    display: block;
-    margin-bottom: 15px;
-    padding-bottom: 5px;
-}
+            /* Term */
 
-/* Event */
+            .gh-series-info-list-term {
+                position: relative;
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event {
-    clear: both;
-    height: 35px;
-    position: relative;
-}
+                strong {
+                    border-bottom-style: solid;
+                    border-bottom-width: 1px;
+                    display: block;
+                    margin-bottom: 15px;
+                    padding-bottom: 5px;
+                }
+            }
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event > div {
-    float: left;
-}
+            .gh-series-info-list-no-events {
+                padding: 10px;
+            }
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-title {
-    max-width: -moz-calc(100% - 230px);
-    max-width: -o-calc(100% - 230px);
-    max-width: -webkit-calc(100% - 230px);
-    max-width: calc(100% - 230px);
-    overflow: hidden;
-    padding-right: 7px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+            /* Event */
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-type {
-    min-width: 30px;
-}
+            .gh-series-info-list-event {
+                clear: both;
+                height: 35px;
+                position: relative;
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date {
-    min-width: 200px;
-}
+                > div {
+                    float: left;
+                }
 
-#gh-series-info-modal .gh-series-info-list .gh-series-info-list-event .gh-series-info-list-event-date .gh-event-display-date {
-    padding-left: 30px;
-}
+                .gh-series-info-list-event-title {
+                    max-width: -moz-calc(100% - 230px);
+                    max-width: -o-calc(100% - 230px);
+                    max-width: -webkit-calc(100% - 230px);
+                    max-width: calc(100% - 230px);
+                    overflow: hidden;
+                    padding-right: 7px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
 
-/* Metadata */
+                .gh-series-info-list-event-type {
+                    min-width: 30px;
+                }
 
-#gh-series-info-modal .gh-series-info-location,
-#gh-series-info-modal .gh-series-info-organiser {
-    border-top-style: solid;
-    border-top-width: 1px;
-    padding: 10px 15px;
+                .gh-series-info-list-event-date {
+                    min-width: 200px;
+
+                    .gh-event-display-date {
+                        padding-left: 30px;
+                    }
+                }
+            }
+        }
+
+        /* Metadata */
+
+        .gh-series-info-location,
+        .gh-series-info-organiser {
+            border-top-style: solid;
+            border-top-width: 1px;
+            padding: 10px 15px;
+        }
+    }
 }

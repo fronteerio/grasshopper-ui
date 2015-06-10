@@ -1,0 +1,74 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/******************/
+/* EDITABLE PARTS */
+/******************/
+
+#gh-main-tripos {
+
+    > .gh-row-part {
+        margin: 0;
+
+        > .gh-part {
+            height: 320px;
+            padding: 38px;
+
+            p {
+
+                &.gh-part-editing {
+                    height: 50px;
+                    line-height: 50px;
+                    margin-bottom: 25px;
+                    text-align: center;
+                }
+
+                &.gh-part-tripos {
+                    font-size: 20px;
+                    font-weight: 200;
+                    margin-bottom: 0;
+                }
+
+                &.gh-part-part {
+                    font-size: 33px;
+                    font-weight: 600;
+                }
+            }
+
+            .gh-part-edit,
+            .gh-part-draft {
+                bottom: 40px;
+                display: block;
+                font-size: 17px;
+                position: absolute;
+            }
+
+            .gh-part-edit {
+                padding: 8px 20px;
+            }
+
+            .gh-part-draft {
+                height: 42px;
+                line-height: 42px;
+                right: 60px;
+
+                i {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
+}

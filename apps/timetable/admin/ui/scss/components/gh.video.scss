@@ -1,0 +1,98 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*********/
+/* VIDEO */
+/*********/
+
+.gh-show-video {
+    display: block;
+    font-size: 16px;
+    margin-top: -8px;
+    position: absolute;
+    right: 43px;
+    text-decoration: none;
+    top: 50%;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+#gh-video {
+    height: 100%;
+    width: auto;
+}
+
+.gh-video {
+    -webkit-background-size: cover; /* For WebKit*/
+       -moz-background-size: cover; /* Mozilla*/
+         -o-background-size: cover; /* Opera*/
+            background-size: cover; /* Generic*/
+    height: 415px;
+    position: relative;
+    text-align: center;
+
+    .gh-video-info {
+        display: block;
+        font-size: 27px;
+        margin-top: 30px;
+        text-align: center;
+        width: auto;
+    }
+
+    &:first-child .gh-video-info {
+        left: 50%;
+        line-height: 40px;
+        margin-left: -200px;
+        margin-top: -60px;
+        position: absolute;
+        top: 50%;
+        width: 400px;
+    }
+
+    .gh-play-video {
+        font-size: 16px;
+        font-weight: 400;
+        left: 50%;
+        margin-left: -65px;
+        margin-top: 40px;
+        position: absolute;
+        top: 50%;
+        width: 130px;
+
+        i {
+            margin-right: 5px;
+        }
+    }
+
+    .gh-hide-video {
+        background: none;
+        font-size: 30px;
+        font-weight: 200;
+        height: 60px;
+        position: absolute;
+        right: 10px;
+        text-align: center;
+        top: 10px;
+        width: 60px;
+    }
+
+    &.isPlaying .gh-video-info,
+    &.isPlaying .gh-play-video {
+        display: none;
+    }
+}
