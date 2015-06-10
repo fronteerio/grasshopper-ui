@@ -1,0 +1,147 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+
+/*******************/
+/* Background clip */
+/*******************/
+
+/**
+ * Specifies specifies the painting area of the background
+ *
+ * @param  $value    border-box|padding-box|content-box|initial|inherit
+ */
+@mixin background-clip($value) {
+    -webkit-background-clip: $value;
+       -moz-background-clip: $value;
+            background-clip: $value;
+}
+
+
+/*******************/
+/* Background size */
+/*******************/
+
+/**
+ * Specify the size of a background image
+ *
+ * @param  $args    The background-size properties. (e.g. cover)
+ */
+@mixin background-size($args) {
+    -webkit-background-size: $args; /* For WebKit*/
+       -moz-background-size: $args; /* Mozilla*/
+         -o-background-size: $args; /* Opera*/
+            background-size: $args; /* Generic*/
+}
+
+
+/*****************/
+/* Border radius */
+/*****************/
+
+/**
+ * Adds rounded borders to elements
+ *
+ * @param  $args    The border radius arguments. (e.g. 1px)
+ */
+@mixin border-radius($args) {
+    -webkit-border-radius: $args;
+       -moz-border-radius: $args;
+            border-radius: $args;
+}
+
+
+/**************/
+/* Box shadow */
+/**************/
+
+/**
+ * Attaches one or more shadows to an element
+ *
+ * @param  $args    The box shadow properties
+ */
+@mixin box-shadow($args...) {
+    -webkit-box-shadow: $args;
+       -moz-box-shadow: $args;
+            box-shadow: $args;
+}
+
+
+/**************/
+/* Box sizing */
+/**************/
+
+/**
+ * Tell the browser what the sizing properties (width and height) should include.
+ *
+ * @param  $value
+ */
+@mixin box-sizing($value) {
+    -webkit-box-sizing: $value;
+       -moz-box-sizing: $value;
+           -box-sizing: $value;
+}
+
+
+/********/
+/* Calc */
+/********/
+
+/**
+ * Calculate the value for a property
+ *
+ * @param  $property    The property where the value needs to be calculated for. (e.g. width)
+ * @param  $formula     The formula for the calculation. (e.g. 100% - 50px)
+ */
+@mixin calc($property, $formula) {
+    #{$property}: -webkit-calc($formula);
+    #{$property}: -moz-calc($formula);
+    #{$property}: -o-calc($formula);
+    #{$property}: calc($formula);
+}
+
+
+/***********/
+/* Opacity */
+/***********/
+
+/**
+ * Adds an opacity to an element
+ *
+ * @param  $opacity    The opacity value. (e.g. 0.8)
+ */
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+
+/**************/
+/* Transition */
+/**************/
+
+/**
+ * Change property values smoothly
+ *
+ * @param  $args    The transition properties. (e.g. 'width 2s ease')
+ */
+@mixin transition ($args...) {
+    -webkit-transition: $args;
+       -moz-transition: $args;
+        -ms-transition: $args;
+         -o-transition: $args;
+            transition: $args;
+}

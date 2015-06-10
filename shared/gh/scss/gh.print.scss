@@ -13,6 +13,14 @@
  * permissions and limitations under the License.
  */
 
+
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 @media print {
 
     body {
@@ -51,7 +59,7 @@
 
     #gh-page-container #gh-right-container {
         padding-left: 0;
-        transition: none;
+        @include transition(none);
 
         #gh-main {
             margin-bottom: 0;

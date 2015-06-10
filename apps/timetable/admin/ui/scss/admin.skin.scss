@@ -15,6 +15,13 @@
 
 
 /***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
+/***********/
 /* COLOURS */
 /***********/
 
@@ -306,9 +313,7 @@ ul.gh-borrowed-list {
     background-color: #FFF;
 
     &.gh-sticky-header {
-        -webkit-box-shadow: 0 0 15px #666;
-           -moz-box-shadow: 0 0 15px #666;
-                box-shadow: 0 0 15px #666;
+        @include box-shadow(0 0 15px #666);
     }
 
     .gh-series-title-borrowed-info {
@@ -337,9 +342,7 @@ ul.gh-borrowed-list {
 .gh-batch-edit-actions-container {
     background: #FFF;
     border-top-color: #BEBEBE;
-    -webkit-box-shadow: 0 0 15px #666;
-       -moz-box-shadow: 0 0 15px #666;
-            box-shadow: 0 0 15px #666;
+    @include box-shadow(0 0 15px #666);
 
     #gh-batch-edit-change-summary {
         color: #6B6B6B;
@@ -562,9 +565,7 @@ tr.info .gh-event-delete button i {
 /***************/
 
 .as-selections {
-    -webkit-box-shadow: none !important;
-       -moz-box-shadow: none !important;
-            box-shadow: none !important;
+    @include box-shadow(none !important);
     border-color: #CCC !important;
 
     .as-original {
@@ -582,9 +583,7 @@ tr.info .gh-event-delete button i {
     .as-selection-item {
         background-color: transparent !important;
         background-image: none !important;
-        -webkit-box-shadow: none !important;
-           -moz-box-shadow: none !important;
-                box-shadow: none !important;
+        @include box-shadow(none !important);
 
         &.blur {
             background-color: #E7F8F0 !important;
@@ -615,9 +614,7 @@ ul.as-selections {
 
     .as-list {
         border-color: #CCC !important;
-        -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
-           -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
-                box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important;
+        @include box-shadow(0 4px 5px rgba(0, 0, 0, 0.15) !important);
 
         .as-result-item,
         .as-result-item.active {

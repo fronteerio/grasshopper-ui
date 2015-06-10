@@ -14,6 +14,13 @@
  */
 
 
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /**************/
 /* VISIBILITY */
 /**************/
@@ -42,9 +49,7 @@
 
                 .gh-visibility-icon-container {
                     border: 3px solid;
-                    -webkit-border-radius: 2px;
-                       -moz-border-radius: 2px;
-                            border-radius: 2px;
+                    @include border-radius(2px);
                     margin-bottom: 10px;
                     padding: 0 12px;
                     position: relative;
@@ -91,19 +96,14 @@
             }
 
             #gh-visibility-publish-warning {
-                -webkit-border-radius: 5px;
-                   -moz-border-radius: 5px;
-                        border-radius: 5px;
+                @include border-radius(5px);
                 font-weight: 400;
                 max-height: 0;
                 opacity: 0;
                 overflow: hidden;
                 padding: 0 55px;
                 text-align: center;
-                -webkit-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
-                   -moz-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
-                     -o-transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
-                        transition: max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in;
+                @include transition(max-height .25s ease-in, opacity .25s ease-in, padding .25s ease-in);
 
                 &.open {
                     max-height: 500px;

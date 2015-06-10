@@ -14,6 +14,13 @@
  */
 
 
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /*********/
 /* VIDEO */
 /*********/
@@ -38,10 +45,7 @@
 }
 
 .gh-video {
-    -webkit-background-size: cover; /* For WebKit*/
-       -moz-background-size: cover; /* Mozilla*/
-         -o-background-size: cover; /* Opera*/
-            background-size: cover; /* Generic*/
+    @include background-size(cover);
     height: 415px;
     position: relative;
     text-align: center;

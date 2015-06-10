@@ -13,6 +13,13 @@
  * permissions and limitations under the License.
  */
 
+
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
 @import 'components/gh.subheader.scss';
 @import 'components/gh.video.scss';
 @import 'components/gh.editable.parts.scss';
@@ -165,12 +172,8 @@ ul.as-list {
 .as-selections .as-selection-item.blur,
 ul.as-selections li.as-selection-item {
     border: none !important;
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
-            border-radius: 3px;
-    -webkit-box-shadow: none !important;
-       -moz-box-shadow: none !important;
-            box-shadow: none !important;
+    @include border-radius(3px);
+    @include box-shadow(none !important);
     font-size: 11px;
     font-weight: normal;
     line-height: 1;
@@ -211,9 +214,7 @@ ul.as-selections li.as-original input {
     position: absolute;
 
     .as-list {
-        -webkit-border-radius: 0 0 4px 4px;
-           -moz-border-radius: 0 0 4px 4px;
-                border-radius: 0 0 4px 4px;
+        @include border-radius(0 0 4px 4px);
         border-style: solid;
         border-top: none;
         border-width: 1px;
@@ -227,9 +228,7 @@ ul.as-selections li.as-original input {
         .as-result-item,
         .as-result-item.active {
             border: none;
-            -webkit-border-radius: 0;
-               -moz-border-radius: 0;
-                    border-radius: 0;
+            @include border-radius(0);
             font-size: 15px;
             padding: 10px 5px;
             text-shadow: none;

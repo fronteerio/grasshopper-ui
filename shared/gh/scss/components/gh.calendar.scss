@@ -14,6 +14,13 @@
  */
 
 
+/***********/
+/* IMPORTS */
+/***********/
+
+@import 'gh.mixins';
+
+
 /************/
 /* CALENDAR */
 /************/
@@ -39,11 +46,8 @@
 }
 
 #gh-calendar-container {
-    opacity: 1;
-    -webkit-transition: opacity .2s;
-       -moz-transition: opacity .2s;
-         -o-transition: opacity .2s;
-            transition: opacity .2s;
+    @include opacity(1);
+    @include transition(opacity .2s);
 }
 
 #gh-calendar-container,
@@ -96,13 +100,10 @@
 
 .gh-toolbar-secondary {
     font-weight: 600;
-    opacity: 1;
+    @include opacity(1);
     padding: 0 20px 60px;
     position: relative;
-    -webkit-transition: opacity .2s;
-       -moz-transition: opacity .2s;
-         -o-transition: opacity .2s;
-            transition: opacity .2s;
+    @include transition(opacity .2s);
     z-index: 2;
 
     #gh-calendar-toolbar-period,
@@ -311,15 +312,12 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view #gh-export-container {
     height: 100%;
-    opacity: 0;
+    @include opacity(0);
     overflow: hidden;
     position: absolute;
     right: 30px;
     top: 259px;
-    -webkit-transition: width .2s, opacity .2s;
-       -moz-transition: width .2s, opacity .2s;
-         -o-transition: width .2s, opacity .2s;
-            transition: width .2s, opacity .2s;
+    @include transition(width .2s, opacity .2s);
     width: 0;
 }
 
@@ -347,11 +345,8 @@ tbody tr:last-child > td.fc-widget-content {
 
 #gh-calendar-view .gh-toolbar-primary button,
 #gh-calendar-view .gh-toolbar-primary .nav-tabs li {
-    opacity: 1;
-    -webkit-transition: opacity .2s;
-       -moz-transition: opacity .2s;
-         -o-transition: opacity .2s;
-            transition: opacity .2s;
+    @include opacity(1);
+    @include transition(opacity .2s);
 }
 
 #gh-export-container #gh-export-main p#gh-export-add-description {
@@ -429,26 +424,26 @@ tbody tr:last-child > td.fc-widget-content {
 /* Export calendar animations */
 
 #gh-calendar-view.gh-export-enabled #gh-calendar-container {
-    opacity: 0.2;
+    @include opacity(.2);
 }
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-secondary {
-    opacity: 0.2;
+    @include opacity(.2);
 }
 
 #gh-calendar-view.gh-export-enabled #gh-export-container {
     height: calc(100% - 44px);
     min-height: 760px;
-    opacity: 1;
+    @include opacity(1);
     width: 400px;
     z-index: 2;
 }
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary button,
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary .nav-tabs li {
-    opacity: 0;
+    @include opacity(0);
 }
 
 #gh-calendar-view.gh-export-enabled .gh-toolbar-primary #gh-btn-calendar-export {
-    opacity: 1;
+    @include opacity(1);
 }
