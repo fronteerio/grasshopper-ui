@@ -316,6 +316,10 @@ ul.gh-borrowed-list {
         @include box-shadow(0 0 15px #666);
     }
 
+    .gh-jeditable-series-title:hover {
+        background-color: #F5F5F5 !important;
+    }
+
     .gh-series-title-borrowed-info {
 
         span {
