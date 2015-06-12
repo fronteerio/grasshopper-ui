@@ -115,7 +115,6 @@ notifications:
   email:
     - bp323@cam.ac.uk
     - md623@cam.ac.uk
-    - rwlc3@cam.ac.uk
   irc:
     channels:
       - "irc.freenode.org#ucam-ds"
