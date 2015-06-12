@@ -72,14 +72,19 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
      * @private
      */
     var renderLoginForm = function() {
-        $('#gh-subheader, #gh-content-description').height(350);
+        if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
+            $('#gh-subheader, #gh-content-description').height(350);
+        } else {
+            $('#gh-subheader, #gh-content-description').height(150);
+        }
+
         gh.utils.renderTemplate('admin-login-form', {
             'gh': gh
         }, $('#gh-subheader'), function() {
-            // Bind the validator to the login form
-            $('.gh-signin-form').validator({
+            // Bind the validator to the local login form
+            $('.gh-signin-local-form').validator({
                 'disable': false
-            }).on('submit', doLogin);
+            }).on('submit', doLocalLogin);
         });
     };
 
@@ -222,7 +227,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
      * @param  {Event}    ev    The jQuery event
      * @private
      */
-    var doLogin = function(ev) {
+    var doLocalLogin = function(ev) {
         // Log in to the system if the form is valid and local authentication is enabled.
         // If Shibboleth is required the native form behaviour will be used and no extra
         // handling is required
@@ -391,6 +396,9 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
      * @private
      */
     var initIndex = function() {
+        // Always display the help link
+        renderHelp();
+
         // Display the login form if the user is not authenticated
         if (gh.data.me && gh.data.me.anon) {
             // Add event handlers
@@ -406,15 +414,8 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
             // Set up the footer
             $(document).trigger('gh.footer.init');
 
-            // Only show the login form is local authentication is enabled and shibboleth is disabled
-            if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
-
-                // Display the help link
-                renderHelp();
-
-                // Render the login form
-                renderLoginForm();
-            }
+            // Render the login form
+            renderLoginForm();
         } else {
             // Fetch all the triposes
             getTriposData();

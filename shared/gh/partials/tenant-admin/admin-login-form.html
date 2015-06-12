@@ -1,5 +1,6 @@
 <div id="gh-login-form" class="col-xs-6 pull-left">
-    <form class="gh-signin-form" role="form" data-toggle="validator">
+    <% if (gh.config.enableLocalAuth) { %>
+    <form class="gh-signin-form gh-signin-local-form" role="form" data-toggle="validator">
         <h2>Sign in</h2>
         <div class="form-group">
             <label for="gh-signin-email">Email address</label>
@@ -13,4 +14,13 @@
             <i class="fa fa-sign-in"></i>Sign in
         </button>
     </form>
+    <% } else if (gh.config.enableShibbolethAuth) { %>
+        <form class="form-inline gh-signin-form" role="form" action="/api/auth/shibboleth" method="POST">
+            <h2>Sign in</h2>
+            <input type="hidden" name="redirectUrl" value="/admin/">
+            <button type="submit" id="gh-signin" class="btn btn-default">
+                <i class="fa fa-sign-in"></i>Sign in with Raven
+            </button>
+        </form>
+    <% } %>
 </div>
