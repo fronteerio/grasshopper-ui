@@ -72,11 +72,11 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.header', 'gh
      * @private
      */
     var renderLoginForm = function() {
+        var height = 150;
         if (gh.config.enableLocalAuth && !gh.config.enableShibbolethAuth) {
-            $('#gh-subheader, #gh-content-description').height(350);
-        } else {
-            $('#gh-subheader, #gh-content-description').height(150);
+            height = 350;
         }
+        $('#gh-subheader, #gh-content-description').height(height);
 
         gh.utils.renderTemplate('admin-login-form', {
             'gh': gh
