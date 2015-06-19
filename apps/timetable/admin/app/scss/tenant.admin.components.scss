@@ -26,6 +26,10 @@ main {
     width: 300px;
 }
 
+.as-results .as-list {
+    z-index: 10;
+}
+
 #gh-app-user-container #gh-user-permissions-form,
 #gh-app-user-container {
     margin: 25px 0 !important;
