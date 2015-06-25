@@ -417,10 +417,22 @@ module.exports = function(grunt) {
     });
 
     /**
+     * Task to place an update slug on the gh.bootstrap.js file so that it always gets a new hash in a
+     * build. This is needed because we do post-hash updates on the file to update module references and
+     * if module reference hashes change, it's possible the gh.bootstrap.js file won't get a new hash
+     * as a result
+     */
+    grunt.registerTask('touchBootstrap', function() {
+        // Just place a comment in the file with the current timestamp
+        util.format('\n// Date Built: %d', Date.now()).toEnd(util.format('%s/optimized/shared/gh/js/gh.bootstrap.js', grunt.config('target')));
+    });
+
+    /**
      * Task to hash files
      */
     grunt.registerTask('hashFiles', function() {
         this.requires('requirejs');
+        this.requires('touchBootstrap');
 
         // Hash the GH files
         grunt.task.run('ver:gh');
@@ -487,7 +499,7 @@ module.exports = function(grunt) {
     });
 
     // Default task for production build
-    grunt.registerTask('default', 'Run the production build', ['clean', 'exec:compileCSS', 'copy', 'requirejs', 'hashFiles', 'exec:removeTarget', 'configApache']);
+    grunt.registerTask('default', 'Run the production build', ['clean', 'exec:compileCSS', 'copy', 'requirejs', 'touchBootstrap', 'hashFiles', 'exec:removeTarget', 'configApache']);
 };
 
 /**
