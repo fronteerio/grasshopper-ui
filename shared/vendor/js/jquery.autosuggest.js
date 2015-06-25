@@ -327,7 +327,11 @@
                         }
                         if(str){
                             if (!opts.matchCase){ str = str.toLowerCase(); }
+                            if(values_input.val().search(","+data[num][opts.selectedValuesProp]+",") == -1){
+                                forward = true;
+                            }
                         }
+                        if(forward){
                             var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
                                     var raw_data = $(this).data("data");
                                     var number = raw_data.num;
@@ -363,6 +367,7 @@
                             delete this_data;
                             matchCount++;
                             if(opts.retrieveLimit && opts.retrieveLimit == matchCount ){ break; }
+                        }
                     }
                     selections_holder.removeClass("loading");
                     if(matchCount <= 0){
