@@ -152,6 +152,9 @@ ul.as-selections li.as-selection-item,
 ul.as-selections li.as-selection-item a.as-close,
 ul.as-list {
     font-family: 'Myriad Pro', helvetica, sans-serif;
+
+    /* The auto suggest makes the list container the same width as the input box. When editting events  this is too narrow */
+    width: auto !important;
 }
 
 .as-selections {
