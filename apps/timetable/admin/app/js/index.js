@@ -484,6 +484,7 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
      */
     var setUpAutoSuggest = function() {
         $('#gh-app-user-search').autoSuggest('/api/users', {
+            'keyDelay': 600,
             'limitText': 'Only one user can be edited at a time',
             'minChars': 2,
             'neverSubmit': true,
