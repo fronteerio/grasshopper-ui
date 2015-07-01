@@ -89,6 +89,7 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             // Initialise the autosuggest plugin on the editable field
             $('.gh-organiser-autosuggest', this).autoSuggest('/api/users', {
                 'asHtmlID': gh.utils.generateRandomString(),
+                'keyDelay': 600,
                 'minChars': 2,
                 'neverSubmit': true,
                 'onblur': 'submit',
