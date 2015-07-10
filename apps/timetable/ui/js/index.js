@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.footer', 'gh.student.listview'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.footer', 'gh.student.listview', 'gh.student.terms-and-conditions'], function(gh, constants) {
 
     /**
      * Display the appropriate view depending on the state of the selected part

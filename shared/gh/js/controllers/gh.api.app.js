@@ -246,4 +246,32 @@ define(['exports'], function(exports) {
             }
         });
     };
+
+    /**
+     * Get the terms and conditions
+     *
+     * @param  {Number}      appId                The id of the application to retrieve the terms and conditions for
+     * @param  {Function}    callback             Standard callback function
+     * @param  {Object}      callback.err         Error object containing the error code and error message
+     * @param  {Object}      callback.response    The Terms and Conditions for the current app
+     * @throws {Error}                            A parameter validation error
+     */
+    var getTermsAndConditions = exports.getTermsAndConditions = function(appId, callback) {
+        if (!_.isFunction(callback)) {
+            throw new Error('A callback function should be provided');
+        } else if (!_.isNumber(appId)) {
+            return callback({'code': 400, 'msg': 'A valid value for appId should be provided'});
+        }
+
+        $.ajax({
+            'url': '/api/apps/' + appId + '/termsAndConditions',
+            'type': 'GET',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
+    };
 });

@@ -102,6 +102,7 @@ requirejs.config({
         'gh.student.module-borrowed': 'gh/js/views/tenant-student/gh.module-borrowed-popover',
         'gh.student.series-info': 'gh/js/views/tenant-student/gh.series-info',
         'gh.student.series-borrowed-published-popover': 'gh/js/views/tenant-student/gh.series-borrowed-published-popover',
+        'gh.student.terms-and-conditions': 'gh/js/views/tenant-student/gh.terms-and-conditions',
 
         // GH shared view controllers
         'gh.calendar': 'gh/js/views/gh.calendar',

@@ -13,33 +13,19 @@
  * permissions and limitations under the License.
  */
 
-/* Main elements */
 
-main {
+/************************/
+/* TERMS AND CONDITIONS */
+/************************/
 
-    h1 {
-        margin-bottom: 20px;
+#gh-terms-and-conditions-modal {
+
+    .modal-body {
+        height: 400px;
+        overflow: scroll;
     }
 
-    h2 {
-        margin: 30px 0 12px;
-    }
-}
-
-form,
-table {
-    margin-bottom: 0 !important;
-}
-
-.gh-administration-container {
-    margin: 20px;
-
-    .gh-configuration-form {
-        margin-bottom: 15px !important;
-
-        textarea {
-            width: 100%;
-            height: 150px;
-        }
+    .modal-footer {
+        padding-top: 15px;
     }
 }

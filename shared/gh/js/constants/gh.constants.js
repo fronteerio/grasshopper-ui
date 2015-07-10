@@ -76,6 +76,7 @@ define(['exports'], function(exports) {
         'student-series-borrowed-published-popover': '/shared/gh/partials/tenant-student/student-series-borrowed-published-popover.html',
         'student-series-info-modal': '/shared/gh/partials/tenant-student/student-series-info-modal.html',
         'student-series-info': '/shared/gh/partials/tenant-student/student-series-info.html',
+        'student-terms-and-conditions-modal': '/shared/gh/partials/tenant-student/student-terms-and-conditions-modal.html',
 
         // GH shared views
         'calendar': '/shared/gh/partials/calendar.html',
