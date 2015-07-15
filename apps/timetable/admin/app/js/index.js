@@ -101,7 +101,8 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
     var renderConfig = function(config) {
         gh.utils.renderTemplate('admin-app-config', {
             'app': gh.data.me.app,
-            'config': config
+            'config': config,
+            'gh': gh
         }, $('#gh-main'));
     };
 

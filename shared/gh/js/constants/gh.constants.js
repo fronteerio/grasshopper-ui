@@ -79,6 +79,7 @@ define(['exports'], function(exports) {
         'student-terms-and-conditions-modal': '/shared/gh/partials/tenant-student/student-terms-and-conditions-modal.html',
 
         // GH shared views
+        'admin-config-form': '/shared/gh/partials/admin-config-form.html',
         'calendar': '/shared/gh/partials/calendar.html',
         'event': '/shared/gh/partials/event.html',
         'event-popover': '/shared/gh/partials/event-popover.html',
