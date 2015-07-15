@@ -24,11 +24,11 @@
                                     </div>
                                 <% } else { %>
                                     <div class="form-group">
-                                        <label for="<%= option %>"><%- option %></label>
+                                        <label for="<%- option %>"><%- option %></label>
                                         <% if (option === 'termsAndConditionsText') { %>
-                                            <textarea id="<%= option %>" name="<%= option %>" ><%= value %></textarea>
+                                            <textarea id="<%- option %>" class="form-control" rows="3" name="<%- option %>" ><%= value %></textarea>
                                         <% } else { %>
-                                            <input type="text" class="form-control" id="<%= option %>" value="<%= value %>" name="<%= option %>">
+                                            <input type="text" class="form-control" id="<%- option %>" value="<%- value %>" name="<%- option %>">
                                         <% } %>
                                     </div>
                                 <% } %>

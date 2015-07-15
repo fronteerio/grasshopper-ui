@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
+define(['gh.core', 'gh.constants', 'marked'], function(gh, constants, marked) {
 
     /**
      * Accept the terms and conditions
@@ -54,9 +54,18 @@ define(['gh.core', 'gh.constants', 'moment'], function(gh, constants, moment) {
                 return gh.utils.notification('Could not fetch terms and conditions', constants.messaging.default.error, 'error');
             }
 
+            // Convert the markdown to html
+            var termsAndConditionsText = marked(data.text, {
+                'breaks': true,
+                'gfm': true,
+                'sanitize': true
+            });
+
             // Render the modal
             gh.utils.renderTemplate('student-terms-and-conditions-modal', {
-                'data': data
+                'data': {
+                    'termsAndConditionsText': termsAndConditionsText
+                }
             }, $('#gh-modal'), function() {
 
                 setTimeout(function() {

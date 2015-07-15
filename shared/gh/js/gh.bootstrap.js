@@ -36,6 +36,7 @@ requirejs.config({
         'jquery.placeholder': 'vendor/js/jquery.placeholder',
         'jquery.serializeobject': 'vendor/js/jquery.serializeobject',
         'lodash': 'vendor/js/lodash',
+        'marked': 'vendor/js/marked',
         'moment': 'vendor/js/moment',
         'moment-timezone': 'vendor/js/moment-timezone',
         'sinon': 'vendor/js/sinon-1.12.1',
