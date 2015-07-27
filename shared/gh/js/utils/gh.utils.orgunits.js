@@ -65,6 +65,16 @@ define(['exports'], function(exports) {
     };
 
     /**
+     * Get a part by its id
+     *
+     * @param  {Number}     partId      The id of the part to retrieve
+     * @return {Object}                 The organisational unit that represents the part
+     */
+    var getPartById = exports.getPartById = function(partId) {
+        return _.find(_triposData.parts, {'id': partId});
+    };
+
+    /**
      * Decorate an organisational unit with its parent info
      *
      * @param  {Object}    orgUnit    The organisational unit that needs to be decorated with his parent info
