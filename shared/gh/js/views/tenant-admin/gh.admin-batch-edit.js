@@ -967,7 +967,10 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         var createNewEvent = function(newEvent, _callback) {
             // Get the ID of the series this event is added to
             var seriesId = parseInt(History.getState().data['series'], 10);
-            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, null, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, newEvent.type, function(evErr, data) {
+            // Get the Group Id of the part under which this series is being added
+            var partId = parseInt(History.getState().data['part'], 10);
+            var part = gh.utils.getPartById(partId);
+            gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, part.GroupId, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, newEvent.type, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
                     hasError = true;
