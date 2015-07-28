@@ -952,6 +952,25 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
             return callback(null);
         }
 
+        // Get the ID of the series this event is added to
+        var seriesId = parseInt(History.getState().data['series'], 10);
+
+        // Get the part under which this series is being added. We need the full object as we should
+        // re-use the group id of the part. Technically we should re-use the group id of the series
+        // this event is being added to, but neither the series nor the module object is easily accessible
+        var partId = parseInt(History.getState().data['part'], 10);
+        var part = gh.utils.getPartById(partId);
+
+        // If the part could not be found there's something seriously wrong (or fishy). Mark each
+        // row in red and immediately call the callback
+        if (!part) {
+            _.each(newEventObjs, function(newEvent) {
+                var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
+                $row.addClass('danger');
+            });
+            return callback(true);
+        }
+
         var done = 0;
         var todo = newEventObjs.length;
         var hasError = false;
@@ -965,11 +984,6 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
          * @private
          */
         var createNewEvent = function(newEvent, _callback) {
-            // Get the ID of the series this event is added to
-            var seriesId = parseInt(History.getState().data['series'], 10);
-            // Get the Group Id of the part under which this series is being added
-            var partId = parseInt(History.getState().data['part'], 10);
-            var part = gh.utils.getPartById(partId);
             gh.api.eventAPI.createEvent(newEvent.displayName, newEvent.start, newEvent.end, null, part.GroupId, newEvent.location, newEvent.notes, newEvent.organiserOther, newEvent.organiserUsers, seriesId, newEvent.type, function(evErr, data) {
                 var $row = $('.gh-batch-edit-events-container tbody tr[data-tempid="' + newEvent.tempId + '"]');
                 if (evErr) {
