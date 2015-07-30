@@ -1171,6 +1171,28 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         assert.ok(_triposData.parts);
     });
 
+    // Test the 'getPartById' functionality
+    QUnit.asyncTest('getPartById', function(assert) {
+        expect(5);
+
+        // Retrieve the tripos structure for the test application and cache it
+        var testApp = testAPI.getTestApp();
+        gh.utils.getTriposStructure(testApp.id, false, function(err, data) {
+            assert.ok(!err, 'Verify that the tripos structure can be requested without errors');
+
+            // Get a part by its id
+            var part = gh.utils.getPartById(7);
+            assert.ok(part);
+            assert.ok(part.id);
+            assert.ok(part.GroupId);
+
+            // Getting a part with an unknown id should return null
+            var part = gh.utils.getPartById(7324234);
+            assert.ok(!part);
+            QUnit.start();
+        });
+    });
+
 
     //////////////////
     //  BATCH EDIT  //
