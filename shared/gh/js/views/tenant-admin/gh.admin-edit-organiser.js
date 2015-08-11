@@ -197,8 +197,8 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
              */
             var submitAutoSuggest = function(_this, original) {
                 // Remove event handlers from the AutoSuggest field
-                $(document).off('click', 'body', closeAutoSuggest);
-                $('input', _this).off('focusout', closeAutoSuggest);
+                $(document).off('click', 'body');
+                $('.gh-event-location').off('focusin');
                 // Submit the form
                 $(original).find('form').submit();
             };
@@ -210,32 +210,31 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
              * @private
              */
             var closeAutoSuggest = function(ev) {
-                // Only close the input if the focus was lost on an element outside of the organiser container
-                if (!$(ev.target).closest('.gh-event-organisers').length || !$(ev.relatedTarget).closest('.gh-event-organisers').length) {
-                    // The form shouldn't be submitted when a click was triggered by pressing the space
-                    if (ev.type !== 'click') {
-                        // Submit the AutoSuggest field
-                        submitAutoSuggest(this, original);
+                // Submit the AutoSuggest field
+                submitAutoSuggest(this, original);
 
-                        // Calculate how long it takes the user to change the date
-                        timeFromStart = (new Date() - timeFromStart) / 1000;
-                        // Track the user editing organisers
-                        gh.utils.trackEvent(['Data', 'Lecturer edit', 'Completed'], {
-                            'time_from_start': timeFromStart
-                        });
-
-                        // If there is a relatedTarget set on the event that triggered the function, focus on it
-                        if ($(ev.relatedTarget).length) {
-                            $(ev.relatedTarget).focus();
-                        }
-                    }
-                }
+                // Track the user editing organisers
+                timeFromStart = (new Date() - timeFromStart) / 1000;
+                gh.utils.trackEvent(['Data', 'Lecturer edit', 'Completed'], {
+                    'time_from_start': timeFromStart
+                });
             };
 
             // Close the autosuggest when the body is clicked
-            $(document).on('click', 'body', closeAutoSuggest);
-            // Close the autosuggest when focus is lost
-            $('input', this).on('focusout', closeAutoSuggest);
+            $(document).on('click', 'body', function(ev) {
+                // Don't close the autosuggest when one of the auto suggest results was clicked
+                if (!$(ev.target).closest('.gh-event-organisers').length) {
+                    closeAutoSuggest(ev);
+                }
+            });
+
+            // Close the autosuggest when the location cell is focussed. Note that the `focusout`
+            // event on the input field cannot be used as there's no reliable way to determine where
+            // the user is moving their focus. For example, when clicking an autosuggest search result,
+            // the focusout event would trigger in Firefox. As Firefox doesn't pass the target DOM
+            // element in the event, there's no way of knowing whether an autosuggest search result
+            // is clicked or the user moved on to the location cell
+            $('.gh-event-location').on('focusin', closeAutoSuggest);
         }
     });
 });
