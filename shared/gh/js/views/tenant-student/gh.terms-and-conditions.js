@@ -31,6 +31,7 @@ define(['gh.core', 'gh.constants', 'marked'], function(gh, constants, marked) {
             $('#gh-terms-and-conditions-modal').modal('hide');
         });
     };
+
     /**
      * Close the terms and conditions
      *

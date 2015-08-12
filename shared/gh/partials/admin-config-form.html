@@ -1,6 +1,6 @@
 <form role="form" class="gh-configuration-form" data-appid="<%= data.app.id %>">
     <% _.each(data.config, function(value, option) { %>
-        <% if (option === 'AppId' || option === 'terms' || option === 'events' || option === 'termsAndConditionsLastUpdate') { return; }%>
+        <% if (option === 'AppId' || option.indexOf('terms') === 0 || option === 'events' || option === 'termsAndConditionsLastUpdate') { return; }%>
         <% if (typeof value === 'boolean') { %>
             <div class="checkbox">
                 <label>

@@ -191,14 +191,13 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             /**
              * Submit the AutoSuggest field and detach all event handlers from it
              *
-             * @param  {[type]}    _this       The AutoSuggest container object
              * @param  {String}    original    The containing HTML element
              * @private
              */
-            var submitAutoSuggest = function(_this, original) {
+            var submitAutoSuggest = function(original) {
                 // Remove event handlers from the AutoSuggest field
-                $(document).off('click', 'body', closeAutoSuggest);
-                $('input', _this).off('focusout', closeAutoSuggest);
+                $(document).off('click', 'body');
+                $(document).off('focus', 'body');
                 // Submit the form
                 $(original).find('form').submit();
             };
@@ -206,36 +205,26 @@ define(['gh.core', 'jquery.jeditable'], function(gh) {
             /**
              * Close the autosuggest
              *
-             * @param  {Event}    ev    Standard jQuery event
              * @private
              */
             var closeAutoSuggest = function(ev) {
-                // Only close the input if the focus was lost on an element outside of the organiser container
-                if (!$(ev.target).closest('.gh-event-organisers').length || !$(ev.relatedTarget).closest('.gh-event-organisers').length) {
-                    // The form shouldn't be submitted when a click was triggered by pressing the space
-                    if (ev.type !== 'click') {
-                        // Submit the AutoSuggest field
-                        submitAutoSuggest(this, original);
+                if ($(ev.target).closest('.gh-event-organisers').length === 0) {
+                    // Submit the AutoSuggest field
+                    submitAutoSuggest(original);
 
-                        // Calculate how long it takes the user to change the date
-                        timeFromStart = (new Date() - timeFromStart) / 1000;
-                        // Track the user editing organisers
-                        gh.utils.trackEvent(['Data', 'Lecturer edit', 'Completed'], {
-                            'time_from_start': timeFromStart
-                        });
-
-                        // If there is a relatedTarget set on the event that triggered the function, focus on it
-                        if ($(ev.relatedTarget).length) {
-                            $(ev.relatedTarget).focus();
-                        }
-                    }
+                    // Track the user editing organisers
+                    timeFromStart = (new Date() - timeFromStart) / 1000;
+                    gh.utils.trackEvent(['Data', 'Lecturer edit', 'Completed'], {
+                        'time_from_start': timeFromStart
+                    });
                 }
             };
 
             // Close the autosuggest when the body is clicked
             $(document).on('click', 'body', closeAutoSuggest);
-            // Close the autosuggest when focus is lost
-            $('input', this).on('focusout', closeAutoSuggest);
+
+            // Close the autosuggest when an element outside of the organisers cell is selected
+            $(document).on('focus', 'body', closeAutoSuggest);
         }
     });
 });
