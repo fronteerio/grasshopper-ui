@@ -1187,7 +1187,7 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
             assert.ok(part.GroupId);
 
             // Getting a part with an unknown id should return null
-            var part = gh.utils.getPartById(7324234);
+            part = gh.utils.getPartById(7324234);
             assert.ok(!part);
             QUnit.start();
         });

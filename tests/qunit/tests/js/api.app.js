@@ -336,5 +336,50 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
+    // Test the getTermsAndConditions functionality
+    QUnit.asyncTest('getTermsAndConditions', function(assert) {
+        expect(8);
+
+        // Fetch a random test app
+        var app = testAPI.getTestApp();
+
+        // Verify that an error is thrown when no callback was provided
+        assert.throws(function() {
+            gh.api.appAPI.getTermsAndConditions(app.id, null);
+        }, 'Verify that an error is thrown when no callback was provided');
+
+        // Verify that an error is thrown when an invalid callback was provided
+        assert.throws(function() {
+            gh.api.appAPI.getTermsAndConditions(app.id, 'invalid callback');
+        }, 'Verify that an error is thrown when an invalid callback was provided');
+
+        // Verify that an error is thrown when no app id was provided
+        gh.api.appAPI.getTermsAndConditions(null, function(err, data) {
+            assert.ok(err, 'Verify that an error is thrown when no app id was provided');
+
+            // Verify that an error is thrown when an invalid app id was provided
+            gh.api.appAPI.getTermsAndConditions('invalid_app_id', function(err, data) {
+                assert.ok(err, 'Verify that an error is thrown when an invalid app id was provided');
+
+                // Verify that the terms and conditions can be retrieved without errors
+                gh.api.appAPI.getTermsAndConditions(app.id, function(err, data) {
+                    assert.ok(!err, 'Verify that the terms and conditions can be retrieved without errors');
+                    assert.ok(data, 'Verify that the terms and conditions are returned');
+
+                    // Mock an error from the back-end
+                    var body = {'code': 400, 'msg': 'Bad Request'};
+                    gh.utils.mockRequest('GET', '/api/apps/' + app.id + '/termsAndCondtions', 400, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.appAPI.getTermsAndConditions(app.id, function(err, data) {
+                            assert.ok(err, 'Verify that an error is thrown when the back-end errored');
+                            assert.ok(!data, 'Verify that no data is returned when an error is thrown');
+
+                            QUnit.start();
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     testAPI.init();
 });
