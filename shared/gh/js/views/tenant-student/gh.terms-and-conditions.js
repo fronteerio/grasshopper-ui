@@ -21,7 +21,7 @@ define(['gh.core', 'gh.constants', 'marked'], function(gh, constants, marked) {
      * @private
      */
     var acceptTermsAndConditions = function() {
-        // Accept the terms and condtions
+        // Accept the terms and conditions
         gh.api.userAPI.acceptTermsAndConditions(gh.data.me.id, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not accept the terms and conditions', constants.messaging.default.error, 'error');
@@ -29,6 +29,22 @@ define(['gh.core', 'gh.constants', 'marked'], function(gh, constants, marked) {
 
             // Close the modal window
             $('#gh-terms-and-conditions-modal').modal('hide');
+        });
+    };
+    /**
+     * Close the terms and conditions
+     *
+     * @private
+     */
+    var closeTermsAndConditions = function() {
+        // Sign out of the application
+        gh.api.authenticationAPI.logout(function(err) {
+            if (err) {
+                return gh.utils.notification('Could not sign out', constants.messaging.default.error, 'error');
+            }
+
+            // Redirect the user to the landing page
+            window.location = '/';
         });
     };
 
@@ -89,6 +105,8 @@ define(['gh.core', 'gh.constants', 'marked'], function(gh, constants, marked) {
     var addBinding = function() {
         // Accept the terms and conditions
         $('body').on('click', '#gh-accept-terms-and-conditions', acceptTermsAndConditions);
+        // Close the terms and conditions
+        $('body').on('click', '#gh-close-terms-and-conditions', closeTermsAndConditions);
     };
 
 

@@ -2,17 +2,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close btn-reverse" data-dismiss="modal">
-                    <span aria-hidden="true">×</span>
-                    <span class="sr-only">Close</span>
-                </button>
                 <h4 class="modal-title">Terms and Conditions</h4>
             </div>
             <div class="modal-body">
                 <%= data.termsAndConditionsText %>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-link pull-left" data-dismiss="modal">Close</button>
+                <button type="button" id="gh-close-terms-and-conditions" class="btn btn-link pull-left">Close and sign out</button>
                 <button type="button" id="gh-accept-terms-and-conditions" class="btn btn-default pull-right">Accept</button>
             </div>
         </div>

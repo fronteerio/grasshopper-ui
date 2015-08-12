@@ -20,12 +20,22 @@
 
 #gh-terms-and-conditions-modal {
 
+    .modal-dialog {
+        width: 700px;
+    }
+
     .modal-body {
         height: 400px;
         overflow: scroll;
+        padding-top: 10px;
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: 20px;
+        }
     }
 
     .modal-footer {
+        border-top: 1px solid #e5e5e5;
         padding-top: 15px;
     }
 }
