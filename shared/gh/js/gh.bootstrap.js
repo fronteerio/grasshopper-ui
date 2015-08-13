@@ -89,6 +89,7 @@ requirejs.config({
         'gh.admin.edit-organiser': 'gh/js/views/tenant-admin/gh.admin-edit-organiser',
         'gh.admin.event-type-select': 'gh/js/views/tenant-admin/gh.admin-event-type-select',
         'gh.admin.listview': 'gh/js/views/tenant-admin/gh.admin-listview',
+        'gh.admin.manage-orgunits': 'gh/js/views/tenant-admin/gh.admin-manage-orgunits',
         'gh.admin.new-module': 'gh/js/views/tenant-admin/gh.new-module',
         'gh.admin.new-series': 'gh/js/views/tenant-admin/gh.new-series',
         'gh.admin.rename-module': 'gh/js/views/tenant-admin/gh.rename-module',

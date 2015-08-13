@@ -178,13 +178,13 @@ define(['exports'], function(exports) {
 
             // Sort the data before displaying it
             orgUnitTypes.courses.sort(sortByDisplayName);
-            orgUnitTypes.subjects.sort(sortByDisplayName);
             orgUnitTypes.parts.sort(sortByDisplayName);
+            orgUnitTypes.subjects.sort(sortByDisplayName);
 
             // Cache the organisational units
             _triposData = orgUnitTypes;
 
-            // Add the parent objects to each organistional unit
+            // Add the parent objects to each organisational unit
             _.each(orgUnitTypes, function(orgUnitType) {
                 _.each(orgUnitType, function(orgUnit) {
                     addParentInfoToOrgUnit(orgUnit);

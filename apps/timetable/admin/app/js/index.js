@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest', 'validator'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'gh.footer', 'gh.header', 'gh.admin.manage-orgunits', 'jquery-autosuggest', 'validator'], function(gh, constants) {
 
     // Get the current page, strip out slashes etc
     var currentPage = window.location.pathname.split('/')[2];
@@ -221,6 +221,27 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
 
         // Avoid default form submit behaviour
         return false;
+    };
+
+
+    /////////////
+    // COURSES //
+    /////////////
+
+    /**
+     * Render the courses configuration page
+     *
+     * @private
+     */
+    var renderCourses = function() {
+        gh.utils.getTriposStructure(gh.data.me.AppId, false, function(err, orgUnitTypes) {
+            // Show the manage orgunits view
+            gh.utils.renderTemplate('admin-manage-orgunits', {
+                'triposData': orgUnitTypes
+            }, $('#gh-main'), function() {
+                $(document).trigger('gh.manage.orgunits.loaded');
+            });
+        });
     };
 
 
@@ -456,6 +477,17 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
     };
 
     /**
+     * Set up courses page
+     *
+     * @private
+     */
+    var setUpCourses = function() {
+        renderCourses();
+        // Send a tracking event
+        gh.utils.trackEvent(['Manage', 'App', 'Opened']);
+    };
+
+    /**
      * Set up the app page
      *
      * @private
@@ -534,6 +566,9 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
      * @private
      */
     var addBinding = function() {
+        // Render the courses
+        $(document).on('gh.manage.orgunits.load', renderCourses);
+
         // Log out
         $('body').on('submit', '#gh-signout-form', doLogout);
 
@@ -618,6 +653,8 @@ define(['gh.core', 'gh.constants', 'gh.header', 'gh.footer', 'jquery-autosuggest
                 setUpApp();
             } else if (currentPage === 'users') {
                 setUpUsers();
+            } else if (currentPage === 'courses') {
+                setUpCourses();
             } else {
                 currentPage = 'users';
                 setUpUsers();
