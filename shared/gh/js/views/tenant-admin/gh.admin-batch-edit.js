@@ -471,6 +471,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
      * @private
      */
     var handleStickyHeader = function() {
+
         // Set the offset of the header. When the modules navigation is collapsed, the header is fixed to the top
         // and shouldn't be taken into account when calculating when to make the header sticky
         var headerOffset = 0;
@@ -501,23 +502,22 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
                 $('#gh-batch-edit-container').removeClass('gh-sticky-header');
             }
 
-            // Only update the batch edit actions when they're in view
-            if ($('.gh-batch-edit-actions-container').is(':visible')) {
-                // Get the top and bottom position of the document
-                var docViewTop = $(window).scrollTop();
-                var docViewBottom = docViewTop + window.innerHeight;
 
-                // Get the top and bottom position of the footer
-                var footerTop = $($('footer')[0]).position().top;
-                var footerBottom = footerTop + $($('footer')[0]).height();
+            // Get the top and bottom position of the document
+            var docViewTop = $(window).scrollTop();
+            var docViewBottom = docViewTop + window.innerHeight;
 
-                // If the document footer becomes visible on the page, stick the batch edit actions to the document footer
-                if (footerTop <= docViewBottom) {
-                    $('.gh-batch-edit-actions-container').css({'bottom': (docViewBottom - footerTop) + 'px'});
-                } else {
-                    $('.gh-batch-edit-actions-container').css({'bottom': 0});
-                }
+            // Get the top and bottom position of the footer
+            var footerTop = $($('footer')[0]).position().top;
+            var footerBottom = footerTop + $($('footer')[0]).height();
+
+            // If the document footer becomes visible on the page, stick the batch edit actions to the document footer
+            var offset = 0;
+            if (footerTop <= docViewBottom && !$('html').hasClass('gh-collapsed')) {
+                offset = (docViewBottom - footerTop) + 'px';
             }
+
+            $('.gh-batch-edit-actions-container').css({'bottom': offset});
         }
     };
 
