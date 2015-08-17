@@ -568,64 +568,54 @@ tr.info .gh-event-delete button i {
 /* AUTOSUGGEST */
 /***************/
 
-.as-selections {
+ul.as-selections {
     @include box-shadow(none !important);
     border-color: #CCC !important;
 
-    .as-original {
+    &.loading {
+        background-color: transparent !important;
+    }
+
+    li.as-original {
+        border-top-color: #DDD;
 
         &:first-child input {
             background-color: #FFF !important;
         }
 
         input {
-            background-color: #EEE !important;
+            background-color: #FFF !important;
             border-top-color: #BEBEBE !important;
         }
     }
 
-    .as-selection-item {
-        background-color: transparent !important;
+    li.as-selection-item,
+    li.as-selection-item.blur {
+        background-color: #92308A !important;
         background-image: none !important;
         @include box-shadow(none !important);
-
-        &.blur {
-            background-color: #E7F8F0 !important;
-        }
+        color: #FFF !important;
 
         .as-close {
-            color: #171717 !important;
+            text-shadow: none !important;
+            color: #FFF !important;
         }
     }
-}
-
-ul.as-selections {
-
-    &.loading {
-        background-color: transparent !important;
-    }
-
-    li.as-selection-item {
-        background-color: #E7F8F0 !important;
-    }
-}
-
-.gh-batch-event-collapsed .as-selections .as-original input {
-    background-color: #FFF !important;
 }
 
 .as-results {
 
     .as-list {
-        border-color: #CCC !important;
+        border-color: #CCC;
         @include box-shadow(0 4px 5px rgba(0, 0, 0, 0.15) !important);
 
         .as-result-item,
         .as-result-item.active {
-            background-image: none !important;
+            background-image: none;
 
             em {
-                background-color: $primary-colour !important;
+                background-color: transparent;
+                color: #171717;
             }
         }
 
@@ -636,6 +626,10 @@ ul.as-selections {
             &.active {
                 background-color: #92308A !important;
                 color: #FFF !important;
+
+                em {
+                    color: #FFF !important;
+                }
             }
         }
     }

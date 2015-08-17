@@ -220,6 +220,10 @@
 
         ul.as-selections {
             overflow: hidden !important;
+
+            .as-selection-item {
+                font-size: 14px;
+            }
         }
 
         .gh-batch-edit-header-description {
