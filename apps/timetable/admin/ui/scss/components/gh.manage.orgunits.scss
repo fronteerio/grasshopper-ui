@@ -102,3 +102,13 @@
         }
     }
 }
+
+#gh-manage-orgunits-add-modal {
+
+    .hidden {
+        height: 0px;
+        overflow: hidden;
+        position: absolute;
+        visibility: hidden;
+    }
+}

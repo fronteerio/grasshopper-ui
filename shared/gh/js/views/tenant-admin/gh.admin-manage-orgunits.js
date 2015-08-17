@@ -30,7 +30,7 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
         // Create the organisational unit
         gh.api.orgunitAPI.createOrgUnit(gh.data.me.AppId, displayName, type, parentId, groupId, null, null, false, function(err, data) {
             if (err) {
-                return gh.utils.notification('Could not create the organisational unit', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not create the ' + type, constants.messaging.default.error, 'error');
             }
 
             // Show a notification
@@ -45,7 +45,7 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
             $('#gh-manage-orgunits-add-modal').modal('hide');
 
             // Navigate to the created element
-            scrollTo('li[data-id="' + data.id + '"]');
+            scrollToOrgUnit('li[data-id="' + data.id + '"]');
         });
 
         // Prevent the form from being submitted
@@ -60,15 +60,16 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
     var deleteOrgUnit = function() {
         // Retrieve the organisational unit's id
         var orgUnitId = parseInt($('#gh-manage-orgunits-delete-modal').attr('data-id'), 10);
+        var orgUnitType = $('#gh-manage-orgunits-delete-modal').attr('data-type');
 
         // Delete the organisational unit
         gh.api.orgunitAPI.deleteOrgUnit(orgUnitId, function(err, data) {
             if (err) {
-                return gh.utils.notification('Could not delete organisational unit', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not delete the ' + orgUnitType, constants.messaging.default.error, 'error');
             }
 
             // Show a notification
-            gh.utils.notification('Organisational unit successfully deleted', null, 'success');
+            gh.utils.notification('The ' + orgUnitType + ' was successfully deleted', null, 'success');
 
             // Close the modal window
             $('#gh-manage-orgunits-delete-modal').modal('hide');
@@ -86,8 +87,9 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
      * @private
      */
     var updateOrgUnit = function(value, editableField) {
+
         // Get the parent of the jEditable form
-        var $parent = $('.' + editableField.cssclass).closest('.gh-editable');
+        var $parent = $('.' + editableField.cssclass).closest('.gh-editable[data-id="' + editableField.id + '"]');
 
         // Don't submit the form if the value hasn't changed
         if ($parent.attr('data-value') === value) {
@@ -96,15 +98,16 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
 
         // Get the id of the organisational unit
         var orgUnitId = parseInt($parent.attr('data-id'), 10);
+        var orgUnitType = $parent.attr('data-type');
 
         // Update the organisational unit
         gh.api.orgunitAPI.updateOrgUnit(orgUnitId, null, value, null, null, null, null, null, function(err, data) {
             if (err) {
-                return gh.utils.notification('Could not update the organisational unit', constants.messaging.default.error, 'error');
+                return gh.utils.notification('Could not update the ' + orgUnitType, constants.messaging.default.error, 'error');
             }
 
             // Display a success notification
-            gh.utils.notification('Organisational unit successfully updated', null, 'success');
+            gh.utils.notification('The ' + orgUnitType + ' was successfully updated', null, 'success');
 
             // Reload the organisational units
             $(document).trigger('gh.manage.orgunits.load');
@@ -171,7 +174,7 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
      * @param  {String}     anchor      The anchor to scroll to
      * @private
      */
-    var scrollTo = function(anchor) {
+    var scrollToOrgUnit = function(anchor) {
         $(anchor).onAvailable(function() {
             $('html, body').stop().animate({
                 'scrollTop': ($(anchor).offset().top - 40)
@@ -186,13 +189,21 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
      */
     var setupJEditable = function() {
         $('.gh-editable').onAvailable(function() {
-            $('.gh-editable').editable(updateOrgUnit, {
-                'cssclass': 'gh-editable-editing',
-                'disable': false,
-                'height': '38px',
-                'maxlength': 255,
-                'onblur': 'submit',
-                'placeholder': 'Add a display name'
+            var editableFields = $('.gh-editable');
+            _.each(editableFields, function(editableField) {
+                var id = $(editableField).attr('data-id');
+                $(editableField).editable(updateOrgUnit, {
+                    'cssclass': 'gh-editable-editing',
+                    'disable': false,
+                    'height': '38px',
+                    'maxlength': 255,
+                    'id': id,
+                    'onblur': 'submit',
+                    'placeholder': 'Add a display name',
+                    'callback': function(value, settings) {
+                        $(editableField).closest('.gh-editable').attr('data-value', value);
+                    }
+                });
             });
         });
     };

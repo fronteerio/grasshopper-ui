@@ -1,7 +1,7 @@
 <div id="gh-manage-orgunits">
 
     <div id="gh-manage-orgunits-toolbar">
-        <h2 class="pull-left">Organisational unit administration</h2>
+        <h2 class="pull-left">Course, subject and part administration</h2>
         <button class="btn btn-default pull-right gh-manage-orgunits-show-add-modal"><i class="fa fa-plus"></i> Create new course</button>
     </div>
 
@@ -11,7 +11,7 @@
         <% _.each(triposData.courses, function(course) { %>
             <li data-id="<%- course.id %>">
                 <span>
-                    <span class="gh-editable gh-orgunit-course" data-id="<%- course.id %>" data-value="<%- course.displayName %>"><%- course.displayName %></span> (<%- course.type %>)
+                    <span class="gh-editable gh-orgunit-course" data-id="<%- course.id %>" data-type="<%- course.type %>" data-value="<%- course.displayName %>"><%- course.displayName %></span> (<%- course.type %>)
                     <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- course.id %>" data-type="<%- course.type %>" title="Delete course"><i class="fa fa-trash"></i></button>
                     <button class="btn btn-link pull-right gh-manage-orgunits-show-add-modal" data-id="<%- course.id %>" data-groupid="<%- course.GroupId %>" data-type="<%- course.type %>" title="Add a subject or part"><i class="fa fa-plus"></i></button>
                 </span>
@@ -27,7 +27,7 @@
                         <% _.each(courseSubjects, function(subject) { %>
                             <li data-id="<%- subject.id %>" data-type="<%- subject.type %>">
                                 <span>
-                                    <span class="gh-editable gh-orgunit-subject" data-id="<%- subject.id %>" data-value="<%- subject.displayName %>"><%- subject.displayName %></span> (<%- subject.type %>)
+                                    <span class="gh-editable gh-orgunit-subject" data-id="<%- subject.id %>" data-type="<%- subject.type %>"  data-value="<%- subject.displayName %>"><%- subject.displayName %></span> (<%- subject.type %>)
                                     <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- subject.id %>" data-type="<%- subject.type %>" title="Delete subject"><i class="fa fa-trash"></i></button>
                                     <button class="btn btn-link pull-right gh-manage-orgunits-show-add-modal" data-id="<%- subject.id %>" data-groupid="<%- subject.GroupId %>" data-type="<%- subject.type %>" title="Add a part"><i class="fa fa-plus"></i></button>
                                 </span>
