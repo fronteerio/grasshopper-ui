@@ -25,10 +25,9 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
         var displayName = $('#gh-manage-orgunits-modal-text').val();
         var type = $('#gh-manage-orgunits-modal-type').val();
         var parentId = parseInt($('#gh-manage-orgunits-add-modal').attr('data-id'), 10) || null;
-        var groupId  = parseInt($('#gh-manage-orgunits-add-modal').attr('data-groupid'), 10) || null;
 
         // Create the organisational unit
-        gh.api.orgunitAPI.createOrgUnit(gh.data.me.AppId, displayName, type, parentId, groupId, null, null, false, function(err, data) {
+        gh.api.orgunitAPI.createOrgUnit(gh.data.me.AppId, displayName, type, parentId, null, null, null, false, function(err, data) {
             if (err) {
                 return gh.utils.notification('Could not create the ' + type, constants.messaging.default.error, 'error');
             }
@@ -112,6 +111,11 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
             // Reload the organisational units
             $(document).trigger('gh.manage.orgunits.load');
 
+            // Navigate to the updated element
+            setTimeout(function() {
+                scrollToOrgUnit('li[data-id="' + data.id + '"]');
+            }, 250);
+
             return data;
         });
 
@@ -134,8 +138,7 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
                 'gh': gh,
                 'data': {
                     'orgUnitId': orgUnitId,
-                    'orgUnitType': orgUnitType,
-                    'groupId': groupId
+                    'orgUnitType': orgUnitType
                 }
             }
         }, $('#gh-modal'), function() {
