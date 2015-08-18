@@ -1,0 +1,114 @@
+/*!
+ * Copyright 2015 Digital Services, University of Cambridge Licensed
+ * under the Educational Community License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ *     http://opensource.org/licenses/ECL-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+#gh-manage-orgunits {
+
+    #gh-manage-orgunits-toolbar {
+        margin-bottom: 30px;
+        padding: 18px;
+
+        h2 {
+            cursor: default;
+            font-size: 30px;
+            font-weight: 100;
+            margin: 5px 0 0;
+        }
+    }
+
+    #gh-manage-orgunits-list {
+        clear: both;
+        cursor: default;
+        padding: 15px;
+
+        li {
+            list-style-type: none;
+
+            > span {
+                clear: both;
+                display: block;
+                padding: 3px;
+
+                &:not(.gh-orgunit-no-subject):hover {
+                    background-color: #EEE;
+                }
+            }
+        }
+
+        > li {
+            padding: 5px;
+
+            &:not(:last-child) {
+                margin-bottom: 18px;
+            }
+
+            > span {
+                border-bottom: 1px solid black;
+                margin-bottom: 7px;
+            }
+
+            > ul > li {
+                margin-bottom: 15px;
+            }
+        }
+
+        .btn-link {
+            padding: 3px 2px 7px 5px;
+        }
+
+        .gh-editable {
+            display: inline;
+
+            &:hover {
+                cursor: text;
+                font-style: italic;
+            }
+
+            * {
+                display: inline;
+            }
+
+            .gh-editable-editing {
+
+                input {
+                    max-width: 85% !important;
+                    min-width: 200px !important;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+            }
+        }
+
+        .gh-orgunit-course {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .gh-orgunit-subject,
+        .gh-orgunit-no-subject {
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
+}
+
+#gh-manage-orgunits-add-modal {
+
+    .hidden {
+        height: 0px;
+        overflow: hidden;
+        position: absolute;
+        visibility: hidden;
+    }
+}
