@@ -148,52 +148,58 @@ ul.gh-borrowed-list {
 /* AUTOSUGGEST */
 /***************/
 
-ul.as-selections li.as-selection-item,
-ul.as-selections li.as-selection-item a.as-close,
-ul.as-list {
+@mixin setAutoSuggestFont() {
     font-family: 'Myriad Pro', helvetica, sans-serif;
-
-    /* The auto suggest makes the list container the same width as the input box. When editting events  this is too narrow */
     width: auto !important;
 }
 
-.as-selections {
+ul.as-selections {
     border-style: solid;
     border-width: 1px;
     border-top-width: 1px !important;
     height: auto !important;
     overflow: visible !important;
     padding: 0 !important;
+
+    &::after {
+        clear: both;
+        content: '';
+        display: block;
+    }
+
+    li.as-original {
+        border-top-style: solid;
+        border-top-width: 1px;
+        margin: 0 !important;
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    li.as-selection-item,
+    li.as-selection-item.blur {
+        border: none !important;
+        @include border-radius(3px);
+        @include box-shadow(none !important);
+        @include setAutoSuggestFont();
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.3em;
+        margin: 0 3px 3px 3px;
+        padding: 3px 5px;
+        text-shadow: none;
+        white-space: initial;
+        word-break: break-all;
+
+        &:first-child {
+            margin-top: 3px;
+        }
+    }
 }
 
-.as-selections::after {
-    clear: both;
-    content: '';
-    display: block;
-}
-
-.as-selections .as-selection-item.blur,
-ul.as-selections li.as-selection-item {
-    border: none !important;
-    @include border-radius(3px);
-    @include box-shadow(none !important);
-    font-size: 11px;
-    font-weight: normal;
-    line-height: 1;
-    margin: 2px;
-    padding: 4px 5px 0;
-}
-
-.as-selections .as-original {
-    margin: 0 !important;
-    width: 100%;
-}
-
-ul.as-selections li.as-original input {
-    width: 100%;
-}
-
-#gh-batch-edit-header .as-selections .as-original input[type="text"] {
+#gh-batch-edit-header ul.as-selections li.as-original input[type="text"] {
     border: none !important;
     font-size: 15px !important;
     height: 31px !important;
@@ -201,12 +207,12 @@ ul.as-selections li.as-original input {
     width: 100% !important;
 }
 
-.gh-batch-event-collapsed .as-selections .as-selection-item {
+.gh-batch-event-collapsed ul.as-selections li.as-selection-item {
     display: none;
 }
 
-.gh-batch-event-collapsed .as-selections .as-original input,
-.as-selections .as-original:first-child input {
+.gh-batch-event-collapsed ul.as-selections li.as-original input,
+ul.as-selections li.as-original:first-child input {
     border-top: none !important;
     display: block;
 }
@@ -216,13 +222,14 @@ ul.as-selections li.as-original input {
     padding: 0 !important;
     position: absolute;
 
-    .as-list {
+    ul.as-list {
         @include border-radius(0 0 4px 4px);
         border-style: solid;
         border-top: none;
         border-width: 1px;
+        @include setAutoSuggestFont();
         margin: 0;
-        padding: 8px;
+        padding: 3px;
 
         .as-message {
             border: none !important;
@@ -232,13 +239,15 @@ ul.as-selections li.as-original input {
         .as-result-item.active {
             border: none;
             @include border-radius(0);
-            font-size: 15px;
-            padding: 10px 5px;
+            font-size: 14px;
+            padding: 5px 3px;
             text-shadow: none;
             word-wrap: break-word;
 
             em {
-                padding: 2px 0 1px;
+                font-weight: bold;
+                padding: 0;
+                text-decoration: underline;
             }
         }
     }
