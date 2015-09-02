@@ -478,7 +478,7 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                             gh.api.userAPI.getUserUpcoming(user.id, 0, 0);
                         }, 'Verify that an error is thrown when an invalid callback was provided');
 
-                        // Verify that the terms and conditions can be retrieved without errors
+                        // Verify that the upcoming events can be retrieved without errors
                         gh.api.userAPI.getUserUpcoming(user.id, 0, 0, function(err, data) {
 
                             /**
@@ -496,42 +496,9 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
         });
     });
 
-    // Test the getTermsAndConditions functionality
-    QUnit.asyncTest('getTermsAndConditions', function(assert) {
-        expect(3);
-
-        // Create a new user
-        _generateRandomUser(function(err, user) {
-            assert.ok(!err, 'Verify that users can be created without retrieving an error');
-
-            // Verify that an error is thrown when no callback was provided
-            assert.throws(function() {
-                gh.api.userAPI.getTermsAndConditions();
-            }, 'Verify that an error is thrown when no callback was provided');
-
-            // Verify that an error is thrown when an invalid callback was provided
-            assert.throws(function() {
-                gh.api.userAPI.getTermsAndConditions('invalid callback');
-            }, 'Verify that an error is thrown when an invalid callback was provided');
-
-            // Verify that the terms and conditions can be retrieved without errors
-            gh.api.userAPI.getTermsAndConditions(function(err, data) {
-
-                /**
-                 * Wait for back-end implementation
-                 *
-                assert.ok(!err, 'Verify that the terms and conditions can be retrieved without errors');
-                assert.ok(data, 'Verify that the terms and conditions are returned');
-                 */
-
-                QUnit.start();
-            });
-        });
-    });
-
     // Test the acceptTermsAndConditions functionality
     QUnit.asyncTest('acceptTermsAndConditions', function(assert) {
-        expect(4);
+        expect(7);
 
         // Create a new user
         _generateRandomUser(function(err, user) {
@@ -551,15 +518,22 @@ require(['gh.core', 'gh.api.tests'], function(gh, testAPI) {
                     }, 'Verify that an error is thrown when an invalid callback was provided');
 
                     // Verify that the terms and conditions can be accepted without errors
-                    gh.api.userAPI.acceptTermsAndConditions(user.id, function(err, data) {
+                    var body = {'code': 200, 'msg': 'OK'};
+                    gh.utils.mockRequest('POST', '/api/users/' + user.id + '/termsAndConditions', 200, {'Content-Type': 'application/json'}, body, function() {
+                        gh.api.userAPI.acceptTermsAndConditions(user.id, function(err, data) {
+                            assert.ok(!err, 'Verify that the terms and conditions can be accepted without errors');
+                            assert.ok(data, 'Verify that the terms and conditions status is returned');
 
-                        /**
-                         * Wait for back-end implementation
-                         *
-                        assert.ok(err, 'Verify that the terms and conditions can be accepted without errors');
-                         */
+                            // Mock an error from the back-end
+                            body = {'code': 400, 'msg': 'Bad Request'};
+                            gh.utils.mockRequest('POST', '/api/users/' + user.id + '/termsAndConditions', 400, {'Content-Type': 'application/json'}, body, function() {
+                                gh.api.userAPI.acceptTermsAndConditions(user.id, function(err, data) {
+                                    assert.ok(err);
 
-                        QUnit.start();
+                                    QUnit.start();
+                                });
+                            });
+                        });
                     });
                 });
             });

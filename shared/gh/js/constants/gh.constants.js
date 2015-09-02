@@ -58,6 +58,9 @@ define(['exports'], function(exports) {
         'admin-editable-parts': '/shared/gh/partials/tenant-admin/admin-editable-parts.html',
         'admin-help': '/shared/gh/partials/tenant-admin/admin-help.html',
         'admin-login-form': '/shared/gh/partials/tenant-admin/admin-login-form.html',
+        'admin-manage-orgunits': '/shared/gh/partials/tenant-admin/admin-manage-orgunits.html',
+        'admin-manage-orgunits-add-modal': '/shared/gh/partials/tenant-admin/admin-manage-orgunits-add-modal.html',
+        'admin-manage-orgunits-delete-modal': '/shared/gh/partials/tenant-admin/admin-manage-orgunits-delete-modal.html',
         'admin-modules': '/shared/gh/partials/tenant-admin/admin-modules.html',
         'admin-new-module-modal': '/shared/gh/partials/tenant-admin/admin-new-module-modal.html',
         'admin-new-series': '/shared/gh/partials/tenant-admin/admin-new-series.html',
@@ -76,8 +79,10 @@ define(['exports'], function(exports) {
         'student-series-borrowed-published-popover': '/shared/gh/partials/tenant-student/student-series-borrowed-published-popover.html',
         'student-series-info-modal': '/shared/gh/partials/tenant-student/student-series-info-modal.html',
         'student-series-info': '/shared/gh/partials/tenant-student/student-series-info.html',
+        'student-terms-and-conditions-modal': '/shared/gh/partials/tenant-student/student-terms-and-conditions-modal.html',
 
         // GH shared views
+        'admin-config-form': '/shared/gh/partials/admin-config-form.html',
         'calendar': '/shared/gh/partials/calendar.html',
         'event': '/shared/gh/partials/event.html',
         'event-popover': '/shared/gh/partials/event-popover.html',

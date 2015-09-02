@@ -312,22 +312,6 @@ define(['exports'], function(exports) {
     };
 
     /**
-     * Get the terms and conditions
-     *
-     * @param  {Function}    callback             Standard callback function
-     * @param  {Object}      callback.err         Error object containing the error code and error message
-     * @param  {Object}      callback.response    The Terms and Conditions for the current app
-     * @throws {Error}                            A parameter validation error
-     */
-    var getTermsAndConditions = exports.getTermsAndConditions = function(callback) {
-        if (!_.isFunction(callback)) {
-            throw new Error('A callback function should be provided');
-        }
-
-        return callback();
-    };
-
-    /**
      * Accept the terms and conditions
      *
      * @param  {Number}      userId               The id of the user for which to accept the Terms and Conditions on the current app
@@ -343,7 +327,16 @@ define(['exports'], function(exports) {
             return callback({'code': 400, 'msg': 'A valid user id should be provided'});
         }
 
-        return callback();
+        $.ajax({
+            'url': '/api/users/' + userId + '/termsAndConditions',
+            'type': 'POST',
+            'success': function(data) {
+                return callback(null, data);
+            },
+            'error': function(jqXHR, textStatus) {
+                return callback({'code': jqXHR.status, 'msg': jqXHR.responseText});
+            }
+        });
     };
 
     /**

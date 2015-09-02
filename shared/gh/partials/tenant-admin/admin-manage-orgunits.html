@@ -1,0 +1,74 @@
+<div id="gh-manage-orgunits">
+
+    <div id="gh-manage-orgunits-toolbar">
+        <h2 class="pull-left">Course, subject and part administration</h2>
+        <button class="btn btn-default pull-right gh-manage-orgunits-show-add-modal"><i class="fa fa-plus"></i> Create new course</button>
+    </div>
+
+    <ul id="gh-manage-orgunits-list">
+
+        <!-- Loop over all courses and render the parent level course -->
+        <% _.each(triposData.courses, function(course) { %>
+            <li data-id="<%- course.id %>">
+                <span>
+                    <span class="gh-editable gh-orgunit-course" data-id="<%- course.id %>" data-type="<%- course.type %>" data-value="<%- course.displayName %>"><%- course.displayName %></span> (<%- course.type %>)
+                    <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- course.id %>" data-type="<%- course.type %>" title="Delete course"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-link pull-right gh-manage-orgunits-show-add-modal" data-id="<%- course.id %>" data-groupid="<%- course.GroupId %>" data-type="<%- course.type %>" title="Add a subject or part"><i class="fa fa-plus"></i></button>
+                </span>
+
+                <%
+                    var courseSubjects = _.filter(triposData.subjects, function(subject) { return subject.ParentId === course.id; });
+                    var courseParts = _.filter(triposData.parts, function(part) { return part.ParentId === course.id; });
+                %>
+
+                <ul>
+                    <!-- If there are subjects, render the parts as children of subject -->
+                    <% if (courseSubjects.length) { %>
+                        <% _.each(courseSubjects, function(subject) { %>
+                            <li data-id="<%- subject.id %>" data-type="<%- subject.type %>">
+                                <span>
+                                    <span class="gh-editable gh-orgunit-subject" data-id="<%- subject.id %>" data-type="<%- subject.type %>"  data-value="<%- subject.displayName %>"><%- subject.displayName %></span> (<%- subject.type %>)
+                                    <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- subject.id %>" data-type="<%- subject.type %>" title="Delete subject"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-link pull-right gh-manage-orgunits-show-add-modal" data-id="<%- subject.id %>" data-groupid="<%- subject.GroupId %>" data-type="<%- subject.type %>" title="Add a part"><i class="fa fa-plus"></i></button>
+                                </span>
+
+                                <!-- Get all parts belonging to this subject -->
+                                <% var subjectParts = _.filter(triposData.parts, function(part) { return part.ParentId === subject.id; }); %>
+                                <ul>
+                                    <% _.each(subjectParts, function(part) { %>
+                                        <li data-id="<%- part.id %>" data-type="<%- part.type %>">
+                                            <span>
+                                                <span class="gh-editable gh-orgunit-part" data-id="<%- part.id %>" data-type="<%- part.type %>" data-value="<%- part.displayName %>"><%- part.displayName %></span> (<%- part.type %>)
+                                                <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- part.id %>" data-type="<%- part.type %>" title="Delete part"><i class="fa fa-trash"></i></button>
+                                            </span>
+                                        </li>
+                                    <% });%>
+                                </ul>
+                            </li>
+                        <% }); %>
+                    <% } %>
+
+                    <% if (courseParts.length) { %>
+                        <li>
+                            <% if (courseSubjects.length) { %>
+                                <span class="gh-orgunit-no-subject">
+                                    <span>No subject</span>
+                                </span>
+                            <% } %>
+                            <ul>
+                                <% _.each(courseParts, function(part) { %>
+                                    <li data-id="<%- part.id %>" data-type="<%- part.type %>">
+                                        <span>
+                                            <span class="gh-editable gh-orgunit-part" data-id="<%- part.id %>" data-type="<%- part.type %>" data-value="<%- part.displayName %>"><%- part.displayName %></span> (<%- part.type %>)
+                                            <button class="btn btn-link pull-right gh-manage-orgunits-delete" data-id="<%- part.id %>" data-type="<%- part.type %>" title="Delete part"><i class="fa fa-trash"></i></button>
+                                        </span>
+                                    </li>
+                                <% });%>
+                            </ul>
+                        </li>
+                    <% } %>
+                </ul>
+            </li>
+        <% }); %>
+    </ul>
+</div>

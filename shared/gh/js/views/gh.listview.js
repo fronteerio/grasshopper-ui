@@ -185,6 +185,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         // If the modules are toggled, set the display of the module list to none
         if ($('html').hasClass('gh-collapsed')) {
             $('#gh-left-container').addClass('gh-collapsed');
+            // Hide the footer
+            $('footer').hide();
             setTimeout(function() {
                 // Hide the modules list after the animations complete
                 $('#gh-modules-list').css('display', 'none');
@@ -198,6 +200,8 @@ define(['gh.utils', 'gh.api.orgunit', 'gh.constants'], function(utils, orgunitAP
         } else {
             // Toggle the animation finished class
             $('html').toggleClass('gh-collapsed-finished');
+            // Show the footer
+            $('footer').show();
             // Show the modules list before the animation starts
             $('#gh-modules-list').css('display', 'block');
             setTimeout(function() {
