@@ -49,7 +49,7 @@ define(['gh.core', 'gh.constants', 'jquery.jeditable'], function(gh, constants) 
 
         // Prevent the form from being submitted
         return false;
-    }
+    };
 
     /**
      * Delete an organisational unit
