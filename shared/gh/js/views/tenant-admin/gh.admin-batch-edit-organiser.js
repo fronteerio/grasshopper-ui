@@ -112,7 +112,7 @@ define(['gh.core', 'jquery-autosuggest'], function(gh) {
     var setUpAutoSuggest = function() {
         $('#gh-batch-edit-organisers').onAvailable(function() {
             $('#gh-batch-edit-organisers').autoSuggest('/api/users', {
-                'minChars': 2,
+                'minChars': 3,
                 'neverSubmit': true,
                 'retrieveLimit': 10,
                 'url': '/api/users',
