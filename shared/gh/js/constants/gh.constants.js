@@ -17,7 +17,7 @@ define(['exports'], function(exports) {
 
     var messaging = exports.messaging = {
         'default': {
-            'error': 'This is a Timetable error, if you still see this after reloading a Timetable in your browser please contact <a href="mailto:help@timetable.cam.ac.uk" title="Contact support">support</a>'
+            'error': 'This is a Timetable error, if you still see this after reloading a Timetable in your browser please contact <a href="mailto:service-desk@ucs.cam.ac.uk" title="Contact support">support</a>'
         }
     };
 
