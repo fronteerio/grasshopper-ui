@@ -77,15 +77,24 @@ define(['gh.core', 'moment', 'moment-timezone'], function(gh, moment, tz) {
      * Get all events for the specified week and term in the user's calendar
      *
      * @param {Object}    term    The term to get the events for
-     * @param {Number}    week    The week of the term to get evens for
+     * @param {Number}    week    The week of the term to get events for. This is 0-based, so provide `0` if you want the first week of the term
      * @private
      */
     var getAgendaViewData = function(term, week) {
-        var startOffsetDays = week * 7;
-        var endOffsetDays = startOffsetDays + 7;
+        // Ensure the week is provided as a Number
+        week = parseInt(week, 10) || 0;
 
-        var startDate = gh.utils.convertUnixDatetoISODate(moment.utc(term.start).add({'days': startOffsetDays}).toISOString());
-        var endDate = gh.utils.convertUnixDatetoISODate(moment.utc(term.start).add({'days': endOffsetDays}).toISOString());
+        // Get the date for the first day of the Cambridge week. This is always a Thursday, which is
+        // the 4th day of a Javascript Week. The `getDateByWeekAndDay` utility expects the weeks to
+        // start at 1. So the first week should be retrieved by passing in `1`. That's why we add 1
+        // to our provided week argument
+        var startDate = gh.utils.getDateByWeekAndDay(term.name, week + 1, 4);
+
+        // Cambridge weeks have the same amount of days as a normal week, so add 7 days to get the end date
+        var endDate = gh.utils.convertUnixDatetoISODate(moment.utc(startDate).add({'days': 7}).toISOString());
+
+        // Get a proper string representation to pass on to the REST API for the start date
+        startDate = gh.utils.convertUnixDatetoISODate(startDate);
 
         // Get the user's events for each term in the year
         gh.api.userAPI.getUserCalendar(gh.data.me.id, startDate, endDate, function(err, data) {
