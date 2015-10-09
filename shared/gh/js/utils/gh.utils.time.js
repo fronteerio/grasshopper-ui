@@ -212,7 +212,7 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
 
             // Convert the dates from ISO to UNIX for easier calculation
             var startDate = convertISODatetoUnixDate(moment.tz(term.start, 'Europe/London').add({'days': 2}).toISOString());
-            var endDate = convertISODatetoUnixDate(moment.tz(term.end, 'Europe/London').subtract({'days': 2}).toISOString());
+            var endDate = convertISODatetoUnixDate(moment.tz(term.end, 'Europe/London').subtract({'days': 2}).hours(23).minutes(59).seconds(59).toISOString());
 
             // Return the term where the specified date is within the range
             if (isDateInRange(date, startDate, endDate)) {
@@ -264,7 +264,7 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
 
         // Convert the term start and end date to milliseconds
         var termStartDate = moment(term.start).add({'days': 2});
-        var termEndDate = moment(term.end).subtract({'days': 2});
+        var termEndDate = moment(term.end).subtract({'days': 2}).hours(23).minutes(59).seconds(59);
 
         // Calculate the time difference
         var timeDifference = Math.abs(termEndDate - termStartDate);
