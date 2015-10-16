@@ -210,9 +210,12 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         // Get the current term and return its name
         return _.find(terms, function(term) {
 
-            // Convert the dates from ISO to UNIX for easier calculation
+            // Convert the dates from ISO to UNIX for easier calculation. Keep in mind that the configured
+            // start and end term dates are the official term start and end. Within the Timetable context
+            // however, a term starts 2 days later and ends 2 days earlier. Keep in mind that the configured
+            // term start/end doesn't have a time component, so we ensure the range ends at 23:59:59.
             var startDate = convertISODatetoUnixDate(moment.tz(term.start, 'Europe/London').add({'days': 2}).toISOString());
-            var endDate = convertISODatetoUnixDate(moment.tz(term.end, 'Europe/London').subtract({'days': 2}).toISOString());
+            var endDate = convertISODatetoUnixDate(moment.tz(term.end, 'Europe/London').subtract({'days': 2}).hours(23).minutes(59).seconds(59).toISOString());
 
             // Return the term where the specified date is within the range
             if (isDateInRange(date, startDate, endDate)) {
@@ -262,9 +265,12 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
             throw new Error('A valid term should be provided');
         }
 
-        // Convert the term start and end date to milliseconds
+        // Convert the dates from ISO to UNIX for easier calculation. Keep in mind that the configured
+        // start and end term dates are the official term start and end. Within the Timetable context
+        // however, a term starts 2 days later and ends 2 days earlier. Keep in mind that the configured
+        // term start/end doesn't have a time component, so we ensure the range ends at 23:59:59.
         var termStartDate = moment(term.start).add({'days': 2});
-        var termEndDate = moment(term.end).subtract({'days': 2});
+        var termEndDate = moment(term.end).subtract({'days': 2}).hours(23).minutes(59).seconds(59);
 
         // Calculate the time difference
         var timeDifference = Math.abs(termEndDate - termStartDate);

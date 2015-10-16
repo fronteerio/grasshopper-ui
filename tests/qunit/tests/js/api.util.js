@@ -204,6 +204,24 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         // Verify that no term is returned when specifying an out-of-term date
         term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2015-01-01T10:30:00.000Z'));
         assert.ok(!term);
+
+        // Verify the correct term is returned when the first day of term is passed in
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2014-10-09T10:00:00.000Z'));
+        assert.ok(term);
+        assert.strictEqual(term.name, 'michaelmas', 'Verify that the corresponding term is returned');
+
+        // Verify the correct term is returned when the last day of term is passed in
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2014-12-03T10:00:00.000Z'));
+        assert.ok(term);
+        assert.strictEqual(term.name, 'michaelmas', 'Verify that the corresponding term is returned');
+
+        // Verify no term is returned when the day before term starts is passed in
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2014-10-08T10:00:00.000Z'));
+        assert.ok(!term);
+
+        // Verify no term is returned when the day after term ends is passed in
+        term = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate('2014-12-04T10:00:00.000Z'));
+        assert.ok(!term);
     });
 
     // Test the 'getWeeksInTerm' functionality

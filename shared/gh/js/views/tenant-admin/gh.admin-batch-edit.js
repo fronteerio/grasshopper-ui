@@ -123,11 +123,13 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     /**
      * Add a new event row to the table and initialise the editable fields in it
      *
-     * @param {Event}     ev      Standard jQuery event
-     * @param {Object}    data    Data object containing the event object to create and its container
+     * @param {Event}       ev              Standard jQuery event
+     * @param {Object}      data            Data object containing the event object to create and its container
+     * @param {Function}    [callback]      Standard callback function
      * @private
      */
-    var addNewEventRow = function(ev, data) {
+    var addNewEventRow = function(ev, data, callback) {
+        callback = callback || function() {};
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
         var termStart = gh.utils.getFirstLectureDayOfTerm(termName);
@@ -186,6 +188,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
             $eventContainer.find('.gh-select-single').trigger('change');
             // Sort the table
             sortEventTable($eventContainer);
+            callback();
         });
     };
 
@@ -203,13 +206,25 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         });
         // Get the number of weeks in the term
         var weeksInTerm = gh.utils.getWeeksInTerm(term);
-        // Add a new event row for every week in the term
-        for (weeksInTerm; weeksInTerm !== 0; weeksInTerm--) {
-            // Add new event rows
+
+        // The container where the event rows should be added to
+        var $eventContainer = $(this).closest('.gh-batch-edit-events-container').find('tbody');
+
+        // This recursive loop is necessary because `addNewEventRow` is asynchronous. On its own, this
+        // wouldn't be a huge problem, but `addNewEventRow` checks the DOM to see how many rows have
+        // been added previously. If this were executed synchronously 8 times, it would add 8 events
+        // all of them starting on the same day in week 1
+        var addRow = function(i) {
             addNewEventRow(ev, {
-                'eventContainer': $(this).closest('.gh-batch-edit-events-container').find('tbody'),
+                'eventContainer': $eventContainer
+            }, function() {
+                if (i < weeksInTerm) {
+                    addRow(i + 1);
+                }
             });
-        }
+        };
+        addRow(1);
+
         // Track the user adding events for an empty term
         gh.utils.trackEvent(['Data', 'Added events for empty term']);
     };
