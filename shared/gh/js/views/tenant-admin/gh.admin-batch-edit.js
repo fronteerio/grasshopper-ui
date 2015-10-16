@@ -216,7 +216,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         // all of them starting on the same day in week 1
         var addRow = function(i) {
             addNewEventRow(ev, {
-                'eventContainer': $eventContainer,
+                'eventContainer': $eventContainer
             }, function() {
                 if (i < weeksInTerm) {
                     addRow(i + 1);
