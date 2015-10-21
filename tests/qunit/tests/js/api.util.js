@@ -269,12 +269,57 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
             gh.utils.getDateByWeekAndDay('michaelmas', 1, null);
         }, 'Verify that a valid term name needs to be provided');
 
-        // Verify that the correct date is returned
-        var testDate = new Date('Wed Oct 22 2014 01:00:00 GMT+0100 (BST)');
-        var testDate2 = new Date('Mon Oct 20 2014 01:00:00 GMT+0100 (BST)');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 1).getFullYear(), testDate2.getFullYear(), 'Verify that the correct year is returned');
+        // Perform a few manual assertions, both before and after DST
+        // The following object holds the first 4 weeks of the Michaelmas term. Each inner object
+        // maps the day of the week (1=Monday, 2=Tuesday, ..) to the expected date for that termweek
+        var testDates = {
+            '1': {
+                '4': new Date(2014, 9, 9),
+                '5': new Date(2014, 9, 10),
+                '6': new Date(2014, 9, 11),
+                '7': new Date(2014, 9, 12),
+                '1': new Date(2014, 9, 13),
+                '2': new Date(2014, 9, 14),
+                '3': new Date(2014, 9, 15)
+            },
+            '2': {
+                '4': new Date(2014, 9, 16),
+                '5': new Date(2014, 9, 17),
+                '6': new Date(2014, 9, 18),
+                '7': new Date(2014, 9, 19),
+                '1': new Date(2014, 9, 20),
+                '2': new Date(2014, 9, 21),
+                '3': new Date(2014, 9, 22)
+            },
+            '3': {
+                '4': new Date(2014, 9, 23),
+                '5': new Date(2014, 9, 24),
+                '6': new Date(2014, 9, 25),
+                '7': new Date(2014, 9, 26),
+                '1': new Date(2014, 9, 27),
+                '2': new Date(2014, 9, 28),
+                '3': new Date(2014, 9, 29)
+            },
+            '4': {
+                '4': new Date(2014, 9, 30),
+                '5': new Date(2014, 9, 31),
+                '6': new Date(2014, 10, 1),
+                '7': new Date(2014, 10, 2),
+                '1': new Date(2014, 10, 3),
+                '2': new Date(2014, 10, 4),
+                '3': new Date(2014, 10, 5)
+            }
+        };
+
+        _.each(testDates, function(days, week) {
+            week = parseInt(week, 10);
+            _.each(days, function(expectedDate, dayOfTheWeek){
+                dayOfTheWeek = parseInt(dayOfTheWeek, 10);
+                var date = gh.utils.getDateByWeekAndDay('michaelmas', week, dayOfTheWeek);
+                assert.strictEqual(date.getMonth(), expectedDate.getMonth(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct month');
+                assert.strictEqual(date.getDay(), expectedDate.getDay(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct day');
+            });
+        });
     });
 
     // Test the 'dateDisplay' functionality

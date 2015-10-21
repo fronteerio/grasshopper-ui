@@ -265,12 +265,10 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
             throw new Error('A valid term should be provided');
         }
 
-        // Convert the dates from ISO to UNIX for easier calculation. Keep in mind that the configured
-        // start and end term dates are the official term start and end. Within the Timetable context
-        // however, a term starts 2 days later and ends 2 days earlier. Keep in mind that the configured
-        // term start/end doesn't have a time component, so we ensure the range ends at 23:59:59.
+        // Convert the dates from ISO to UNIX for easier calculation. Do NOT include the 23hrs,
+        // 59 minutes and 59 seconds of the last day of the term as this throws off the week calculation
         var termStartDate = moment(term.start).add({'days': 2});
-        var termEndDate = moment(term.end).subtract({'days': 2}).hours(23).minutes(59).seconds(59);
+        var termEndDate = moment(term.end).subtract({'days': 2});
 
         // Calculate the time difference
         var timeDifference = Math.abs(termEndDate - termStartDate);
@@ -284,7 +282,7 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
      *
      * @param  {String}    termName      The name of the term to look for the date
      * @param  {Number}    weekNumber    The week of the term to look for the date
-     * @param  {Number}    dayNumber     The day of the week to look for the dae
+     * @param  {Number}    dayNumber     The day of the week to look for the date
      * @return {Date}                    Date object of the day in the term
      * @throws {Error}                   A parameter validation error
      */
@@ -308,13 +306,21 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         _.each(terms, function(term) {
             if (term.name === termName) {
                 // Get the date on which the term starts
-                var termStartDate = new Date(term.start).getTime();
+                var termStartDate = new Date(term.start);
 
-                // Calculate the week offset in milliseconds
+                // Avoid daylight saving time issues
+                termStartDate.setHours(13);
+
+                // Add 2 days as official term start dates occur 2 days earlier
+                termStartDate = termStartDate.getTime();
+                termStartDate += 2 * constants.time.PERIODS['day'];
+
+                // termStartDate is now set to the first day of the first week of the term,
+                // add the correct number of weeks
                 var weekOffset = (weekNumber - 1) * constants.time.PERIODS['week'];
-                // Calculate the start date of the week
                 var startOfWeekDate = new Date(termStartDate + weekOffset);
-                // Find out what day this day is
+
+                // Find out what day this day is, in michaelmas term, this would be a Thursday
                 var startOfWeekDay = startOfWeekDate.getDay();
 
                 // If the dayNumber is smaller than the day the week starts on,
