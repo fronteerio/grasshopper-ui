@@ -274,40 +274,40 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         // maps the day of the week (1=Monday, 2=Tuesday, ..) to the expected date for that termweek
         var testDates = {
             '1': {
-                '4': new Date(2014, 9, 9),
-                '5': new Date(2014, 9, 10),
-                '6': new Date(2014, 9, 11),
-                '7': new Date(2014, 9, 12),
-                '1': new Date(2014, 9, 13),
-                '2': new Date(2014, 9, 14),
-                '3': new Date(2014, 9, 15)
+                '4': new Date('Wed Oct 09 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 10 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 11 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 12 2014 13:00:00 GMT+0100 (BST)'),
+                '1': new Date('Wed Oct 13 2014 13:00:00 GMT+0100 (BST)'),
+                '2': new Date('Wed Oct 14 2014 13:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 15 2014 13:00:00 GMT+0100 (BST)')
             },
             '2': {
-                '4': new Date(2014, 9, 16),
-                '5': new Date(2014, 9, 17),
-                '6': new Date(2014, 9, 18),
-                '7': new Date(2014, 9, 19),
-                '1': new Date(2014, 9, 20),
-                '2': new Date(2014, 9, 21),
-                '3': new Date(2014, 9, 22)
+                '4': new Date('Wed Oct 16 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 17 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 18 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 19 2014 13:00:00 GMT+0100 (BST)'),
+                '1': new Date('Wed Oct 20 2014 13:00:00 GMT+0100 (BST)'),
+                '2': new Date('Wed Oct 21 2014 13:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 22 2014 13:00:00 GMT+0100 (BST)')
             },
             '3': {
-                '4': new Date(2014, 9, 23),
-                '5': new Date(2014, 9, 24),
-                '6': new Date(2014, 9, 25),
-                '7': new Date(2014, 9, 26),
-                '1': new Date(2014, 9, 27),
-                '2': new Date(2014, 9, 28),
-                '3': new Date(2014, 9, 29)
+                '4': new Date('Wed Oct 23 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 24 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 25 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 26 2014 13:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Wed Oct 27 2014 13:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Wed Oct 28 2014 13:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Oct 29 2014 13:00:00 GMT+0000 (GMT)')
             },
             '4': {
-                '4': new Date(2014, 9, 30),
-                '5': new Date(2014, 9, 31),
-                '6': new Date(2014, 10, 1),
-                '7': new Date(2014, 10, 2),
-                '1': new Date(2014, 10, 3),
-                '2': new Date(2014, 10, 4),
-                '3': new Date(2014, 10, 5)
+                '4': new Date('Wed Oct 30 2014 13:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Wed Oct 31 2014 13:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Wed Nov 01 2014 13:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Wed Nov 02 2014 13:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Wed Nov 03 2014 13:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Wed Nov 04 2014 13:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Nov 05 2014 13:00:00 GMT+0000 (GMT)')
             }
         };
 
