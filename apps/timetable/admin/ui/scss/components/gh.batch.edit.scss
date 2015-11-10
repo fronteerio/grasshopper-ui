@@ -62,7 +62,7 @@
 /* Type */
 #gh-batch-edit-header .table thead tr th:nth-child(6),
 #gh-batch-edit-term-container .gh-batch-edit-events-container .table > thead > tr > th:nth-child(6) {
-    width: 105px;
+    width: 108px;
 }
 
 /* Delete button */
@@ -494,10 +494,6 @@
                         &.gh-event-organisers[title] {
                             overflow: hidden;
                             padding: 6px 0 6px 15px;
-                        }
-
-                        &.gh-event-type {
-                            padding-right: 6px;
                         }
 
                         &.gh-event-type:not(.gh-disabled):empty:hover::before,

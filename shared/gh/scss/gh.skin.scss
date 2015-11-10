@@ -788,6 +788,9 @@ tbody .fc-sun {
 .gh-event-type::before {
     background-color: #555;
     color: #FFF;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
 }
 
 .gh-event-type[data-type="Lecture"]::before {
@@ -800,6 +803,14 @@ tbody .fc-sun {
 
 .gh-event-type[data-type="Seminar"]::before {
     background-color: #92308A;
+}
+
+.gh-event-type[data-type="Practicals"]::before {
+    background-color: #54941e;
+}
+
+.gh-event-type[data-type="Social"]::before {
+    background-color: #e6df19;
 }
 
 .gh-event-type[data-type="Other"]::before {

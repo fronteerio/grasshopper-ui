@@ -3,7 +3,9 @@
         "types": [
             "Lecture",
             "Class",
+            "Practicals",
             "Seminar",
+            "Social",
             "Other"
         ],
         "default": "Lecture"
