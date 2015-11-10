@@ -269,12 +269,57 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
             gh.utils.getDateByWeekAndDay('michaelmas', 1, null);
         }, 'Verify that a valid term name needs to be provided');
 
-        // Verify that the correct date is returned
-        var testDate = new Date('Wed Oct 22 2014 01:00:00 GMT+0100 (BST)');
-        var testDate2 = new Date('Mon Oct 20 2014 01:00:00 GMT+0100 (BST)');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getDay(), testDate.getDay(), 'Verify that the correct day is returned');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 3).getMonth(), testDate.getMonth(), 'Verify that the correct month is returned');
-        assert.strictEqual(gh.utils.getDateByWeekAndDay('michaelmas', 2, 1).getFullYear(), testDate2.getFullYear(), 'Verify that the correct year is returned');
+        // Perform a few manual assertions, both before and after DST
+        // The following object holds the first 4 weeks of the Michaelmas term. Each inner object
+        // maps the day of the week (1=Monday, 2=Tuesday, ..) to the expected date for that termweek
+        var testDates = {
+            '1': {
+                '4': new Date('Wed Oct 09 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 10 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 11 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 12 2014 13:00:00 GMT+0100 (BST)'),
+                '1': new Date('Wed Oct 13 2014 13:00:00 GMT+0100 (BST)'),
+                '2': new Date('Wed Oct 14 2014 13:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 15 2014 13:00:00 GMT+0100 (BST)')
+            },
+            '2': {
+                '4': new Date('Wed Oct 16 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 17 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 18 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 19 2014 13:00:00 GMT+0100 (BST)'),
+                '1': new Date('Wed Oct 20 2014 13:00:00 GMT+0100 (BST)'),
+                '2': new Date('Wed Oct 21 2014 13:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 22 2014 13:00:00 GMT+0100 (BST)')
+            },
+            '3': {
+                '4': new Date('Wed Oct 23 2014 13:00:00 GMT+0100 (BST)'),
+                '5': new Date('Wed Oct 24 2014 13:00:00 GMT+0100 (BST)'),
+                '6': new Date('Wed Oct 25 2014 13:00:00 GMT+0100 (BST)'),
+                '7': new Date('Wed Oct 26 2014 13:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Wed Oct 27 2014 13:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Wed Oct 28 2014 13:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Oct 29 2014 13:00:00 GMT+0000 (GMT)')
+            },
+            '4': {
+                '4': new Date('Wed Oct 30 2014 13:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Wed Oct 31 2014 13:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Wed Nov 01 2014 13:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Wed Nov 02 2014 13:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Wed Nov 03 2014 13:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Wed Nov 04 2014 13:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Nov 05 2014 13:00:00 GMT+0000 (GMT)')
+            }
+        };
+
+        _.each(testDates, function(days, week) {
+            week = parseInt(week, 10);
+            _.each(days, function(expectedDate, dayOfTheWeek){
+                dayOfTheWeek = parseInt(dayOfTheWeek, 10);
+                var date = gh.utils.getDateByWeekAndDay('michaelmas', week, dayOfTheWeek);
+                assert.strictEqual(date.getMonth(), expectedDate.getMonth(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct month');
+                assert.strictEqual(date.getDay(), expectedDate.getDay(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct day');
+            });
+        });
     });
 
     // Test the 'dateDisplay' functionality

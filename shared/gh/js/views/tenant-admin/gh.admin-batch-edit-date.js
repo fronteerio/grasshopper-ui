@@ -110,10 +110,11 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
     /**
      * Remove events from a specified week number
      *
-     * @param  {Number}    weekNumber    The week number to delete events from
+     * @param  {Number}     weekNumber      The week number to delete events from
+     * @param  {Function}   callback        Standard callback function
      * @private
      */
-    var removeEventsInWeek = function(weekNumber) {
+    var removeEventsInWeek = function(weekNumber, callback) {
         // Get the checked events from the batch edit container
         var $selectedRows = $('.gh-batch-edit-events-container tr.info:visible');
         // Filter the rows that are eligible for updating
@@ -123,6 +124,14 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
         // Keep track of progress
         var totalEvents = $rows.length;
         var currentEvent = 0;
+
+        if (totalEvents === 0) {
+            return callback();
+        }
+
+        // Only return to the caller after all rows have been processed
+        callback = _.after(totalEvents, callback);
+
         // For each row, check if the event is taking place in the week that is to be removed
         _.each($rows, function($row) {
             _.defer(function() {
@@ -139,6 +148,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                 // Update processing progress indication
                 currentEvent = currentEvent + 1;
                 updateEventManipulationProgress(currentEvent, totalEvents);
+                callback();
             });
         });
     };
@@ -173,17 +183,9 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     // Get the week number
                     var eventWeek = parseInt(chk.value, 10);
                     // Get the date of the event
-                    // var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
 
                     // Get the date by week and day
-                    // Since Cambridge weeks start on Thursdays, we should prevent that
-                    // chosen days are put before the current selected day. Therefore
-                    // we need to add one week for all the days except Tuesdays and Wednesdays.
-                    // (We have a 2 day offset, since terms start on Tuesdays, sigh).
                     var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, dayOfTheWeek);
-                    if (_.contains([2,3], dayOfTheWeek)) {
-                        dateByWeekAndDay = moment(dateByWeekAndDay).add({'weeks': 1});
-                    }
 
                     // Only add a new event for the generated day if the day is within a term
                     var inTerm = gh.utils.getTerm(gh.utils.convertISODatetoUnixDate(moment.tz(dateByWeekAndDay, 'Europe/London').format()));
@@ -264,13 +266,12 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
     };
 
     /**
-     * Add another event to the terms based on the selection of weeks. If the event has already been added it won't be
-     * added again unless `forceAdd` has been set to `true`
+     * Add another event to the terms based on the selection of weeks
      *
-     * @param {Boolean}    [forceAdd]    Whether to force adding another day. Defaults to `false`
+     * @param {Function}   callback      Standard callback function
      * @private
      */
-    var addAnotherEvent = function(forceAdd) {
+    var addAnotherEvent = function(callback) {
         // Default the container to look for selected weeks in
         var $weeks = $('#gh-batch-edit-date-picker input:checked');
         var $days = $('.gh-batch-edit-time-picker');
@@ -278,6 +279,21 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
         // Keep track of progress
         var totalEvents = $('#gh-batch-edit-date-picker-container').data('terms').split(',').length * $weeks.length * $days.length;
         var currentEvent = 0;
+
+        // The number of selected terms
+        var nrOfTerms = $('#gh-batch-edit-date-picker-container').data('terms').split(',').length;
+
+        // Calculate how many days will be added
+        var totalDays = nrOfTerms * $weeks.length * ($days.length || 1);
+
+        // If no days will be added, we can return early
+        if (totalDays === 0) {
+            return callback();
+        }
+
+        // Only invoke the callback once all days have been added. Note that this is necessary
+        // because of the _.defer usage
+        callback = _.after(totalDays, callback);
 
         // For each term selected, add events
         _.each($('#gh-batch-edit-date-picker-container').data('terms').split(','), function(termName) {
@@ -298,14 +314,7 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                             // Get the day number
                             var eventDay = parseInt($('.gh-batch-edit-day-picker', $timePickerContainer).val(), 10);
                             // Get the date by week and day
-                            // Since Cambridge weeks start on Thursdays, we should prevent that
-                            // chosen days are put before the current selected day. Therefore
-                            // we need to add one week for all the days except Tuesdays and Wednesdays.
-                            // (We have a 2 day offset, since terms start on Tuesdays, sigh).
                             var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
-                            if (_.contains([2,3], eventDay)) {
-                                dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
-                            }
                             // Retrieve the year of the event
                             var eventYear = moment.tz(dateByWeekAndDay, 'Europe/London').format('YYYY');
                             // We need to subtract a month here, since creating a moment date object uses a zero-based calculation for months
@@ -324,8 +333,9 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                             var endDate = moment.tz([eventYear, eventMonth, eventDay, eventEndHour, eventEndMinute, 0, 0], 'Europe/London');
 
                             // Send off an event that will be picked up by the batch edit and add the rows to the terms
-                            var alreadyAdded = $('.gh-event-date[data-start="' + moment.tz(startDate, 'Europe/London').format() + '"]').length;
-                            if (!alreadyAdded || forceAdd) {
+                            var $existingDate = $('.gh-event-date[data-start="' + moment.tz(startDate, 'Europe/London').format() + '"]');
+                            var alreadyAdded = $existingDate.length;
+                            if (!alreadyAdded) {
                                 $(document).trigger('gh.batchedit.addevent', {
                                     'eventContainer': $('.gh-batch-edit-events-container[data-term="' + termName + '"]').find('tbody'),
                                     'eventObj': {
@@ -341,11 +351,16 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                                     },
                                     'startDate': startDate
                                 });
+                            } else if ($existingDate.parent().hasClass('gh-event-deleted')) {
+                                $existingDate.parent().removeClass('gh-event-deleted').show();
+                                $(document).trigger('gh.batchedit.togglesubmit');
                             }
 
                             // Update processing progress indication
                             currentEvent = currentEvent + 1;
                             updateEventManipulationProgress(currentEvent, totalEvents);
+
+                            callback();
                         });
                     });
 
@@ -360,14 +375,6 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
 
                         // Get the date by week and day
                         var dateByWeekAndDay = gh.utils.getDateByWeekAndDay(termName, eventWeek, eventDay);
-
-                        // Since Cambridge weeks start on Thursdays, we should prevent that
-                        // chosen days are put before the current selected day. Therefore
-                        // we need to add one week for the Tuesdays and Wednesdays
-                        // (We have a 2 day offset, since terms start on Tuesdays, sigh).
-                        if (_.contains([2,3], eventDay)) {
-                            dateByWeekAndDay = moment.tz(dateByWeekAndDay, 'Europe/London').add({'weeks': 1});
-                        }
 
                         // Create the start date of the event
                         var startDate = moment.tz(dateByWeekAndDay, 'Europe/London').hour(13);
@@ -394,6 +401,8 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                         // Update processing progress indication
                         currentEvent = currentEvent + 1;
                         updateEventManipulationProgress(currentEvent, totalEvents);
+
+                        callback();
                     });
                 }
             });
@@ -579,15 +588,8 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                     var weekInTerm = gh.utils.getAcademicWeekNumber(gh.utils.convertISODatetoUnixDate(moment.tz(eventStart, 'Europe/London').format()));
                     // Get the name of the term this date is in
                     var termName = $row.closest('.gh-batch-edit-events-container').attr('data-term');
-                    // Get the date the event would be on after the change
-                    // Since Cambridge weeks start on Thursdays, we should prevent that
-                    // chosen days are put after the current selected day. Therefore
-                    // we need to subtract one week for all the days except Tuesdays and
-                    // Wednesdays (We have a 2 day offset, since terms start on Tuesdays, sigh).
+                    // Get the date the event would be on after the change.
                     var newDate = gh.utils.getDateByWeekAndDay(termName, weekInTerm, eventDay);
-                    if (_.contains([2,3], eventDay)) {
-                        newDate = moment.tz(newDate, 'Europe/London').add({'weeks': 1});
-                    }
 
                     // Only update the year/month/day when we change the day
                     if (!dayChange) {
@@ -640,19 +642,17 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
             // Add the class
             $(this).closest('.checkbox').addClass('gh-batch-edit-date-picker-selected');
             // Add all events to the associated week
-            addAnotherEvent();
+            addAnotherEvent(buildBatchDateObject);
             // Track the user adding a week to the selection
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Week ticked on']);
         } else {
             // Remove the class
             $(this).closest('.checkbox').removeClass('gh-batch-edit-date-picker-selected');
             // Remove all events associated to the week
-            removeEventsInWeek(parseInt($(this).val(), 10));
+            removeEventsInWeek(parseInt($(this).val(), 10), buildBatchDateObject);
             // Track the user removing a week to the selection
             gh.utils.trackEvent(['Data', 'Batch edit', 'TimeDate', 'Week ticked off']);
         }
-        // Update the batch edit header
-        buildBatchDateObject();
     };
 
     /**
