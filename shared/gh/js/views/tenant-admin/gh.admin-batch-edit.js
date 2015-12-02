@@ -121,6 +121,73 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     };
 
     /**
+     * Get a suitable display name for a new event. This will look at the display names of
+     * the existing events. If they are all the same, that display name will be returned.
+     * If they are different, the series display name will be returned.
+     *
+     * @return {String}     A display name for a new event
+     */
+    var getEventDisplayName = function() {
+        var seriesDisplayName = $('.gh-jeditable-series-title').text();
+        var eventDisplayNames = $('.gh-event-description').map(function(i, elem) {
+            return $(elem).text().trim();
+        });
+        eventDisplayNames = _.uniq(eventDisplayNames);
+        if (_.size(eventDisplayNames) === 1) {
+            return eventDisplayNames[0];
+        } else {
+            return seriesDisplayName;
+        }
+    };
+
+    /**
+     * Get times for an event. By default, 1pm to 2pm on the first lecture day of the term
+     * will be returned. However, if there are any other events (in any other) term that
+     * all start and end on the same day and hour, the times of that day and hour of the
+     * first week of the term will be returned
+     *
+     * @param  {String}     termName    The name of the term for which to get the default event times
+     * @return {Object}                 Default event times
+     */
+    var getDefaultEventTimes = function(termName) {
+        // By default, the event runs from 1 to 2pm on the first day of term
+        var termStart = gh.utils.getFirstLectureDayOfTerm(termName);
+        var defaultEventTimes = {
+            'start': moment.tz(termStart, 'Europe/London').hours(13),
+            'end': moment.tz(termStart, 'Europe/London').hours(14),
+        };
+
+        // Check whether there are any other events
+        var otherEventTimes = $('.gh-event-date').map(function(i, elem) {
+            return {
+                'start': moment.tz($(elem).data('start'), 'Europe/London'),
+                'end': moment.tz($(elem).data('end'), 'Europe/London')
+            };
+        });
+
+        var uniqueDayHours = _.chain(otherEventTimes)
+            .map(function(times) {
+                return times.start.format('EHHmm') + '-' + times.end.format('EHHmm');
+            })
+            .uniq()
+            .value();
+
+        // If there was no single unique event time, we simply return the default times
+        if (_.size(uniqueDayHours) !== 1) {
+            return {
+                'start': defaultEventTimes.start.format(),
+                'end': defaultEventTimes.end.format()
+            };
+        }
+
+        var start = moment.tz(gh.utils.getDateByWeekAndDay(termName, 1, otherEventTimes[0].start.day()), 'Europe/London');
+        return {
+            'start': start.hours(otherEventTimes[0].start.hours()).format(),
+            'end': start.hours(otherEventTimes[0].end.hours()).format()
+        };
+    };
+
+    /**
      * Add a new event row to the table and initialise the editable fields in it
      *
      * @param {Event}       ev              Standard jQuery event
@@ -132,7 +199,6 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         callback = callback || function() {};
         var $eventContainer = data && data.eventContainer ? $(data.eventContainer) : $(this).closest('thead').next('tbody');
         var termName = $eventContainer.closest('.gh-batch-edit-events-container').data('term');
-        var termStart = gh.utils.getFirstLectureDayOfTerm(termName);
         var eventObj = {
             'data': {
                 'ev': null
@@ -144,29 +210,40 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
 
         // If an event was already added to the term, clone that event to the new event
         var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
+
         // Generate default values based on what was previously added
         var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
         var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
         var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
+        var defaultEventDisplayName = getEventDisplayName();
+        var defaultEventObj = {};
+
+        data.eventObj = data.eventObj || {};
         if ($lastEventInTerm.length) {
-            eventObj.data.ev = data && data.eventObj ? data.eventObj : {
-                'displayName': $('.gh-jeditable-series-title').text(),
+            defaultEventObj = {
+                'displayName': defaultEventDisplayName,
                 'end': moment.tz($($lastEventInTerm.find('.gh-event-date')).attr('data-end'), 'Europe/London').add(7, 'days').format(),
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
                 'start': moment.tz($($lastEventInTerm.find('.gh-event-date')).attr('data-start'), 'Europe/London').add(7, 'days').format(),
                 'type': gh.config.events.default
             };
+            eventObj.data.ev = _.extend({}, defaultEventObj, data.eventObj);
+
         // If no events were previously added to the term, create a default event object
+        // If there are events in any of the other terms that all start and end on the same day and hour
+        // the new event should copy over that information
         } else {
-            eventObj.data.ev = data && data.eventObj ? data.eventObj : {
-                'displayName': $('.gh-jeditable-series-title').text(),
-                'end': moment.tz(termStart, 'Europe/London').hours(14).format(),
+            var defaultEventTimes = getDefaultEventTimes(termName);
+            defaultEventObj = {
+                'displayName': defaultEventDisplayName,
+                'end': defaultEventTimes.end,
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
-                'start': moment.tz(termStart, 'Europe/London').hours(13).format(),
+                'start': defaultEventTimes.start,
                 'type': gh.config.events.default
             };
+            eventObj.data.ev = _.extend({}, defaultEventObj, data.eventObj);
         }
 
         // Add common properties to the event object

@@ -216,7 +216,6 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                                     'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
                                     'isNew': true, // Used in the template to know this one needs special handling
                                     'selected': true,
-                                    'displayName': $('.gh-jeditable-series-title').text(),
                                     'end': moment.tz(endDate, 'Europe/London').format(),
                                     'location': defaultLocation,
                                     'type': gh.config.events.default,
@@ -342,7 +341,6 @@ define(['gh.core', 'gh.api.config', 'lodash', 'moment', 'moment-timezone'], func
                                         'tempId': gh.utils.generateRandomString(), // The actual ID hasn't been generated yet
                                         'isNew': true, // Used in the template to know this one needs special handling
                                         'selected': true,
-                                        'displayName': $('.gh-jeditable-series-title').text(),
                                         'end': moment.tz(endDate, 'Europe/London').format(),
                                         'location': defaultLocation,
                                         'type': gh.config.events.default,
