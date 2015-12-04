@@ -129,7 +129,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
      */
     var getEventDisplayName = function() {
         var seriesDisplayName = $('.gh-jeditable-series-title').text();
-        var eventDisplayNames = $('.gh-event-description').map(function(i, elem) {
+        var eventDisplayNames = $('tr:visible .gh-event-description').map(function(i, elem) {
             return $(elem).text().trim();
         });
         eventDisplayNames = _.uniq(eventDisplayNames);
@@ -158,7 +158,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         };
 
         // Check whether there are any other events
-        var otherEventTimes = $('.gh-event-date').map(function(i, elem) {
+        var otherEventTimes = $('tr:visible .gh-event-date').map(function(i, elem) {
             return {
                 'start': moment.tz($(elem).data('start'), 'Europe/London'),
                 'end': moment.tz($(elem).data('end'), 'Europe/London')
@@ -188,6 +188,21 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
     };
 
     /**
+     * Get the default type for an event. If there are any other event rows in the DOM who
+     * all have the same event type, that type will be used
+     *
+     * @return {String} The type for a new event
+     */
+    var getDefaultEventType = function() {
+        var usedTypes = _.uniq($('tr:visible .gh-event-type').map(function(i, elem) { return $(elem).data('type'); }))
+        if (_.size(usedTypes) === 1) {
+            return usedTypes[0];
+        }
+
+        return gh.config.events.default;
+    };
+
+    /**
      * Add a new event row to the table and initialise the editable fields in it
      *
      * @param {Event}       ev              Standard jQuery event
@@ -209,15 +224,17 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         hideEmptyTermDescription(termName);
 
         // If an event was already added to the term, clone that event to the new event
-        var $lastEventInTerm = $('tr:visible:last-child', $eventContainer);
+        var $lastEventInTerm = $('tr:visible', $eventContainer).last();
 
         // Generate default values based on what was previously added
         var defaultLocation = $($('.gh-event-location:not(:empty)')[0]).text();
         var $hiddenOrganiserFields = $($('.gh-event-organisers:not(:empty)')[0]).prev();
         var defaultOrganisers = gh.utils.getOrganiserObjects($hiddenOrganiserFields);
         var defaultEventDisplayName = getEventDisplayName();
+        var defaultEventType = getDefaultEventType();
         var defaultEventObj = {};
 
+        data = data || {}
         data.eventObj = data.eventObj || {};
         if ($lastEventInTerm.length) {
             defaultEventObj = {
@@ -226,7 +243,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
                 'start': moment.tz($($lastEventInTerm.find('.gh-event-date')).attr('data-start'), 'Europe/London').add(7, 'days').format(),
-                'type': gh.config.events.default
+                'type': defaultEventType
             };
             eventObj.data.ev = _.extend({}, defaultEventObj, data.eventObj);
 
@@ -241,7 +258,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
                 'location': defaultLocation,
                 'organisers': defaultOrganisers,
                 'start': defaultEventTimes.start,
-                'type': gh.config.events.default
+                'type': defaultEventType
             };
             eventObj.data.ev = _.extend({}, defaultEventObj, data.eventObj);
         }
