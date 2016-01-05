@@ -194,7 +194,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
      * @return {String} The type for a new event
      */
     var getDefaultEventType = function() {
-        var usedTypes = _.uniq($('tr:visible .gh-event-type').map(function(i, elem) { return $(elem).data('type'); }))
+        var usedTypes = _.uniq($('tr:visible .gh-event-type').map(function(i, elem) { return $(elem).data('type'); }));
         if (_.size(usedTypes) === 1) {
             return usedTypes[0];
         }
@@ -234,7 +234,7 @@ define(['gh.core', 'gh.constants', 'moment', 'moment-timezone', 'gh.calendar', '
         var defaultEventType = getDefaultEventType();
         var defaultEventObj = {};
 
-        data = data || {}
+        data = data || {};
         data.eventObj = data.eventObj || {};
         if ($lastEventInTerm.length) {
             defaultEventObj = {

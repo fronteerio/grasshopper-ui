@@ -306,37 +306,30 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         _.each(terms, function(term) {
             if (term.name === termName) {
                 // Get the date on which the term starts
-                var termStartDate = new Date(term.start);
-
-                // Avoid daylight saving time issues
-                termStartDate.setHours(13);
+                var termStartDate = moment(term.start, 'YYYY-MM-DD');
 
                 // Add 2 days as official term start dates occur 2 days earlier
-                termStartDate = termStartDate.getTime();
-                termStartDate += 2 * constants.time.PERIODS['day'];
+                termStartDate.add(2, 'days');
 
                 // termStartDate is now set to the first day of the first week of the term,
                 // add the correct number of weeks
-                var weekOffset = (weekNumber - 1) * constants.time.PERIODS['week'];
-                var startOfWeekDate = new Date(termStartDate + weekOffset);
+                var startOfWeek = termStartDate.add(weekNumber - 1, 'weeks');
 
-                // Find out what day this day is, in michaelmas term, this would be a Thursday
-                var startOfWeekDay = startOfWeekDate.getDay();
+                // Find out what day this day is, in michaelmas term, this would be a Thursday (4)
+                var startOfWeekDay = startOfWeek.day();
 
-                // If the dayNumber is smaller than the day the week starts on,
+                // If the desired dayNumber is smaller than the day the week starts on,
                 // add a week to the weekOffset and substract the difference in days
                 if (dayNumber < startOfWeekDay) {
-                    startOfWeekDate = startOfWeekDate.getTime() + constants.time.PERIODS['week'];
-                    // Remove x days from the week to get to the final date to return
-                    dateByWeekAndDay = startOfWeekDate - ((startOfWeekDay - dayNumber) * constants.time.PERIODS['day']);
+                    dateByWeekAndDay = startOfWeek.add(1, 'week').subtract(startOfWeekDay - dayNumber, 'days');
 
                 // If the dayNumber is larger than the day, just add the difference
                 } else {
                     // Add x days to the week to get to the final date to return
-                    dateByWeekAndDay = startOfWeekDate.getTime() + ((dayNumber - startOfWeekDay) * constants.time.PERIODS['day']);
+                    dateByWeekAndDay = startOfWeek.add(dayNumber - startOfWeekDay, 'days');
                 }
 
-                dateByWeekAndDay = new Date(dateByWeekAndDay);
+                dateByWeekAndDay = new Date(dateByWeekAndDay.valueOf());
             }
         });
 
@@ -465,7 +458,9 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
                 range.start = convertUnixDatetoISODate(moment(currentViewDate).subtract(constants.time.PERIODS[currentView], 'milliseconds'));
 
                 // Calculate the end date
-                range.end = convertUnixDatetoISODate(moment(currentViewDate).add(constants.time.PERIODS[currentView], 'milliseconds'));
+                var end = moment(currentViewDate).add(constants.time.PERIODS[currentView], 'milliseconds');
+                end.hours(23).minutes(59).seconds(59);
+                range.end = convertUnixDatetoISODate(end);
 
                 // Return the range object
                 return callback(range);

@@ -272,54 +272,199 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         // Perform a few manual assertions, both before and after DST
         // The following object holds the first 4 weeks of the Michaelmas term. Each inner object
         // maps the day of the week (1=Monday, 2=Tuesday, ..) to the expected date for that termweek
-        var testDates = {
+        var michaelmasDates = {
             '1': {
-                '4': new Date('Wed Oct 09 2014 13:00:00 GMT+0100 (BST)'),
-                '5': new Date('Wed Oct 10 2014 13:00:00 GMT+0100 (BST)'),
-                '6': new Date('Wed Oct 11 2014 13:00:00 GMT+0100 (BST)'),
-                '7': new Date('Wed Oct 12 2014 13:00:00 GMT+0100 (BST)'),
-                '1': new Date('Wed Oct 13 2014 13:00:00 GMT+0100 (BST)'),
-                '2': new Date('Wed Oct 14 2014 13:00:00 GMT+0100 (BST)'),
-                '3': new Date('Wed Oct 15 2014 13:00:00 GMT+0100 (BST)')
+                '4': new Date('Thu Oct 09 2014 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri Oct 10 2014 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat Oct 11 2014 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun Oct 12 2014 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Oct 13 2014 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue Oct 14 2014 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 15 2014 00:00:00 GMT+0100 (BST)')
             },
             '2': {
-                '4': new Date('Wed Oct 16 2014 13:00:00 GMT+0100 (BST)'),
-                '5': new Date('Wed Oct 17 2014 13:00:00 GMT+0100 (BST)'),
-                '6': new Date('Wed Oct 18 2014 13:00:00 GMT+0100 (BST)'),
-                '7': new Date('Wed Oct 19 2014 13:00:00 GMT+0100 (BST)'),
-                '1': new Date('Wed Oct 20 2014 13:00:00 GMT+0100 (BST)'),
-                '2': new Date('Wed Oct 21 2014 13:00:00 GMT+0100 (BST)'),
-                '3': new Date('Wed Oct 22 2014 13:00:00 GMT+0100 (BST)')
+                '4': new Date('Thu Oct 16 2014 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri Oct 17 2014 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat Oct 18 2014 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun Oct 19 2014 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Oct 20 2014 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue Oct 21 2014 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Oct 22 2014 00:00:00 GMT+0100 (BST)')
             },
             '3': {
-                '4': new Date('Wed Oct 23 2014 13:00:00 GMT+0100 (BST)'),
-                '5': new Date('Wed Oct 24 2014 13:00:00 GMT+0100 (BST)'),
-                '6': new Date('Wed Oct 25 2014 13:00:00 GMT+0100 (BST)'),
-                '7': new Date('Wed Oct 26 2014 13:00:00 GMT+0000 (GMT)'),
-                '1': new Date('Wed Oct 27 2014 13:00:00 GMT+0000 (GMT)'),
-                '2': new Date('Wed Oct 28 2014 13:00:00 GMT+0000 (GMT)'),
-                '3': new Date('Wed Oct 29 2014 13:00:00 GMT+0000 (GMT)')
+                '4': new Date('Thu Oct 23 2014 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri Oct 24 2014 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat Oct 25 2014 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun Oct 26 2014 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Oct 27 2014 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Oct 28 2014 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Oct 29 2014 00:00:00 GMT+0000 (GMT)')
             },
             '4': {
-                '4': new Date('Wed Oct 30 2014 13:00:00 GMT+0000 (GMT)'),
-                '5': new Date('Wed Oct 31 2014 13:00:00 GMT+0000 (GMT)'),
-                '6': new Date('Wed Nov 01 2014 13:00:00 GMT+0000 (GMT)'),
-                '7': new Date('Wed Nov 02 2014 13:00:00 GMT+0000 (GMT)'),
-                '1': new Date('Wed Nov 03 2014 13:00:00 GMT+0000 (GMT)'),
-                '2': new Date('Wed Nov 04 2014 13:00:00 GMT+0000 (GMT)'),
-                '3': new Date('Wed Nov 05 2014 13:00:00 GMT+0000 (GMT)')
+                '4': new Date('Thu Oct 30 2014 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Oct 31 2014 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Nov 01 2014 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Nov 02 2014 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Nov 03 2014 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Nov 04 2014 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Nov 05 2014 00:00:00 GMT+0000 (GMT)')
             }
         };
+        checkDateByWeekAndDay(michaelmasDates, 'michaelmas');
 
-        _.each(testDates, function(days, week) {
-            week = parseInt(week, 10);
-            _.each(days, function(expectedDate, dayOfTheWeek){
-                dayOfTheWeek = parseInt(dayOfTheWeek, 10);
-                var date = gh.utils.getDateByWeekAndDay('michaelmas', week, dayOfTheWeek);
-                assert.strictEqual(date.getMonth(), expectedDate.getMonth(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct month');
-                assert.strictEqual(date.getDay(), expectedDate.getDay(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' returns the correct day');
+        var lentDates = {
+            '1': {
+                '4': new Date('Thu Jan 15 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Jan 16 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Jan 17 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Jan 18 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Jan 19 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Jan 20 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Jan 21 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '2': {
+                '4': new Date('Thu Jan 22 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Jan 23 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Jan 24 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Jan 25 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Jan 26 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Jan 27 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Jan 28 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '3': {
+                '4': new Date('Thu Jan 29 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Jan 30 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Jan 31 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Feb 01 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Feb 02 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Feb 03 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Feb 04 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '4': {
+                '4': new Date('Thu Feb 05 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Feb 06 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Feb 07 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Feb 08 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Feb 09 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Feb 10 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Feb 11 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '5': {
+                '4': new Date('Thu Feb 12 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Feb 13 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Feb 14 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Feb 15 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Feb 16 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Feb 17 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Feb 18 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '6': {
+                '4': new Date('Thu Feb 19 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Feb 20 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Feb 21 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Feb 22 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Feb 23 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Feb 24 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Feb 25 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '7': {
+                '4': new Date('Thu Feb 26 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Feb 27 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Feb 28 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Mar 01 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Mar 02 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Mar 03 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Mar 04 2015 00:00:00 GMT+0000 (GMT)')
+            },
+            '8': {
+                '4': new Date('Thu Mar 05 2015 00:00:00 GMT+0000 (GMT)'),
+                '5': new Date('Fri Mar 06 2015 00:00:00 GMT+0000 (GMT)'),
+                '6': new Date('Sat Mar 07 2015 00:00:00 GMT+0000 (GMT)'),
+                '7': new Date('Sun Mar 08 2015 00:00:00 GMT+0000 (GMT)'),
+                '1': new Date('Mon Mar 09 2015 00:00:00 GMT+0000 (GMT)'),
+                '2': new Date('Tue Mar 10 2015 00:00:00 GMT+0000 (GMT)'),
+                '3': new Date('Wed Mar 11 2015 00:00:00 GMT+0000 (GMT)')
+            }
+        };
+        checkDateByWeekAndDay(lentDates, 'lent');
+
+        var easterDates = {
+            '1': {
+                '4': new Date('Thu Apr 23 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri Apr 24 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat Apr 25 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun Apr 26 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Apr 27 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue Apr 28 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Apr 29 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '2': {
+                '4': new Date('Thu Apr 30 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri May 01 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat May 02 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun May 03 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon May 04 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue May 05 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed May 06 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '3': {
+                '4': new Date('Thu May 07 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri May 08 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat May 09 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun May 10 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon May 11 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue May 12 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed May 13 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '4': {
+                '4': new Date('Thu May 14 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri May 15 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat May 16 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun May 17 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon May 18 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue May 19 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed May 20 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '5': {
+                '4': new Date('Thu May 21 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri May 22 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat May 23 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun May 24 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon May 25 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue May 26 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed May 27 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '6': {
+                '4': new Date('Thu May 28 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri May 29 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat May 30 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun May 31 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Jun 01 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue Jun 02 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Jun 03 2015 00:00:00 GMT+0100 (BST)')
+            },
+            '7': {
+                '4': new Date('Thu Jun 04 2015 00:00:00 GMT+0100 (BST)'),
+                '5': new Date('Fri Jun 05 2015 00:00:00 GMT+0100 (BST)'),
+                '6': new Date('Sat Jun 06 2015 00:00:00 GMT+0100 (BST)'),
+                '7': new Date('Sun Jun 07 2015 00:00:00 GMT+0100 (BST)'),
+                '1': new Date('Mon Jun 08 2015 00:00:00 GMT+0100 (BST)'),
+                '2': new Date('Tue Jun 09 2015 00:00:00 GMT+0100 (BST)'),
+                '3': new Date('Wed Jun 10 2015 00:00:00 GMT+0100 (BST)')
+            }
+        };
+        checkDateByWeekAndDay(easterDates, 'easter');
+
+        function checkDateByWeekAndDay(testDates, termName) {
+            _.each(testDates, function(days, week) {
+                week = parseInt(week, 10);
+                _.each(days, function(expectedDate, dayOfTheWeek){
+                    dayOfTheWeek = parseInt(dayOfTheWeek, 10);
+                    var date = gh.utils.getDateByWeekAndDay(termName, week, dayOfTheWeek);
+                    assert.strictEqual(date.getTime(), expectedDate.getTime(), 'Verify week ' + week + ' day ' + dayOfTheWeek + ' in ' + termName + ' returns the correct time');
+                });
             });
-        });
+        }
     });
 
     // Test the 'dateDisplay' functionality
