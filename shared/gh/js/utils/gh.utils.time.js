@@ -642,17 +642,10 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         var config = require('gh.core').config;
         // Get the correct terms associated to the current application
         var terms = config.terms[config.academicYear];
-        // Create the object to return
+        // Create an object that will group the events by the term label
+        // they fall into
         var eventsByTerm = {};
-
-        // Transform the start and end dates in the terms to proper Date objects so we can
-        // compare them to the start times of the events. Also add a key to the object to
-        // return in which we will add the triaged events
         _.each(terms, function(term) {
-            // Convert start and end strings into proper dates for comparison
-            term.start = new Date(term.start);
-            term.end = new Date(term.end);
-            // Add an Array to the object to return with the term label as the key
             eventsByTerm[term.label] = {
                 'start': term.start,
                 'end': term.end,
@@ -663,14 +656,12 @@ define(['exports', 'gh.constants', 'moment', 'moment-timezone'], function(export
         // Loop over the array of events to triage them
         _.each(events.results, function(ev) {
             var outOfTerm = true;
-            // Convert start date into proper date for comparison
-            var evStart = new Date(ev.start);
             // Loop over the terms and check whether the event start date
             // falls between the term start and end date. If it does, push
             // it into the term's Array
             _.each(terms, function(term) {
-                var eventStartDay = convertISODatetoUnixDate(moment.tz(evStart, 'Europe/London').format('YYYY-MM-DD'));
-                if (evStart >= term.start && eventStartDay <= term.end) {
+                var eventStartDay = moment.tz(ev.start, 'Europe/London').format('YYYY-MM-DD');
+                if (eventStartDay >= term.start && eventStartDay <= term.end) {
                     outOfTerm = false;
                     // The event takes place in this term, push it into the Array
                     eventsByTerm[term.label]['events'].push(ev);

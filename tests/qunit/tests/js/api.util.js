@@ -23,20 +23,20 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
                 {
                     "name": "michaelmas",
                     "label": "Michaelmas",
-                    "start": "2014-10-07T00:00:00.000Z",
-                    "end": "2014-12-05T00:00:00.000Z"
+                    "start": "2014-10-07",
+                    "end": "2014-12-05"
                 },
                 {
                     "name": "lent",
                     "label": "Lent",
-                    "start": "2015-01-13T00:00:00.000Z",
-                    "end": "2015-03-13T00:00:00.000Z"
+                    "start": "2015-01-13",
+                    "end": "2015-03-13"
                 },
                 {
                     "name": "easter",
                     "label": "Easter",
-                    "start": "2015-04-21T00:00:00.000Z",
-                    "end": "2015-06-12T00:00:00.000Z"
+                    "start": "2015-04-21",
+                    "end": "2015-06-12"
                 }
             ]
         },
@@ -245,11 +245,11 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         }, 'Verify that a valid term name needs to be provided');
 
         // Use the first day of Michaelmas to test with
-        var testDate = moment('2014-10-09T00:00:00.000Z');
-        var firstLectureDay = gh.utils.getFirstLectureDayOfTerm('michaelmas');
-        assert.strictEqual(moment.utc(firstLectureDay).format('DD'), moment.utc(testDate).format('DD'), 'Verify that the correct day is returned');
-        assert.strictEqual(moment.utc(firstLectureDay).format('MM'), moment.utc(testDate).format('MM'), 'Verify that the correct month is returned');
-        assert.strictEqual(moment.utc(firstLectureDay).format('YYYY'), moment.utc(testDate).format('YYYY'), 'Verify that the correct year is returned');
+        var expectedDate = moment('2014-10-09', 'YYYY-MM-DD');
+        var firstLectureDay = moment(gh.utils.getFirstLectureDayOfTerm('michaelmas'), 'YYYY-MM-DD');
+        assert.strictEqual(firstLectureDay.format('DD'), expectedDate.format('DD'), 'Verify that the correct day is returned');
+        assert.strictEqual(firstLectureDay.format('MM'), expectedDate.format('MM'), 'Verify that the correct month is returned');
+        assert.strictEqual(firstLectureDay.format('YYYY'), expectedDate.format('YYYY'), 'Verify that the correct year is returned');
     });
 
     // Test the 'getDateByWeekAndDay' functionality
@@ -671,7 +671,7 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
 
     // Test the 'orderEventsByTerm' functionality
     QUnit.test('orderEventsByTerm', function(assert) {
-        expect(8);
+        expect(17);
 
         // Verify that an error is thrown when no events were provided
         assert.throws(function() {
@@ -684,19 +684,13 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
         }, 'Verify that an error is thrown when an invalid value for events was provided');
 
         // Split the events by term
-        var eventsByTerm = gh.utils.splitEventsByTerm({
+        var splitEvents = gh.utils.splitEventsByTerm({
             "results": [
 
                 // OT before Michaelmas
                 {
                     "end": "2014-10-06T14:00:00.000Z",
                     "start": "2014-10-06T13:00:00.000Z"
-                },
-
-                // OT after Easter
-                {
-                    "end": "2015-06-13T14:00:00.000Z",
-                    "start": "2015-06-13T13:00:00.000Z"
                 },
 
                 // Michaelmas
@@ -709,6 +703,12 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
                     "start": "2014-12-05T13:00:00.000Z"
                 },
 
+                // OT after Michaelmas, before Lent
+                {
+                    "end": "2015-01-06T14:00:00.000Z",
+                    "start": "2015-01-06T13:00:00.000Z"
+                },
+
                 // Lent
                 {
                     "end": "2015-01-13T11:00:00.000Z",
@@ -719,6 +719,12 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
                     "start": "2015-03-13T10:00:00.000Z"
                 },
 
+                // OT after Left, before Easter
+                {
+                    "end": "2015-03-30T14:00:00.000Z",
+                    "start": "2015-03-30T13:00:00.000Z"
+                },
+
                 // Easter
                 {
                     "end": "2015-04-21T14:00:00.000Z",
@@ -727,20 +733,35 @@ require(['gh.core', 'moment', 'gh.api.orgunit', 'gh.api.tests'], function(gh, mo
                 {
                     "end": "2015-06-12T14:00:00.000Z",
                     "start": "2015-06-12T13:00:00.000Z"
+                },
+
+                // OT after Easter
+                {
+                    "end": "2015-06-13T14:00:00.000Z",
+                    "start": "2015-06-13T13:00:00.000Z"
                 }
             ]
         });
 
         // Order the events
-        var events = gh.utils.orderEventsByTerm(eventsByTerm);
+        var eventsByTerm = gh.utils.orderEventsByTerm(splitEvents);
 
         // Verify that the events are returned in a correct order
-        assert.strictEqual(events.length, 5, 'Verify that the events are returned in a correct order');
-        assert.strictEqual(events[0].name, 'OT');
-        assert.strictEqual(events[1].name, 'Michaelmas');
-        assert.strictEqual(events[2].name, 'Lent');
-        assert.strictEqual(events[3].name, 'Easter');
-        assert.strictEqual(events[4].name, 'OT');
+        assert.strictEqual(eventsByTerm.length, 7, 'Verify that the events are returned in a correct order');
+        assert.strictEqual(eventsByTerm[0].name, 'OT');
+        assert.strictEqual(eventsByTerm[0].events.length, 1);
+        assert.strictEqual(eventsByTerm[1].name, 'Michaelmas');
+        assert.strictEqual(eventsByTerm[1].events.length, 2);
+        assert.strictEqual(eventsByTerm[2].name, 'OT');
+        assert.strictEqual(eventsByTerm[2].events.length, 1);
+        assert.strictEqual(eventsByTerm[3].name, 'Lent');
+        assert.strictEqual(eventsByTerm[3].events.length, 2);
+        assert.strictEqual(eventsByTerm[4].name, 'OT');
+        assert.strictEqual(eventsByTerm[4].events.length, 1);
+        assert.strictEqual(eventsByTerm[5].name, 'Easter');
+        assert.strictEqual(eventsByTerm[5].events.length, 2);
+        assert.strictEqual(eventsByTerm[6].name, 'OT');
+        assert.strictEqual(eventsByTerm[6].events.length, 1);
     });
 
     // Test the 'splitEventsByTerm' functionality
