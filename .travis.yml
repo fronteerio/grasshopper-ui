@@ -6,11 +6,6 @@ branches:
   only:
     - master
 
-env:
-  global:
-    - secure: "Eu6CBADoUI7CBpD5WEKZX5wYttNOTozHtH/JDzukkvTsYqayTN7HGvHHCfO6MfXLD1hbcYqJBE20Tj3WRkFlOJVaDNZG41f5vLY4Su9rErCrQzJcegxmU6SOyS1/0QvhT+OUFTVqJzjs4MltITzu0pjXiJnpoIIVxtewJppbBk0="
-    - secure: "UN5B6JIem98315QSn2t5GU5uyk3RjD1z+1jdEqX0AyIU7j5vhvtHeaA6rqCQwiVBd8oeUe4TIxrZsjwG47ZmTmoJyeoacWJfs4gv8qvmGmD1HACS3TFODsJoyR5/8yyMmg3eBvGqhRer55NourZDpW1M4x8cltvAWwiX3osgMYw="
-
 addons:
   postgresql: "9.3"
 
@@ -116,20 +111,5 @@ before_install:
 script:
   - grunt test
 
-after_success:
-  # Run a release build
-  - grunt
-  # Package and upload to Amazon S3
-  - ./etc/scripts/travis-upload.sh
-
 after_script:
   - grunt coveralls
-
-notifications:
-  email:
-    - bp323@cam.ac.uk
-    - md623@cam.ac.uk
-  irc:
-    channels:
-      - "irc.freenode.org#ucam-ds"
-    skip_join: true
