@@ -3,14 +3,11 @@
 A container for grasshopper applications
 
 ## Build status
-[![Build Status](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui.svg?branch=master)](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui)
-
-## Code coverage
-[![Coverage Status](https://img.shields.io/coveralls/CUL-DigitalServices/grasshopper-ui.svg)](https://coveralls.io/r/CUL-DigitalServices/grasshopper-ui?branch=master)
+[![Build Status](https://travis-ci.org/fronteerio/grasshopper-ui.svg?branch=master)](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui)
 
 ## Dependencies
-[![Dependency Status](https://david-dm.org/CUL-DigitalServices/grasshopper-ui.svg)](https://david-dm.org/CUL-DigitalServices/grasshopper-ui)
-[![devDependency Status](https://david-dm.org/CUL-DigitalServices/grasshopper-ui/dev-status.svg)](https://david-dm.org/CUL-DigitalServices/grasshopper-ui#info=devDependencies)
+[![Dependency Status](https://david-dm.org/fronteerio/grasshopper-ui.svg)](https://david-dm.org/fronteerio/grasshopper-ui)
+[![devDependency Status](https://david-dm.org/fronteerio/grasshopper-ui/dev-status.svg)](https://david-dm.org/fronteerio/grasshopper-ui#info=devDependencies)
 
 ## Installation
 
