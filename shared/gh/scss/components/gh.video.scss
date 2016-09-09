@@ -14,16 +14,7 @@
  */
 
 
-/***********/
-/* IMPORTS */
-/***********/
-
-@import 'gh.mixins';
-
-
-/*********/
-/* VIDEO */
-/*********/
+/* Video */
 
 .gh-show-video {
     display: block;
@@ -98,5 +89,31 @@
     &.isPlaying .gh-video-info,
     &.isPlaying .gh-play-video {
         display: none;
+    }
+}
+
+
+.gh-video {
+    background-image: url('/shared/gh/img/video.png');
+
+    &.isPlaying {
+        background-color: #000 !important;
+        background-image: none;
+    }
+
+    &:not(.isPlaying) video {
+        display: none;
+    }
+
+    .gh-play-video {
+        background-color: #FFF;
+    }
+
+    .gh-hide-video {
+        color: #FFF;
+
+        &:hover {
+            color: #AAA;
+        }
     }
 }

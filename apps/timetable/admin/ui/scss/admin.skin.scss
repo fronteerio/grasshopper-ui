@@ -88,46 +88,15 @@ $tertiary-colour: #913389;
     border-bottom-color: #171717;
 }
 
-.gh-show-video,
-.gh-show-video:hover,
-#gh-main-tripos .gh-video .gh-video-info,
-#gh-main-tripos .gh-video .gh-hide-video i,
-#gh-main-tripos > .gh-row-part > .gh-part p,
-#gh-main-tripos > .gh-row-part > .gh-part .gh-part-edit,
-#gh-main-tripos > .gh-row-part > .gh-part .gh-part-draft,
+.gh-row-part > .gh-part p,
+.gh-row-part > .gh-part .gh-part-edit,
+.gh-row-part > .gh-part .gh-part-draft,
 .gh-visibility,
 .gh-visibility:hover {
     color: #FFF;
 }
 
 #gh-main-tripos {
-
-    /* Video */
-
-    .gh-video {
-        background-image: url('/shared/gh/img/video.png');
-
-        &.isPlaying {
-            background-color: #000 !important;
-            background-image: none;
-        }
-
-        &:not(.isPlaying) video {
-            display: none;
-        }
-
-        .gh-play-video {
-            background-color: #FFF;
-        }
-
-        .gh-hide-video {
-            color: #FFF;
-
-            &:hover {
-                color: #AAA;
-            }
-        }
-    }
 
     /* Editable parts */
 

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.footer', 'gh.student.listview', 'gh.student.terms-and-conditions'], function(gh, constants) {
+define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.footer', 'gh.student.listview', 'gh.student.terms-and-conditions', 'gh.video'], function(gh, constants) {
 
     /**
      * Display the appropriate view depending on the state of the selected part
@@ -40,6 +40,11 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
             $('#gh-empty').hide();
             $('#gh-main').show();
         }
+
+        // Hide the video to give more screen real-estate to the calendar. Don't
+        // call out to `hideVideo` as that will permanently hide the video by
+        // storing data in the browser's local storage.
+        $('#gh-main .gh-video').hide();
     };
 
     /**
@@ -88,6 +93,57 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
     };
 
 
+    /////////////
+    //  VIDEO  //
+    /////////////
+
+    /**
+     * Hide the help video
+     *
+     * @private
+     */
+    var hideVideo = function() {
+        // Show the video in the list
+        $('#gh-main .gh-video').show();
+        // Hide the video on the top
+        $('#gh-main .gh-video:first-child').hide();
+        // Do not show the video next time
+        gh.utils.localDataStorage().store('hideVideo', true);
+        // Track the user hiding the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video collapsed']);
+        // Stop the video
+        $(document).trigger('gh.video.stop');
+    };
+
+    /**
+     * Show the help video
+     *
+     * @private
+     */
+    var showVideo = function() {
+        // Hide the video in the list
+        $('#gh-main .gh-video').hide();
+        // Show the video on the top
+        $('#gh-main > .gh-video').show();
+        // Scroll to the top to see the video
+        $('body').animate({scrollTop: 0}, 200);
+        // Start the video
+        $(document).trigger('gh.video.play', {'id': 'studenthowto'});
+    };
+
+    /**
+     * Play the help video
+     *
+     * @private
+     */
+    var playVideo = function() {
+        // Track the user playing the video
+        gh.utils.trackEvent(['Navigation', 'Home', 'Intro video played']);
+        showVideo();
+        return false;
+    };
+
+
     ///////////////
     //  BINDING  //
     ///////////////
@@ -98,6 +154,9 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
      * @private
      */
     var addBinding = function() {
+        // Video events
+        $('body').on('click', '.gh-hide-video', hideVideo);
+        $('body').on('click', '.gh-play-video', playVideo);
 
         // Show the empty timetable page
         $(document).on('gh.empty.timetable', showEmptyTimetable);
@@ -138,8 +197,16 @@ define(['gh.core', 'gh.constants', 'validator', 'gh.calendar', 'gh.header', 'gh.
             $(document).trigger('gh.calendar.init', {
                 'triposData': triposData,
                 'view': 'student',
-                'target': '#gh-main'
+                'target': '#gh-main-calendar'
             });
+
+            // Render the student video if the user hasn't hidden it yet
+            if (!gh.utils.localDataStorage().get('hideVideo')) {
+                $('#gh-main .gh-video').show();
+                gh.utils.renderTemplate('student-video', {}, $('#gh-main .gh-video'));
+            } else {
+                $('#gh-main .gh-video').hide();
+            }
         });
     };
 

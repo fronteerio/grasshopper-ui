@@ -94,7 +94,6 @@ requirejs.config({
         'gh.admin.new-series': 'gh/js/views/tenant-admin/gh.new-series',
         'gh.admin.rename-module': 'gh/js/views/tenant-admin/gh.rename-module',
         'gh.admin.series-title': 'gh/js/views/tenant-admin/gh.admin-series-title',
-        'gh.admin.video': 'gh/js/views/tenant-admin/gh.video',
         'gh.admin.visibility': 'gh/js/views/tenant-admin/gh.visibility',
 
         // GH student view controllers
@@ -113,7 +112,8 @@ requirejs.config({
         'gh.listview': 'gh/js/views/gh.listview',
         'gh.login-form': 'gh/js/views/gh.login-form',
         'gh.series-borrowed-popover': 'gh/js/views/gh.series-borrowed-popover',
-        'gh.subheader': 'gh/js/views/gh.subheader'
+        'gh.subheader': 'gh/js/views/gh.subheader',
+        'gh.video': 'gh/js/views/gh.video'
     },
     'priority': ['jquery', 'lodash'],
     'shim' : {
