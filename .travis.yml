@@ -75,8 +75,8 @@ before_install:
 
   # Install Grasshopper
   - echo 'Installing Grasshopper'
-  - cd ~/build/CUL-DigitalServices
-  - git clone --branch master --depth=1 git://github.com/CUL-DigitalServices/grasshopper.git ./grasshopper
+  - cd ~/build/fronteerio
+  - git clone --branch master --depth=1 git://github.com/fronteerio/grasshopper.git ./grasshopper
   - cd ./grasshopper
   - npm install
 
@@ -88,7 +88,7 @@ before_install:
 
   # Install Grasshopper UI
   - echo 'Installing Grasshopper UI'
-  - cd ~/build/CUL-DigitalServices/grasshopper-ui
+  - cd ~/build/fronteerio/grasshopper-ui
   - npm install
   - grunt configApache
   - sudo cp ./target/optimized/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
@@ -101,7 +101,7 @@ before_install:
 
   # Compile the SCSS files
   - echo 'Compiling CSS files'
-  - cd ~/build/CUL-DigitalServices/grasshopper-ui
+  - cd ~/build/fronteerio/grasshopper-ui
   - ./etc/scripts/compileCSS.sh
 
   # Start Apache

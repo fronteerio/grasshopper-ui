@@ -3,7 +3,7 @@
 A container for grasshopper applications
 
 ## Build status
-[![Build Status](https://travis-ci.org/fronteerio/grasshopper-ui.svg?branch=master)](https://travis-ci.org/CUL-DigitalServices/grasshopper-ui)
+[![Build Status](https://travis-ci.org/fronteerio/grasshopper-ui.svg?branch=master)](https://travis-ci.org/fronteerio/grasshopper-ui)
 
 ## Dependencies
 [![Dependency Status](https://david-dm.org/fronteerio/grasshopper-ui.svg)](https://david-dm.org/fronteerio/grasshopper-ui)
